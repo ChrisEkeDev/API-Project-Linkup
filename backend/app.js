@@ -14,7 +14,7 @@ const isProduction = environment === 'production';
 // Initialize express application
 const app = express();
 
-// Middleware
+// Parsing & Logging Middleware
 app.use(morgan('dev')) // Logs information about requests and responses
 app.use(cookieParser()) // Parses cookies
 app.use(express.json()) // Parses JSON bodies of requests
@@ -29,3 +29,11 @@ app.use(csurf({ // Set _csrf token and create req.csrfToken method
         httpOnly: true
     }
 }))
+
+//Import Routes
+const routes = require('./routes')
+
+// Connect app to routes
+app.use(routes)
+
+module.exports = app;
