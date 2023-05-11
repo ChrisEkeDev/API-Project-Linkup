@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs')
 const { setTokenCookie, restoreUser } = require('../../utils/auth')
 const { User } = require('../../db/models');
 
+
+// Login
 router.post('/', async (req, res, next) => {
     const { credential, password } = req.body;
 
@@ -34,6 +36,12 @@ router.post('/', async (req, res, next) => {
     await setTokenCookie(res, safeUser);
 
     return res.json({user: safeUser})
+})
+
+// Logout
+router.delete('/', (_req, res) => {
+    res.clearCookie('token');
+    return res.json({message: 'success'})
 })
 
 
