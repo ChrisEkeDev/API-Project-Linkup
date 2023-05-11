@@ -5,9 +5,10 @@ const handleValidationErrors = (req, _res, next) => {
 
     if (!validationErrors.isEmpty()) {
         const errors = {};
-        validationErrors.array().forEach(error => error[error.param] = error.msg);
+        console.log(validationErrors)
+        validationErrors.array().forEach(error => errors[error.param] = error.msg);
 
-        const error = Error('Bad Request.');
+        const error = new Error('Bad Request.');
         error.errors = errors;
         error.status = 400;
         error.title = 'Bad Request.'
