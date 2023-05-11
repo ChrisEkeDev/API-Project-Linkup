@@ -16,7 +16,7 @@ const setTokenCookie = (res, user) => {
 
     // Generates token with user object
     const token = jwt.sign(
-        { date: safeUser },
+        { data: safeUser },
         secret,
         { expiresIn: parseInt(expiresIn) }
     );
