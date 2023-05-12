@@ -18,6 +18,7 @@ const validateLogin = [
 router.get('/', requireAuth, (req, res) => {
     const { user } = req;
     if (user) {
+        const { token } = req.cookies;
         const safeUser = {
             id: user.id,
             firstName: user.firstName,
@@ -26,7 +27,7 @@ router.get('/', requireAuth, (req, res) => {
             username: user.username
         }
 
-        return res.status(200).json({user: safeUser})
+        return res.status(200).json({user: { ...safeUser, token}})
     } else {
         return res.status(200).json({user: null})
     }
