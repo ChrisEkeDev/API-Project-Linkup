@@ -5,7 +5,7 @@ const { User } = require('../db/models');
 const  { secret, expiresIn } = jwtConfig;
 
 // Sends a JWT Cookie after a User is sucessfully logged in
-const setTokenCookie = (res, user) => {
+const setTokenCookie = async (res, user) => {
 
     // Creates safe user object
     const safeUser = {
@@ -68,7 +68,7 @@ const restoreUser = (req, res, next) => {
 };
 
 
-const requireAuth = (req, _res, next) => {
+const requireAuth = [restoreUser, (req, _res, next) => {
     if (req.user) return next();
 
     const error = new Error('Authentication required');
@@ -76,6 +76,6 @@ const requireAuth = (req, _res, next) => {
     error.errors = { message: 'Authentication required'};
     error.status = 401;
     return next(error)
-}
+}]
 
 module.exports = { setTokenCookie, restoreUser, requireAuth }

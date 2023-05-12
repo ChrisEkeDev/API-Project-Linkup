@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { Op } = require('sequelize')
 const bcrypt = require('bcryptjs')
-const { setTokenCookie, restoreUser } = require('../../utils/auth');
+const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { User } = require('../../db/models');
@@ -15,7 +15,7 @@ const validateLogin = [
 ]
 
 // Restore session user
-router.get('/', (req, res) => {
+router.get('/', requireAuth, (req, res) => {
     const { user } = req;
     if (user) {
         const safeUser = {
@@ -26,9 +26,9 @@ router.get('/', (req, res) => {
             username: user.username
         }
 
-        return res.json({user: safeUser})
+        return res.status(200).json({user: safeUser})
     } else {
-        return res.json({user: null})
+        return res.status(200).json({user: null})
     }
 })
 

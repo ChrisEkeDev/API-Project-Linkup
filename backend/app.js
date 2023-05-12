@@ -8,6 +8,9 @@ const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const { ValidationError } = require('sequelize');
 
+//Import Routes
+const routes = require('./routes')
+
 // Check the environment
 const { environment } = require('./config');
 const isProduction = environment === 'production';
@@ -30,9 +33,6 @@ app.use(csurf({ // Set _csrf token and create req.csrfToken method
         httpOnly: true
     }
 }))
-
-//Import Routes
-const routes = require('./routes')
 
 // Connect app to routes
 app.use(routes)
