@@ -44,8 +44,7 @@ module.exports = {
       eventId: 5,
       url: 'Image url 5',
       preview: true
-    },
-
+    }
    ])
   },
 
