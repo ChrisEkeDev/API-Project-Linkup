@@ -18,34 +18,59 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    options.tableName = 'GroupImages';
+    options.tableName = 'Memberships';
     await queryInterface.bulkInsert(options, [
       {
+        userId: 1,
         groupId: 1,
-        url: 'Image url 1',
-        preview: true
+        status: 'Organizer'
       },
       {
+        userId: 4,
         groupId: 2,
-        url: 'Image url 2',
-        preview: true
+        status: 'Organizer'
       },
       {
+        userId: 3,
         groupId: 3,
-        url: 'Image url 3',
-        preview: true
+        status: 'Orangizer'
       },
       {
+        userId: 2,
         groupId: 4,
-        url: 'Image url 4',
-        preview: true
+        status: 'Organizer'
       },
       {
+        userId: 5,
         groupId: 5,
-        url: 'Image url 5',
-        preview: true
+        status: 'Organizer'
+      },
+      {
+        userId: 3,
+        groupId: 1,
+        status: 'Member'
+      },
+      {
+        userId: 4,
+        groupId: 2,
+        status: 'Member'
+      },
+      {
+        userId: 1,
+        groupId: 3,
+        status: 'Co-Host'
+      },
+      {
+        userId: 2,
+        groupId: 5,
+        status: 'Member'
+      },
+      {
+        userId: 5,
+        groupId: 1,
+        status: 'Pending'
       }
-     ])
+    ])
   },
 
   async down (queryInterface, Sequelize) {
@@ -55,7 +80,7 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    options.tableName = 'GroupImages';
-    await queryInterface.bulkDelete('GroupImages', null, {})
+    options.tableName = 'Memberships';
+    await queryInterface.bulkDelete('Memberships', null, {});
   }
 };

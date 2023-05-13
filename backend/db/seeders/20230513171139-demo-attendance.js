@@ -45,6 +45,31 @@ module.exports = {
         userId: 5,
         status: 'Waitlist'
       },
+      {
+        eventId: 4,
+        userId: 1,
+        status: 'Waitlist'
+      },
+      {
+        eventId: 5,
+        userId: 2,
+        status: 'Waitlist'
+      },
+      {
+        eventId: 1,
+        userId: 3,
+        status: 'Attending'
+      },
+      {
+        eventId: 5,
+        userId: 4,
+        status: 'Attending'
+      },
+      {
+        eventId: 3,
+        userId: 5,
+        status: 'Waitlist'
+      }
     ])
   },
 
@@ -56,11 +81,6 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
     options.tableName = 'Attendances';
-    const { Attendance } = require('../models');
-    let attendances = await Attendance.findAll();
-    for (let i = 0; i < attendances.length; i++) {
-      let attendance = attendances[i];
-      await attendance.destroy()
-    }
+    await queryInterface.bulkDelete('Attendances', null, {});
   }
 };

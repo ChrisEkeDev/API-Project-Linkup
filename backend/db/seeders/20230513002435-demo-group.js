@@ -81,11 +81,6 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
     options.tableName = 'Groups';
-    const { Group } = require('../models');
-    let groups = await Group.findAll();
-    for (let i = 0; i < groups.length; i++) {
-      let group = groups[i];
-      await group.destroy();
-    }
+    await queryInterface.bulkDelete('Groups', null, {})
   }
 };

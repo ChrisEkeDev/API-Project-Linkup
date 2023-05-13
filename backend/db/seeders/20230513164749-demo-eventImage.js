@@ -56,11 +56,6 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
     options.tableName = 'EventImages';
-    const { EventImage } = require('../models');
-    let eventImages = await EventImage.findAll();
-    for (let i = 0; i < eventImages.length; i++) {
-      let eventImage = eventImages[i];
-      await eventImage.destroy()
-    }
+    await queryInterface.bulkDelete('EventImages', null, {})
   }
 };

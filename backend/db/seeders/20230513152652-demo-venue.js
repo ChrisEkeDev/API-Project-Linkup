@@ -71,11 +71,6 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
     options.tableName = 'Venues';
-    const { Venue } = require('../models');
-    let venues = await Venue.findAll();
-    for (let i = 0; i < venues.length; i++) {
-      let venue = venues[i];
-      await venue.destroy()
-    }
+    await queryInterface.bulkDelete('Venues', null, {})
   }
 };
