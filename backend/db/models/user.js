@@ -1,6 +1,7 @@
 'use strict';
 
-import { states } from '../../utils/states';
+const { states } = require('../../utils/states');
+
 const {
   Model, Validator
 } = require('sequelize');

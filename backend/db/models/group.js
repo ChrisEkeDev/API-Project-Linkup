@@ -1,6 +1,6 @@
 'use strict';
 
-import { states } from '../../utils/states';
+const { states } = require('../../utils/states');
 
 const {
   Model, Validator
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: true,
-        max: 60
+        len: [5,60]
       }
     },
     about: {
