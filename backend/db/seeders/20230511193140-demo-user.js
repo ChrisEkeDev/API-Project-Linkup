@@ -61,9 +61,11 @@ module.exports = {
 
   async down (queryInterface, Sequelize) {
     options.tableName = 'Users';
-    const Op = Sequelize.Op;
-    await queryInterface.bulkDelete(options, {
-      username: { [Op.in] : ['cartyp', 'thequeenb', 'craigmack', 'mandm', 'megtheballion'] }
-    }, {})
+    const { User } = require('../models');
+    let users = await User.findAll();
+    for (let i = 0; i < users.length; i++) {
+      let user = users[i];
+      await user.destroy()
+    }
   }
 };

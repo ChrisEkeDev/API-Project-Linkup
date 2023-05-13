@@ -1,4 +1,6 @@
 'use strict';
+
+import { states } from '../../utils/states';
 const {
   Model, Validator
 } = require('sequelize');
@@ -77,7 +79,8 @@ module.exports = (sequelize, DataTypes) => {
         isAlpha: true,
         isUppercase: true,
         len: [2,2],
-        notEmpty: true
+        notEmpty: true,
+        isIn: states
       }
     }
   }, {
