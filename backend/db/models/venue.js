@@ -6,7 +6,7 @@ const {
   Model, Validator
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Group extends Model {
+  class Venue extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -16,37 +16,14 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Group.init({
-    organizerId: {
+  Venue.init({
+    groupId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    name: {
+    address: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-        len: [5,60]
-      }
-    },
-    about: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-      validate: {
-        min: 50
-      }
-    },
-    type: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isIn: [['In Person', 'Online']]
-      }
-    },
-    private: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: true
+      allowNull: false
     },
     city: {
       type: DataTypes.STRING,
@@ -60,22 +37,33 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isIn: [states],
-        isAlpha: true,
         len: [2,2],
-        isUppercase: true
+        isUppercase: true,
+        isAlpha: true,
+        notEmpty: true,
+        isIn: [states]
       }
     },
-    previewImage: {
-      type: DataTypes.STRING,
-      defaultValue: null,
-      validate: {
-        notEmpty: true
-      }
+    lat: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      min: -90,
+      max: 90
+    },
+    lng: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      min: -180,
+      max: 180
     }
   }, {
     sequelize,
-    modelName: 'Group'
+    modelName: 'Venue',
+    defaultScope: {
+      attributes: {
+        exclude: ['createdAt', 'updatedAt']
+      }
+    }
   });
-  return Group;
+  return Venue;
 };
