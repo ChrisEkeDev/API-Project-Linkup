@@ -1,9 +1,17 @@
 const express = require('express');
 const router = express.Router();
 
+const { Group, Membership, User } = require('../../db/models');
+
 // Get all groups
 router.get('/', async (req, res) => {
-    res.json({route: 'Get all groups'})
+    const groups = await Group.findAll();
+    for (let i = 0; i < groups.length; i++) {
+        let groupId = groups[i].id;
+        let numMembers = await Membership.findAll({where: {groupId: groupId} });
+        groups[i].dataValues.numMembers = numMembers.length
+    }
+    return res.status(200).json({Groups: groups})
 })
 
 // Get all groups joined or organized by the currnet user
