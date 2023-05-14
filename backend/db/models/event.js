@@ -32,11 +32,21 @@ module.exports = (sequelize, DataTypes) => {
   Event.init({
     groupId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'Groups',
+        key: 'id'
+      },
+      onDelete: 'CASCADE'
     },
     venueId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'Venues',
+        key: 'id'
+      },
+      onDelete: 'CASCADE'
     },
     name: {
       type: DataTypes.STRING,
