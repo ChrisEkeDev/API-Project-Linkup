@@ -41,14 +41,6 @@ module.exports = {
         type: Sequelize.STRING,
         defaultValue: null,
       },
-      city: {
-        type: Sequelize.STRING(30),
-        defaultValue: null,
-      },
-      state: {
-        type: Sequelize.STRING(2),
-        defaultValue: null,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

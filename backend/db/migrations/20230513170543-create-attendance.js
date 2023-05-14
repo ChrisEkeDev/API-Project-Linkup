@@ -25,7 +25,8 @@ module.exports = {
       },
       status: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 'Waitlist'
       },
       createdAt: {
         allowNull: false,
