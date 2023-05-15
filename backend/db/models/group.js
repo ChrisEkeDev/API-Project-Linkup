@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Group.belongsTo(models.User, {
+        as: 'Organizer',
         foreignKey: 'organizerId'
       });
 
@@ -65,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isIn: [['In Person', 'Online']]
+        isIn: [['In person', 'Online']]
       }
     },
     private: {
@@ -77,7 +78,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isAlpha: true,
         notEmpty: true
       }
     },

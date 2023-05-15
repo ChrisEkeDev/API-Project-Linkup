@@ -1,21 +1,25 @@
 const express = require('express');
 const router = express.Router();
 
-const { Group, Membership, User } = require('../../db/models');
+const { Group, Membership, User, sequelize } = require('../../db/models');
+const { requireAuth } = require('../../utils/auth');
 
 // Get all groups
 router.get('/', async (req, res) => {
-    const groups = await Group.findAll();
-    for (let i = 0; i < groups.length; i++) {
-        let groupId = groups[i].id;
-        let numMembers = await Membership.findAll({where: {groupId: groupId} });
-        groups[i].dataValues.numMembers = numMembers.length
+    let groups = await Group.findAll()
+
+    for (const group of groups) {
+        let members = await group.countUsers();
+        group.dataValues.numMembers = members;
     }
-    return res.status(200).json({Groups: groups})
+
+    return res.status(200).json({
+        Groups: groups
+    })
 })
 
 // Get all groups joined or organized by the currnet user
-router.get('/current', async (req, res) => {
+router.get('/current', requireAuth, async (req, res) => {
     res.json({route: 'Get all groups orgnaized or joined by user'})
 })
 
