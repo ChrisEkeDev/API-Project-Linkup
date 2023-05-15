@@ -5,7 +5,7 @@ const getLocationData = async (address) => {
     const options = {
         method: 'GET',
 	    headers: {
-            'X-RapidAPI-Key': '4a0ad7c7e7msha0429667c807fadp12d14fjsn6d59816bd58f',
+            'X-RapidAPI-Key': process.env.RAPID_API_KEY,
             'X-RapidAPI-Host': 'google-maps-geocoding.p.rapidapi.com'
 	    }
     };
