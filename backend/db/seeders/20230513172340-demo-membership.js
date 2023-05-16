@@ -21,27 +21,27 @@ module.exports = {
     options.tableName = 'Memberships';
     await queryInterface.bulkInsert(options, [
       {
-        userId: 1,
+        userId: 2,
         groupId: 1,
         status: 'Organizer'
       },
       {
-        userId: 4,
+        userId: 1,
         groupId: 2,
         status: 'Organizer'
       },
       {
-        userId: 3,
+        userId: 4,
         groupId: 3,
         status: 'Orangizer'
       },
       {
-        userId: 2,
+        userId: 4,
         groupId: 4,
         status: 'Organizer'
       },
       {
-        userId: 5,
+        userId: 3,
         groupId: 5,
         status: 'Organizer'
       },
