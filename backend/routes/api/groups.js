@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
 const { Group, Membership, User, GroupImage, Venue } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { Op } = require('sequelize')
@@ -76,9 +77,35 @@ router.get('/:groupID', async (req, res) => {
     return res.status(200).json(group)
 })
 
+const validateCreateGroup = [
+    // check('name').exists({checkFalsy: true}).withMessage('Please provide a name for the group.'),
+    check('name').exists({checkFalsy: true}).isLength({max: 60, min: 5}).withMessage('Name must be 60 characters or less'),
+    check('about').exists({checkFalsy: true}).isLength({min: 50}).withMessage('About must be 50 characters or more'),
+    check('type').exists({checkFalsy: true}).isIn(['In person', 'Online']).withMessage("Type must be 'Online' or 'In person'"),
+    check('private').exists({checkFalsy: true}).isBoolean().withMessage('Private must be a boolean'),
+    check('city').exists({checkFalsy: true}).withMessage('City is required'),
+    check('state').exists({checkFalsy: true}).isAlpha().isLength({min: 2, max: 2}).withMessage('State is required'),
+    handleValidationErrors
+]
+
 // Create a group
-router.post('/', async (req, res) => {
-    res.json({route: 'Create a group'})
+router.post('/', validateCreateGroup, async (req, res) => {
+    const { name, about, type, private, city, state } = req.body;
+
+    const userID = req.user.id;
+
+    const user = await User.findByPk(userID)
+
+    const group = await user.createGroup({
+        name,
+        about,
+        type,
+        private,
+        city,
+        state
+    })
+
+    return res.status(201).json(group)
 })
 
 // Add an image to a group based on id

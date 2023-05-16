@@ -1,4 +1,12 @@
-
+const validateCreateGroup = [
+    check('name').exists({checkFalsy: true}).isLength({max: 60}).withMessage('Name must be 60 characters or less'),
+    check('about').exists({checkFalsy: true}).isLength({min: 50}).withMessage('About must be 50 characters or more'),
+    check('type').exists({checkFalsy: true}).isIn,
+    check('private').exists({checkFalsy: true}).isBoolean().withMessage('Private must be a boolean'),
+    check('city').exists({checkFalsy: true}).withMessage('City is required'),
+    check('state').exists({checkFalsy: true}).isAlpha().isLength({min: 2, max: 2}).withMessage('State is required'),
+    handleValidationErrors
+]
 
     ///////////////////////////////////////////////////////////////////////
     // Create a group

@@ -52,7 +52,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true,
         len: [5,60]
       }
     },
@@ -77,10 +76,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     city: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      allowNull: false
     },
     state: {
       type: DataTypes.STRING,
@@ -95,9 +91,6 @@ module.exports = (sequelize, DataTypes) => {
     previewImage: {
       type: DataTypes.STRING,
       defaultValue: null,
-      validate: {
-        notEmpty: true
-      }
     }
   }, {
     sequelize,
