@@ -19,8 +19,8 @@ module.exports = {
       type: 'In person',
       capacity: 50,
       price: 50.00,
-      startDate: '2023-15-06',
-      endDate: '2023-18-06'
+      startDate: '2023-06-15',
+      endDate: '2023-06-18'
     },
     {
       groupId: 1,
@@ -30,8 +30,8 @@ module.exports = {
       type: 'In person',
       capacity: 10,
       price: 0,
-      startDate: '2023-15-07',
-      endDate: '2023-16-07'
+      startDate: '2023-07-15',
+      endDate: '2023-07-16'
     },
     {
       groupId: 5,
@@ -42,7 +42,7 @@ module.exports = {
       capacity: 100,
       price: 250.00,
       startDate: '2023-05-05',
-      endDate: '2023-06-05'
+      endDate: '2023-05-06'
     },
     {
       groupId: 3,
@@ -53,7 +53,7 @@ module.exports = {
       capacity: 50,
       price: 300.00,
       startDate: '2023-11-11',
-      endDate: '2023-12-11'
+      endDate: '2023-11-12'
     },
     {
       groupId: 2,
@@ -64,7 +64,7 @@ module.exports = {
       capacity: 150,
       price: 0,
       startDate: '2023-10-10',
-      endDate: '2023-17-10'
+      endDate: '2023-10-17'
     },
    ])
   },
