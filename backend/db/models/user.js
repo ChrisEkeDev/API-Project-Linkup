@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         otherKey: 'eventId'
       })
+
+      User.hasMany(models.Attendance, {
+        foreignKey: 'userId'
+      })
     }
   }
 

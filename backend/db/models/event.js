@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       Event.hasMany(models.EventImage, {
         foreignKey: 'eventId'
       })
+
+      Event.hasMany(models.Attendance, {
+        foreignKey: 'eventId'
+      })
     }
   }
 

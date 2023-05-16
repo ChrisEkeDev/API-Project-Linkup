@@ -6,7 +6,13 @@ module.exports = (sequelize, DataTypes) => {
   class Attendance extends Model {
 
     static associate(models) {
-      // define association here
+      Attendance.belongsTo(models.User, {
+        foreignKey: 'userId'
+      })
+
+      Attendance.belongsTo(models.Event, {
+        foreignKey: 'eventId'
+      })
     }
   }
 
