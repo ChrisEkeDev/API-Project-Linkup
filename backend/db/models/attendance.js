@@ -19,21 +19,11 @@ module.exports = (sequelize, DataTypes) => {
   Attendance.init({
     eventId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Events',
-        key: 'id'
-      },
-      onDelete: 'CASCADE'
+      allowNull: false
     },
     userId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Users',
-        key: 'id'
-      },
-      onDelete: 'CASCADE'
+      allowNull: false
     },
     status: {
       type: DataTypes.STRING,

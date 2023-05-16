@@ -61,7 +61,7 @@ module.exports = {
         state: 'TX',
         previewImage: 'image url'
       },
-    ])
+    ]).catch(e=>console.log(e))
   },
 
   async down (queryInterface, Sequelize) {
