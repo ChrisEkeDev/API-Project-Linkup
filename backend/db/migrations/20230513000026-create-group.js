@@ -20,7 +20,7 @@ module.exports = {
         allowNull: false
       },
       name: {
-        type: Sequelize.STRING(60),
+        type: Sequelize.STRING,
         allowNull: false
       },
       about: {
@@ -41,7 +41,7 @@ module.exports = {
         allowNull: false
       },
       state: {
-        type: Sequelize.STRING(2),
+        type: Sequelize.STRING,
         allowNull: false
       },
       previewImage: {

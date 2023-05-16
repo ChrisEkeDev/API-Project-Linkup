@@ -83,8 +83,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         isIn: [states],
-        isAlpha: true,
-        len: [2,2],
         isUppercase: true
       }
     },
