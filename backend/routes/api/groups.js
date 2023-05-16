@@ -9,12 +9,10 @@ const { Op } = require('sequelize')
 // Get all groups
 router.get('/', async (req, res) => {
     let groups = await Group.findAll()
-
     for (const group of groups) {
         let members = await group.countUsers();
         group.dataValues.numMembers = members;
     }
-
     return res.status(200).json({
         Groups: groups
     })
@@ -23,7 +21,6 @@ router.get('/', async (req, res) => {
 // Get all groups joined or organized by the current user
 router.get('/current', requireAuth, async (req, res) => {
     const userId = req.user.id;
-
     const groups = await Group.findAll({
         include: {
             model: Membership,
@@ -33,19 +30,17 @@ router.get('/current', requireAuth, async (req, res) => {
             attributes: []
         }
     })
-
     for (const group of groups) {
         let members = await group.countUsers();
         group.dataValues.numMembers = members;
     }
-
     return res.status(200).json({Groups: groups})
 })
 
 // Get details of group by ID
-router.get('/:groupID', async (req, res) => {
-    const { groupID } = req.params;
-    let group = await Group.findByPk(groupID, {
+router.get('/:groupId', async (req, res) => {
+    const { groupId } = req.params;
+    let group = await Group.findByPk(groupId, {
         include: [
             {
                 model: GroupImage,
@@ -63,22 +58,17 @@ router.get('/:groupID', async (req, res) => {
             }
         ]
     })
-
-    // If there is no group, return error message
     if (!group) {
         res.status(404).json({
             message: "Group couldn't be found"
         })
     }
-
     let members = await group.countUsers();
     group.dataValues.numMembers = members;
-
     return res.status(200).json(group)
 })
 
 const validateCreateGroup = [
-    // check('name').exists({checkFalsy: true}).withMessage('Please provide a name for the group.'),
     check('name').exists({checkFalsy: true}).isLength({max: 60, min: 5}).withMessage('Name must be 60 characters or less'),
     check('about').exists({checkFalsy: true}).isLength({min: 50}).withMessage('About must be 50 characters or more'),
     check('type').exists({checkFalsy: true}).isIn(['In person', 'Online']).withMessage("Type must be 'Online' or 'In person'"),
@@ -91,27 +81,24 @@ const validateCreateGroup = [
 // Create a group
 router.post('/', validateCreateGroup, async (req, res) => {
     const { name, about, type, private, city, state } = req.body;
-
-    const userID = req.user.id;
-
-    const user = await User.findByPk(userID)
-
+    const userId = req.user.id;
+    const user = await User.findByPk(userId)
     const group = await user.createGroup({
-        name,
-        about,
-        type,
-        private,
-        city,
-        state
+        name, about, type, private, city, state
+    })
+    const _membership = await Membership.create({
+        userId: user.dataValues.id,
+        groupId: group.dataValues.id,
+        status: 'Organizer'
     })
 
     return res.status(201).json(group)
 })
 
 // Add an image to a group based on id
-router.post('/:groupID/images', async (req, res) => {
-    const { groupID } = req.params;
-    res.json({route: `Add an image to group with ID of ${groupID}`})
+router.post('/:groupId/images', async (req, res) => {
+    const { groupId } = req.params;
+    res.json({route: `Add an image to group with ID of ${groupId}`})
 })
 
 // Update a group based on ID
