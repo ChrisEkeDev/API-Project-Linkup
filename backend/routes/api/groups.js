@@ -44,7 +44,36 @@ router.get('/current', requireAuth, async (req, res) => {
 // Get details of group by ID
 router.get('/:groupID', async (req, res) => {
     const { groupID } = req.params;
-    res.json({route: `Get group with ID of ${groupID}`})
+    let group = await Group.findByPk(groupID, {
+        include: [
+            {
+                model: GroupImage,
+                attributes: {
+                    exclude: ['groupId', 'createdAt', 'updatedAt']
+                }
+            },
+            {
+                model: User,
+                as: "Organizer",
+                attributes: ['id', 'firstName', 'lastName']
+            },
+            {
+                model: Venue
+            }
+        ]
+    })
+
+    // If there is no group, return error message
+    if (!group) {
+        res.status(404).json({
+            message: "Group couldn't be found"
+        })
+    }
+
+    let members = await group.countUsers();
+    group.dataValues.numMembers = members;
+
+    return res.status(200).json(group)
 })
 
 // Create a group
