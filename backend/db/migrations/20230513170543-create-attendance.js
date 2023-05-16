@@ -1,45 +1,32 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 
-let options = {};
+let options = {}
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA
 }
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('Attendances', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
-        type: Sequelize.STRING(50),
+      eventId: {
+        type: Sequelize.INTEGER,
         allowNull: false
       },
-      lastName: {
-        type: Sequelize.STRING(50),
+      userId: {
+        type: Sequelize.INTEGER,
         allowNull: false
       },
-      username: {
-        type: Sequelize.STRING(30),
-        allowNull: false,
-        unique: true
-      },
-      email: {
-        type: Sequelize.STRING(256),
-        allowNull: false,
-        unique: true
-      },
-      hashedPassword: {
-        type: Sequelize.STRING.BINARY,
-        allowNull: false
-      },
-      profileImage: {
+      status: {
         type: Sequelize.STRING,
-        defaultValue: null,
+        allowNull: false,
+        defaultValue: 'Waitlist'
       },
       createdAt: {
         allowNull: false,
@@ -54,6 +41,6 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('Attendances');
   }
 };

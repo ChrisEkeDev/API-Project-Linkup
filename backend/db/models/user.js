@@ -1,4 +1,7 @@
 'use strict';
+
+const { states } = require('../../utils/states');
+
 const {
   Model, Validator
 } = require('sequelize');
@@ -10,23 +13,32 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      User.hasMany(models.Group, {
+        foreignKey: 'organizerId'
+      })
+      User.belongsToMany(models.Group, {
+        through: models.Membership,
+        foreignKey: 'userId',
+        otherKey: 'groupId'
+      })
+
+      User.hasMany(models.Membership)
+
+      User.belongsToMany(models.Event, {
+        through: models.Attendance,
+        foreignKey: 'userId',
+        otherKey: 'eventId'
+      })
     }
   }
   User.init({
     firstName: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isAlpha: true
-      }
+      allowNull: false
     },
     lastName:  {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isAlpha: true
-      }
+      allowNull: false
     },
     username: {
       type: DataTypes.STRING,
@@ -59,24 +71,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       defaultValue: null,
       validate: {
-        notEmpty: true
-      }
-    },
-    city: {
-      type: DataTypes.STRING,
-      defaultValue: null,
-      validate: {
-        isAlpha: true,
-        notEmpty: true
-      }
-    },
-    state: {
-      type: DataTypes.STRING,
-      defaultValue: null,
-      validate: {
-        isAlpha: true,
-        isUppercase: true,
-        len: [2,2],
         notEmpty: true
       }
     }
