@@ -9,15 +9,6 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
    options.tableName = 'EventImages';
    await queryInterface.bulkInsert(options, [
     {
@@ -49,13 +40,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
     options.tableName = 'EventImages';
-    await queryInterface.bulkDelete('EventImages', null, {})
+    await queryInterface.bulkDelete(options)
   }
 };

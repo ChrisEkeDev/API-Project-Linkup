@@ -1,5 +1,7 @@
 'use strict';
 
+/** @type {import('sequelize-cli').Migration} */
+
 const bcrypt = require("bcryptjs");
 
 let options = {};
@@ -7,18 +9,8 @@ if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA
 }
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
    options.tableName = 'Users';
    await queryInterface.bulkInsert(options, [
     {
@@ -61,6 +53,6 @@ module.exports = {
 
   async down (queryInterface, Sequelize) {
     options.tableName = 'Users';
-    await queryInterface.bulkDelete('Users', null, {})
+    await queryInterface.bulkDelete(options)
   }
 };
