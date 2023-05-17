@@ -37,15 +37,9 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     state: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM,
       allowNull: false,
-      validate: {
-        len: [2,2],
-        isUppercase: true,
-        isAlpha: true,
-        notEmpty: true,
-        isIn: [states]
-      }
+      values: states
     },
     lat: {
       type: DataTypes.DECIMAL,

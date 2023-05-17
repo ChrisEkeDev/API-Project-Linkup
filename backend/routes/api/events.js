@@ -1,5 +1,46 @@
 const express = require('express');
 const router = express.Router();
+const { Event, Group, Venue } = require('../../db/models');
+const { Op } = require('sequelize');
+
+// Get All Events with optional query filters
+router.get('/', async (req, res) => {
+    const { page, size, name, type, startDate } = req.query;
+
+    const events = await Event.findAll({
+        attributes: {
+            exclude: ['capacity', 'price']
+        },
+        include: [
+            {
+                model: Group,
+                attributes: ['id', 'name', 'city', 'state']
+            },
+            {
+                model: Venue,
+                attributes: ['id', 'city', 'state']
+            }
+        ]
+    });
+
+    //Calculates aggregate data
+    for (const event of events) {
+        let attendees = await event.countAttendances({
+            where: {
+                status: 'Attending'
+            }
+        });
+        event.dataValues.numAttending = attendees;
+        let eventImage = await event.getEventImages({
+            where: {preview: true},
+            attributes: ['url']
+        })
+        event.dataValues.previewImage = eventImage[0].dataValues.url
+    }
+
+    return res.status(200).json({Events: events})
+})
+
 
 // Get details of an Event specified by its id
 router.get('/:eventID', async (req, res) => {
@@ -49,11 +90,6 @@ router.delete('/:eventID/attendance', async (req, res) => {
     res.json({route: `Delete attendance for event with ID of ${eventID}`})
 })
 
-// Add Query Filters to Get All Events
-router.get('/', async (req, res) => {
-    const { page, size, name, type, startDate } = req.query;
-    res.json({route: `Returns events matching query params`})
-})
 
 
 module.exports = router;

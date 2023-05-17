@@ -26,7 +26,7 @@ module.exports = {
       },
       venueId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'Venues',
           key: 'id'
@@ -42,8 +42,9 @@ module.exports = {
         allowNull: false,
       },
       type: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM,
         allowNull: false,
+        values: ['In person', 'Online']
       },
       capacity: {
         type: Sequelize.INTEGER,
@@ -56,11 +57,11 @@ module.exports = {
         defaultValue: 0
       },
       startDate: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
         allowNull: false
       },
       endDate: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
         allowNull: false
       },
       createdAt: {
