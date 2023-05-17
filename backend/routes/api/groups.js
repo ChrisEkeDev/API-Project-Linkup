@@ -330,9 +330,49 @@ router.post('/:groupId/venues', requireAuth, validateCreateVenue, async (req, re
 
 
 // Get all events of groups specified by its Id
-router.get('/:groupID/events', async (req, res) => {
-    const { groupID } = req.params;
-    res.json({route: `Get all events of group with ID of ${groupID}`})
+router.get('/:groupId/events', async (req, res) => {
+    const { groupId } = req.params;
+    const group = await Group.findByPk(groupId);
+
+    // Checks if the group exists
+    if (!group) {
+        res.status(404).json({
+            message: "Group couldn't be found"
+        })
+    }
+
+    const events = await group.getEvents({
+        attributes: {
+            exclude: ['capacity', 'price']
+        },
+        include: [
+            {
+                model: Group,
+                attributes: ['id', 'name', 'city', 'state']
+            },
+            {
+                model: Venue,
+                attributes: ['id', 'city', 'state']
+            }
+        ]
+    });
+
+    //Calculates aggregate data
+    for (const event of events) {
+        let attendees = await event.countAttendances({
+            where: {
+                status: 'Attending'
+            }
+        });
+        event.dataValues.numAttending = attendees;
+        let eventImage = await event.getEventImages({
+            where: {preview: true},
+            attributes: ['url']
+        })
+        event.dataValues.previewImage = eventImage[0].dataValues.url
+    }
+
+    return res.status(200).json({Events: events})
 })
 
 
