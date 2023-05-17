@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Event, Group, Venue } = require('../../db/models');
+const { Event, Group, Venue, EventImage } = require('../../db/models');
 const { Op } = require('sequelize');
 
 // Get All Events with optional query filters
@@ -43,9 +43,47 @@ router.get('/', async (req, res) => {
 
 
 // Get details of an Event specified by its id
-router.get('/:eventID', async (req, res) => {
-    const { eventID } = req.params;
-    res.json({route: `Get details of event with ID of ${eventID}`})
+router.get('/:eventId', async (req, res) => {
+    const { eventId } = req.params;
+    const event = await Event.findByPk(eventId, {
+        include: [
+            {
+                model: Group,
+                attributes: {
+                    exclude: ['organizerId', 'about', 'type', 'createdAt', 'updatedAt']
+                }
+            },
+            {
+                model: Venue,
+                attributes: {
+                    exclude: ['groupId', 'createdAt', 'updatedAt']
+                }
+            },
+            {
+                model: EventImage,
+                attributes: {
+                    exclude: ['eventId', 'createdAt', 'updatedAt']
+                }
+            }
+        ]
+    })
+
+    // Checks if event exists
+    if (!event) {
+        res.status(404).json({
+            message: "Event couldn't be found"
+        })
+    }
+
+    //Calculates aggregate data
+    let attendees = await event.countAttendances({
+        where: {
+            status: 'Attending'
+        }
+    });
+    event.dataValues.numAttending = attendees;
+
+    return res.status(200).json(event)
 })
 
 // Add an Image to a Event based on the Event's id
