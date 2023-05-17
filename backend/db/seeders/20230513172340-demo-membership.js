@@ -13,53 +13,53 @@ module.exports = {
     await queryInterface.bulkInsert(options, [
       {
         userId: 2,
-        groupId: 1,
-        status: 'Organizer'
-      },
-      {
-        userId: 1,
-        groupId: 2,
-        status: 'Organizer'
-      },
-      {
-        userId: 4,
-        groupId: 3,
-        status: 'Orangizer'
-      },
-      {
-        userId: 4,
-        groupId: 4,
-        status: 'Organizer'
-      },
-      {
-        userId: 3,
         groupId: 5,
-        status: 'Organizer'
-      },
-      {
-        userId: 3,
-        groupId: 1,
-        status: 'Member'
-      },
-      {
-        userId: 4,
-        groupId: 2,
-        status: 'Member'
-      },
-      {
-        userId: 1,
-        groupId: 3,
-        status: 'Co-Host'
+        status: 'co-host'
       },
       {
         userId: 2,
+        groupId: 4,
+        status: 'member'
+      },
+      {
+        userId: 2,
+        groupId: 3,
+        status: 'pending'
+      },
+      {
+        userId: 1,
+        groupId: 4,
+        status: 'member'
+      },
+      {
+        userId: 1,
         groupId: 5,
-        status: 'Member'
+        status: 'member'
+      },
+      {
+        userId: 3,
+        groupId: 1,
+        status: 'member'
+      },
+      {
+        userId: 3,
+        groupId: 2,
+        status: 'pending'
+      },
+      {
+        userId: 4,
+        groupId: 5,
+        status: 'member'
+      },
+      {
+        userId: 4,
+        groupId: 1,
+        status: 'pending'
       },
       {
         userId: 5,
         groupId: 1,
-        status: 'Pending'
+        status: 'member'
       }
     ])
   },

@@ -12,54 +12,54 @@ module.exports = {
     options.tableName = 'Attendances';
     await queryInterface.bulkInsert(options, [
       {
-        eventId: 1,
+        eventId: 5,
         userId: 2,
-        status: 'Host'
+        status: 'attending'
+      },
+      {
+        eventId: 3,
+        userId: 2,
+        status: 'waitlist'
+      },
+      {
+        eventId: 3,
+        userId: 1,
+        status: 'attending'
+      },
+      {
+        eventId: 4,
+        userId: 1,
+        status: 'attending'
+      },
+      {
+        eventId: 1,
+        userId: 3,
+        status: 'co-host'
       },
       {
         eventId: 2,
-        userId: 2,
-        status: 'Host'
+        userId: 3,
+        status: 'waitlist'
       },
       {
         eventId: 3,
         userId: 4,
-        status: 'Attending'
+        status: 'co-host'
       },
       {
         eventId: 1,
         userId: 4,
-        status: 'Attending'
-      },
-      {
-        eventId: 5,
-        userId: 3,
-        status: 'Attending'
+        status: 'attending'
       },
       {
         eventId: 4,
-        userId: 1,
-        status: 'Attending'
+        userId: 5,
+        status: 'co-ost'
       },
       {
         eventId: 5,
-        userId: 2,
-        status: 'Attending'
-      },
-      {
-        eventId: 3,
-        userId: 3,
-        status: 'Host'
-      },
-      {
-        eventId: 4,
-        userId: 4,
-        status: 'Host'
-      },
-      {
-        eventId: 5,
-        userId: 1,
-        status: 'Host'
+        userId: 5,
+        status: 'attending'
       }
     ])
   },

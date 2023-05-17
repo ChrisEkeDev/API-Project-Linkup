@@ -15,13 +15,22 @@ router.get('/', async (req, res) => {
 
     // Calculates aggregate data
     for (const group of groups) {
-        let members = await group.countUsers();
+        let members = await group.countUsers({
+            where: {
+                status: 'member'
+            }
+        });
         group.dataValues.numMembers = members;
         let groupImage = await group.getGroupImages({
             where: { preview: true },
             attributes: ['url']
         })
-        group.dataValues.previewImage = groupImage[0].dataValues.url
+        if (groupImage[0]) {
+            group.dataValues.previewImage = groupImage[0].dataValues.url
+        } else {
+            group.dataValues.previewImage = null
+        }
+
     }
 
     return res.status(200).json({
@@ -48,7 +57,7 @@ router.get('/current', requireAuth, async (req, res) => {
     for (const group of groups) {
         let members = await group.countUsers({
             where: {
-                status: 'Member'
+                status: 'member'
             }
         });
         group.dataValues.numMembers = members;
@@ -56,7 +65,11 @@ router.get('/current', requireAuth, async (req, res) => {
             where: { preview: true },
             attributes: ['url']
         })
-        group.dataValues.previewImage = groupImage[0].dataValues.url
+        if (groupImage[0]) {
+            group.dataValues.previewImage = groupImage[0].dataValues.url
+        } else {
+            group.dataValues.previewImage = null
+        }
     }
 
     return res.status(200).json({Groups: groups})
@@ -96,7 +109,7 @@ router.get('/:groupId', async (req, res) => {
     // Calculates aggregate data
     const members = await group.countUsers({
         where: {
-            status: 'Member'
+            status: 'member'
         }
     });
     group.dataValues.numMembers = members;
@@ -125,13 +138,6 @@ router.post('/', validateCreateGroup, async (req, res) => {
     // Creates the group
     const group = await user.createGroup({
         name, about, type, private, city, state
-    })
-
-    // Creates the membership
-    const _membership = await Membership.create({
-        userId: user.dataValues.id,
-        groupId: group.dataValues.id,
-        status: 'Organizer'
     })
 
     return res.status(201).json(group)
@@ -172,8 +178,8 @@ router.post('/:groupId/images', validateImage, async (req, res) => {
     }
 
     // Authorization
-    let status = await user[0].dataValues.Membership.dataValues.status.toLowerCase();
-    if ( status === "organizer" ) {
+    let status = await user[0].dataValues.Membership.dataValues.status;
+    if ( status === "co-host" || userId === group.organizerId ) {
         // Creates the image
         let image = await group.createGroupImage({
             url,
@@ -293,8 +299,8 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
     }
 
     // Authorization
-    let status = await user[0].dataValues.Membership.dataValues.status.toLowerCase();
-    if ( status === "organizer" || status === "co-host" ) {
+    let status = await user[0].dataValues.Membership.dataValues.status;
+    if ( status === "co-host" || userId === group.organizerId ) {
         const venues = await group.getVenues();
         return res.status(200).json({Venues: venues})
     } else {
@@ -342,8 +348,8 @@ router.post('/:groupId/venues', requireAuth, validateCreateVenue, async (req, re
     }
 
     // Authorization
-    let status = await user[0].dataValues.Membership.dataValues.status.toLowerCase();
-    if ( status === "organizer" || status === "co-host" ) {
+    let status = await user[0].dataValues.Membership.dataValues.status;
+    if ( status === "co-host" || userId === group.organizerId ) {
         const venue = await group.createVenue({
             address, city, state, lat, lng
         })
@@ -463,18 +469,11 @@ router.post('/:groupId/events', requireAuth, validateCreateEvent, async (req, re
     }
 
     // Authorization
-    let status = await user[0].dataValues.Membership.dataValues.status.toLowerCase();
-    if ( status === "organizer" || status === "co-host" ) {
+    let status = await user[0].dataValues.Membership.dataValues.status;
+    if ( status === "co-host" || userId === group.organizerId ) {
 
         const event = await group.createEvent({
             venueId, name, type, capacity, price, description, startDate, endDate
-        })
-
-        // Creates the attendance
-        const _attendance = await Attendance.create({
-            userId: userId,
-            eventId: event.dataValues.id,
-            status: 'Host'
         })
 
         return res.status(200).json(event)
@@ -490,9 +489,56 @@ router.post('/:groupId/events', requireAuth, validateCreateEvent, async (req, re
 
 
 // Get all Members of a Group specified by its id
-router.get('/:groupID/members', async (req, res) => {
-    const { groupID } = req.params;
-    res.json({route: `Returns the members of group with ID of ${groupID}`})
+router.get('/:groupId/members', async (req, res) => {
+    const { groupId } = req.params;
+    const userId = req.user.id;
+    const group = await Group.findByPk(groupId);
+
+    // Checks if the group exists
+    if (!group) {
+        return res.status(404).json({
+            message: "Group couldn't be found"
+        })
+    }
+
+    const membership = await group.getMemberships({
+        where: {
+            userId: userId
+        }
+    })
+    let membersAuth = await Group.findByPk(groupId, {
+        attributes: [],
+        include: {
+            model: User,
+            attributes: ['id', 'firstName', 'lastName'],
+            through: {
+                attributes: ['status']
+            }
+        }
+    });
+
+    let membersNoAuth = await Group.findByPk(groupId, {
+        attributes: [],
+        include: {
+            model: User,
+            attributes: ['id', 'firstName', 'lastName'],
+            through: {
+                attributes: ['status'],
+                where: {
+                    status: {
+                        [Op.not]: 'pending'
+                    }
+                }
+            }
+        }
+    });
+
+    if (userId === group.organizerId || membership[0]?.status === 'co-host') {
+        return res.status(200).json({Members: membersAuth.Users})
+    } else {
+        return res.status(200).json({Members: membersNoAuth.Users})
+    }
+
 })
 
 

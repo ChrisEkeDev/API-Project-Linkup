@@ -115,6 +115,9 @@ router.post('/:eventId/images', requireAuth, validateImage,  async (req, res) =>
         })
     }
 
+    const groupId = event.groupId;
+    const group = await Group.findByPk(groupId)
+
     // Checks if user is attending the event
     let user = await event.getUsers({
         where: {
@@ -131,8 +134,8 @@ router.post('/:eventId/images', requireAuth, validateImage,  async (req, res) =>
     // return res.status(200).json(user)
 
     // Authorization
-    let status = await user[0].dataValues.Attendance.dataValues.status.toLowerCase();
-    if (status === 'attending' || status === 'host' || status === 'co-host') {
+    let status = await user[0].dataValues.Membership.dataValues.status;
+    if ( status === "co-host" || status === 'attending' || userId === group.organizerId ) {
         // Creates the image
         let image = await event.createEventImage({
             url,
@@ -212,8 +215,8 @@ router.put('/:eventId', requireAuth, validateEditEvent, async (req, res) => {
     }
 
     // Authorization
-    let status = await user[0].dataValues.Attendance.dataValues.status.toLowerCase();
-    if (status === 'host' || status === 'co-host' || userId === group.organizerId) {
+    let status = await user[0].dataValues.Membership.dataValues.status;
+    if ( status === "co-host" || userId === group.organizerId ) {
 
         // Update event
         await event.set({
@@ -265,8 +268,8 @@ router.delete('/:eventId', requireAuth, async (req, res) => {
     }
 
     // Authorization
-    let status = await user[0].dataValues.Attendance.dataValues.status.toLowerCase();
-    if (status === 'host' || status === 'co-host' || userId === group.organizerId) {
+    let status = await user[0].dataValues.Membership.dataValues.status;
+    if ( status === "co-host" || userId === group.organizerId ) {
         return res.status(200).json({
             message: "Successfully deleted"
         })
