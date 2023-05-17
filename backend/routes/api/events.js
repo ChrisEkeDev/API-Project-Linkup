@@ -180,11 +180,19 @@ router.put('/:eventId', requireAuth, validateEditEvent, async (req, res) => {
     const userId = req.user.id;
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
     let event = await Event.findByPk(eventId);
+    let venue = await Venue.findByPk(venueId);
 
     // Checks if event exists
     if (!event) {
         return res.status(404).json({
             message: "Event couldn't be found"
+        })
+    }
+
+    // Checks if venue exists
+    if (!venue) {
+        return res.status(404).json({
+            message: "Venue couldn't be found"
         })
     }
 
@@ -205,7 +213,6 @@ router.put('/:eventId', requireAuth, validateEditEvent, async (req, res) => {
 
     // Authorization
     let status = await user[0].dataValues.Attendance.dataValues.status.toLowerCase();
-    console.log(status)
     if (status === 'host' || status === 'co-host' || userId === group.organizerId) {
 
         // Update event
