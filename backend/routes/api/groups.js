@@ -148,6 +148,7 @@ const validateImage = [
 
 router.post('/:groupId/images', validateImage, async (req, res) => {
     const { groupId } = req.params;
+    const userId = req.user.id;
     const { url, preview } = req.body;
     let group = await Group.findByPk(groupId)
 
@@ -158,13 +159,34 @@ router.post('/:groupId/images', validateImage, async (req, res) => {
         })
     }
 
-    // Creates the image
-    let image = await group.createGroupImage({
-        url,
-        preview
-    })
+    // Checks if user is a member of the group
+    let user = await group.getUsers({
+        where: {
+            id: userId,
+        }
+    });
+    if (user.length === 0) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
 
-    return res.status(200).json(image)
+    // Authorization
+    let status = await user[0].dataValues.Membership.dataValues.status.toLowerCase();
+    if ( status === "organizer" ) {
+        // Creates the image
+        let image = await group.createGroupImage({
+            url,
+            preview
+        })
+        return res.status(200).json(image)
+    } else {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+
+
 })
 
 
@@ -188,12 +210,12 @@ router.put('/:groupId', requireAuth, validateEditGroup, async (req, res) => {
 
     // Checks if the group exists
     if (!group) {
-        res.status(404).json({
+        return res.status(404).json({
             message: "Group couldn't be found"
         })
     }
 
-    // Checks if the user is the organizer of the group
+    // Authorization
     if (userId !== group.organizerId) {
         return res.status(403).json({
             message: "Forbidden"
@@ -224,12 +246,12 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
 
     // Checks if the groups exists
     if (!group) {
-        res.status(404).json({
+        return res.status(404).json({
             message: "Group couldn't be found"
         })
     }
 
-    // Checks if the user is the organizer of the group
+    // Authorization
     if (userId !== group.organizerId) {
         return res.status(403).json({
             message: "Forbidden"
@@ -253,7 +275,7 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
 
     // Checks if the group exists
     if (!group) {
-        res.status(404).json({
+        return res.status(404).json({
             message: "Group couldn't be found"
         })
     }
@@ -270,7 +292,7 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
         })
     }
 
-    // Checks if user is the Organizer or the Co-host of the group
+    // Authorization
     let status = await user[0].dataValues.Membership.dataValues.status.toLowerCase();
     if ( status === "organizer" || status === "co-host" ) {
         const venues = await group.getVenues();
@@ -302,7 +324,7 @@ router.post('/:groupId/venues', requireAuth, validateCreateVenue, async (req, re
 
     // Checks if the group exists
     if (!group) {
-        res.status(404).json({
+        return res.status(404).json({
             message: "Group couldn't be found"
         })
     }
@@ -319,7 +341,7 @@ router.post('/:groupId/venues', requireAuth, validateCreateVenue, async (req, re
         })
     }
 
-    // Checks if user is the Organizer or the Co-host of the group
+    // Authorization
     let status = await user[0].dataValues.Membership.dataValues.status.toLowerCase();
     if ( status === "organizer" || status === "co-host" ) {
         const venue = await group.createVenue({
@@ -344,7 +366,7 @@ router.get('/:groupId/events', async (req, res) => {
 
     // Checks if the group exists
     if (!group) {
-        res.status(404).json({
+        return res.status(404).json({
             message: "Group couldn't be found"
         })
     }
@@ -377,7 +399,9 @@ router.get('/:groupId/events', async (req, res) => {
             where: {preview: true},
             attributes: ['url']
         })
-        event.dataValues.previewImage = eventImage[0].dataValues.url
+        if (eventImage[0]) {
+            event.dataValues.previewImage = eventImage[0].dataValues.url;
+        } else event.dataValues.previewImage = null
     }
 
     return res.status(200).json({Events: events})
@@ -421,7 +445,7 @@ router.post('/:groupId/events', requireAuth, validateCreateEvent, async (req, re
 
     // Checks if the group exists
     if (!group) {
-        res.status(404).json({
+        return res.status(404).json({
             message: "Group couldn't be found"
         })
     }
@@ -438,7 +462,7 @@ router.post('/:groupId/events', requireAuth, validateCreateEvent, async (req, re
         })
     }
 
-    // Checks if user is the Organizer or the Co-host of the group
+    // Authorization
     let status = await user[0].dataValues.Membership.dataValues.status.toLowerCase();
     if ( status === "organizer" || status === "co-host" ) {
 
