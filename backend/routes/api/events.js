@@ -237,9 +237,44 @@ router.put('/:eventId', requireAuth, validateEditEvent, async (req, res) => {
 
 
 // Delete an Event specified by its id
-router.delete('/:eventID', async (req, res) => {
-    const { eventID } = req.params;
-    res.json({route: `Delete event with ID of ${eventID}`})
+router.delete('/:eventId', requireAuth, async (req, res) => {
+    const { eventId } = req.params;
+    const userId = req.user.id;
+    let event = await Event.findByPk(eventId);
+
+    // Checks if event exists
+    if (!event) {
+        return res.status(404).json({
+            message: "Event couldn't be found"
+        })
+    }
+
+    const groupId = event.groupId;
+    const group = await Group.findByPk(groupId)
+
+    // Checks if user is attending the event
+    let user = await event.getUsers({
+        where: {
+            id: userId
+        }
+    });
+    if (user.length === 0) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+
+    // Authorization
+    let status = await user[0].dataValues.Attendance.dataValues.status.toLowerCase();
+    if (status === 'host' || status === 'co-host' || userId === group.organizerId) {
+        return res.status(200).json({
+            message: "Successfully deleted"
+        })
+    } else {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
 })
 
 
