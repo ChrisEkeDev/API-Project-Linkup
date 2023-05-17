@@ -140,9 +140,46 @@ router.post('/:groupId/images', validateImage, async (req, res) => {
 })
 
 // Update a group based on ID
-router.put('/:groupID', async (req, res) => {
-    const { groupID } = req.params;
-    res.json({route: `Update a group with ID of ${groupID}`})
+
+const validateEditGroup = [
+    check('name').optional().isLength({max: 60, min: 5}).withMessage('Name must be 60 characters or less'),
+    check('about').optional().isLength({min: 50}).withMessage('About must be 50 characters or more'),
+    check('type').optional().isIn(['In person', 'Online']).withMessage("Type must be 'Online' or 'In person'"),
+    check('private').optional().isBoolean().withMessage('Private must be a boolean'),
+    check('city').exists().withMessage('City is required').optional(),
+    check('state').optional().isAlpha().isLength({min: 2, max: 2}).withMessage('State is required'),
+    handleValidationErrors
+]
+
+router.put('/:groupId', requireAuth, validateEditGroup, async (req, res) => {
+    const { groupId } = req.params;
+    const userId = req.user.id;
+    const { name, about, type, private, city, state } = req.body;
+    let group = await Group.findByPk(groupId);
+
+    // If there is no group, return error message
+    if (!group) {
+        res.status(404).json({
+            message: "Group couldn't be found"
+        })
+    }
+
+    if (userId !== group.organizerId) {
+        return res.status(403).json({message: "Forbidden"})
+    }
+
+    await group.set({
+        name: name ? name : group.name,
+        about: about ? about : group.about,
+        type: type ? type : group.type,
+        private: private ? private : group.private,
+        city: city ? city : group.city,
+        state: state ? state : group.state
+    })
+
+    await group.save();
+
+    return res.status(200).json(group)
 })
 
 // Delete a group based on ID
