@@ -231,9 +231,38 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
 
 
 // Get All Venues for a Group specified by its id
-router.get('/:groupID/venues', async (req, res) => {
-    const { groupID } = req.params;
-    res.json({route: `Get all venues of group with ID of ${groupID}`})
+router.get('/:groupId/venues', requireAuth, async (req, res) => {
+    const { groupId } = req.params;
+    const userId = req.user.id;
+    // const user = await User.findByPk(userId);
+    const group = await Group.findByPk(groupId);
+    if (!group) {
+        res.status(404).json({
+            message: "Group couldn't be found"
+        })
+    }
+
+    let user = await group.getUsers({
+        where: {
+            id: userId,
+        }
+    });
+
+    if (user.length === 0) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+
+    if ( user[0].dataValues.Membership.dataValues.status.toLowerCase() === "organizer"
+        || user[0].dataValues.Membership.dataValues.status.toLowerCase() === "co-host" ) {
+        const venues = await group.getVenues();
+        return res.status(200).json({Venues: venues})
+    } else {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
 })
 
 
