@@ -4,7 +4,8 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { Group, Membership, User, GroupImage, Venue } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
-const { Op } = require('sequelize')
+const { Op } = require('sequelize');
+const { states } = require('../../utils/states');
 
 
 
@@ -12,6 +13,7 @@ const { Op } = require('sequelize')
 router.get('/', async (req, res) => {
     let groups = await Group.findAll()
 
+    // Calculates aggregate data
     for (const group of groups) {
         let members = await group.countUsers();
         group.dataValues.numMembers = members;
@@ -41,6 +43,8 @@ router.get('/current', requireAuth, async (req, res) => {
             attributes: []
         }
     })
+
+    // Calculates aggregate data
     for (const group of groups) {
         let members = await group.countUsers();
         group.dataValues.numMembers = members;
@@ -59,8 +63,7 @@ router.get('/current', requireAuth, async (req, res) => {
 // Get details of group by ID
 router.get('/:groupId', async (req, res) => {
     const { groupId } = req.params;
-
-    let group = await Group.findByPk(groupId, {
+    const group = await Group.findByPk(groupId, {
         include: [
             {
                 model: GroupImage,
@@ -79,13 +82,15 @@ router.get('/:groupId', async (req, res) => {
         ]
     })
 
+    // Checks if the group exists
     if (!group) {
         return res.status(404).json({
             message: "Group couldn't be found"
         })
     }
 
-    let members = await group.countUsers();
+    // Calculates aggregate data
+    const members = await group.countUsers();
     group.dataValues.numMembers = members;
 
     return res.status(200).json(group)
@@ -107,13 +112,14 @@ const validateCreateGroup = [
 router.post('/', validateCreateGroup, async (req, res) => {
     const { name, about, type, private, city, state } = req.body;
     const userId = req.user.id;
-
     const user = await User.findByPk(userId)
 
+    // Creates the group
     const group = await user.createGroup({
         name, about, type, private, city, state
     })
 
+    // Creates the membership
     const _membership = await Membership.create({
         userId: user.dataValues.id,
         groupId: group.dataValues.id,
@@ -137,22 +143,18 @@ router.post('/:groupId/images', validateImage, async (req, res) => {
     const { url, preview } = req.body;
     let group = await Group.findByPk(groupId)
 
+    // Checks if the groups exists
     if (!group) {
         return res.status(404).json({
             message: "Group couldn't be found"
         })
     }
 
-    let newImage = await group.createGroupImage({
+    // Creates the image
+    let image = await group.createGroupImage({
         url,
         preview
     })
-
-    const image = {
-        id: newImage.id,
-        url: newImage.url,
-        preview: newImage.preview
-    }
 
     return res.status(200).json(image)
 })
@@ -166,7 +168,7 @@ const validateEditGroup = [
     check('type').optional().isIn(['In person', 'Online']).withMessage("Type must be 'Online' or 'In person'"),
     check('private').optional().isBoolean().withMessage('Private must be a boolean'),
     check('city').exists().withMessage('City is required').optional(),
-    check('state').optional().isAlpha().isLength({min: 2, max: 2}).withMessage('State is required'),
+    check('state').optional().isIn(states).isLength({min: 2, max: 2}).withMessage('State is required'),
     handleValidationErrors
 ]
 
@@ -176,18 +178,21 @@ router.put('/:groupId', requireAuth, validateEditGroup, async (req, res) => {
     const { name, about, type, private, city, state } = req.body;
     let group = await Group.findByPk(groupId);
 
+    // Checks if the group exists
     if (!group) {
         res.status(404).json({
             message: "Group couldn't be found"
         })
     }
 
+    // Checks if the user is the organizer of the group
     if (userId !== group.organizerId) {
         return res.status(403).json({
             message: "Forbidden"
         })
     }
 
+    // Updates the group
     await group.set({
         name: name ? name : group.name,
         about: about ? about : group.about,
@@ -209,20 +214,22 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
     let group = await Group.findByPk(groupId)
     const userId = req.user.id;
 
+    // Checks if the groups exists
     if (!group) {
         res.status(404).json({
             message: "Group couldn't be found"
         })
     }
 
+    // Checks if the user is the organizer of the group
     if (userId !== group.organizerId) {
         return res.status(403).json({
             message: "Forbidden"
         })
     }
 
+    // Delete the group
     await group.destroy();
-
     return res.status(200).json({
         message: "Successfully deleted"
     })
@@ -234,26 +241,28 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
 router.get('/:groupId/venues', requireAuth, async (req, res) => {
     const { groupId } = req.params;
     const userId = req.user.id;
-    // const user = await User.findByPk(userId);
     const group = await Group.findByPk(groupId);
+
+    // Checks if the group exists
     if (!group) {
         res.status(404).json({
             message: "Group couldn't be found"
         })
     }
 
+    // Checks if user is a member of the group
     let user = await group.getUsers({
         where: {
             id: userId,
         }
     });
-
     if (user.length === 0) {
         return res.status(403).json({
             message: "Forbidden"
         })
     }
 
+    // Checks if user is the Organizer or the Co-host of the group
     if ( user[0].dataValues.Membership.dataValues.status.toLowerCase() === "organizer"
         || user[0].dataValues.Membership.dataValues.status.toLowerCase() === "co-host" ) {
         const venues = await group.getVenues();
@@ -268,9 +277,54 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
 
 
 // Create a new Venue for a Group specified by its id
-router.post('/:groupID/venues', async (req, res) => {
-    const { groupID } = req.params;
-    res.json({route: `Create a venue for group with ID of ${groupID}`})
+const validateCreateVenue = [
+    check('address').exists({checkFalsy: true}).withMessage('Street address is required'),
+    check('city').exists({checkFalsy: true}).withMessage('City is required'),
+    check('state').exists({checkFalsy: true}).isIn(states).withMessage('State is required'),
+    check('lat').exists({checkFalsy: true}).isFloat({ min: -90, max: 90 }).withMessage('Latitude is not valid'),
+    check('lng').exists({checkFalsy: true}).isFloat({ min: -180, max: 180 }).withMessage('Longitude is not valid'),
+    handleValidationErrors
+]
+
+router.post('/:groupId/venues', requireAuth, validateCreateVenue, async (req, res) => {
+    const { groupId } = req.params;
+    const { address, city, state, lat, lng } = req.body;
+    const userId = req.user.id;
+    const group = await Group.findByPk(groupId);
+
+    // Checks if the group exists
+    if (!group) {
+        res.status(404).json({
+            message: "Group couldn't be found"
+        })
+    }
+
+    // Checks if user is a member of the group
+    let user = await group.getUsers({
+        where: {
+            id: userId,
+        }
+    });
+    if (user.length === 0) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+
+    // Checks if user is the Organizer or the Co-host of the group
+    if ( user[0].dataValues.Membership.dataValues.status.toLowerCase() === "organizer"
+        || user[0].dataValues.Membership.dataValues.status.toLowerCase() === "co-host" ) {
+        const venue = await group.createVenue({
+            address, city, state, lat, lng
+        })
+        return res.status(200).json(venue)
+
+    } else {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+
 })
 
 
