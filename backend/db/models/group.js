@@ -80,10 +80,6 @@ module.exports = (sequelize, DataTypes) => {
         isIn: [states],
         isUppercase: true
       }
-    },
-    previewImage: {
-      type: DataTypes.STRING,
-      defaultValue: null,
     }
   }, {
     sequelize,

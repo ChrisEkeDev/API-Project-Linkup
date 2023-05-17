@@ -12,6 +12,11 @@ router.get('/', async (req, res) => {
     for (const group of groups) {
         let members = await group.countUsers();
         group.dataValues.numMembers = members;
+        let groupImage = await group.getGroupImages({
+            where: { preview: true },
+            attributes: ['url']
+        })
+        group.dataValues.previewImage = groupImage[0].dataValues.url
     }
     return res.status(200).json({
         Groups: groups
@@ -33,6 +38,11 @@ router.get('/current', requireAuth, async (req, res) => {
     for (const group of groups) {
         let members = await group.countUsers();
         group.dataValues.numMembers = members;
+        let groupImage = await group.getGroupImages({
+            where: { preview: true },
+            attributes: ['url']
+        })
+        group.dataValues.previewImage = groupImage[0].dataValues.url
     }
     return res.status(200).json({Groups: groups})
 })
@@ -59,7 +69,7 @@ router.get('/:groupId', async (req, res) => {
         ]
     })
     if (!group) {
-        res.status(404).json({
+        return res.status(404).json({
             message: "Group couldn't be found"
         })
     }
@@ -68,6 +78,8 @@ router.get('/:groupId', async (req, res) => {
     return res.status(200).json(group)
 })
 
+
+// Create a group
 const validateCreateGroup = [
     check('name').exists({checkFalsy: true}).isLength({max: 60, min: 5}).withMessage('Name must be 60 characters or less'),
     check('about').exists({checkFalsy: true}).isLength({min: 50}).withMessage('About must be 50 characters or more'),
@@ -78,7 +90,6 @@ const validateCreateGroup = [
     handleValidationErrors
 ]
 
-// Create a group
 router.post('/', validateCreateGroup, async (req, res) => {
     const { name, about, type, private, city, state } = req.body;
     const userId = req.user.id;
@@ -91,14 +102,41 @@ router.post('/', validateCreateGroup, async (req, res) => {
         groupId: group.dataValues.id,
         status: 'Organizer'
     })
-
     return res.status(201).json(group)
 })
 
+
 // Add an image to a group based on id
-router.post('/:groupId/images', async (req, res) => {
+const validateImage = [
+    check('url').exists({checkFalsy: true}).withMessage('Url is required'),
+    check('preview').exists().isBoolean().withMessage('Preview must be a boolean'),
+    handleValidationErrors
+]
+
+router.post('/:groupId/images', validateImage, async (req, res) => {
     const { groupId } = req.params;
-    res.json({route: `Add an image to group with ID of ${groupId}`})
+    const { url, preview } = req.body;
+    let group = await Group.findByPk(groupId)
+
+    // If there is no group, return error message
+    if (!group) {
+        return res.status(404).json({
+            message: "Group couldn't be found"
+        })
+    }
+
+    let newImage = await group.createGroupImage({
+        url,
+        preview
+    })
+
+    const image = {
+        id: newImage.id,
+        url: newImage.url,
+        preview: newImage.preview
+    }
+
+    return res.status(200).json(image)
 })
 
 // Update a group based on ID

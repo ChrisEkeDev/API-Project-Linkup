@@ -18,8 +18,7 @@ module.exports = {
         type: 'In person',
         private: false,
         city: 'Mesa',
-        state: 'AZ',
-        previewImage: 'image url'
+        state: 'AZ'
       },
       {
         organizerId: 1,
@@ -28,8 +27,7 @@ module.exports = {
         type: 'In person',
         private: false,
         city: 'Atlanta',
-        state: 'GA',
-        previewImage: null
+        state: 'GA'
       },
       {
         organizerId: 4,
@@ -38,8 +36,7 @@ module.exports = {
         type: 'Online',
         private: true,
         city: 'Salem',
-        state: 'OR',
-        previewImage: 'image url'
+        state: 'OR'
       },
       {
         organizerId: 4,
@@ -48,8 +45,7 @@ module.exports = {
         type: 'Online',
         private: true,
         city: 'New York',
-        state: 'NY',
-        previewImage: 'image url'
+        state: 'NY'
       },
       {
         organizerId: 3,
@@ -58,8 +54,7 @@ module.exports = {
         type: 'In person',
         private: false,
         city: 'Austin',
-        state: 'TX',
-        previewImage: 'image url'
+        state: 'TX'
       },
     ]).catch(e=>console.log(e))
   },
