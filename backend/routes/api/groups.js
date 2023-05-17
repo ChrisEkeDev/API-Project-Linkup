@@ -544,9 +544,49 @@ router.get('/:groupId/members', async (req, res) => {
 
 
 // Request a Membership for a Group based on the Group's id
-router.post('/:groupID/membership', async (req, res) => {
-    const { groupID } = req.params;
-    res.json({route: `Request membership to group with ID of ${groupID}`})
+router.post('/:groupId/membership', requireAuth, async (req, res) => {
+    const { groupId } = req.params;
+    const userId = req.user.id;
+    const group = await Group.findByPk(groupId);
+
+    // Checks if the group exists
+    if (!group) {
+        return res.status(404).json({
+            message: "Group couldn't be found"
+        })
+    }
+
+    const memberships = await group.getMemberships({
+        where: {
+            userId: userId
+        }
+    })
+
+    if (userId === group.organizerId) {
+        return res.status(400).json({message: "User can't join a group they organized"})
+    }
+
+    if (memberships[0]) {
+        if (memberships[0].status === 'pending') {
+            return res.status(400).json({message: "Membership has already been requested"})
+        }
+
+        if (memberships[0].status === 'member' || memberships[0].status === 'co-host') {
+            return res.status(400).json({message: "User is already a member of the group"})
+        }
+    }
+
+    await Membership.create({
+        userId: userId,
+        groupId: groupId,
+        status: 'pending'
+    })
+
+    return res.status(200).json({
+        memberId: userId,
+        status: 'pending'
+    })
+
 })
 
 
