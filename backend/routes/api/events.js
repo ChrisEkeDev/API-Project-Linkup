@@ -23,20 +23,25 @@ router.get('/', async (req, res) => {
         ]
     });
 
-    //Calculates aggregate data
+    // Calculates aggregate data
     for (const event of events) {
         let attendees = await event.countAttendances({
             where: {
                 status: 'Attending'
             }
         });
-        event.dataValues.numAttending = attendees;
+
         let eventImage = await event.getEventImages({
             where: {preview: true},
             attributes: ['url']
         })
-        event.dataValues.previewImage = eventImage[0].dataValues.url
+        event.dataValues.numAttending = attendees;
+        if (eventImage[0]) {
+            event.dataValues.previewImage = eventImage[0].dataValues.url;
+        } else event.dataValues.previewImage = null
+
     }
+
 
     return res.status(200).json({Events: events})
 })

@@ -9,7 +9,7 @@ const { User } = require('../../db/models');
 
 // Validate the Login
 const validateLogin = [
-    check('email').exists({checkFalsy: true}).withMessage('Email is required'),
+    check('credential').exists({checkFalsy: true}).withMessage('Email or Username is required'),
     check('password').exists({checkFalsy: true}).withMessage('Password is required.'),
     handleValidationErrors
 ]
@@ -36,12 +36,15 @@ router.get('/', requireAuth, (req, res) => {
 
 // Login
 router.post('/', validateLogin, async (req, res, next) => {
-    const { email, password } = req.body;
+    const { credential, password } = req.body;
 
     const user = await User.unscoped().findOne({
         where: {
-            email: email
-        }
+            [Op.or]: {
+              username: credential,
+              email: credential
+            }
+          }
     });
 
     if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {

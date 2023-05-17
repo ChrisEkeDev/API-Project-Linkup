@@ -37,11 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     venueId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      set() {
-        const type = this.getDataValue('type')
-        if (type.toLowerCase() === 'online') this.setDataValue(null)
-      }
+      allowNull: true
     },
     name: {
       type: DataTypes.STRING,
@@ -72,10 +68,10 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     price: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
       validate: {
-        isInt: true,
+        isDecimal: true,
         isNumeric: true
       }
     },
@@ -104,21 +100,16 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   }, {
-    getterMethods: {
-      getStartDate: function() {
-        return this.getDataValue('startDate')
-      },
-      getEndDate: function() {
-        return this.getDataValue('endDate')
-      }
-    },
     setterMethods: {
-      getStartDate: function(value) {
+      setType: function(value) {
+        if (value.toLowerCase() === 'online') this.setDataValue('venueId', null)
+      },
+      setStartDate: function(value) {
         let startDate = new Date(value).toISOString().slice(0,19).replace('T', ' ');
         console.log(value, startDate)
         this.setDataValue('startDate', startDate)
       },
-      getEndDate: function(value) {
+      setEndDate: function(value) {
         let endDate = new Date(value).toISOString().slice(0,19).replace('T', ' ');
         console.log(value, endDate)
         this.setDataValue('endDate', endDate)

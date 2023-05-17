@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { Group, Membership, User, GroupImage, Venue } = require('../../db/models');
+const { Group, Membership, User, GroupImage, Venue, Attendance } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { Op } = require('sequelize');
 const { states } = require('../../utils/states');
@@ -46,7 +46,11 @@ router.get('/current', requireAuth, async (req, res) => {
 
     // Calculates aggregate data
     for (const group of groups) {
-        let members = await group.countUsers();
+        let members = await group.countUsers({
+            where: {
+                status: 'Member'
+            }
+        });
         group.dataValues.numMembers = members;
         let groupImage = await group.getGroupImages({
             where: { preview: true },
@@ -90,7 +94,11 @@ router.get('/:groupId', async (req, res) => {
     }
 
     // Calculates aggregate data
-    const members = await group.countUsers();
+    const members = await group.countUsers({
+        where: {
+            status: 'Member'
+        }
+    });
     group.dataValues.numMembers = members;
 
     return res.status(200).json(group)
@@ -263,8 +271,8 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
     }
 
     // Checks if user is the Organizer or the Co-host of the group
-    if ( user[0].dataValues.Membership.dataValues.status.toLowerCase() === "organizer"
-        || user[0].dataValues.Membership.dataValues.status.toLowerCase() === "co-host" ) {
+    let status = await user[0].dataValues.Membership.dataValues.status.toLowerCase();
+    if ( status === "organizer" || status === "co-host" ) {
         const venues = await group.getVenues();
         return res.status(200).json({Venues: venues})
     } else {
@@ -312,8 +320,8 @@ router.post('/:groupId/venues', requireAuth, validateCreateVenue, async (req, re
     }
 
     // Checks if user is the Organizer or the Co-host of the group
-    if ( user[0].dataValues.Membership.dataValues.status.toLowerCase() === "organizer"
-        || user[0].dataValues.Membership.dataValues.status.toLowerCase() === "co-host" ) {
+    let status = await user[0].dataValues.Membership.dataValues.status.toLowerCase();
+    if ( status === "organizer" || status === "co-host" ) {
         const venue = await group.createVenue({
             address, city, state, lat, lng
         })
@@ -378,9 +386,81 @@ router.get('/:groupId/events', async (req, res) => {
 
 
 // Create an Event for a Group specified by its id
-router.post('/:groupID/events', async (req, res) => {
-    const { groupID } = req.params;
-    res.json({route: `Create an event for group with ID of ${groupID}`})
+const validateCreateEvent = [
+    check('venueId').custom(async(id) => {
+        const venue = await Venue.findByPk(id);
+        if (!venue) throw new Error('Venue does not exist')
+    }),
+    check('name').exists({checkFalsy: true}).isLength({min: 5}).withMessage('Name must be at leat 5 characters'),
+    check('type').exists({checkFalsy: true}).isIn(['In person', 'Online']).withMessage('Type must be Online or In person'),
+    check('capacity').exists({checkFalsy: true}).isInt().withMessage('Capacity must be an integer'),
+    check('price').custom(async (price) => {
+        let priceRegex = /^\d+(?:\.\d+)?(?:,\d+(?:\.\d{2})?)*$/;
+        if (!priceRegex.test(price)) throw new Error('Price is invalid')
+    }),
+    check('description').exists({checkFalsy: true}).withMessage('Description is required'),
+    check('startDate').custom(async (date) => {
+        let convDate = new Date(date);
+        let currDate = new Date();
+        if (convDate < currDate) throw new Error('Start date must be in the future')
+    }),
+    check('endDate').custom(async (date, {req}) => {
+        let convDate = new Date(date);
+        let startDate = new Date(req.body.startDate)
+        // console.log(req.)
+        if (convDate < startDate) throw new Error('End date is less than start date')
+    }),
+    handleValidationErrors
+]
+
+router.post('/:groupId/events', requireAuth, validateCreateEvent, async (req, res) => {
+    const { groupId } = req.params;
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+    const userId = req.user.id;
+    const group = await Group.findByPk(groupId);
+
+    // Checks if the group exists
+    if (!group) {
+        res.status(404).json({
+            message: "Group couldn't be found"
+        })
+    }
+
+    // Checks if user is a member of the group
+    let user = await group.getUsers({
+        where: {
+            id: userId,
+        }
+    });
+    if (user.length === 0) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+
+    // Checks if user is the Organizer or the Co-host of the group
+    let status = await user[0].dataValues.Membership.dataValues.status.toLowerCase();
+    if ( status === "organizer" || status === "co-host" ) {
+
+        const event = await group.createEvent({
+            venueId, name, type, capacity, price, description, startDate, endDate
+        })
+
+        // Creates the attendance
+        const _attendance = await Attendance.create({
+            userId: userId,
+            eventId: event.dataValues.id,
+            status: 'Host'
+        })
+
+        return res.status(200).json(event)
+
+    } else {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    }
+
 })
 
 

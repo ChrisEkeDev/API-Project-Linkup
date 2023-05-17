@@ -34,9 +34,10 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       status: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM,
         allowNull: false,
-        defaultValue: 'Pending'
+        defaultValue: 'Pending',
+        values: ['Pending', 'Member', 'Co-Host', 'Organizer'],
       },
       createdAt: {
         allowNull: false,
