@@ -326,14 +326,9 @@ router.post('/:groupId/venues', requireAuth, validateCreateVenue, async (req, re
             id: userId,
         }
     });
-    if (user.length === 0) {
-        return res.status(403).json({
-            message: "Forbidden"
-        })
-    }
 
     // Authorization
-    let status = await user[0].dataValues.Membership.dataValues.status;
+    let status = user[0]?.dataValues.Membership.dataValues.status;
     if ( status === "co-host" || userId === group.dataValues.organizerId ) {
         const venue = await group.createVenue({
             address, city, state, lat, lng
