@@ -8,9 +8,45 @@ const { requireAuth } = require('../../utils/auth');
 
 // Get All Events with optional query filters
 router.get('/', async (req, res) => {
-    const { page, size, name, type, startDate } = req.query;
+    let { page, size, name, type, startDate } = req.query;
+
+    const where = {}
+    const pagination = {}
+
+    if (size) {
+        if (size >= 1 && size <= 30 ) {
+            pagination.limit = parseInt(size)
+        } else {
+            pagination.limit = 20
+        }
+    }
+
+    if (page) {
+        if ( page >= 1 && page <= 10 ) {
+            pagination.offset = parseInt(size) * (parseInt(page) - 1)
+        } else {
+            pagination.offset = parseInt(size) * (parseInt(1) - 1)
+        }
+    }
+
+    if ( name ) {
+        where.name = {
+            [Op.like]: `%${name}%`
+        }
+    }
+
+    if ( type ) {
+        where.type = type
+    }
+
+    if ( startDate ) {
+        where.startDate = {
+            [Op.like]: `%${startDate}%`
+        }
+    }
 
     const events = await Event.findAll({
+        where,
         attributes: {
             exclude: ['capacity', 'price']
         },
@@ -23,14 +59,15 @@ router.get('/', async (req, res) => {
                 model: Venue,
                 attributes: ['id', 'city', 'state']
             }
-        ]
+        ],
+        ...pagination
     });
 
     // Calculates aggregate data
     for (const event of events) {
         let attendees = await event.countAttendances({
             where: {
-                status: 'Attending'
+                status: 'attending'
             }
         });
 
@@ -38,10 +75,10 @@ router.get('/', async (req, res) => {
             where: {preview: true},
             attributes: ['url']
         })
-        event.numAttending = attendees;
+        event.dataValues.numAttending = attendees;
         if (eventImage[0]) {
-            event.previewImage = eventImage[0].url;
-        } else event.previewImage = null
+            event.dataValues.previewImage = eventImage[0].dataValues.url;
+        } else event.dataValues.previewImage = null
 
     }
 

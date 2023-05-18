@@ -15,11 +15,7 @@ router.get('/', async (req, res) => {
 
     // Calculates aggregate data
     for (const group of groups) {
-        let members = await group.countUsers({
-            where: {
-                status: 'member'
-            }
-        });
+        let members = await group.countUsers();
         group.dataValues.numMembers = members;
         let groupImage = await group.getGroupImages({
             where: { preview: true },
@@ -30,7 +26,6 @@ router.get('/', async (req, res) => {
         } else {
             group.dataValues.previewImage = null
         }
-
     }
 
     return res.status(200).json({
