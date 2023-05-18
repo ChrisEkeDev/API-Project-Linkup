@@ -506,6 +506,7 @@ router.get('/:groupId/members', async (req, res) => {
             userId: userId
         }
     })
+
     let membersAuth = await Group.findByPk(groupId, {
         attributes: [],
         include: {

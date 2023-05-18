@@ -54,7 +54,7 @@ module.exports = {
       {
         eventId: 4,
         userId: 5,
-        status: 'co-ost'
+        status: 'co-host'
       },
       {
         eventId: 5,

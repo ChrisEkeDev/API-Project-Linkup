@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { Event, Group, Venue, EventImage } = require('../../db/models');
+const { Event, Group, Venue, EventImage, User } = require('../../db/models');
 const { Op } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
 
@@ -282,9 +282,59 @@ router.delete('/:eventId', requireAuth, async (req, res) => {
 
 
 // Get all Attendees of an Event specified by its id
-router.get('/:eventID/attendees', async (req, res) => {
-    const { eventID } = req.params;
-    res.json({route: `Get all attendees of event with ID of ${eventID}`})
+router.get('/:eventId/attendees', async (req, res) => {
+    const { eventId } = req.params;
+    const userId = req.user.id;
+    const event = await Event.findByPk(eventId);
+
+    // Checks if the group exists
+    if (!event) {
+        return res.status(404).json({
+            message: "Event couldn't be found"
+        })
+    }
+
+    let groupId = event.groupId;
+    const group = await Group.findByPk(groupId)
+
+    const membership = await group.getMemberships({
+        where: {
+            userId: userId
+        }
+    })
+
+    let attendeesAuth = await Event.findByPk(eventId, {
+        attributes: [],
+        include: {
+            model: User,
+            attributes: ['id', 'firstName', 'lastName'],
+            through: {
+                attributes: ['status']
+            }
+        }
+    });
+
+    let attendeesNoAuth = await Event.findByPk(eventId, {
+        attributes: [],
+        include: {
+            model: User,
+            attributes: ['id', 'firstName', 'lastName'],
+            through: {
+                attributes: ['status'],
+                where: {
+                    status: {
+                        [Op.not]: 'waitlist'
+                    }
+                }
+            }
+        }
+    });
+
+    if (userId === group.organizerId || membership[0]?.status === 'co-host') {
+        return res.status(200).json({Attendees: attendeesAuth.Users})
+    } else {
+        return res.status(200).json({Attendees: attendeesNoAuth.Users})
+    }
 })
 
 
