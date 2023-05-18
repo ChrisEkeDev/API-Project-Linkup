@@ -38,7 +38,13 @@ router.get('/', async (req, res) => {
 // Get all groups joined or organized by the current user - tested
 router.get('/current', requireAuth, async (req, res) => {
     const userId = req.user.id;
-    const groups = await Group.findAll({
+    const groupsUserOrganizes = await Group.findAll({
+        where: {
+            organizerId: userId
+        }
+    })
+
+    const groupsUserIsMemberOf = await Group.findAll({
         include: {
             model: Membership,
             where: {
@@ -47,6 +53,8 @@ router.get('/current', requireAuth, async (req, res) => {
             attributes: []
         }
     })
+
+    const groups = [...groupsUserOrganizes, ...groupsUserIsMemberOf]
 
     // Calculates aggregate data
     for (const group of groups) {
