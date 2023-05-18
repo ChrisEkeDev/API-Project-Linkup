@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { Event, Group, Venue, EventImage, User } = require('../../db/models');
+const { Event, Group, Venue, EventImage, User, Attendance } = require('../../db/models');
 const { Op } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
 
@@ -339,9 +339,62 @@ router.get('/:eventId/attendees', async (req, res) => {
 
 
 // Request to Attend an Event based on the Event's id
-router.post('/:eventID/attendance', async (req, res) => {
-    const { eventID } = req.params;
-    res.json({route: `Request attendance for event with ID of ${eventID}`})
+router.post('/:eventId/attendance', requireAuth, async (req, res) => {
+    const { eventId } = req.params;
+    const userId = req.user.id;
+    const event = await Event.findByPk(eventId);
+
+    // Checks if the group exists
+    if (!event) {
+        return res.status(404).json({
+            message: "Event couldn't be found"
+        })
+    }
+
+    let groupId = event.groupId;
+    const group = await Group.findByPk(groupId)
+
+    const memberships = await group.getMemberships({
+        where: {
+            userId: userId
+        }
+    })
+
+    const attendances = await event.getAttendances({
+        where: {
+            userId: userId
+        }
+    })
+
+    if (userId === group.organizerId) {
+        return res.status(400).json({message: "User can't request attendance to an event they are hosting"})
+    }
+
+    if (memberships[0]) {
+        if (attendances[0]) {
+            const status = attendances[0].status;
+            if (status === 'waitlist') {
+                return res.status(400).json({message: "Attendance has already been requested"})
+            }
+
+            if (status === 'attending') {
+                return res.status(400).json({message: "User is already an attendee of the event"})
+            }
+        }
+    } else {
+        return res.status(403).json({message: 'Forbidden'})
+    }
+
+    await Attendance.create({
+        userId: userId,
+        eventId: eventId,
+        status: 'waitlist'
+    })
+
+    return res.status(200).json({
+        userId: userId,
+        status: 'waitlist'
+    })
 })
 
 
