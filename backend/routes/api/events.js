@@ -126,7 +126,7 @@ router.get('/:eventId', async (req, res) => {
             status: 'Attending'
         }
     });
-    event.numAttending = attendees;
+    event.dataValues.numAttending = attendees;
 
     return res.status(200).json(event)
 })
@@ -171,8 +171,8 @@ router.post('/:eventId/images', requireAuth, validateImage,  async (req, res) =>
     // return res.status(200).json(user)
 
     // Authorization
-    let status = await user[0].Membership.status;
-    if ( status === "co-host" || status === 'attending' || userId === group.organizerId ) {
+    let status = await user[0].Membership.dataValues.status;
+    if ( status === "co-host" || status === 'attending' || userId === group.dataValues.organizerId ) {
         // Creates the image
         let image = await event.createEventImage({
             url,
@@ -236,7 +236,7 @@ router.put('/:eventId', requireAuth, validateEditEvent, async (req, res) => {
         })
     }
 
-    const groupId = event.groupId;
+    const groupId = event.dataValues.groupId;
     const group = await Group.findByPk(groupId)
 
     // Checks if user is attending the event
@@ -252,8 +252,8 @@ router.put('/:eventId', requireAuth, validateEditEvent, async (req, res) => {
     }
 
     // Authorization
-    let status = await user[0].Membership.status;
-    if ( status === "co-host" || userId === group.organizerId ) {
+    let status = await user[0].Membership.dataValues.status;
+    if ( status === "co-host" || userId === group.dataValues.organizerId ) {
 
         // Update event
         await event.set({
@@ -289,7 +289,7 @@ router.delete('/:eventId', requireAuth, async (req, res) => {
         })
     }
 
-    const groupId = event.groupId;
+    const groupId = event.dataValues.groupId;
     const group = await Group.findByPk(groupId)
 
     // Checks if user is attending the event
@@ -305,8 +305,8 @@ router.delete('/:eventId', requireAuth, async (req, res) => {
     }
 
     // Authorization
-    let status = await user[0].Membership.status;
-    if ( status === "co-host" || userId === group.organizerId ) {
+    let status = await user[0].Membership.dataValues.status;
+    if ( status === "co-host" || userId === group.dataValues.organizerId ) {
         return res.status(200).json({
             message: "Successfully deleted"
         })
@@ -331,7 +331,7 @@ router.get('/:eventId/attendees', async (req, res) => {
         })
     }
 
-    let groupId = event.groupId;
+    let groupId = event.dataValues.groupId;
     const group = await Group.findByPk(groupId)
 
     const membership = await group.getMemberships({
@@ -367,7 +367,7 @@ router.get('/:eventId/attendees', async (req, res) => {
         }
     });
 
-    if (userId === group.organizerId || membership[0]?.status === 'co-host') {
+    if (userId === group.dataValues.organizerId || membership[0]?.dataValues.status === 'co-host') {
         return res.status(200).json({Attendees: attendeesAuth.Users})
     } else {
         return res.status(200).json({Attendees: attendeesNoAuth.Users})
@@ -388,7 +388,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res) => {
         })
     }
 
-    let groupId = event.groupId;
+    let groupId = event.dataValues.groupId;
     const group = await Group.findByPk(groupId)
 
     const memberships = await group.getMemberships({
@@ -403,13 +403,13 @@ router.post('/:eventId/attendance', requireAuth, async (req, res) => {
         }
     })
 
-    if (userId === group.organizerId) {
+    if (userId === group.dataValues.organizerId) {
         return res.status(400).json({message: "User can't request attendance to an event they are hosting"})
     }
 
     if (memberships[0]) {
         if (attendances[0]) {
-            const status = attendances[0].status;
+            const status = attendances[0].dataValues.status;
             if (status === 'waitlist') {
                 return res.status(400).json({message: "Attendance has already been requested"})
             }
@@ -464,7 +464,7 @@ router.put('/:eventId/attendance', requireAuth, validateAttendance, async (req, 
         })
     }
 
-    let groupId = event.groupId;
+    let groupId = event.dataValues.groupId;
     const group = await Group.findByPk(groupId)
 
     const authMembership = await group.getMemberships({
@@ -475,10 +475,10 @@ router.put('/:eventId/attendance', requireAuth, validateAttendance, async (req, 
 
     let authStatus;
     if (authMembership[0]) {
-        authStatus = authMembership[0].status
+        authStatus = authMembership[0].dataValues.status
     }
 
-    if (authId !== group.organizerId && authStatus !== 'co-host') {
+    if (authId !== group.dataValues.organizerId && authStatus !== 'co-host') {
         return res.status(403).json({message: 'Forbidden'})
     }
 
@@ -500,9 +500,9 @@ router.put('/:eventId/attendance', requireAuth, validateAttendance, async (req, 
 
     const attendee = userAttendance[0]
 
-    if (authId === group.organizerId || authStatus === 'co-host') {
+    if (authId === group.dataValues.organizerId || authStatus === 'co-host') {
 
-        if (attendee.status === 'attending') {
+        if (attendee.dataValues.status === 'attending') {
             return res.status(400).json({message: "User is already an attendee of the event"})
         } else {
             await attendee.set({
@@ -537,10 +537,10 @@ router.delete('/:eventId/attendance', requireAuth, validateDeleteAttendance, asy
         })
     }
 
-    let groupId = event.groupId;
+    let groupId = event.dataValues.groupId;
     const group = await Group.findByPk(groupId)
 
-    if (authId !== group.organizerId && authId !== userId) {
+    if (authId !== group.dataValues.organizerId && authId !== userId) {
         return res.status(403).json({message: "Only the User or organizer may delete an Attendance"})
     }
 
@@ -560,7 +560,7 @@ router.delete('/:eventId/attendance', requireAuth, validateDeleteAttendance, asy
 
     const attendee = userAttendance[0]
 
-    if (authId === userId || authId === group.organizerId) {
+    if (authId === userId || authId === group.dataValues.organizerId) {
         await attendee.destroy();
         return res.status(200).json({message: "Successfully deleted attendance from event"})
     } else {

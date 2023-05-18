@@ -46,7 +46,7 @@ router.put('/:venueId', requireAuth, validateEditVenue, async (req, res) => {
     }
 
     // Checks if user is the Organizer or the Co-host of the group
-    let status = await user[0].dataValues.Membership.dataValues.status.toLowerCase();
+    let status = await user[0].dataValues.Membership.dataValues.status;
     if ( status === "organizer" || status === "co-host" ) {
 
         //Updates the Venue

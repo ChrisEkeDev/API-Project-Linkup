@@ -217,7 +217,7 @@ router.put('/:groupId', requireAuth, validateEditGroup, async (req, res) => {
     }
 
     // Authorization
-    if (userId !== group.organizerId) {
+    if (userId !== group.dataValues.organizerId) {
         return res.status(403).json({
             message: "Forbidden"
         })
@@ -253,7 +253,7 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
     }
 
     // Authorization
-    if (userId !== group.organizerId) {
+    if (userId !== group.dataValues.organizerId) {
         return res.status(403).json({
             message: "Forbidden"
         })
@@ -295,7 +295,7 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
 
     // Authorization
     let status = await user[0].dataValues.Membership.dataValues.status;
-    if ( status === "co-host" || userId === group.organizerId ) {
+    if ( status === "co-host" || userId === group.dataValues.organizerId ) {
         const venues = await group.getVenues();
         return res.status(200).json({Venues: venues})
     } else {
@@ -344,7 +344,7 @@ router.post('/:groupId/venues', requireAuth, validateCreateVenue, async (req, re
 
     // Authorization
     let status = await user[0].dataValues.Membership.dataValues.status;
-    if ( status === "co-host" || userId === group.organizerId ) {
+    if ( status === "co-host" || userId === group.dataValues.organizerId ) {
         const venue = await group.createVenue({
             address, city, state, lat, lng
         })
@@ -465,7 +465,7 @@ router.post('/:groupId/events', requireAuth, validateCreateEvent, async (req, re
 
     // Authorization
     let status = await user[0].dataValues.Membership.dataValues.status;
-    if ( status === "co-host" || userId === group.organizerId ) {
+    if ( status === "co-host" || userId === group.dataValues.organizerId ) {
 
         const event = await group.createEvent({
             venueId, name, type, capacity, price, description, startDate, endDate
@@ -529,7 +529,7 @@ router.get('/:groupId/members', async (req, res) => {
         }
     });
 
-    if (userId === group.organizerId || membership[0]?.status === 'co-host') {
+    if (userId === group.dataValues.organizerId || membership[0]?.dataValues.status === 'co-host') {
         return res.status(200).json({Members: membersAuth.Users})
     } else {
         return res.status(200).json({Members: membersNoAuth.Users})
@@ -558,12 +558,12 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
         }
     })
 
-    if (userId === group.organizerId) {
+    if (userId === group.dataValues.organizerId) {
         return res.status(400).json({message: "User can't join a group they organized"})
     }
 
     if (memberships[0]) {
-        const status = memberships[0].status;
+        const status = memberships[0].dataValues.status;
         if (status === 'pending') {
             return res.status(400).json({message: "Membership has already been requested"})
         }
@@ -620,7 +620,7 @@ router.put('/:groupId/membership', requireAuth, validateMembership, async (req, 
 
     let userStatus;
     if (requesterMembership[0]) {
-        userStatus = requesterMembership[0].status
+        userStatus = requesterMembership[0].dataValues.status
     }
 
     const requestedMembership = await group.getMemberships({
@@ -640,7 +640,7 @@ router.put('/:groupId/membership', requireAuth, validateMembership, async (req, 
     const member = requestedMembership[0]
 
     if (status === 'member') {
-        if (userStatus === 'co-host' || userId === group.organizerId) {
+        if (userStatus === 'co-host' || userId === group.dataValues.organizerId) {
             await member.set({
                 status: status
             })
@@ -652,7 +652,7 @@ router.put('/:groupId/membership', requireAuth, validateMembership, async (req, 
     }
 
     if (status === 'co-host') {
-        if (userId === group.organizerId) {
+        if (userId === group.dataValues.organizerId) {
             await member.set({
                 status: status
             })
@@ -703,7 +703,7 @@ router.delete('/:groupId/membership', requireAuth, validateDeleteMembership, asy
        return res.status(404).json({message: 'Membership does not exist for this User'})
     }
 
-    if (userId === group.organizerId || userId === memberId) {
+    if (userId === group.dataValues.organizerId || userId === memberId) {
         const member = requestedMembership[0];
         await member.destroy()
         return res.status(200).json({message: "Successfully deleted membership from group"})
