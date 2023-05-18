@@ -102,11 +102,7 @@ router.get('/:groupId', async (req, res) => {
     }
 
     // Calculates aggregate data
-    const members = await group.countUsers({
-        where: {
-            status: 'member'
-        }
-    });
+    const members = await group.countUsers();
     group.dataValues.numMembers = members;
 
     return res.status(200).json(group)
