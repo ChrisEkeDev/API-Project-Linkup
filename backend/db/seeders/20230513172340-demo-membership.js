@@ -60,6 +60,56 @@ module.exports = {
         userId: 5,
         groupId: 1,
         status: 'member'
+      },
+      {
+        userId: 1,
+        groupId: 3,
+        status: 'member'
+      },
+      {
+        userId: 1,
+        groupId: 1,
+        status: 'co-host'
+      },
+      {
+        userId: 2,
+        groupId: 2,
+        status: 'member'
+      },
+      {
+        userId: 3,
+        groupId: 3,
+        status: 'member'
+      },
+      {
+        userId: 3,
+        groupId: 4,
+        status: 'member'
+      },
+      {
+        userId: 4,
+        groupId: 2,
+        status: 'member'
+      },
+      {
+        userId: 5,
+        groupId: 2,
+        status: 'member'
+      },
+      {
+        userId: 5,
+        groupId: 4,
+        status: 'pending'
+      },
+      {
+        userId: 5,
+        groupId: 3,
+        status: 'member'
+      },
+      {
+        userId: 5,
+        groupId: 5,
+        status: 'co-host'
       }
     ])
   },

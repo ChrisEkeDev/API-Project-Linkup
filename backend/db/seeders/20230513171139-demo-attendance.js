@@ -22,12 +22,27 @@ module.exports = {
         status: 'waitlist'
       },
       {
+        eventId: 4,
+        userId: 2,
+        status: 'attending'
+      },
+      {
         eventId: 3,
         userId: 1,
         status: 'attending'
       },
       {
         eventId: 4,
+        userId: 1,
+        status: 'attending'
+      },
+      {
+        eventId: 2,
+        userId: 1,
+        status: 'waitlist'
+      },
+      {
+        eventId: 1,
         userId: 1,
         status: 'attending'
       },
@@ -42,6 +57,16 @@ module.exports = {
         status: 'waitlist'
       },
       {
+        eventId: 4,
+        userId: 3,
+        status: 'attending'
+      },
+      {
+        eventId: 5,
+        userId: 3,
+        status: 'attending'
+      },
+      {
         eventId: 3,
         userId: 4,
         status: 'co-host'
@@ -52,6 +77,16 @@ module.exports = {
         status: 'attending'
       },
       {
+        eventId: 2,
+        userId: 4,
+        status: 'attending'
+      },
+      {
+        eventId: 5,
+        userId: 4,
+        status: 'waitlist'
+      },
+      {
         eventId: 4,
         userId: 5,
         status: 'co-host'
@@ -60,6 +95,21 @@ module.exports = {
         eventId: 5,
         userId: 5,
         status: 'attending'
+      },
+      {
+        eventId: 1,
+        userId: 5,
+        status: 'attending'
+      },
+      {
+        eventId: 2,
+        userId: 5,
+        status: 'attending'
+      },
+      {
+        eventId: 3,
+        userId: 5,
+        status: 'waitlist'
       }
     ])
   },
