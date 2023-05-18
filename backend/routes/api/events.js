@@ -399,9 +399,83 @@ router.post('/:eventId/attendance', requireAuth, async (req, res) => {
 
 
 // Change the status of an attendance for an event specified by id
-router.put('/:eventID/attendance', async (req, res) => {
-    const { eventID } = req.params;
-    res.json({route: `Change status of attendee for event with ID of ${eventID}`})
+const validateAttendance = [
+    check('userId').custom(async (id) => {
+        const user = await User.findByPk(id);
+        if (!user) throw new Error("User couldn't be found")
+    }),
+    check('status').exists({checkFalsy: true}).isIn(['waitlist', 'attending']).withMessage("Status must be 'waitlist' or 'attending'"),
+    check('status').exists({checkFalsy: true}).not().equals('waitlist').withMessage('Cannot change a membership status to waitlist'),
+    handleValidationErrors
+]
+
+
+router.put('/:eventId/attendance', requireAuth, validateAttendance, async (req, res) => {
+    const { eventId } = req.params;
+    const authId = req.user.id;
+    const event = await Event.findByPk(eventId);
+    const { userId, status } = req.body;
+
+    if (status === 'waitlist') {
+        return res.status(400).json({message: "Cannot change an attendance status to waitlist"})
+    }
+
+    // Checks if the group exists
+    if (!event) {
+        return res.status(404).json({
+            message: "Event couldn't be found"
+        })
+    }
+
+    let groupId = event.groupId;
+    const group = await Group.findByPk(groupId)
+
+    const authMembership = await group.getMemberships({
+        where: {
+            userId: authId
+        }
+    })
+
+    let authStatus;
+    if (authMembership[0]) {
+        authStatus = authMembership[0].status
+    }
+
+    if (authId !== group.organizerId && authStatus !== 'co-host') {
+        return res.status(403).json({message: 'Forbidden'})
+    }
+
+
+
+    const userAttendance = await event.getAttendances({
+        where: {
+            userId: userId
+        },
+        attributes: {
+            include: ['id', 'eventId', 'userId', 'status'],
+            exclude: ['createdAt', 'updatedAt']
+        }
+    })
+
+    if (userAttendance.length === 0 ) {
+       return res.status(404).json({message: 'Attendance between the user and the event does not exist'})
+    }
+
+    const attendee = userAttendance[0]
+
+    if (authId === group.organizerId || authStatus === 'co-host') {
+
+        if (attendee.status === 'attending') {
+            return res.status(400).json({message: "User is already an attendee of the event"})
+        } else {
+            await attendee.set({
+                status: status
+            })
+            await attendee.save();
+            return res.status(200).json(attendee)
+        }
+
+    }
 })
 
 

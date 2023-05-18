@@ -643,7 +643,6 @@ router.put('/:groupId/membership', requireAuth, validateMembership, async (req, 
     }
 
     const member = requestedMembership[0]
-    console.log(member)
 
     if (status === 'member') {
         if (userStatus === 'co-host' || userId === group.organizerId) {
