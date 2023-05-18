@@ -567,11 +567,12 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
     }
 
     if (memberships[0]) {
-        if (memberships[0].status === 'pending') {
+        const status = memberships[0].status;
+        if (status === 'pending') {
             return res.status(400).json({message: "Membership has already been requested"})
         }
 
-        if (memberships[0].status === 'member' || memberships[0].status === 'co-host') {
+        if (status === 'member' || status === 'co-host') {
             return res.status(400).json({message: "User is already a member of the group"})
         }
     }
@@ -592,9 +593,80 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
 
 
 // Change the status of a membership for a group specified by id
-router.put('/:groupID/membership', async (req, res) => {
-    const { groupID } = req.params;
-    res.json({route: `Changes the membership to group with ID of ${groupID}`})
+const validateMembership = [
+    check('memberId').custom(async (id) => {
+        const user = await User.findByPk(id);
+        if (!user) throw new Error("User couldn't be found")
+    }),
+    check('status').exists({checkFalsy: true}).isIn(['member', 'co-host', 'pending']).withMessage("Status must be 'member' or 'co-host'"),
+    check('status').exists({checkFalsy: true}).not().equals('pending').withMessage('Cannot change a membership status to pending'),
+    handleValidationErrors
+]
+
+router.put('/:groupId/membership', requireAuth, validateMembership, async (req, res) => {
+    const { groupId } = req.params;
+    const userId = req.user.id;
+    const { memberId, status } = req.body;
+    const group = await Group.findByPk(groupId);
+
+    // Checks if the group exists
+    if (!group) {
+        return res.status(404).json({
+            message: "Group couldn't be found"
+        })
+    }
+
+    const requesterMembership = await group.getMemberships({
+        where: {
+            userId: userId
+        }
+    })
+
+    let userStatus;
+    if (requesterMembership[0]) {
+        userStatus = requesterMembership[0].status
+    }
+
+    const requestedMembership = await group.getMemberships({
+        where: {
+            userId: memberId
+        },
+        attributes: {
+            include: ['id', 'groupId', 'userId', 'status'],
+            exclude: ['createdAt', 'updatedAt']
+        }
+    })
+
+    if (requestedMembership.length === 0 ) {
+        res.status(404).json({message: 'Membership between the user and the group does not exist'})
+    }
+
+    const member = requestedMembership[0]
+    console.log(member)
+
+    if (status === 'member') {
+        if (userStatus === 'co-host' || userId === group.organizerId) {
+            await member.set({
+                status: status
+            })
+            await member.save();
+            return res.status(200).json(member)
+        } else {
+            res.status(403).json({message: 'Forbidden'})
+        }
+    }
+
+    if (status === 'co-host') {
+        if (userId === group.organizerId) {
+            await member.set({
+                status: status
+            })
+            await member.save();
+            return res.status(200).json(member)
+        } else {
+            res.status(403).json({message: 'Forbidden'})
+        }
+    }
 })
 
 
