@@ -35,7 +35,7 @@ router.get('/', async (req, res) => {
 
 
 
-// Get all groups joined or organized by the current user
+// Get all groups joined or organized by the current user - tested
 router.get('/current', requireAuth, async (req, res) => {
     const userId = req.user.id;
     const groups = await Group.findAll({
@@ -68,7 +68,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 
 
-// Get details of group by ID
+// Get details of group by ID - tested
 router.get('/:groupId', async (req, res) => {
     const { groupId } = req.params;
     const group = await Group.findByPk(groupId, {
@@ -155,18 +155,13 @@ router.post('/:groupId/images', validateImage, async (req, res) => {
     // Checks if user is a member of the group
     let user = await group.getUsers({
         where: {
-            id: userId,
+            id: userId
         }
     });
-    if (user.length === 0) {
-        return res.status(403).json({
-            message: "Forbidden"
-        })
-    }
 
     // Authorization
-    let status = await user[0].dataValues.Membership.dataValues.status;
-    if ( status === "co-host" || userId === group.organizerId ) {
+    let status = user[0]?.dataValues.Membership.dataValues.status;
+    if ( status === "co-host" || userId === group.dataValues.organizerId ) {
         // Creates the image
         let image = await group.createGroupImage({
             url,
