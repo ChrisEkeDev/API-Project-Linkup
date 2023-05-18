@@ -1,6 +1,8 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 
+const { states } = require('../../utils/states')
+
 let options = {}
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA
@@ -33,8 +35,9 @@ module.exports = {
         allowNull: false
       },
       state: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.ENUM,
+        allowNull: false,
+        values: states
       },
       lat: {
         type: Sequelize.DECIMAL,

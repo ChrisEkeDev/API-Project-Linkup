@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     venueId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
     name: {
       type: DataTypes.STRING,
@@ -55,11 +55,9 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     type: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM,
       allowNull: false,
-      validate: {
-        isIn: [['In person', 'Online']]
-      }
+      values: ['In person', 'Online']
     },
     capacity: {
       type: DataTypes.INTEGER,
@@ -70,17 +68,18 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     price: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
       validate: {
-        isInt: true,
+        isDecimal: true,
         isNumeric: true
       }
     },
     startDate: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        isDate: true,
         validateDate(value) {
           let enteredDate = new Date(value);
           let currentDate = new Date();
@@ -89,9 +88,10 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     endDate: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        isDate: true,
         validateDate(value) {
           let enteredDate = new Date(value);
           let startDate = new Date(this.startDate);
@@ -100,6 +100,21 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   }, {
+    setterMethods: {
+      setType: function(value) {
+        if (value.toLowerCase() === 'online') this.setDataValue('venueId', null)
+      },
+      setStartDate: function(value) {
+        let startDate = new Date(value).toISOString().slice(0,19).replace('T', ' ');
+        console.log(value, startDate)
+        this.setDataValue('startDate', startDate)
+      },
+      setEndDate: function(value) {
+        let endDate = new Date(value).toISOString().slice(0,19).replace('T', ' ');
+        console.log(value, endDate)
+        this.setDataValue('endDate', endDate)
+      }
+    },
     sequelize,
     modelName: 'Event',
     defaultScope: {

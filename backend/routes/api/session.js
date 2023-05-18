@@ -9,8 +9,8 @@ const { User } = require('../../db/models');
 
 // Validate the Login
 const validateLogin = [
-    check('credential').exists({checkFalsy: true}).notEmpty().withMessage('Please provide a valid email or username.'),
-    check('password').exists({checkFalsy: true}).withMessage('Please provide a password.'),
+    check('credential').exists({checkFalsy: true}).withMessage('Email or Username is required'),
+    check('password').exists({checkFalsy: true}).withMessage('Password is required.'),
     handleValidationErrors
 ]
 
@@ -18,7 +18,6 @@ const validateLogin = [
 router.get('/', requireAuth, (req, res) => {
     const { user } = req;
     if (user) {
-        const { token } = req.cookies;
         const safeUser = {
             id: user.id,
             firstName: user.firstName,
@@ -27,7 +26,7 @@ router.get('/', requireAuth, (req, res) => {
             username: user.username
         }
 
-        return res.status(200).json({user: { ...safeUser, token}})
+        return res.status(200).json({user: safeUser})
     } else {
         return res.status(200).json({user: null})
     }
@@ -42,18 +41,14 @@ router.post('/', validateLogin, async (req, res, next) => {
     const user = await User.unscoped().findOne({
         where: {
             [Op.or]: {
-                username: credential,
-                email: credential
+              username: credential,
+              email: credential
             }
-        }
+          }
     });
 
     if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
-        const error = new Error('Login Failed');
-        error.status = 401;
-        error.title = 'Login Failed';
-        error.errors = { credential: 'The provided crednetials were invalid'};
-        return next(error);
+        return res.status(401).json({message: "Invalid credentials"})
     }
 
     const safeUser = {
@@ -64,9 +59,9 @@ router.post('/', validateLogin, async (req, res, next) => {
         username: user.username
     }
 
-    let token = await setTokenCookie(res, safeUser);
+    await setTokenCookie(res, safeUser);
 
-    return res.json({user: {...safeUser, token}})
+    return res.status(200).json({user: safeUser})
 })
 
 // Logout

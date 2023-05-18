@@ -1,6 +1,8 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 
+const { states } = require('../../utils/states')
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA
@@ -33,8 +35,9 @@ module.exports = {
         allowNull: false
       },
       type: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM,
         allowNull: false,
+        values: ['In person', 'Online']
       },
       private: {
         type: Sequelize.BOOLEAN,
@@ -46,12 +49,9 @@ module.exports = {
         allowNull: false
       },
       state: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      previewImage: {
-        type: Sequelize.STRING,
-        defaultValue: null
+        type: Sequelize.ENUM,
+        allowNull: false,
+        values: states
       },
       createdAt: {
         allowNull: false,

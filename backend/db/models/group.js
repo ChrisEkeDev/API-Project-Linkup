@@ -58,11 +58,9 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     type: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM,
       allowNull: false,
-      validate: {
-        isIn: [['In person', 'Online']]
-      }
+      values: ['In person', 'Online']
     },
     private: {
       type: DataTypes.BOOLEAN,
@@ -74,16 +72,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     state: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM,
       allowNull: false,
-      validate: {
-        isIn: [states],
-        isUppercase: true
-      }
-    },
-    previewImage: {
-      type: DataTypes.STRING,
-      defaultValue: null,
+      values: states
     }
   }, {
     sequelize,
