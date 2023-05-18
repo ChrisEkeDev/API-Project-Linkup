@@ -638,7 +638,7 @@ router.put('/:groupId/membership', requireAuth, validateMembership, async (req, 
     })
 
     if (requestedMembership.length === 0 ) {
-        res.status(404).json({message: 'Membership between the user and the group does not exist'})
+       return res.status(404).json({message: 'Membership between the user and the group does not exist'})
     }
 
     const member = requestedMembership[0]
@@ -652,7 +652,7 @@ router.put('/:groupId/membership', requireAuth, validateMembership, async (req, 
             await member.save();
             return res.status(200).json(member)
         } else {
-            res.status(403).json({message: 'Forbidden'})
+            return res.status(403).json({message: 'Forbidden'})
         }
     }
 
@@ -664,17 +664,58 @@ router.put('/:groupId/membership', requireAuth, validateMembership, async (req, 
             await member.save();
             return res.status(200).json(member)
         } else {
-            res.status(403).json({message: 'Forbidden'})
+            return res.status(403).json({message: 'Forbidden'})
         }
     }
+
+
 })
 
 
 
 // Delete membership to a group specified by id
-router.delete('/:groupID/membership', async (req, res) => {
-    const { groupID } = req.params;
-    res.json({route: `Deletes the membership to group with ID of ${groupID}`})
+const validateDeleteMembership = [
+    check('memberId').custom( async (id) => {
+        const user = await User.findByPk(id);
+        if (!user) throw new Error("User couldn't be found")
+    }),
+    handleValidationErrors
+]
+router.delete('/:groupId/membership', requireAuth, validateDeleteMembership, async (req, res) => {
+    const { groupId } = req.params;
+    const userId = req.user.id;
+    const { memberId } = req.body;
+    const group = await Group.findByPk(groupId)
+
+    // Checks if the group exists
+    if (!group) {
+        return res.status(404).json({
+            message: "Group couldn't be found"
+        })
+    }
+
+    const requestedMembership = await group.getMemberships({
+        where: {
+            userId: memberId
+        },
+        attributes: {
+            include: ['id', 'groupId', 'userId', 'status'],
+            exclude: ['createdAt', 'updatedAt']
+        }
+    })
+
+    if (requestedMembership.length === 0 ) {
+       return res.status(404).json({message: 'Membership does not exist for this User'})
+    }
+
+    if (userId === group.organizerId || userId === memberId) {
+        const member = requestedMembership[0];
+        await member.destroy()
+        return res.status(200).json({message: "Successfully deleted membership from group"})
+    }
+
+    return res.status(403).json({message: "Forbidden"})
+
 })
 
 module.exports = router;
