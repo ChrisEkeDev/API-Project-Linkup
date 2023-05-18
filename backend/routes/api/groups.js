@@ -9,7 +9,7 @@ const { states } = require('../../utils/states');
 
 
 
-// Get all groups
+// Get all groups - tested
 router.get('/', async (req, res) => {
     let groups = await Group.findAll()
 
@@ -50,11 +50,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
     // Calculates aggregate data
     for (const group of groups) {
-        let members = await group.countUsers({
-            where: {
-                status: 'member'
-            }
-        });
+        let members = await group.countUsers();
         group.dataValues.numMembers = members;
         let groupImage = await group.getGroupImages({
             where: { preview: true },
