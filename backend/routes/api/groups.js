@@ -9,7 +9,7 @@ const { states } = require('../../utils/states');
 
 
 
-// Get all groups - tested
+// Get all groups
 router.get('/', async (req, res) => {
     let groups = await Group.findAll()
 
@@ -35,7 +35,7 @@ router.get('/', async (req, res) => {
 
 
 
-// Get all groups joined or organized by the current user - tested
+// Get all groups joined or organized by the current user
 router.get('/current', requireAuth, async (req, res) => {
     const userId = req.user.id;
     const groupsUserOrganizes = await Group.findAll({
@@ -76,7 +76,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 
 
-// Get details of group by ID - tested
+// Get details of group by ID
 router.get('/:groupId', async (req, res) => {
     const { groupId } = req.params;
     const group = await Group.findByPk(groupId, {
@@ -282,14 +282,9 @@ router.get('/:groupId/venues', requireAuth, async (req, res) => {
             id: userId,
         }
     });
-    if (user.length === 0) {
-        return res.status(403).json({
-            message: "Forbidden"
-        })
-    }
 
     // Authorization
-    let status = await user[0].dataValues.Membership.dataValues.status;
+    let status = user[0]?.dataValues.Membership.dataValues.status;
     if ( status === "co-host" || userId === group.dataValues.organizerId ) {
         const venues = await group.getVenues();
         return res.status(200).json({Venues: venues})
