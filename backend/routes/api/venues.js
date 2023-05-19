@@ -39,14 +39,10 @@ router.put('/:venueId', requireAuth, validateEditVenue, async (req, res) => {
             id: userId,
         }
     });
-    if (user.length === 0) {
-        return res.status(403).json({
-            message: "Forbidden"
-        })
-    }
+
 
     // Checks if user is the Organizer or the Co-host of the group
-    let status = await user[0].dataValues.Membership.dataValues.status;
+    let status = user[0]?.dataValues.Membership.dataValues.status;
     if ( status === "organizer" || status === "co-host" ) {
 
         //Updates the Venue

@@ -377,7 +377,7 @@ router.get('/:groupId/events', async (req, res) => {
     for (const event of events) {
         let attendees = await event.countAttendances({
             where: {
-                status: 'Attending'
+                status: 'attending'
             }
         });
         event.dataValues.numAttending = attendees;
@@ -509,7 +509,8 @@ router.get('/:groupId/members', async (req, res) => {
         }
     });
 
-    if (userId === group.dataValues.organizerId || membership[0]?.dataValues.status === 'co-host') {
+    let status = membership[0]?.dataValues.status
+    if (userId === group.dataValues.organizerId || status === 'co-host') {
         return res.status(200).json({Members: membersAuth.Users})
     } else {
         return res.status(200).json({Members: membersNoAuth.Users})
@@ -542,16 +543,15 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
         return res.status(400).json({message: "User can't join a group they organized"})
     }
 
-    if (memberships[0]) {
-        const status = memberships[0].dataValues.status;
-        if (status === 'pending') {
-            return res.status(400).json({message: "Membership has already been requested"})
-        }
-
-        if (status === 'member' || status === 'co-host') {
-            return res.status(400).json({message: "User is already a member of the group"})
-        }
+    const status = memberships[0]?.dataValues.status;
+    if (status === 'pending') {
+        return res.status(400).json({message: "Membership has already been requested"})
     }
+
+    if (status === 'member' || status === 'co-host') {
+        return res.status(400).json({message: "User is already a member of the group"})
+    }
+
 
     await Membership.create({
         userId: userId,
@@ -598,10 +598,7 @@ router.put('/:groupId/membership', requireAuth, validateMembership, async (req, 
         }
     })
 
-    let userStatus;
-    if (requesterMembership[0]) {
-        userStatus = requesterMembership[0].dataValues.status
-    }
+    let userStatus =  requesterMembership[0]?.dataValues.status
 
     const requestedMembership = await group.getMemberships({
         where: {

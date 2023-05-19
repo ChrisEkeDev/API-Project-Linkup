@@ -24,11 +24,7 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
         }
     })
 
-    let status;
-    if (membership[0]) {
-        status = membership[0].dataValues.status
-    }
-
+    let status = membership[0]?.dataValues.status
     if (userId === group.dataValues.organizerId || status === 'co-host') {
         await image.destroy();
         return res.status(200).json({
