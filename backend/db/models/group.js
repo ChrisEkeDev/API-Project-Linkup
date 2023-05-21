@@ -11,34 +11,47 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Group.belongsTo(models.User, {
         as: 'Organizer',
-        foreignKey: 'organizerId'
+        foreignKey: 'organizerId',
+        targetKey: 'id'
       });
 
       Group.hasMany(models.Membership, {
-        foreignKey: 'groupId'
+        foreignKey: 'groupId',
+        sourceKey: 'id'
       })
 
       Group.hasMany(models.Venue, {
-        foreignKey: 'groupId'
+        foreignKey: 'groupId',
+        sourceKey: 'id'
       })
 
       Group.hasMany(models.Event, {
-        foreignKey: 'groupId'
+        foreignKey: 'groupId',
+        sourceKey: 'id'
       })
 
       Group.belongsToMany(models.User, {
         through: models.Membership,
         foreignKey: 'groupId',
-        otherKey: 'userId'
+        otherKey: 'userId',
+        sourceKey: 'id',
+        targetKey: 'id'
       })
 
       Group.hasMany(models.GroupImage, {
-        foreignKey: 'groupId'
+        foreignKey: 'groupId',
+        sourceKey: 'id'
       })
     }
   }
 
   Group.init({
+    id: {
+      type:DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     organizerId: {
       type: DataTypes.INTEGER,
       allowNull: false

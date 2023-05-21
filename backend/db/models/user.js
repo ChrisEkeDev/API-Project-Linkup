@@ -10,31 +10,44 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       User.hasMany(models.Group, {
-        foreignKey: 'organizerId'
+        foreignKey: 'organizerId',
+        sourceKey: 'id'
       })
       User.belongsToMany(models.Group, {
         through: models.Membership,
         foreignKey: 'userId',
-        otherKey: 'groupId'
+        otherKey: 'groupId',
+        sourceKey: 'id',
+        targetKey: 'id'
       })
 
       User.hasMany(models.Membership, {
-        foreignKey: 'userId'
+        foreignKey: 'userId',
+        sourceKey: 'id'
       })
 
       User.belongsToMany(models.Event, {
         through: models.Attendance,
         foreignKey: 'userId',
-        otherKey: 'eventId'
+        otherKey: 'eventId',
+        sourceKey: 'id',
+        targetKey: 'id'
       })
 
       User.hasMany(models.Attendance, {
-        foreignKey: 'userId'
+        foreignKey: 'userId',
+        sourceKey: 'id'
       })
     }
   }
 
   User.init({
+    id: {
+      type:DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     firstName: {
       type: DataTypes.STRING,
       allowNull: false

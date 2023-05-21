@@ -7,16 +7,25 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       Attendance.belongsTo(models.User, {
-        foreignKey: 'userId'
+        foreignKey: 'userId',
+        targetKey: 'id'
+
       })
 
       Attendance.belongsTo(models.Event, {
-        foreignKey: 'eventId'
+        foreignKey: 'eventId',
+        targetKey: 'id'
       })
     }
   }
 
   Attendance.init({
+    id: {
+      type:DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     eventId: {
       type: DataTypes.INTEGER,
       allowNull: false
