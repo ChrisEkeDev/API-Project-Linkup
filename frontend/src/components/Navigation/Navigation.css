@@ -39,29 +39,47 @@
 }
 
 .logo {
-    height: 50px;
+    height: 45px;
 }
 
 .logo-text {
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 36px;
+    font-family: 'Grand Hotel';
 }
 
 .navigation_menu-wrapper {
     position: relative;
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 15px;
 }
 
 .user-image {
     height: 50px;
     aspect-ratio: 1;
-    background-color: var(--light-gray);
+    background-color: var(--dark-gray);
     border-radius: 50px;
+    cursor: pointer;
 }
 
 .menu-icon {
     cursor: pointer;
+}
+
+.nav_user-contents {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.new_group-link {
+    text-decoration: none;
+    color: var(--teal)
+}
+
+.new_group-link:hover {
+    text-decoration: underline;
 }
 
 .navigation_menu-contents {
@@ -76,4 +94,8 @@
     border-radius: 10px;
     right: 0;
     border: 1px solid var(--light-gray);
+
+    .body:first-of-type {
+        text-transform: capitalize;
+    }
 }

@@ -26,6 +26,7 @@ function Login({close}) {
             .then(() => {
                 close()
                 setLoading(false)
+                history.push('/dashboard')
             })
             .catch(async(errors) => {
                 const data = await errors.json();
@@ -43,8 +44,8 @@ function Login({close}) {
             dispatch(thunkLogIn(data))
             .then(() => {
                 close();
-                history.push('/')
                 setLoading(false)
+                history.push('/dashboard')
             })
             .catch(async(errors) => {
                 const data = await errors.json();
