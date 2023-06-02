@@ -119,7 +119,7 @@ export const thunkDeleteGroup = (group) => async dispatch => {
 
 
 // REDUCER
-const initialState = { allGroups: {}, single: {}, currentGroups: {}};
+const initialState = { allGroups: {}, singleGroup: {}, currentGroups: {}};
 
 const groupsReducer = (state = initialState, action) => {
     switch(action.type) {
