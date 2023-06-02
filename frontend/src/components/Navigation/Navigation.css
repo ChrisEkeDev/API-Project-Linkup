@@ -1,0 +1,79 @@
+@import url('../../index.css');
+
+#nav-wrapper {
+    border-bottom: 1px solid var(--light-gray);
+    position: fixed;
+    background-color: white;
+    z-index: 10;
+    width: calc(100dvw - 10px);
+}
+
+.nav-contents {
+    padding: 12px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+
+
+    .actions {
+        display: flex;
+        align-items: center;
+        gap: 50px;
+    }
+
+    .link {
+        text-decoration: none;
+        font-size: var(--body);
+        cursor: pointer;
+    }
+}
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    gap: 6px;
+    color: var(--red);
+    cursor: pointer;
+}
+
+.logo {
+    height: 50px;
+}
+
+.logo-text {
+    font-weight: 600;
+}
+
+.navigation_menu-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.user-image {
+    height: 50px;
+    aspect-ratio: 1;
+    background-color: var(--light-gray);
+    border-radius: 50px;
+}
+
+.menu-icon {
+    cursor: pointer;
+}
+
+.navigation_menu-contents {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    gap: 12px;
+    position: absolute;
+    padding: 24px;
+    background-color: white;
+    top: calc(100% + 36px);
+    border-radius: 10px;
+    right: 0;
+    border: 1px solid var(--light-gray);
+}
