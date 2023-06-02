@@ -10,6 +10,10 @@ function NavigationMenu({user}) {
     const dispatch = useDispatch();
     const history = useHistory();
 
+    const navigate = (route) => {
+        history.push(route)
+    }
+
     const submitLogOut = (e) => {
         e.preventDefault();
         return (
@@ -24,7 +28,7 @@ function NavigationMenu({user}) {
 
   return (
     <div className='navigation_menu-wrapper'>
-        <div className='user-image'></div>
+        <div onClick={() => navigate('/dashboard')} className='user-image'></div>
         {menu ?
             <FaChevronUp
                 onClick={() => setMenu(false)}

@@ -1,29 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import logo from '../../assets/linkup-logo.svg';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import NavigationMenu from '../NavigationMenu';
-import Form from '../Form';
-import Login from '../Login';
-import Signin from '../Signup';
 import './Navigation.css';
 
 
-function Navigation() {
+function Navigation({setAuthForm}) {
     const user = useSelector(state => state.session.user)
-    const [ auth, setAuth ] = useState('');
     const history = useHistory();
 
     const navigate = (route) => {
         history.push(route)
     }
-
-    useEffect(() => {
-        if (auth) {
-        document.body.style.overflow = 'hidden';
-        }
-        return () => document.body.style.overflow = 'unset';
-    }, [auth])
 
   return (
     <>
@@ -31,29 +21,22 @@ function Navigation() {
         <div className='nav-contents'>
             <div onClick={() => navigate('/')} className='logo-wrapper'>
               <img className='logo' src={logo}/>
-              <h1 className='logo-text'>Linkup</h1>
+              <h1 className='logo-text'>linkup</h1>
             </div>
             {user ?
-            <NavigationMenu user={user} /> :
+            <div className='nav_user-contents'>
+                <Link className='new_group-link' to='/new-group'>Start a new group</Link>
+                <NavigationMenu user={user} />
+            </div>
+             :
             <div className='actions'>
-                <span onClick={() => setAuth('login')} className='link'>Log in</span>
-                <span onClick={() => setAuth('signup')} className='link'>Sign up</span>
+                <span onClick={() => setAuthForm('login')} className='link'>Log in</span>
+                <span onClick={() => setAuthForm('signup')} className='link'>Sign up</span>
             </div>
             }
 
         </div>
     </nav>
-    {
-        auth === 'login' ?
-        <Form>
-            <Login close={() => setAuth('')}/>
-        </Form> :
-        auth === 'signup' ?
-        <Form>
-            <Signin close={() => setAuth('')}/>
-        </Form> :
-        null
-    }
     </>
   )
 }

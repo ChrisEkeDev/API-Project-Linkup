@@ -1,0 +1,22 @@
+@import url('../../index.css');
+
+#dashboard-wrapper {
+    padding: 175px 0;
+}
+
+.dashboard-contents {
+    width: var(--max);
+    margin: var(--center);
+}
+
+.dashboard-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+
+
+    .display {
+        margin-bottom: 12px;
+        text-transform: capitalize;
+    }
+}

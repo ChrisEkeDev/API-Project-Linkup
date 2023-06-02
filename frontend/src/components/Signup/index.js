@@ -8,7 +8,7 @@ import useInitialRender from '../../hooks/useInitialRender';
 import Inputs from '../Inputs/Inputs';
 import Button from '../Buttons/Button';
 
-function Signin({close}) {
+function Signup({close}) {
     const user = useSelector(state => state.session.user);
     const { setLoading } = useLoading();
     const [ firstName, setFirstName ] = useState('');
@@ -18,6 +18,7 @@ function Signin({close}) {
     const [ password, setPassword ] = useState('');
     const [ errors, setErrors ] = useState({});
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const submitForm = (e) => {
         e.preventDefault();
@@ -28,6 +29,7 @@ function Signin({close}) {
             .then(() => {
               close();
               setLoading(false)
+              history.push('/dashboard')
             })
             .catch(async(errors) => {
               const data = await errors.json();
@@ -123,4 +125,4 @@ function Signin({close}) {
   )
 }
 
-export default Signin
+export default Signup
