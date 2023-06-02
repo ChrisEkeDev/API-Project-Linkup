@@ -1,0 +1,35 @@
+@import url('../../index.css');
+
+.loading-wrapper {
+    position: fixed;
+    height: 100dvh;
+    width: 100dvw;
+    background-color: rgba(255,255,255,.8);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+@keyframes spin {
+    0% {
+        transform: scale(1,1);
+    }
+    50% {
+        transform: scale(1.2,1.2);
+    }
+    100% {
+        transform: scale(1,1);
+    }
+}
+
+.loading-logo {
+    height: 70px;
+    font-size: 50px;
+    color: var(--primary-color);
+    animation-name: spin;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}

@@ -7,12 +7,19 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       EventImage.belongsTo(models.Event, {
-        foreignKey: 'eventId'
+        foreignKey: 'eventId',
+        targetKey: 'id'
       })
     }
   }
 
   EventImage.init({
+    id: {
+      type:DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     eventId: {
       type: DataTypes.INTEGER,
       allowNull: false

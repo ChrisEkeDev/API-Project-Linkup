@@ -7,15 +7,23 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       Membership.belongsTo(models.User, {
-        foreignKey: 'userId'
+        foreignKey: 'userId',
+        targetKey: 'id'
       })
       Membership.belongsTo(models.Group, {
-        foreignKey: 'groupId'
+        foreignKey: 'groupId',
+        targetKey: 'id'
       })
     }
   }
 
   Membership.init({
+    id: {
+      type:DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false
