@@ -9,6 +9,7 @@ import Dashboard from './components/Dashboard';
 import Form from './components/Form';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import Search from './components/Search';
 import './index.css';
 
 function App() {
@@ -49,6 +50,9 @@ function App() {
             </Route>
             <Route path='/dashboard'>
               <Dashboard/>
+            </Route>
+            <Route path='/search'>
+              <Search/>
             </Route>
         </Switch>
       </LoadingProvider>

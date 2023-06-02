@@ -1,11 +1,19 @@
 import React, { useEffect } from 'react';
 import { Switch, Route, NavLink, useRouteMatch } from 'react-router-dom/';
+import { useDisatch, useSelector } from 'react-redux';
+import { thunkGetAllGroups } from '../../store/groups';
 import './Search.css';
 import Groups from '../groups';
 import Events from '../events';
 
 function Search() {
+    const dispatch = useDisatch();
     const { url } = useRouteMatch();
+    const groups = useSelector(state => state.groups.allGroups)
+
+    useEffect(() => {
+        dispatch(thunkGetAllGroups())
+    }, [dispatch])
 
 
   return (
@@ -32,10 +40,10 @@ function Search() {
             </header>
             <Switch>
                 <Route exact path={`${url}/events`}>
-                    <Events/>
+                    {/* <Events/> */}
                 </Route>
                 <Route exact path={`${url}/groups`}>
-                    <Groups/>
+                    <Groups groups={groups}/>
                 </Route>
             </Switch>
         </div>

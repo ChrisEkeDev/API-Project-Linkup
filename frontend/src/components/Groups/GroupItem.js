@@ -2,7 +2,7 @@ import React from 'react';
 import './Group.css';
 import { Link } from 'react-router-dom'
 
-function GroupItem() {
+function GroupItem({group}) {
   return (
     <li className='group_item-wrapper'>
         <Link to='/groups/1' className='group-link'>
