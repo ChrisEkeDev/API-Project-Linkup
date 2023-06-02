@@ -12,6 +12,7 @@ function App() {
 
   useEffect(() => {
       dispatch(thunkRestoreUser())
+      .catch(() => console.log('No Session'))
   }, [dispatch])
 
   return (

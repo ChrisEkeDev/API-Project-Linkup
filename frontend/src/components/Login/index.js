@@ -27,8 +27,8 @@ function Login({close}) {
                 close()
                 setLoading(false)
             })
-            .catch(async(res) => {
-                const data = await res.json();
+            .catch(async(errors) => {
+                const data = await errors.json();
                 if (data && data.errors) setErrors(data.errors)
                 setLoading(false)
             })
@@ -46,8 +46,8 @@ function Login({close}) {
                 history.push('/')
                 setLoading(false)
             })
-            .catch(async(res) => {
-                const data = await res.json();
+            .catch(async(errors) => {
+                const data = await errors.json();
                 if (data && data.errors) setErrors(data.errors)
                 setLoading(false)
             })
@@ -65,7 +65,7 @@ function Login({close}) {
         setErrors(errors)
     }, [credential, password])
 
-    if (user) return <Redirect to='/' />
+    if (user) return <Redirect to='/dashboard' />
 
     return (
         <form className='form-contents' onSubmit={submitLogin}>

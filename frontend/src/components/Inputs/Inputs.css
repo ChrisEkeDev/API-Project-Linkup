@@ -22,6 +22,10 @@
     background-color: rgb(244, 255, 254);
 }
 
+.input:focus {
+    outline: 1px solid var(--teal)
+}
+
 .input-label {
     position: absolute;
     font-weight: 600;

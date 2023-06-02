@@ -4,7 +4,7 @@ import { csrfFetch } from "./csrf";
 
 const SET_SESSION = '/linkup/session/SET_SESSION';
 const REMOVE_SESSION = '/linkup/session/REMOVE_SESSION';
-const GET_SESSION = '/linkup/session/GET_SESSION'
+const GET_SESSION = '/linkup/session/GET_SESSION';
 
 // ACTIONS
 
@@ -21,7 +21,6 @@ const actionGetSession = (user) => ({
     type: GET_SESSION,
     payload: user
 })
-
 
 // THUNKS
 
@@ -55,9 +54,22 @@ export const thunkRestoreUser = () => async dispatch => {
     const res = await csrfFetch('/api/session');
     if (res.ok) {
         const data = await res.json();
-        await dispatch(actionGetSession(data.user))
+        dispatch(actionGetSession(data.user))
+    }
+}
+
+export const thunkSignUp = (user) => async dispatch => {
+    const res = await csrfFetch('/api/users', {
+        method: 'POST',
+        body: JSON.stringify(user)
+    })
+
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(actionSetSession(data.user))
     } else {
-        return
+        const errors = await res.json();
+        return errors;
     }
 }
 

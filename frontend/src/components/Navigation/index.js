@@ -4,8 +4,9 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import NavigationMenu from '../NavigationMenu';
 import Form from '../Form';
-import './Navigation.css';
 import Login from '../Login';
+import Signin from '../Signup';
+import './Navigation.css';
 
 
 function Navigation() {
@@ -36,7 +37,7 @@ function Navigation() {
             <NavigationMenu user={user} /> :
             <div className='actions'>
                 <span onClick={() => setAuth('login')} className='link'>Log in</span>
-                <span onClick={() => setAuth('signin')} className='link'>Sign up</span>
+                <span onClick={() => setAuth('signup')} className='link'>Sign up</span>
             </div>
             }
 
@@ -47,7 +48,11 @@ function Navigation() {
         <Form>
             <Login close={() => setAuth('')}/>
         </Form> :
-      null
+        auth === 'signup' ?
+        <Form>
+            <Signin close={() => setAuth('')}/>
+        </Form> :
+        null
     }
     </>
   )
