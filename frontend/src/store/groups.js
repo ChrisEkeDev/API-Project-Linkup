@@ -138,7 +138,7 @@ const groupsReducer = (state = initialState, action) => {
         };
         case GET_CURRENT_GROUPS: {
             const newState = { ...state, currentGroups: {} };
-           // action.payload.forEach(group => newState.currentGroups[group.id] = group);
+           action.payload.forEach(group => newState.currentGroups[group.id] = group);
             return newState;
         };
         case GET_SINGLE_GROUP: {

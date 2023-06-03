@@ -13,10 +13,72 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
+    margin-bottom: 24px;
 
 
     .display {
         margin-bottom: 12px;
-        text-transform: capitalize;
     }
+}
+
+.dashboard_groups-wrapper {
+    margin-bottom: 48px;
+}
+
+.dashboard_groups-tabs {
+    display: flex;
+    gap: 24px;
+}
+
+.dash_tab {
+    padding: 16px 0;
+    color: var(--dark-gray);
+    position: relative;
+    cursor: pointer;
+}
+
+.dash_tab--active {
+    color: var(--teal);
+    pointer-events: none;
+    font-weight: 600;
+}
+
+
+.dash_group_item-wrapper {
+    padding: 24px 0;
+    border-top: 1px solid var(--light-gray);
+    display: flex;
+    gap: 24px;
+    cursor: pointer;
+
+    .body {
+        font-weight: 400;
+    }
+}
+
+.dash_group_item-image {
+    height: 100px;
+    width: 150px;
+    background-color: var(--dark-gray);
+    border-radius: 5px;
+}
+
+.dash_group_item-info_section {
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    .small {
+        margin: 0;
+    }
+}
+
+.dash_group-icon {
+    color: var(--dark-gray)
+}
+
+.dashboard-main {
+    display: grid;
+    grid-template-columns: 35% 65%;
+    gap: 24px;
 }
