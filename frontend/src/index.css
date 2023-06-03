@@ -72,6 +72,14 @@
     font-weight: 600;
   }
 
+  .green {
+    color: var(--teal);
+  }
+
+  .caps {
+    text-transform: capitalize;
+  }
+
   ul {
     list-style: none;
     margin: 0;

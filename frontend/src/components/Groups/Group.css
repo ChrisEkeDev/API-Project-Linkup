@@ -1,0 +1,142 @@
+@import url('../../index.css');
+
+.groups-wrapper {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    .small {
+        color: var(--dark-gray);
+        font-size: var(--body);
+    }
+}
+
+.group-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.group_item-wrapper {
+    border-top: 1px solid var(--light-gray);
+    padding: 24px 0;
+}
+
+.group_item-contents {
+    display: flex;
+    gap: 24px;
+}
+
+.group_item-image {
+    flex-shrink: 0;
+    height: 175px;
+    width: 275px;
+    border-radius: 10px;
+    background-color: var(--dark-gray);
+}
+
+.group-back {
+    display: block;
+    color: var(--teal);
+    margin-bottom: 12px;
+    font-size: var(--body);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    .back-icon {
+        color: var(--black)
+    }
+}
+
+.group_item-information {
+    display: flex;
+    flex-direction: column;
+    .heading {
+        margin-bottom: 6px;
+    }
+    .body {
+        margin: 12px 0;
+        flex-grow: 1;
+    }
+}
+
+.group_item-details {
+    color: var(--dark-gray);
+}
+
+.group_header-wrapper {
+    background-color: var(--white);
+    padding: 150px 0 36px 0;
+}
+
+.group_header-contents {
+    width: var(--max);
+    margin: var(--center)
+}
+
+.group-contents {
+    display: grid;
+    width: calc(100% - 36px);
+    grid-template-columns: 65% 35%;
+    gap: 36px;
+}
+
+.group-image {
+    width: 100%;
+    height: 350px;
+    border-radius: 10px;
+    background-color: var(--dark-gray);
+}
+
+.group_details-wrapper,
+.group_details-contents {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    .heading {
+        margin-bottom: 12px;
+    }
+    .small {
+        color: var(--dark-gray);
+        margin-bottom: 12px;
+    }
+}
+.group-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.group-button {
+    margin-top: 24px;
+    padding: 12px 16px;
+    font-size: var(--body);
+    border-radius: 5px;
+    border: none;
+    background-color: var(--red);
+    color: var(--white)
+}
+
+.group_section-wrapper {
+    background-color: var(--light-gray);
+}
+
+.group_section-contents {
+    padding: 36px 0;
+    width: var(--max);
+    margin: var(--center);
+}
+
+.group_section-events_calendar {
+    display: grid;
+    width: calc(100% - 36px);
+    grid-template-columns: 65% 35%;
+    gap: 36px;
+}
+
+.group_section-header {
+    margin-bottom: 36px;
+}
+
+.group_section-event_list {
+    padding: 36px 0;
+}

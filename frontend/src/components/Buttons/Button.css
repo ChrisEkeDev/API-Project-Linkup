@@ -14,9 +14,18 @@
     color: white;
 }
 
+.small-btn {
+    font-size: 15px;
+    padding: 10px 15px;
+}
+
 .secondary {
     background-color: var(--teal);
     color: white;
+}
+
+.spaced {
+    margin: 10px 0;
 }
 
 

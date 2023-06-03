@@ -1,14 +1,14 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import './Inputs.css';
-import { TbExclamationCircle, TbEye, TbEyeOff } from 'react-icons/tb';
+import { FaRegTimesCircle, FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 
 
 function Inputs({name, label, placeholder, iconRight, iconLeft, type, error, value, setValue, disabled}) {
   const [passwordHidden, setPasswordHidden] = useState(true);
 
   return (
-    <label htmlFor={name} className='input-wrapper'>
+    <label htmlFor={name} className={`input-wrapper ${label ? 'input-with-label' : 'input-without-label'}`}>
         {iconLeft}
         <input
           id={name}
@@ -21,18 +21,18 @@ function Inputs({name, label, placeholder, iconRight, iconLeft, type, error, val
           style={error ? {border: '1px solid #ff1313'} : null}
           disabled={disabled}
         />
-        {label ? <span className='input-label'>{label}</span> : null}
+        {label ? <span className='body input-label'>{label}</span> : null}
         {
           type === 'password' ?
           passwordHidden ?
-          <TbEyeOff onClick={disabled ? null : () => setPasswordHidden(false)} className='password-icon'/> :
-          <TbEye onClick={disabled ? null : () => setPasswordHidden(true)} className='password-icon'/> :
+          <FaRegEyeSlash onClick={disabled ? null : () => setPasswordHidden(false)} className='password-icon'/> :
+          <FaRegEye onClick={disabled ? null : () => setPasswordHidden(true)} className='password-icon'/> :
           null
         }
 
         {error &&
           <div className='input-error'>
-            <TbExclamationCircle className='input-error__icon'/>
+            <FaRegTimesCircle className='input-error__icon'/>
             <small className='input-error__label'>{error}</small>
           </div>
         }
