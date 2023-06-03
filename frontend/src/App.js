@@ -6,7 +6,7 @@ import Navigation from './components/Navigation';
 import LoadingProvider from './context/LoadingProvider';
 import Landing from './components/Landing';
 import Dashboard from './components/Dashboard';
-import Form from './components/Form';
+import Modal from './components/Modal';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Search from './components/Search';
@@ -14,6 +14,7 @@ import Group from './components/Groups/Group';
 import CreateGroup from './components/CreateGroup';
 import UpdateGroup from './components/UpdateGroup';
 import './index.css';
+import AlertsProvider from './context/AlertsProvider';
 
 function App() {
   const [ authForm, setAuthForm ] = useState('')
@@ -35,15 +36,16 @@ function App() {
   return (
     <div id='app-wrapper'>
       <LoadingProvider>
+        <AlertsProvider>
         {
           authForm === 'login' ?
-          <Form>
+          <Modal>
               <Login close={() => setAuthForm('')}/>
-          </Form> :
+          </Modal> :
           authForm === 'signup' ?
-          <Form>
+          <Modal>
               <Signup close={() => setAuthForm('')}/>
-          </Form> :
+          </Modal> :
           null
         }
         <Navigation setAuthForm={setAuthForm}/>
@@ -67,6 +69,7 @@ function App() {
               <CreateGroup/>
             </Route>
         </Switch>
+        </AlertsProvider>
       </LoadingProvider>
     </div>
   );

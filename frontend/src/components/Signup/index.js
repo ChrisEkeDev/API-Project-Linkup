@@ -68,8 +68,8 @@ function Signup({close}) {
     if (user) return <Redirect to='/' />
 
   return (
-    <form className='form-contents' onSubmit={submitForm}>
-            <div className='form-close'><FaTimes onClick={close}/></div>
+    <form className='modal-contents' onSubmit={submitForm}>
+            <div className='modal-close'><FaTimes onClick={close}/></div>
             <h2 className='subheading'>Sign up</h2>
             <Inputs
                 placeholder='First Name'
@@ -117,6 +117,7 @@ function Signup({close}) {
                 disabled={false}
             />
             <Button
+                style='spaced'
                 type='primary'
                 label='Sign up'
                 disabled={Object.values(errors).length}

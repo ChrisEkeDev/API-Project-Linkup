@@ -1,22 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { thunkGetSingleGroup } from '../../store/groups';
+import { thunkGetSingleGroup, thunkDeleteGroup } from '../../store/groups';
+import { FaAngleLeft } from 'react-icons/fa';
+import { useLoading } from '../../context/LoadingProvider';
+import { useAlerts } from '../../context/AlertsProvider';
+import Modal from '../Modal';
 import EventItem from '../Events/EventItem';
 import Button from '../Buttons/Button';
 import './Group.css';
-import { FaAngleLeft } from 'react-icons/fa';
 
 function Group() {
     const dispatch = useDispatch();
     const history = useHistory();
+    const { handleAlerts } = useAlerts();
+    const { setLoading } = useLoading();
     const { groupId } = useParams();
     const user = useSelector(state => state.session.user)
     const group = useSelector(state => state.groups.singleGroup)
+    const [ deleting, setDeleting ] = useState(false)
     const events = ['past', 'past', 'future', 'future', 'future', 'future', 'past', 'future']
 
     const navigate = (route) => {
         history.push(route)
+    }
+
+    const deleteGroup = (e) => {
+        e.preventDefault();
+        setLoading(true)
+        return (
+            dispatch(thunkDeleteGroup(group))
+            .then((alert) => {
+                handleAlerts(alert);
+                navigate('/search/groups');
+                setLoading(false);
+            })
+            .catch(async(errors) => {
+                console.log(errors)
+                setLoading(false)
+            })
+        )
     }
 
     useEffect(() => {
@@ -26,6 +49,28 @@ function Group() {
 
   return (
     <main className='group-wrapper'>
+        {
+            deleting ?
+            <Modal>
+                <form className='modal-contents'>
+                    <h2 className='subheading'>Confirm Delete</h2>
+                    <p className='body'>Are you sure you want to remove this group?</p>
+                    <Button
+                        style='spaced'
+                        type='primary'
+                        label='Yes (Delete Group)'
+                        action={(e) => deleteGroup(e)}
+                    />
+                    <Button
+                        style='spaced'
+                        type='tertiary'
+                        label='No (Keep Group)'
+                        action={() => setDeleting(false)}
+                    />
+                </form>
+            </Modal> :
+            null
+        }
         <header className='group_header-wrapper'>
             <div className='group_header-contents'>
                 <Link className='group-back' to='/search/groups'>
@@ -39,7 +84,7 @@ function Group() {
                             <h1 className='heading'>{group?.name}</h1>
                             <small className='body small'>{group?.city}, {group?.state}</small>
                             <small className='body small'>## of events<span> &#8729; </span>{group?.private ? 'Private' : 'Public'}</small>
-                            <small className='body small'>Organized by {group?.Organizer?.firstName} {group?.Organizer?.lastName}</small>
+                            <small className='body small'>Organized by <span className='caps'>{group?.Organizer?.firstName} {group?.Organizer?.lastName}</span></small>
                         </div>
                         {
                             user?.id === group?.Organizer?.id ?
@@ -56,6 +101,7 @@ function Group() {
                                 <Button
                                     label='Delete'
                                     type='secondary small-btn'
+                                    action={() => setDeleting(true)}
                                 />
                             </div> :
                             <Button
@@ -72,7 +118,7 @@ function Group() {
             <div className='group_section-contents'>
                 <header className='group_section-header'>
                     <h2 className='subheading'>Organizer</h2>
-                    <p className='body'>{group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
+                    <p className='body'><span className='caps'>{group?.Organizer?.firstName} {group?.Organizer?.lastName}</span></p>
                 </header>
                 <article className='group_section-about'>
                     <h2 className='subheading'>What we're about</h2>

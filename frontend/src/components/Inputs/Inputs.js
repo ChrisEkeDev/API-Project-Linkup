@@ -8,7 +8,7 @@ function Inputs({name, label, placeholder, iconRight, iconLeft, type, error, val
   const [passwordHidden, setPasswordHidden] = useState(true);
 
   return (
-    <label htmlFor={name} className={`input-wrapper ${label ? 'input-with-label' : ''}`}>
+    <label htmlFor={name} className={`input-wrapper ${label ? 'input-with-label' : 'input-without-label'}`}>
         {iconLeft}
         <input
           id={name}

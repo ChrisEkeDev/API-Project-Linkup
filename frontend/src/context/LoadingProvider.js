@@ -9,7 +9,7 @@ function LoadingProvider({children}) {
     const [loading, setLoading] = useState(false);
 
     return (
-        <LoadingContext.Provider value={{loading, setLoading}}>
+        <LoadingContext.Provider value={{setLoading}}>
             {loading ? <Loading/> : null}
             {children}
         </LoadingContext.Provider>

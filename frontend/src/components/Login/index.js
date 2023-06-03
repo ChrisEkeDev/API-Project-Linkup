@@ -69,8 +69,8 @@ function Login({close}) {
     if (user) return <Redirect to='/dashboard' />
 
     return (
-        <form className='form-contents' onSubmit={submitLogin}>
-            <div className='form-close'><FaTimes onClick={close}/></div>
+        <form className='modal-contents' onSubmit={submitLogin}>
+            <div className='modal-close'><FaTimes onClick={close}/></div>
             <h2 className='subheading'>Log in</h2>
             <Inputs
                 placeholder='Username or Email'
@@ -90,11 +90,13 @@ function Login({close}) {
                 disabled={false}
             />
             <Button
+                style='spaced'
                 type='primary'
                 label='Sign in'
                 disabled={Object.values(errors).length}
             />
             <Button
+                style='spaced'
                 type='secondary'
                 label='Demo user'
                 action={(e) => submitDemoLogin(e)}
