@@ -37,7 +37,7 @@ function Landing({setAuthForm}) {
                     </article>
                     <article className='landing_hiw-article'>
                         <div className='landing_hiw-image'></div>
-                        <Link className={`body ${!user ? 'disabled-link' : 'landing-link'}`} to='/groups/new'>Start a new group</Link>
+                        <Link className={`body ${!user ? 'disabled-link' : 'landing-link'}`} to='/group/new'>Start a new group</Link>
                         <p className='body'>Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore.</p>
                     </article>
                 </div>

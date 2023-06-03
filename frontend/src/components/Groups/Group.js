@@ -34,10 +34,10 @@ function Group() {
                             <h1 className='heading'>{group?.name}</h1>
                             <small className='body small'>{group?.city}, {group?.state}</small>
                             <small className='body small'>## of events<span> &#8729; </span>{group?.private ? 'Private' : 'Public'}</small>
-                            <small className='body small'>Organized by {group?.Organizer.firstName} {group?.Organizer.lastName}</small>
+                            <small className='body small'>Organized by {group?.Organizer?.firstName} {group?.Organizer?.lastName}</small>
                         </div>
                         {
-                            user.id === group.Organizer.id ?
+                            user?.id === group?.Organizer?.id ?
                             <div className='group-actions'>
                                 <Button
                                     label='Create Event'
@@ -66,7 +66,7 @@ function Group() {
             <div className='group_section-contents'>
                 <header className='group_section-header'>
                     <h2 className='subheading'>Organizer</h2>
-                    <p className='body'>{group?.Organizer.firstName} {group?.Organizer.lastName}</p>
+                    <p className='body'>{group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
                 </header>
                 <article className='group_section-about'>
                     <h2 className='subheading'>What we're about</h2>

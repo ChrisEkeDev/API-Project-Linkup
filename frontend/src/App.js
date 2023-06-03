@@ -11,6 +11,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Search from './components/Search';
 import Group from './components/Groups/Group';
+import CreateGroup from './components/CreateGroup';
 import './index.css';
 
 function App() {
@@ -57,6 +58,9 @@ function App() {
             </Route>
             <Route path='/groups/:groupId'>
               <Group/>
+            </Route>
+            <Route path='/group/new'>
+              <CreateGroup/>
             </Route>
         </Switch>
       </LoadingProvider>

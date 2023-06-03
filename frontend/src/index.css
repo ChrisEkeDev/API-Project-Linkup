@@ -72,6 +72,10 @@
     font-weight: 600;
   }
 
+  .green {
+    color: var(--teal);
+  }
+
   ul {
     list-style: none;
     margin: 0;

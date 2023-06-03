@@ -48,9 +48,6 @@
 }
 
 .event_item-details {
-    .green {
-        color: var(--teal);
-    }
     .subheading,
     .heading {
         margin-bottom: 12px;

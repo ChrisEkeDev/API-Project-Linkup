@@ -12,6 +12,13 @@
 .input-wrapper {
     border-radius: 5px;
     width: 100%;
+    .body {
+        align-self: flex-start;
+    }
+}
+
+.input-with-label {
+    margin-top: 60px;
 }
 
 .input {
@@ -22,15 +29,23 @@
     background-color: rgb(244, 255, 254);
 }
 
+.textarea {
+    width: 100%;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid var(--light-gray);
+    background-color: rgb(244, 255, 254);
+    resize: none;
+    height: 200px;
+}
+
 .input:focus {
     outline: 1px solid var(--teal)
 }
 
 .input-label {
     position: absolute;
-    font-weight: 600;
-    font-size: 15px;
-    top: -25px;
+    top: -30px;
     left: 0;
 }
 
@@ -66,4 +81,35 @@
     align-self: flex-start;
     gap: 5px;
     color: var(--red)
+}
+
+.select-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+}
+
+.select_box-wrapper {
+    border: 1px solid var(--light-gray);
+    background-color: rgb(244, 255, 254);
+    border-radius: 5px;
+    padding-right: 10px;
+}
+
+.select {
+    padding: 15px;
+    border: none;
+    background-color: transparent;
+}
+
+.default-value {
+    color: var(--dark-gray);
+}
+.select:focus {
+    outline: transparent
+}
+
+.select-without-label {
+    margin-top: 30px;
 }
