@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { thunkLogOut } from '../../store/session';
+import { useAlerts } from '../../context/AlertsProvider';
 import Button from '../Buttons/Button';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
 
 function NavigationMenu({user}) {
     const [menu, setMenu] = useState(false);
     const dispatch = useDispatch();
+    const { handleAlerts } = useAlerts();
     const history = useHistory();
 
     const navigate = (route) => {
@@ -18,9 +20,13 @@ function NavigationMenu({user}) {
         e.preventDefault();
         return (
             dispatch(thunkLogOut())
-            .then(() => {
+            .then((alert) => {
                 setMenu(false);
+                handleAlerts(alert);
                 history.push('/')
+            })
+            .catch((alert) => {
+                handleAlerts(alert);
             })
         )
     }

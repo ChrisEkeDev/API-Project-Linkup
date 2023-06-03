@@ -33,6 +33,7 @@ export const thunkLogIn = (user) => async dispatch => {
     if (res.ok) {
         const data = await res.json();
         dispatch(actionSetSession(data.user));
+        return {message: 'Logged in successfully'}
     } else {
         const errors = await res.json();
         return errors;
@@ -43,10 +44,11 @@ export const thunkLogOut = () => async dispatch => {
     const res = await csrfFetch('/api/session', { method: 'DELETE'});
     if (res.ok) {
         dispatch(actionRemoveSession());
-        return { message: 'User logged out' }
+        return { message: 'Logged out successfully' }
     } else {
         const errors = await res.json();
-        return errors;
+        console.log(errors)
+        return { message: 'There was an issue logging you out' }
     }
 }
 
@@ -55,6 +57,11 @@ export const thunkRestoreUser = () => async dispatch => {
     if (res.ok) {
         const data = await res.json();
         dispatch(actionGetSession(data.user))
+        return { message: 'Session restore successfully' };
+    } else {
+        const errors = await res.json();
+        console.log(errors)
+        return { message: 'Session not found' };
     }
 }
 
@@ -67,6 +74,7 @@ export const thunkSignUp = (user) => async dispatch => {
     if (res.ok) {
         const data = await res.json();
         dispatch(actionSetSession(data.user))
+        return { message: 'Created account successfully' };
     } else {
         const errors = await res.json();
         return errors;

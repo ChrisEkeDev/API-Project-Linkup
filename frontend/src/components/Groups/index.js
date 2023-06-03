@@ -3,13 +3,13 @@ import GroupItem from './GroupItem';
 import './Group.css';
 
 function Groups({groups}) {
-  const groupArray = Object.values(groups);
+  const normalizedGroups = Object.values(groups);
 
   return (
     <ul className='groups-wrapper' role='list'>
-        {groupArray.map(group => {
+        {normalizedGroups.map(group => {
             return (
-                <GroupItem key={group.id} group={group}/>
+                <GroupItem key={group.id} id={group.id}/>
             )
         })}
     </ul>

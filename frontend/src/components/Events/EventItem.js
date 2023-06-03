@@ -1,21 +1,38 @@
 import React from 'react'
 import './Event.css';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-function EventItem({contained}) {
+function EventItem({id, contained}) {
+const eventItem = useSelector(state => state.events.allEvents[id]);
+const date = new Date(eventItem?.startDate)
+const dateOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+}
+const formattedDate = new Intl.DateTimeFormat('en-US', dateOptions).format(date);
+const timeOptions = {
+    hour: "numeric",
+    minute: "numeric",
+}
+const formattedTime = new Intl.DateTimeFormat('en-US', timeOptions).format(date);
+
+
   return (
     <li className='event_item-wrapper'>
-        <Link to='/events/1' className='event-link'>
+        <Link to={`/events/${id}`} className='event-link'>
             <article className={`event_item-contents ${contained ? 'contained' : ''}`}>
                 <div className='event_item-information'>
                     <div className='event_item-image'></div>
                     <div className='event_item-details'>
-                        <h3 className='body green'>YYYY-MM-DD <span> &#8729; </span> Time</h3>
-                        <h2 className='subheading'>Event name - show all information</h2>
-                        <small className='body small'>Location</small>
+                        <h3 className='body green'>{formattedDate} <span> @ </span> {formattedTime} </h3>
+                        <h2 className='subheading'>{eventItem?.name}</h2>
+                        <small className='body small'>{eventItem?.Group.city}, {eventItem?.Group.state}</small>
                     </div>
                 </div>
-                <p className='body'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <p className='body'>{eventItem?.description}</p>
             </article>
         </Link>
     </li>
