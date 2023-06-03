@@ -12,6 +12,7 @@ import Signup from './components/Signup';
 import Search from './components/Search';
 import Group from './components/Groups/Group';
 import CreateGroup from './components/CreateGroup';
+import UpdateGroup from './components/UpdateGroup';
 import './index.css';
 
 function App() {
@@ -55,6 +56,9 @@ function App() {
             </Route>
             <Route path='/search'>
               <Search/>
+            </Route>
+            <Route path='/update-group/:groupId'>
+              <UpdateGroup/>
             </Route>
             <Route path='/groups/:groupId'>
               <Group/>

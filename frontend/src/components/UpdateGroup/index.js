@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useLoading } from '../../context/LoadingProvider';
 import { useDispatch, useSelector } from 'react-redux';
-import { thunkCreateGroup } from '../../store/groups';
+import { thunkGetSingleGroup, thunkUpdateGroup } from '../../store/groups';
 import Inputs from '../Inputs/Inputs';
 import TextArea from '../Inputs/TextArea';
 import Button from '../Buttons/Button';
 import Select from '../Inputs/Select';
 import { states } from '../../utils/states';
-import './CreateGroup.css';
+import '../CreateGroup/CreateGroup.css';
 
-function CreateGroup() {
+function UpdateGroup() {
+    const { groupId } = useParams();
+    const group = useSelector(state => state.groups.singleGroup)
     const user = useSelector(state => state.session.user);
+    console.log(group, groupId)
     const { setLoading } = useLoading();
-    const [ name, setName ] = useState('');
-    const [ about, setAbout ] = useState('');
-    const [ type, setType ] = useState('none');
-    const [ isPrivate, setIsPrivate ] = useState('none');
-    const [ city, setCity ] = useState('');
-    const [ state, setState ] = useState('none');
-    const [ imageUrl, setImageUrl ] = useState('')
+    const [ name, setName ] = useState(group?.name);
+    const [ about, setAbout ] = useState(group?.about);
+    const [ type, setType ] = useState(group?.type);
+    const [ isPrivate, setIsPrivate ] = useState(group?.private ? 'Private' : 'Public');
+    const [ city, setCity ] = useState(group?.city);
+    const [ state, setState ] = useState(group?.state);
     const [ errors, setErrors ] = useState({});
     const dispatch = useDispatch();
     const history = useHistory();
@@ -30,6 +32,7 @@ function CreateGroup() {
         validateForm();
         if (!Object.values(errors).length) {
             const groupData = {
+                id: groupId,
                 organizerId: user.id,
                 name,
                 about,
@@ -38,15 +41,12 @@ function CreateGroup() {
                 city,
                 state
             }
-            const imageData = {
-                url: imageUrl,
-                preview: true
-            }
             return (
-                dispatch(thunkCreateGroup(groupData, imageData))
-                .then((newGroup) => {
+                dispatch(thunkUpdateGroup(groupData))
+                .then((updatedGroup) => {
                     setLoading(false);
-                    history.push(`/groups/${newGroup.id}`)
+                    console.log(updatedGroup)
+                    history.push(`/groups/${updatedGroup.id}`)
                 })
                 .catch(async(errors) => {
                     const data = await errors.json();
@@ -84,20 +84,20 @@ function CreateGroup() {
         if (state === 'none') {
             errors.state = 'Please select a state';
         }
-        const fileTypes = ['.png', '.jpg', '.jpeg'];
-        const validImage = fileTypes.map(type => imageUrl.endsWith(type))
-        if (!validImage.some(x => x)) {
-            errors.imageUrl = 'Image URL must end in .png, .jpg, or .jpeg';
-        }
         setErrors(errors)
     }
+
+
+    useEffect(() => {
+        dispatch(thunkGetSingleGroup(groupId))
+    }, [dispatch])
 
   return (
     <main className='create_group-wrapper'>
         <div className='create_group-contents'>
             <header className='create_group-header'>
-                <h3 className='body green'>BECOME AN ORGANIZER</h3>
-                <h2 className='subheading'>We'll walk you through a few steps to build your local community</h2>
+                <h3 className='body green'>UPDATE YOUR GROUP'S INFORMATION</h3>
+                <h2 className='subheading'>We'll walk you through a few steps to update your group's information</h2>
             </header>
             <form className='create_group-form' onSubmit={submit}>
                 <fieldset className='create_group-fieldset'>
@@ -166,18 +166,10 @@ function CreateGroup() {
                         setValue={(x) => setIsPrivate(x.target.value)}
                         error={errors.private}
                     />
-                    <Inputs
-                        label='Please add in image url for your group below'
-                        placeholder='Image Url'
-                        name='url'
-                        value={imageUrl}
-                        setValue={(x) => setImageUrl(x.target.value)}
-                        error={errors.imageUrl}
-                    />
                 </fieldset>
                 <Button
                     style='create_group-btn'
-                    label='Create group'
+                    label='Update group'
                     type='primary'
                 />
             </form>
@@ -186,4 +178,4 @@ function CreateGroup() {
   )
 }
 
-export default CreateGroup
+export default UpdateGroup

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetSingleGroup } from '../../store/groups';
 import EventItem from '../Events/EventItem';
@@ -9,10 +9,15 @@ import { FaAngleLeft } from 'react-icons/fa';
 
 function Group() {
     const dispatch = useDispatch();
+    const history = useHistory();
     const { groupId } = useParams();
     const user = useSelector(state => state.session.user)
     const group = useSelector(state => state.groups.singleGroup)
     const events = ['past', 'past', 'future', 'future', 'future', 'future', 'past', 'future']
+
+    const navigate = (route) => {
+        history.push(route)
+    }
 
     useEffect(() => {
         dispatch(thunkGetSingleGroup(groupId))
@@ -46,6 +51,7 @@ function Group() {
                                 <Button
                                     label='Update'
                                     type='secondary small-btn'
+                                    action={() => navigate(`/update-group/${group?.id}`)}
                                 />
                                 <Button
                                     label='Delete'

@@ -48,7 +48,6 @@ export const thunkGetAllGroups = () => async dispatch => {
     if (res.ok) {
         const data = await res.json();
         dispatch(actionGetAllGroups(data.Groups))
-        console.log(data.Groups)
     } else {
         const errors = await res.json();
         return errors;
@@ -58,8 +57,8 @@ export const thunkGetAllGroups = () => async dispatch => {
 export const thunkGetCurrentGroups = () => async dispatch => {
     const res = await csrfFetch('/api/groups/current');
     if (res.ok) {
-        const data = res.json();
-        dispatch(actionGetCurrentGroups(data.groups))
+        const data = await res.json();
+        dispatch(actionGetCurrentGroups(data.Groups))
     } else {
         const errors = await res.json();
         return errors;
@@ -103,8 +102,9 @@ export const thunkUpdateGroup = (group) => async dispatch => {
         body: JSON.stringify(group)
     });
     if (res.ok) {
-        const data = res.json();
-        dispatch(actionUpdateGroup(data.group))
+        const updatedGroup = await res.json();
+        dispatch(actionUpdateGroup(updatedGroup))
+        return updatedGroup
     } else {
         const errors = await res.json();
         return errors;
