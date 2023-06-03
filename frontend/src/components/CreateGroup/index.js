@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useLoading } from '../../context/LoadingProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkCreateGroup } from '../../store/groups';
+import { FaAngleLeft } from 'react-icons/fa';
 import Inputs from '../Inputs/Inputs';
 import TextArea from '../Inputs/TextArea';
 import Button from '../Buttons/Button';
@@ -95,6 +96,10 @@ function CreateGroup() {
   return (
     <main className='create_group-wrapper'>
         <div className='create_group-contents'>
+                <div className='group-back' onClick={history.goBack}>
+                    <FaAngleLeft className='back-icon'/>
+                    Back
+                </div>
             <header className='create_group-header'>
                 <h3 className='body green'>BECOME AN ORGANIZER</h3>
                 <h2 className='subheading'>We'll walk you through a few steps to build your local community</h2>

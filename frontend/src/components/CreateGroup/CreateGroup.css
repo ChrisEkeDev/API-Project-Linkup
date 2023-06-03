@@ -31,3 +31,8 @@
 .create_group-btn {
     margin: 50px 0;
 }
+
+.group-back {
+    text-decoration: underline;
+    cursor: pointer;
+}
