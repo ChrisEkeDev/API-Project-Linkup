@@ -14,7 +14,7 @@ function DashboardGroupItem({group, organizer}) {
 
   return (
     <li>
-        <div onClick={() => navigate(`/groups/${group.id}`)} className='dash_group_item-wrapper'>
+        <div onClick={() => navigate(`/groups/${id}`)} className='dash_group_item-wrapper'>
             <div className='dash_group_item-image'></div>
             <div className='dash_group_item-information'>
                 <h2 className='subheading'>{group.name} - <span className='body small'>{group.type}</span></h2>

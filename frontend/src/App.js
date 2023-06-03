@@ -29,8 +29,8 @@ function App() {
       .then((alert) => {
         handleAlerts(alert);
       })
-      .catch((alert) => {
-        handleAlerts(alert);
+      .catch((error) => {
+        console.log(error)
       })
     )
   }
