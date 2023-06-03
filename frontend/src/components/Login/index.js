@@ -19,8 +19,8 @@ function Login({close}) {
 
     const submitLogin = async (e) => {
         e.preventDefault();
-        const data = {credential, password};
         setLoading(true);
+        const data = {credential, password};
         return (
             dispatch(thunkLogIn(data))
             .then(() => {
@@ -74,7 +74,6 @@ function Login({close}) {
             <h2 className='subheading'>Log in</h2>
             <Inputs
                 placeholder='Username or Email'
-                type='text'
                 value={credential}
                 setValue={(x) => setCredential(x.target.value)}
                 name='credential'

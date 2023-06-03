@@ -4,8 +4,8 @@ import { FaRegTimesCircle } from 'react-icons/fa';
 
 function Select({name, label, placeholder, error, value, setValue, disabled, values}) {
   return (
-    <label style={error ? {border: '1px solid #ff1313'} : null} htmlFor={name} className={`select-wrapper ${label ? 'input-with-label' : 'select-without-label'}`}>
-    <div className='select_box-wrapper'>
+    <label htmlFor={name} className={`select-wrapper ${label ? 'input-with-label' : 'select-without-label'}`}>
+    <div className='select_box-wrapper' style={error ? {border: '1px solid #ff1313'} : null}>
         <select
             id={name}
             name={name}
@@ -14,7 +14,7 @@ function Select({name, label, placeholder, error, value, setValue, disabled, val
             disabled={disabled}
             className='select'
         >
-            <option disabled className='default-value' value='none'>{placeholder}</option>
+            <option className='default-value' value='none'>{placeholder}</option>
             {values.map(value => {
                 return (
                     <option value={value}>{value}</option>
