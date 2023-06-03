@@ -87,6 +87,22 @@ router.get('/', async (req, res) => {
 })
 
 
+//Get all events attended by the user
+router.get('/current', async(req, res) => {
+    const userId = req.user.id;
+    const attendance = await Attendance.findAll({
+        where: {
+            userId
+        }
+    })
+    if (attendance.length) {
+        return res.status(200).json({Attendance: attendance})
+    } else {
+        return res.status(200).json({Attendance: []})
+    }
+
+})
+
 // Get details of an Event specified by its id
 router.get('/:eventId', async (req, res) => {
     const { eventId } = req.params;

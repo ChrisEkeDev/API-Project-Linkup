@@ -13,33 +13,38 @@ function DashboardEventItem({id}) {
         history.push(route)
     }
 
-    const date = new Date(event?.startDate)
-    const dateOptions = {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
+    let formattedDate;
+    let formattedTime;
+    if (event) {
+        const date = new Date(event?.startDate)
+        const dateOptions = {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        }
+        formattedDate = new Intl.DateTimeFormat('en-US', dateOptions).format(date);
+        const timeOptions = {
+            hour: "numeric",
+            minute: "numeric",
+        }
+        formattedTime = new Intl.DateTimeFormat('en-US', timeOptions).format(date)
     }
-    const formattedDate = new Intl.DateTimeFormat('en-US', dateOptions).format(date);
-    const timeOptions = {
-        hour: "numeric",
-        minute: "numeric",
-    }
-    const formattedTime = new Intl.DateTimeFormat('en-US', timeOptions).format(date)
+
+
 
     useEffect(() => {
         dispatch(thunkGetAllEvents());
     }, [dispatch])
 
   return (
-    <li>
         <div onClick={() => navigate(`/events/${id}`)} className='dash_group_item-wrapper'>
             <div className='dash_group_item-image'></div>
             <div className='dash_group_item-information'>
             <h2 className='subheading'>{event?.name} - <span className='body small'>{event?.type}</span></h2>
             <div className='dash_group_item-info_section'>
                 <FaCalendarAlt className='dash_group-icon'/>
-                <p className='small'>{formattedDate} <span> @ </span> {formattedTime} </p>
+                <p className='small'>{event && formattedDate} <span> @ </span> {event && formattedTime} </p>
             </div>
             {/* <div className='dash_group_item-info_section'>
                 <FaUserFriends className='dash_group-icon'/>
@@ -51,7 +56,6 @@ function DashboardEventItem({id}) {
             </div> */}
             </div>
         </div>
-    </li>
   )
 }
 
