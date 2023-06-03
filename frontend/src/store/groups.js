@@ -47,7 +47,8 @@ export const thunkGetAllGroups = () => async dispatch => {
     const res = await csrfFetch('/api/groups');
     if (res.ok) {
         const data = await res.json();
-        dispatch(actionGetAllGroups(data.groups))
+        dispatch(actionGetAllGroups(data.Groups))
+        console.log(data.Groups)
     } else {
         const errors = await res.json();
         return errors;
@@ -65,11 +66,11 @@ export const thunkGetCurrentGroups = () => async dispatch => {
     }
 }
 
-export const thunkGetSingleGroup = (group) => async dispatch => {
-    const res = await csrfFetch(`/api/groups/${group.id}`);
+export const thunkGetSingleGroup = (groupId) => async dispatch => {
+    const res = await csrfFetch(`/api/groups/${groupId}`);
     if (res.ok) {
-        const data = await res.json();
-        dispatch(actionGetSingleGroup(data.group))
+        const group = await res.json();
+        dispatch(actionGetSingleGroup(group))
     } else {
         const errors = await res.json();
         return errors;
@@ -130,7 +131,7 @@ const groupsReducer = (state = initialState, action) => {
         };
         case GET_CURRENT_GROUPS: {
             const newState = { ...state, currentGroups: {} };
-            action.payload.forEach(group => newState.currentGroups[group.id] = group);
+           // action.payload.forEach(group => newState.currentGroups[group.id] = group);
             return newState;
         };
         case GET_SINGLE_GROUP: {
@@ -141,7 +142,7 @@ const groupsReducer = (state = initialState, action) => {
         case CREATE_GROUP:
         case UPDATE_GROUP: {
             const newState = { ...state };
-            newState.allGroups = { ...newState.allGroups, [action.payload.id]: group };
+            newState.allGroups = { ...newState.allGroups, [action.payload.id]: action.payload };
             return newState;
         };
         case DELETE_GROUP: {

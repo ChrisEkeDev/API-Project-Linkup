@@ -5,15 +5,15 @@ import { Link } from 'react-router-dom'
 function GroupItem({group}) {
   return (
     <li className='group_item-wrapper'>
-        <Link to='/groups/1' className='group-link'>
+        <Link to={`/groups/${group.id}`} className='group-link'>
             <article className='group_item-contents'>
-                <div className='group_item-image' ></div>
+                <div className='group_item-image'></div>
                 <div className='group_item-information'>
-                    <h2 className='subheading'>Group Name</h2>
-                    <small className='small'>Location</small>
-                    <p className='body'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <h2 className='subheading'>{group?.name}</h2>
+                    <small className='small'>{group?.city}, {group?.state}</small>
+                    <p className='body'>{group?.about}</p>
                     <div className='group_item-details'>
-                        <small className='small'>## of events<span> &#8729; </span>Public</small>
+                        <small className='small'>## of events<span> &#8729; </span>{group?.private ? 'Private' : 'Public'}</small>
                     </div>
                 </div>
             </article>

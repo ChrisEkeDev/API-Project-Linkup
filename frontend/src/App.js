@@ -10,6 +10,7 @@ import Form from './components/Form';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Search from './components/Search';
+import Group from './components/Groups/Group';
 import './index.css';
 
 function App() {
@@ -53,6 +54,9 @@ function App() {
             </Route>
             <Route path='/search'>
               <Search/>
+            </Route>
+            <Route path='/groups/:groupId'>
+              <Group/>
             </Route>
         </Switch>
       </LoadingProvider>

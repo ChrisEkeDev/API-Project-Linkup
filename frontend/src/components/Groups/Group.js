@@ -1,11 +1,24 @@
-import React from 'react';
-import { Link } from 'react-router-dom'
-import EventItem from '../events/eventItem';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { thunkGetSingleGroup } from '../../store/groups';
+import EventItem from '../Events/EventItem';
+import Button from '../Buttons/Button';
 import './Group.css';
 import { FaAngleLeft } from 'react-icons/fa';
 
 function Group() {
+    const dispatch = useDispatch();
+    const { groupId } = useParams();
+    const user = useSelector(state => state.session.user)
+    const group = useSelector(state => state.groups.singleGroup)
     const events = ['past', 'past', 'future', 'future', 'future', 'future', 'past', 'future']
+
+    useEffect(() => {
+        dispatch(thunkGetSingleGroup(groupId))
+    }, [dispatch])
+
+
   return (
     <main className='group-wrapper'>
         <header className='group_header-wrapper'>
@@ -18,12 +31,33 @@ function Group() {
                     <div className='group-image'></div>
                     <div className='group_details-wrapper'>
                         <div className='group_details-contents'>
-                            <h1 className='heading'>Group Name</h1>
-                            <small className='body small'>Location</small>
-                            <small className='body small'>## of events<span> &#8729; </span>Public</small>
-                            <small className='body small'>Organized by Firstname Lastname</small>
+                            <h1 className='heading'>{group?.name}</h1>
+                            <small className='body small'>{group?.city}, {group?.state}</small>
+                            <small className='body small'>## of events<span> &#8729; </span>{group?.private ? 'Private' : 'Public'}</small>
+                            <small className='body small'>Organized by {group?.Organizer.firstName} {group?.Organizer.lastName}</small>
                         </div>
-                        <button className='group-button'>Join this group</button>
+                        {
+                            user.id === group.Organizer.id ?
+                            <div className='group-actions'>
+                                <Button
+                                    label='Create Event'
+                                    type='secondary small-btn'
+                                />
+                                <Button
+                                    label='Update'
+                                    type='secondary small-btn'
+                                />
+                                <Button
+                                    label='Delete'
+                                    type='secondary small-btn'
+                                />
+                            </div> :
+                            <Button
+                                label='Join this group'
+                                type='primary'
+                            />
+                        }
+
                     </div>
                 </div>
             </div>
@@ -32,13 +66,11 @@ function Group() {
             <div className='group_section-contents'>
                 <header className='group_section-header'>
                     <h2 className='subheading'>Organizer</h2>
-                    <p className='body'>First Name Last name</p>
+                    <p className='body'>{group?.Organizer.firstName} {group?.Organizer.lastName}</p>
                 </header>
                 <article className='group_section-about'>
                     <h2 className='subheading'>What we're about</h2>
-                    <p className='body'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Augue neque gravida in fermentum. Sapien nec sagittis aliquam malesuada bibendum arcu vitae elementum. Nisi scelerisque eu ultrices vitae auctor eu. Donec ac odio tempor orci. Arcu cursus euismod quis viverra nibh cras pulvinar mattis. Potenti nullam ac tortor vitae purus faucibus ornare. Consectetur adipiscing elit ut aliquam purus sit amet. Turpis egestas maecenas pharetra convallis posuere morbi leo urna. Volutpat sed cras ornare arcu. Fusce id velit ut tortor pretium viverra suspendisse potenti nullam. Sem nulla pharetra diam sit amet nisl suscipit.
-
-Accumsan tortor posuere ac ut consequat semper viverra. Amet nulla facilisi morbi tempus. Lectus arcu bibendum at varius vel pharetra. Morbi quis commodo odio aenean sed adipiscing diam donec. Diam phasellus vestibulum lorem sed. Semper viverra nam libero justo. Justo nec ultrices dui sapien. Amet nisl suscipit adipiscing bibendum est ultricies integer quis auctor. Accumsan tortor posuere ac ut consequat semper viverra nam libero. Facilisi nullam vehicula ipsum a arcu cursus vitae congue. Eget mi proin sed libero enim sed faucibus. Ut sem viverra aliquet eget sit amet tellus cras.</p>
+                    <p className='body'>{group?.about}</p>
                 </article>
                 <article className='group_section-events_calendar'>
                     <section className='group_section-events'>
@@ -49,7 +81,7 @@ Accumsan tortor posuere ac ut consequat semper viverra. Amet nulla facilisi morb
                             <ul>
                                 {events.filter(e=>e==='future').map(e => {
                                         return (
-                                            <li><EventItem contained={true} /></li>
+                                            <EventItem contained={true} />
                                         )
                                 })}
                            </ul>

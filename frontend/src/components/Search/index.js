@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { Switch, Route, NavLink, useRouteMatch } from 'react-router-dom/';
-import { useDisatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetAllGroups } from '../../store/groups';
 import './Search.css';
-import Groups from '../groups';
-import Events from '../events';
+import Groups from '../Groups';
+import Events from '../Events';
 
 function Search() {
-    const dispatch = useDisatch();
+    const dispatch = useDispatch();
     const { url } = useRouteMatch();
     const groups = useSelector(state => state.groups.allGroups)
 

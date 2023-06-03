@@ -1,14 +1,15 @@
 import React from 'react'
-import GroupItem from './groupItem';
+import GroupItem from './GroupItem';
 import './Group.css';
 
 function Groups({groups}) {
+  const groupArray = Object.values(groups);
 
   return (
     <ul className='groups-wrapper' role='list'>
-        {groups.map(group => {
+        {groupArray.map(group => {
             return (
-                <GroupItem key={group} group={group}/>
+                <GroupItem key={group.id} group={group}/>
             )
         })}
     </ul>
