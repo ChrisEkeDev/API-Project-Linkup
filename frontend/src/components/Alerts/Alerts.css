@@ -1,0 +1,40 @@
+@import url('../../index.css');
+
+.alerts-wrapper {
+    position: fixed;
+    z-index: 75;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    right: 0;
+}
+
+.alerts-contents {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 100px 48px;
+}
+
+.alert-wrapper {
+    background-color: var(--white);
+    display: flex;
+    padding: 12px;
+    border: 1px solid var(--light-gray);
+    gap: 12px;
+    border-radius: 5px;
+    align-items: center;
+    .body {
+        margin: 0;
+        margin-right: 50px;
+    }
+
+    .alert-close {
+        color: var(--red);
+        cursor: pointer;
+    }
+
+    .alert-icon {
+        color: var(--teal)
+    }
+}

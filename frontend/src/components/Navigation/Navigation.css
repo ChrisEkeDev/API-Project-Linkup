@@ -1,0 +1,101 @@
+@import url('../../index.css');
+
+#nav-wrapper {
+    border-bottom: 1px solid var(--light-gray);
+    position: fixed;
+    background-color: white;
+    z-index: 10;
+    width: calc(100dvw - 10px);
+}
+
+.nav-contents {
+    padding: 12px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+
+
+    .actions {
+        display: flex;
+        align-items: center;
+        gap: 50px;
+    }
+
+    .link {
+        text-decoration: none;
+        font-size: var(--body);
+        cursor: pointer;
+    }
+}
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    gap: 6px;
+    color: var(--red);
+    cursor: pointer;
+}
+
+.logo {
+    height: 45px;
+}
+
+.logo-text {
+    font-weight: 500;
+    font-size: 36px;
+    font-family: 'Grand Hotel';
+}
+
+.navigation_menu-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-image {
+    height: 50px;
+    aspect-ratio: 1;
+    background-color: var(--dark-gray);
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.menu-icon {
+    cursor: pointer;
+}
+
+.nav_user-contents {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.new_group-link {
+    text-decoration: none;
+    color: var(--teal)
+}
+
+.new_group-link:hover {
+    text-decoration: underline;
+}
+
+.navigation_menu-contents {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    gap: 12px;
+    position: absolute;
+    padding: 24px;
+    background-color: white;
+    top: calc(100% + 36px);
+    border-radius: 10px;
+    right: 0;
+    border: 1px solid var(--light-gray);
+
+    .body:first-of-type {
+        text-transform: capitalize;
+    }
+}

@@ -46,6 +46,11 @@ module.exports = {
         allowNull: false,
         values: ['In person', 'Online']
       },
+      private: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+      },
       capacity: {
         type: Sequelize.INTEGER,
         allowNull: false,

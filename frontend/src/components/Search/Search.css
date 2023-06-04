@@ -1,0 +1,32 @@
+@import url('../../index.css');
+
+#search-wrapper {
+    padding: 175px 0;
+}
+.search-contents {
+    width: var(--max);
+    margin: var(--center)
+}
+
+.search-header {
+    margin-bottom: 24px;
+}
+
+.search-tabs {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.search-tab {
+    font-size: var(--subheading);
+    text-decoration: none;
+    color: var(--black)
+}
+.active-tab {
+    color: var(--teal);
+    text-decoration: underline;
+    pointer-events: none;
+    font-weight: 600;
+}

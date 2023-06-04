@@ -53,7 +53,11 @@ router.get('/', async (req, res) => {
         include: [
             {
                 model: Group,
-                attributes: ['id', 'name', 'city', 'state']
+                attributes: ['id', 'name', 'city', 'state'],
+                include: {
+                    model: User,
+                    as: 'Organizer'
+                }
             },
             {
                 model: Venue,
@@ -87,6 +91,22 @@ router.get('/', async (req, res) => {
 })
 
 
+//Get all events attended by the user
+router.get('/current', async(req, res) => {
+    const userId = req.user.id;
+    const attendance = await Attendance.findAll({
+        where: {
+            userId
+        }
+    })
+    if (attendance.length) {
+        return res.status(200).json({Attendance: attendance})
+    } else {
+        return res.status(200).json({Attendance: []})
+    }
+
+})
+
 // Get details of an Event specified by its id
 router.get('/:eventId', async (req, res) => {
     const { eventId } = req.params;
@@ -96,6 +116,13 @@ router.get('/:eventId', async (req, res) => {
                 model: Group,
                 attributes: {
                     exclude: ['organizerId', 'about', 'type', 'createdAt', 'updatedAt']
+                },
+                include: {
+                    model: User,
+                    as: 'Organizer'
+                },
+                include: {
+                    model: Venue
                 }
             },
             {
@@ -188,6 +215,7 @@ const validateEditEvent = [
     check('name').optional().exists({checkFalsy: true}).isLength({min: 5}).withMessage('Name must be at leat 5 characters'),
     check('type').optional().exists({checkFalsy: true}).isIn(['In person', 'Online']).withMessage('Type must be Online or In person'),
     check('capacity').optional().exists({checkFalsy: true}).isInt().withMessage('Capacity must be an integer'),
+    check('private').optional().exists().isBoolean().withMessage('Private must be a boolean'),
     check('price').optional().custom(async (price) => {
         let priceRegex = /^\d+(?:\.\d+)?(?:,\d+(?:\.\d{2})?)*$/;
         if (!priceRegex.test(price)) throw new Error('Price is invalid')
@@ -201,7 +229,6 @@ const validateEditEvent = [
     check('endDate').optional().custom(async (date, {req}) => {
         let convDate = new Date(date);
         let startDate = new Date(req.body.startDate)
-        // console.log(req.)
         if (convDate < startDate) throw new Error('End date is less than start date')
     }),
     handleValidationErrors
@@ -289,6 +316,7 @@ router.delete('/:eventId', requireAuth, async (req, res) => {
     // Authorization
     let status = user[0]?.Membership.dataValues.status;
     if ( status === "co-host" || userId === group.dataValues.organizerId ) {
+        await event.destroy();
         return res.status(200).json({
             message: "Successfully deleted"
         })
