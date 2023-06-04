@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import DashboardEventItem from './DashboardEventItem'
 import Button from '../Buttons/Button'
 
@@ -7,6 +8,11 @@ function DashboardEvents({attendance}) {
     const normalizeAttendance = Object.values(attendance);
     const attending = normalizeAttendance.filter(event => event.status === 'attending');
     const waitlist = normalizeAttendance.filter(event => event.status === 'waitlist');
+    const history = useHistory();
+
+    const navigate = (route) => {
+        history.push(route)
+    }
 
   return (
     <section className='dashboard-events'>
@@ -32,6 +38,7 @@ function DashboardEvents({attendance}) {
                             type='secondary'
                             style='small-btn'
                             label='Search Events'
+                            action={() => navigate('/search/events')}
                         />
                     </div>
                     }
@@ -50,6 +57,7 @@ function DashboardEvents({attendance}) {
                             type='secondary'
                             style='small-btn'
                             label='Search Events'
+                            action={() => navigate('/search/events')}
                         />
                     </div>
                     }

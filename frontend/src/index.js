@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import configureStore from './store'
 import AlertsProvider from './context/AlertsProvider';
 import { Provider } from 'react-redux';
+import ScrollToTop from './utils/ScrollToTop';
 import './index.css';
 import App from './App';
 import { restoreCSRF, csrfFetch } from './store/csrf';
@@ -23,9 +24,11 @@ function Root() {
   return (
     <Provider store={store}>
       <AlertsProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+        <BrowserRouter>
+          <ScrollToTop>
+            <App />
+          </ScrollToTop>
+        </BrowserRouter>
       </AlertsProvider>
     </Provider>
   )

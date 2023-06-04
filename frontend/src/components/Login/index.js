@@ -2,6 +2,7 @@ import React, { useEffect, useState} from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import { FaTimes } from 'react-icons/fa';
 import { useLoading } from '../../context/LoadingProvider';
+import { useAlerts } from '../../context/AlertsProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkLogIn } from '../../store/session';
 import Inputs from '../Inputs/Inputs';
@@ -11,6 +12,7 @@ import useInitialRender from '../../hooks/useInitialRender';
 function Login({close}) {
     const user = useSelector(state => state.session.user);
     const { setLoading } = useLoading();
+    const { handleAlerts } = useAlerts();
     const [ credential, setCredential ] = useState('');
     const [ password, setPassword ] = useState('');
     const [ errors, setErrors ] = useState({});
@@ -31,6 +33,7 @@ function Login({close}) {
             .catch(async(errors) => {
                 const data = await errors.json();
                 if (data && data.errors) setErrors(data.errors)
+                handleAlerts(data)
                 setLoading(false)
             })
         )

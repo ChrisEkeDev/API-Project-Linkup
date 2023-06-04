@@ -54,6 +54,7 @@ function App() {
 
   return (
     <div id='app-wrapper'>
+      <div id='top-ref'></div>
       <LoadingProvider>
         {
           authForm === 'login' ?
