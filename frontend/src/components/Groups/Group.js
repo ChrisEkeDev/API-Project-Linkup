@@ -97,6 +97,7 @@ function Group() {
                                 <Button
                                     label='Create Event'
                                     type='secondary small-btn'
+                                    action={() => navigate(`/create-event/${group?.id}`)}
                                 />
                                 <Button
                                     label='Update'

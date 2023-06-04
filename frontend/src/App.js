@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkRestoreUser } from './store/session';
+import { thunkGetAllEvents } from './store/events';
+import { thunkGetAllGroups } from './store/groups';
 import { Switch, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import LoadingProvider from './context/LoadingProvider';
@@ -15,6 +17,7 @@ import Group from './components/Groups/Group';
 import CreateGroup from './components/CreateGroup';
 import UpdateGroup from './components/UpdateGroup';
 import Event from './components/Events/Event';
+import CreateEvent from './components/CreateEvent';
 import './index.css';
 
 function App() {
@@ -37,6 +40,8 @@ function App() {
 
   useEffect(() => {
       restoreSession();
+      dispatch(thunkGetAllEvents());
+      dispatch(thunkGetAllGroups());
   }, [dispatch])
 
   useEffect(() => {
@@ -82,6 +87,9 @@ function App() {
             </Route>
             <Route path='/events/:eventId'>
               <Event/>
+            </Route>
+            <Route path='/create-event/:groupId'>
+              <CreateEvent/>
             </Route>
         </Switch>
       </LoadingProvider>

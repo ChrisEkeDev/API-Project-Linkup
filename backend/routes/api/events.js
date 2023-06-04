@@ -53,7 +53,11 @@ router.get('/', async (req, res) => {
         include: [
             {
                 model: Group,
-                attributes: ['id', 'name', 'city', 'state']
+                attributes: ['id', 'name', 'city', 'state'],
+                include: {
+                    model: User,
+                    as: 'Organizer'
+                }
             },
             {
                 model: Venue,
@@ -112,6 +116,10 @@ router.get('/:eventId', async (req, res) => {
                 model: Group,
                 attributes: {
                     exclude: ['organizerId', 'about', 'type', 'createdAt', 'updatedAt']
+                },
+                include: {
+                    model: User,
+                    as: 'Organizer'
                 }
             },
             {
@@ -217,7 +225,6 @@ const validateEditEvent = [
     check('endDate').optional().custom(async (date, {req}) => {
         let convDate = new Date(date);
         let startDate = new Date(req.body.startDate)
-        // console.log(req.)
         if (convDate < startDate) throw new Error('End date is less than start date')
     }),
     handleValidationErrors

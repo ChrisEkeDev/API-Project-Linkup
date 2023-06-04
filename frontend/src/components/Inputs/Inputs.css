@@ -17,6 +17,25 @@
     }
 }
 
+.date_time-input-wrapper {
+    position: relative;
+    display: block;
+    margin-top: 60px;
+}
+
+.price_input-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.number_input-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+
 .input-with-label {
     margin-top: 60px;
 }
@@ -25,12 +44,31 @@
     margin: 10px 0;
 }
 
+.date_time-wrapper {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+
+}
+
 .input {
     width: 100%;
     padding: 15px;
     border-radius: 5px;
     border: 1px solid var(--light-gray);
     background-color: rgb(244, 255, 254);
+}
+
+.date_input {
+    width: 250px;
+}
+
+.time_input {
+    width: 150px;
+}
+
+.price_input {
+    width: 150px;
 }
 
 .textarea {
@@ -53,11 +91,25 @@
     left: 0;
 }
 
+.price_input-wrapper .input-error {
+    left: 0;
+}
+.number_input {
+    width: 150px;
+}
+
 .password-icon {
     position: absolute;
     right: 15px;
     top: 15px;
     cursor: pointer;
+    color: var(--dark-gray);
+}
+
+.price_input-icon {
+    position: absolute;
+    left: 15px;
+    top: 15px;
     color: var(--dark-gray);
 }
 

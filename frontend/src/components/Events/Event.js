@@ -13,27 +13,31 @@ function Event() {
   const dispatch = useDispatch();
   const { eventId } = useParams();
   const user = useSelector(state => state.session.user)
-  const event = useSelector(state => state.events.singleEvent);
-  const group = useSelector(state => state.groups.allGroups[event.groupId])
-  // console.log(event)
+  const event = useSelector(state => state.events.allEvents[eventId]);
+  const eventDetails = useSelector(state => state.events.singleEvent);
 
-  const startDate = new Date(event?.startDate);
-  const endDate = new Date(event?.endDate);
+  let formattedStartDate;
+  let formattedEndDate;
+  let formattedStartTime;
+  let formattedEndTime;
 
-  const dateOptions = {
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
+  if (event) {
+    const startDate = new Date(event?.startDate);
+    const endDate = new Date(event?.endDate);
+    const dateOptions = {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+    }
+    formattedStartDate = new Intl.DateTimeFormat('en-US', dateOptions).format(startDate);
+    formattedEndDate = new Intl.DateTimeFormat('en-US', dateOptions).format(endDate);
+    const timeOptions = {
+        hour: "numeric",
+        minute: "numeric",
+    }
+    formattedStartTime = new Intl.DateTimeFormat('en-US', timeOptions).format(startDate);
+    formattedEndTime = new Intl.DateTimeFormat('en-US', timeOptions).format(endDate);
   }
-  const formattedStartDate = new Intl.DateTimeFormat('en-US', dateOptions).format(startDate);
-  const formattedEndDate = new Intl.DateTimeFormat('en-US', dateOptions).format(endDate);
-
-  const timeOptions = {
-      hour: "numeric",
-      minute: "numeric",
-  }
-  const formattedStartTime = new Intl.DateTimeFormat('en-US', timeOptions).format(startDate);
-  const formattedEndTime = new Intl.DateTimeFormat('en-US', timeOptions).format(endDate);
 
   const navigate = (route) => {
     history.push(route)
@@ -52,7 +56,7 @@ function Event() {
               Events
             </Link>
             <h1 className='heading'>{event?.name}</h1>
-            <p className='body small'>Hosted by <span className='caps'>{group?.Organizer?.firstName} {group?.Organizer?.lastName}</span></p>
+            <p className='body small'>Hosted by <span className='caps'>{eventDetails?.Group?.Organizer?.firstName} {eventDetails?.Group?.Organizer?.lastName}</span></p>
           </div>
         </header>
         <section className='event_section-wrapper' >
@@ -63,8 +67,8 @@ function Event() {
                   <div onClick={() => navigate('/groups/1')} className='event_section-group'>
                     <div className='event_section-group_image'></div>
                     <div className='event_section-group_info'>
-                      <p className='body bold'>{group?.name}</p>
-                      <p className='body small'>{group?.private ? 'Private' : 'Public'}</p>
+                      <p className='body bold'>{eventDetails?.Group?.name}</p>
+                      <p className='body small'>{eventDetails?.Group?.private ? 'Private' : 'Public'}</p>
                     </div>
                   </div>
                   <div className='event_section-details'>
@@ -81,7 +85,7 @@ function Event() {
                     </div>
                     <div className='event_section-details_item'>
                       <FaMapPin className='icon'/>
-                      <p className='small'>{group?.type}</p>
+                      <p className='small'>{event?.type}</p>
                     </div>
                   </div>
               </aside>

@@ -15,6 +15,7 @@ function DashboardEventItem({id}) {
 
     let formattedDate;
     let formattedTime;
+
     if (event) {
         const date = new Date(event?.startDate)
         const dateOptions = {
@@ -30,8 +31,6 @@ function DashboardEventItem({id}) {
         }
         formattedTime = new Intl.DateTimeFormat('en-US', timeOptions).format(date)
     }
-
-
 
     useEffect(() => {
         dispatch(thunkGetAllEvents());

@@ -4,21 +4,26 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function EventItem({id, contained}) {
-const eventItem = useSelector(state => state.events.allEvents[id]);
-const date = new Date(eventItem?.startDate)
-const dateOptions = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-}
-const formattedDate = new Intl.DateTimeFormat('en-US', dateOptions).format(date);
-const timeOptions = {
-    hour: "numeric",
-    minute: "numeric",
-}
-const formattedTime = new Intl.DateTimeFormat('en-US', timeOptions).format(date);
+const event = useSelector(state => state.events.allEvents[id]);
 
+let formattedDate;
+let formattedTime;
+
+if (event) {
+    const date = new Date(event?.startDate)
+    const dateOptions = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    }
+    formattedDate = new Intl.DateTimeFormat('en-US', dateOptions).format(date);
+    const timeOptions = {
+        hour: "numeric",
+        minute: "numeric",
+    }
+    formattedTime = new Intl.DateTimeFormat('en-US', timeOptions).format(date);
+}
 
   return (
     <li className='event_item-wrapper'>
@@ -28,11 +33,11 @@ const formattedTime = new Intl.DateTimeFormat('en-US', timeOptions).format(date)
                     <div className='event_item-image'></div>
                     <div className='event_item-details'>
                         <h3 className='body green'>{formattedDate} <span> @ </span> {formattedTime} </h3>
-                        <h2 className='subheading'>{eventItem?.name}</h2>
-                        <small className='body small'>{eventItem?.Group.city}, {eventItem?.Group.state}</small>
+                        <h2 className='subheading'>{event?.name}</h2>
+                        <small className='body small'>{event?.Group.city}, {event?.Group.state}</small>
                     </div>
                 </div>
-                <p className='body'>{eventItem?.description}</p>
+                <p className='body'>{event?.description}</p>
             </article>
         </Link>
     </li>
