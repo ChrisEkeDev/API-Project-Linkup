@@ -1,24 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Switch, Route, NavLink, useRouteMatch, useLocation } from 'react-router-dom/';
-import { useDispatch, useSelector } from 'react-redux';
-import { thunkGetAllGroups } from '../../store/groups';
-import { thunkGetAllEvents } from '../../store/events';
 import './Search.css';
 import Groups from '../Groups';
 import Events from '../Events';
 
 function Search() {
     const { pathname } = useLocation();
-    const dispatch = useDispatch();
     const { url } = useRouteMatch();
-    const groups = useSelector(state => state.groups.allGroups);
-    const events = useSelector(state => state.events.allEvents);
-
-    useEffect(() => {
-        dispatch(thunkGetAllGroups());
-        dispatch(thunkGetAllEvents())
-    }, [dispatch])
-
 
   return (
     <main id='search-wrapper'>
@@ -44,10 +32,10 @@ function Search() {
             </header>
             <Switch>
                 <Route exact path={`${url}/events`}>
-                    <Events events={events}/>
+                    <Events/>
                 </Route>
                 <Route exact path={`${url}/groups`}>
-                    <Groups groups={groups}/>
+                    <Groups/>
                 </Route>
             </Switch>
         </div>

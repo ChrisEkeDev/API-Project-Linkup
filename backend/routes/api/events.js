@@ -312,6 +312,7 @@ router.delete('/:eventId', requireAuth, async (req, res) => {
     // Authorization
     let status = user[0]?.Membership.dataValues.status;
     if ( status === "co-host" || userId === group.dataValues.organizerId ) {
+        await event.destroy();
         return res.status(200).json({
             message: "Successfully deleted"
         })

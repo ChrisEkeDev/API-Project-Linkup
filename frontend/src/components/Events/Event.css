@@ -113,20 +113,29 @@
 
 .event_section-group_image {
     height: 90px;
-    width: 170px;
+    aspect-ratio: 1;
     border-radius: 10px;
     background-color: var(--dark-gray);
 }
 
 .event_section-details {
+    position: relative;
     background-color: var(--white);
     padding: 24px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    .absolute {
+        right: 24px;
+        bottom: 24px;
+    }
 }
 
+.event-actions {
+    display: flex;
+    gap: 12px;
+}
 .event_section-details_item {
     display: flex;
     align-items: center;

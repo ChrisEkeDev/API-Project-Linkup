@@ -4,8 +4,8 @@
     position: fixed;
     z-index: 75;
     display: flex;
-    align-items: start;
-    justify-content: end;
+    align-items: flex-start;
+    justify-content: flex-end;
     right: 0;
 }
 

@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetSingleEvent, thunkDeleteEvent } from '../../store/events';
+import Button from '../Buttons/Button';
 import { useLoading } from '../../context/LoadingProvider';
 import { useAlerts } from '../../context/AlertsProvider';
 import Modal from '../Modal';
@@ -11,10 +12,13 @@ import './Event.css';
 function Event() {
   const history = useHistory();
   const dispatch = useDispatch();
+  const { handleAlerts } = useAlerts();
+  const { setLoading } = useLoading();
   const { eventId } = useParams();
   const user = useSelector(state => state.session.user)
   const event = useSelector(state => state.events.allEvents[eventId]);
   const eventDetails = useSelector(state => state.events.singleEvent);
+  const [ deleting, setDeleting ] = useState(false)
 
   let formattedStartDate;
   let formattedEndDate;
@@ -43,12 +47,51 @@ function Event() {
     history.push(route)
   }
 
+  const deleteEvent = (e) => {
+    e.preventDefault();
+    setLoading(true)
+    return (
+        dispatch(thunkDeleteEvent(eventDetails))
+        .then((alert) => {
+            handleAlerts(alert);
+            navigate('/search/events');
+            setLoading(false);
+        })
+        .catch(async(errors) => {
+            console.log(errors)
+            setLoading(false)
+        })
+    )
+}
+
   useEffect(() => {
     dispatch(thunkGetSingleEvent(eventId))
   }, [dispatch])
 
   return (
     <main className='event-wrapper'>
+      {
+            deleting ?
+            <Modal>
+                <form className='modal-contents'>
+                    <h2 className='subheading'>Confirm Delete</h2>
+                    <p className='body'>Are you sure you want to remove this event?</p>
+                    <Button
+                        style='spaced'
+                        type='primary'
+                        label='Yes (Delete Event)'
+                        action={(e) => deleteEvent(e)}
+                    />
+                    <Button
+                        style='spaced'
+                        type='tertiary'
+                        label='No (Keep Event)'
+                        action={() => setDeleting(false)}
+                    />
+                </form>
+            </Modal> :
+            null
+        }
         <header className='event_header-wrapper'>
           <div className='event_header-contents'>
             <Link className='group-back' to='/search/events'>
@@ -87,6 +130,21 @@ function Event() {
                       <FaMapPin className='icon'/>
                       <p className='small'>{event?.type}</p>
                     </div>
+                    <div className='event-actions absolute'>
+                    <Button
+                      style='small-btn'
+                      type='secondary'
+                      label='Update'
+                      action={() => navigate(`/update-event/${event?.id}`)}
+                    />
+                    <Button
+                      style='small-btn'
+                      type='secondary'
+                      label='Delete'
+                      action={() => setDeleting(true)}
+                    />
+                    </div>
+
                   </div>
               </aside>
             </div>
