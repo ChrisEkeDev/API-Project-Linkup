@@ -9,6 +9,8 @@ import Modal from '../Modal';
 import { FaRegClock, FaMapPin, FaDollarSign, FaAngleLeft } from 'react-icons/fa';
 import './Event.css';
 
+
+
 function Event() {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -17,8 +19,9 @@ function Event() {
   const { eventId } = useParams();
   const user = useSelector(state => state.session.user)
   const event = useSelector(state => state.events.allEvents[eventId]);
-  const eventDetails = useSelector(state => state.events.singleEvent);
   const [ deleting, setDeleting ] = useState(false)
+
+  console.log(event)
 
   let formattedStartDate;
   let formattedEndDate;
@@ -51,7 +54,7 @@ function Event() {
     e.preventDefault();
     setLoading(true)
     return (
-        dispatch(thunkDeleteEvent(eventDetails))
+        dispatch(thunkDeleteEvent(event))
         .then((alert) => {
             handleAlerts(alert);
             navigate('/search/events');
@@ -99,7 +102,7 @@ function Event() {
               Events
             </Link>
             <h1 className='heading'>{event?.name}</h1>
-            <p className='body small'>Hosted by <span className='caps'>{eventDetails?.Group?.Organizer?.firstName} {eventDetails?.Group?.Organizer?.lastName}</span></p>
+            <p className='body small'>Hosted by <span className='caps'>{event?.Group?.Organizer?.firstName} {event?.Group?.Organizer?.lastName}</span></p>
           </div>
         </header>
         <section className='event_section-wrapper' >
@@ -110,8 +113,8 @@ function Event() {
                   <div onClick={() => navigate('/groups/1')} className='event_section-group'>
                     <div className='event_section-group_image'></div>
                     <div className='event_section-group_info'>
-                      <p className='body bold'>{eventDetails?.Group?.name}</p>
-                      <p className='body small'>{eventDetails?.Group?.private ? 'Private' : 'Public'}</p>
+                      <p className='body bold'>{event?.Group?.name}</p>
+                      <p className='body small'>{event?.Group?.private ? 'Private' : 'Public'}</p>
                     </div>
                   </div>
                   <div className='event_section-details'>
@@ -130,6 +133,7 @@ function Event() {
                       <FaMapPin className='icon'/>
                       <p className='small'>{event?.type}</p>
                     </div>
+                    {user?.id === event?.Group?.Organizer?.id ?
                     <div className='event-actions absolute'>
                     <Button
                       style='small-btn'
@@ -143,7 +147,8 @@ function Event() {
                       label='Delete'
                       action={() => setDeleting(true)}
                     />
-                    </div>
+                    </div> :
+                    null }
 
                   </div>
               </aside>

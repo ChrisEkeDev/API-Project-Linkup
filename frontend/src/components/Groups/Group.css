@@ -11,6 +11,12 @@
     }
 }
 
+.group-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .group-link {
     color: inherit;
     text-decoration: none;
@@ -118,6 +124,7 @@
 
 .group_section-wrapper {
     background-color: var(--light-gray);
+    flex: 1;
 }
 
 .group_section-contents {
