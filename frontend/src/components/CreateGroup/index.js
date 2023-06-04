@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useLoading } from '../../context/LoadingProvider';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,6 +24,16 @@ function CreateGroup() {
     const [ errors, setErrors ] = useState({});
     const dispatch = useDispatch();
     const history = useHistory();
+
+    const visibilities = [
+        {value: true, label: 'Private'},
+        {value: false, label: 'Public'}
+    ]
+
+    const types = [
+        {value: 'In person', label: 'In person'},
+        {value: 'Online', label: 'Online'}
+    ]
 
     const submit = (e) => {
         e.preventDefault();
@@ -96,10 +106,10 @@ function CreateGroup() {
   return (
     <main className='create_group-wrapper'>
         <div className='create_group-contents'>
-                <div className='group-back' onClick={history.goBack}>
-                    <FaAngleLeft className='back-icon'/>
-                    Back
-                </div>
+            <div className='group-back' onClick={history.goBack}>
+                <FaAngleLeft className='back-icon'/>
+                Back
+            </div>
             <header className='create_group-header'>
                 <h3 className='body green'>BECOME AN ORGANIZER</h3>
                 <h2 className='subheading'>We'll walk you through a few steps to build your local community</h2>
@@ -157,7 +167,7 @@ function CreateGroup() {
                         label='Is this an in person or online group?'
                         placeholder='select one'
                         name='type'
-                        values={['In person', 'Online']}
+                        values={types}
                         value={type}
                         setValue={(x) => setType(x.target.value)}
                         error={errors.type}
@@ -166,7 +176,7 @@ function CreateGroup() {
                         label='Is this group private or public?'
                         placeholder='select one'
                         name='private'
-                        values={['Private', 'Public']}
+                        values={visibilities}
                         value={isPrivate}
                         setValue={(x) => setIsPrivate(x.target.value)}
                         error={errors.private}

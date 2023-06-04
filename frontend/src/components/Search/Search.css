@@ -10,9 +10,6 @@
 
 .search-header {
     margin-bottom: 24px;
-    .body {
-        color: var(--light-gray)
-    }
 }
 
 .search-tabs {

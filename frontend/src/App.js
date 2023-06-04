@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkRestoreUser } from './store/session';
+import { thunkGetAllEvents } from './store/events';
+import { thunkGetAllGroups } from './store/groups';
 import { Switch, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import LoadingProvider from './context/LoadingProvider';
+import { useAlerts } from './context/AlertsProvider';
 import Landing from './components/Landing';
 import Dashboard from './components/Dashboard';
 import Modal from './components/Modal';
@@ -13,17 +16,33 @@ import Search from './components/Search';
 import Group from './components/Groups/Group';
 import CreateGroup from './components/CreateGroup';
 import UpdateGroup from './components/UpdateGroup';
+import Event from './components/Events/Event';
+import CreateEvent from './components/CreateEvent';
+import UpdateEvent from './components/UpdateEvent';
 import './index.css';
-import AlertsProvider from './context/AlertsProvider';
 
 function App() {
   const [ authForm, setAuthForm ] = useState('')
+  const { handleAlerts } = useAlerts();
   const dispatch = useDispatch();
   const user = useSelector(state => state.session.user)
 
-  useEffect(() => {
+  const restoreSession = () => {
+    return (
       dispatch(thunkRestoreUser())
-      .catch(() => console.log('No Session'))
+      .then((alert) => {
+        handleAlerts(alert);
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    )
+  }
+
+  useEffect(() => {
+      restoreSession();
+      dispatch(thunkGetAllEvents());
+      dispatch(thunkGetAllGroups());
   }, [dispatch])
 
   useEffect(() => {
@@ -36,7 +55,6 @@ function App() {
   return (
     <div id='app-wrapper'>
       <LoadingProvider>
-        <AlertsProvider>
         {
           authForm === 'login' ?
           <Modal>
@@ -59,17 +77,25 @@ function App() {
             <Route path='/search'>
               <Search/>
             </Route>
-            <Route path='/update-group/:groupId'>
-              <UpdateGroup/>
-            </Route>
             <Route path='/groups/:groupId'>
               <Group/>
             </Route>
             <Route path='/group/new'>
               <CreateGroup/>
             </Route>
+            <Route path='/update-group/:groupId'>
+              <UpdateGroup/>
+            </Route>
+            <Route path='/events/:eventId'>
+              <Event/>
+            </Route>
+            <Route path='/create-event/:groupId'>
+              <CreateEvent/>
+            </Route>
+            <Route path='/update-event/:eventId'>
+              <UpdateEvent/>
+            </Route>
         </Switch>
-        </AlertsProvider>
       </LoadingProvider>
     </div>
   );

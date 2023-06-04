@@ -6,9 +6,9 @@ function Alerts({removeAlerts, alerts}) {
   return (
     <div className='alerts-wrapper'>
         <div className='alerts-contents'>
-        {alerts?.map(alert => {
+        {alerts?.map((alert, i) => {
             return (
-                <AlertItem removeAlerts={removeAlerts} alert={alert}/>
+                <AlertItem key={i} removeAlerts={removeAlerts} alert={alert}/>
             )
         })}
         </div>

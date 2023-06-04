@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DashboardGroupItem from './DashboardGroupItem';
+import Button from '../Buttons/Button';
 
 function DashboardGroups({user, groups}) {
     const [tab, setTab] = useState('organizer');
@@ -17,14 +18,34 @@ function DashboardGroups({user, groups}) {
             {
                 tab === 'organizer' ?
                 <ul>
-                {organizedGroups.map((group => {
+                {organizedGroups.length === 0 ?
+                <div className='dash-no_groups'>
+                    <p className='body small'>You haven't created any groups yet.</p>
+                    <Button
+                        type='primary'
+                        style='small-btn'
+                        label='Start a group'
+                    />
+                </div>
+                :
+                organizedGroups.map((group => {
                     return (
                         <DashboardGroupItem key={group.id} group={group} organizer={true}/>
                     )
                 }))}
                 </ul> :
                 <ul>
-                {memberOfGroups.map((group => {
+                {memberOfGroups.length === 0 ?
+                <div className='dash-no_groups'>
+                    <p className='body small'>You aren't a member of any groups yet.</p>
+                    <Button
+                        type='primary'
+                        style='small-btn'
+                        label='Search Groups'
+                    />
+                </div>
+                :
+                memberOfGroups.map((group => {
                     return (
                         <DashboardGroupItem key={group.id} group={group}/>
                     )

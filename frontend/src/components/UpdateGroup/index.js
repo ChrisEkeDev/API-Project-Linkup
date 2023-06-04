@@ -15,7 +15,6 @@ function UpdateGroup() {
     const { groupId } = useParams();
     const group = useSelector(state => state.groups.singleGroup)
     const user = useSelector(state => state.session.user);
-    console.log(group, groupId)
     const { setLoading } = useLoading();
     const [ name, setName ] = useState(group?.name);
     const [ about, setAbout ] = useState(group?.about);
@@ -26,6 +25,16 @@ function UpdateGroup() {
     const [ errors, setErrors ] = useState({});
     const dispatch = useDispatch();
     const history = useHistory();
+
+    const visibilities = [
+        {value: true, label: 'Private'},
+        {value: false, label: 'Public'}
+    ]
+
+    const types = [
+        {value: 'In person', label: 'In person'},
+        {value: 'Online', label: 'Online'}
+    ]
 
     const submit = (e) => {
         e.preventDefault();
@@ -157,7 +166,7 @@ function UpdateGroup() {
                         label='Is this an in person or online group?'
                         placeholder='select one'
                         name='type'
-                        values={['In person', 'Online']}
+                        values={types}
                         value={type}
                         setValue={(x) => setType(x.target.value)}
                         error={errors.type}
@@ -166,7 +175,7 @@ function UpdateGroup() {
                         label='Is this group private or public?'
                         placeholder='select one'
                         name='private'
-                        values={['Private', 'Public']}
+                        values={visibilities}
                         value={isPrivate}
                         setValue={(x) => setIsPrivate(x.target.value)}
                         error={errors.private}

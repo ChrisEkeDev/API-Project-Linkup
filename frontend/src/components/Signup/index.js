@@ -16,6 +16,7 @@ function Signup({close}) {
     const [ email, setEmail ] = useState('');
     const [ username, setUsername ] = useState('');
     const [ password, setPassword ] = useState('');
+    const [ confirmPassword, setConfirmPassword ] = useState('');
     const [ errors, setErrors ] = useState({});
     const dispatch = useDispatch();
     const history = useHistory();
@@ -62,8 +63,11 @@ function Signup({close}) {
       if (password.trim().length < 6) {
         errors.password = 'Password must be at least 6 characters';
       }
+      if (password !== confirmPassword) {
+        errors.confirmPassword = 'Passwords must match';
+      }
       setErrors(errors)
-    }, [firstName, lastName, email, password, username])
+    }, [firstName, lastName, email, password, confirmPassword, username])
 
     if (user) return <Redirect to='/' />
 
@@ -114,6 +118,15 @@ function Signup({close}) {
                 setValue={(x) => setPassword(x.target.value)}
                 name='current-password'
                 error={errors.password}
+                disabled={false}
+            />
+            <Inputs
+                placeholder='Confirm Password'
+                type='password'
+                value={confirmPassword}
+                setValue={(x) => setConfirmPassword(x.target.value)}
+                name='confirm-password'
+                error={errors.confirmPassword}
                 disabled={false}
             />
             <Button

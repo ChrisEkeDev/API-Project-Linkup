@@ -1,20 +1,12 @@
-import React, { useEffect } from 'react';
-import { Switch, Route, NavLink, useRouteMatch } from 'react-router-dom/';
-import { useDispatch, useSelector } from 'react-redux';
-import { thunkGetAllGroups } from '../../store/groups';
+import React from 'react';
+import { Switch, Route, NavLink, useRouteMatch, useLocation } from 'react-router-dom/';
 import './Search.css';
 import Groups from '../Groups';
 import Events from '../Events';
 
 function Search() {
-    const dispatch = useDispatch();
+    const { pathname } = useLocation();
     const { url } = useRouteMatch();
-    const groups = useSelector(state => state.groups.allGroups)
-
-    useEffect(() => {
-        dispatch(thunkGetAllGroups())
-    }, [dispatch])
-
 
   return (
     <main id='search-wrapper'>
@@ -36,14 +28,14 @@ function Search() {
                         Groups
                     </NavLink>
                 </div>
-                <p className='body'>Search for '*' </p>
+                <p className='body small'>{pathname.endsWith('events') ? 'Events' : 'Groups'} in Linkup </p>
             </header>
             <Switch>
                 <Route exact path={`${url}/events`}>
-                    {/* <Events/> */}
+                    <Events/>
                 </Route>
                 <Route exact path={`${url}/groups`}>
-                    <Groups groups={groups}/>
+                    <Groups/>
                 </Route>
             </Switch>
         </div>

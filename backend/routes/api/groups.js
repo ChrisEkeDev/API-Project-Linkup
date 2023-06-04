@@ -397,13 +397,17 @@ router.get('/:groupId/events', async (req, res) => {
 
 // Create an Event for a Group specified by its id
 const validateCreateEvent = [
-    check('venueId').custom(async(id) => {
-        const venue = await Venue.findByPk(id);
-        if (!venue) throw new Error('Venue does not exist')
+    check('venueId').optional().custom(async(id) => {
+        if (id !== null) {
+            const venue = await Venue.findByPk(id);
+            if (!venue) throw new Error('Venue does not exist')
+            else return
+        } else return
     }),
     check('name').exists({checkFalsy: true}).isLength({min: 5}).withMessage('Name must be at leat 5 characters'),
     check('type').exists({checkFalsy: true}).isIn(['In person', 'Online']).withMessage('Type must be Online or In person'),
-    check('capacity').exists({checkFalsy: true}).isInt().withMessage('Capacity must be an integer'),
+    check('capacity').exists().isInt().withMessage('Capacity must be an integer'),
+    check('private').exists().isBoolean().withMessage('Private must be a boolean'),
     check('price').custom(async (price) => {
         let priceRegex = /^\d+(?:\.\d+)?(?:,\d+(?:\.\d{2})?)*$/;
         if (!priceRegex.test(price)) throw new Error('Price is invalid')
@@ -417,7 +421,6 @@ const validateCreateEvent = [
     check('endDate').custom(async (date, {req}) => {
         let convDate = new Date(date);
         let startDate = new Date(req.body.startDate)
-        // console.log(req.)
         if (convDate < startDate) throw new Error('End date is less than start date')
     }),
     handleValidationErrors

@@ -71,6 +71,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       values: ['In person', 'Online']
     },
+    private: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
+    },
     capacity: {
       type: DataTypes.INTEGER,
       allowNull: false,

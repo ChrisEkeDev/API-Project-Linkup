@@ -17,9 +17,14 @@ function Group() {
     const { setLoading } = useLoading();
     const { groupId } = useParams();
     const user = useSelector(state => state.session.user)
-    const group = useSelector(state => state.groups.singleGroup)
+    const group = useSelector(state => state.groups.singleGroup);
+    const events = useSelector(state => state.events.allEvents);
+    const normalizedEvents = Object.values(events);
+    const groupEvents = normalizedEvents.filter(event => event.groupId === Number(groupId));
     const [ deleting, setDeleting ] = useState(false)
-    const events = ['past', 'past', 'future', 'future', 'future', 'future', 'past', 'future']
+
+    const upcomingEvents = groupEvents.filter(event => new Date(event.startDate).getTime() > new Date().getTime());
+    const pastEvents = groupEvents.filter(event => new Date(event.startDate).getTime() < new Date().getTime());
 
     const navigate = (route) => {
         history.push(route)
@@ -83,7 +88,7 @@ function Group() {
                         <div className='group_details-contents'>
                             <h1 className='heading'>{group?.name}</h1>
                             <small className='body small'>{group?.city}, {group?.state}</small>
-                            <small className='body small'>## of events<span> &#8729; </span>{group?.private ? 'Private' : 'Public'}</small>
+                            <small className='body small'>{groupEvents.length} {groupEvents.length === 1 ? 'event' : 'events'}<span> &#8729; </span>{group?.private ? 'Private' : 'Public'}</small>
                             <small className='body small'>Organized by <span className='caps'>{group?.Organizer?.firstName} {group?.Organizer?.lastName}</span></small>
                         </div>
                         {
@@ -92,6 +97,7 @@ function Group() {
                                 <Button
                                     label='Create Event'
                                     type='secondary small-btn'
+                                    action={() => navigate(`/create-event/${group?.id}`)}
                                 />
                                 <Button
                                     label='Update'
@@ -127,13 +133,13 @@ function Group() {
                 <article className='group_section-events_calendar'>
                     <section className='group_section-events'>
                         {
-                           events.filter(e=>e==='future').length ?
+                           upcomingEvents.length ?
                            <div className='group_section-event_list'>
-                            <h2 className='subheading'>Upcoming Events ({events.filter(e=>e==='future').length})</h2>
+                            <h2 className='subheading'>Upcoming Events ({upcomingEvents.length})</h2>
                             <ul>
-                                {events.filter(e=>e==='future').map(e => {
+                                {upcomingEvents.map(event => {
                                         return (
-                                            <EventItem contained={true} />
+                                            <EventItem key={event.id}  contained={true} id={event.id} />
                                         )
                                 })}
                            </ul>
@@ -141,13 +147,13 @@ function Group() {
                            null
                         }
                         {
-                           events.filter(e=>e==='past').length ?
+                           pastEvents.length ?
                            <div className='group_section-event_list'>
-                            <h2 className='subheading'>Past events ({events.filter(e=>e==='past').length})</h2>
+                            <h2 className='subheading'>Past events ({pastEvents.length})</h2>
                             <ul>
-                                {events.filter(e=>e ==='past').map(e => {
+                                {pastEvents.map(event => {
                                         return (
-                                            <li><EventItem contained={true} /></li>
+                                            <EventItem key={event.id} contained={true} id={event.id} />
                                         )
                                 })}
                            </ul>
