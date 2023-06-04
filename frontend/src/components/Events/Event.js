@@ -21,8 +21,6 @@ function Event() {
   const event = useSelector(state => state.events.allEvents[eventId]);
   const [ deleting, setDeleting ] = useState(false)
 
-  console.log(event)
-
   let formattedStartDate;
   let formattedEndDate;
   let formattedStartTime;
@@ -61,7 +59,7 @@ function Event() {
             setLoading(false);
         })
         .catch(async(errors) => {
-            console.log(errors)
+            handleAlerts({message: 'There was an issue deleting your event'})
             setLoading(false)
         })
     )

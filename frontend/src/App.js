@@ -34,7 +34,7 @@ function App() {
         handleAlerts(alert);
       })
       .catch((error) => {
-        console.log(error)
+        return
       })
     )
   }

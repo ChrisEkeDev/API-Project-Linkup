@@ -58,7 +58,6 @@ export const thunkGetAttendance = () => async dispatch => {
     const res = await csrfFetch('/api/events/current');
     if (res.ok) {
         const data = await res.json();
-        console.log(data)
         dispatch(actionGetAttendance(data.Attendance))
     } else {
         const errors = await res.json();

@@ -123,12 +123,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       setStartDate: function(value) {
         let startDate = new Date(value).toISOString().slice(0,19).replace('T', ' ');
-        console.log(value, startDate)
         this.setDataValue('startDate', startDate)
       },
       setEndDate: function(value) {
         let endDate = new Date(value).toISOString().slice(0,19).replace('T', ' ');
-        console.log(value, endDate)
         this.setDataValue('endDate', endDate)
       }
     },

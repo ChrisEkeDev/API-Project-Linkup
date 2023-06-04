@@ -47,7 +47,6 @@ export const thunkLogOut = () => async dispatch => {
         return { message: 'Logged out successfully' }
     } else {
         const errors = await res.json();
-        console.log(errors)
         return { message: 'There was an issue logging you out' }
     }
 }
@@ -60,7 +59,6 @@ export const thunkRestoreUser = () => async dispatch => {
         return { message: 'Session restore successfully' };
     } else {
         const errors = await res.json();
-        console.log(errors)
         return { message: 'Session not found' };
     }
 }

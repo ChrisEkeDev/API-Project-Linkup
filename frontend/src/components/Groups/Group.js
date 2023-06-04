@@ -41,7 +41,7 @@ function Group() {
                 setLoading(false);
             })
             .catch(async(errors) => {
-                console.log(errors)
+                handleAlerts({message: 'There was an issue deleting your group'})
                 setLoading(false)
             })
         )

@@ -71,7 +71,7 @@ module.exports = {
       startDate: '2023-10-17 08:00:00',
       endDate: '2023-10-17 12:00:00'
     },
-   ]).catch(e => console.log(e))
+   ])
   },
 
   async down (queryInterface, Sequelize) {

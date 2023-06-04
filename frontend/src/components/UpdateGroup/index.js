@@ -55,7 +55,6 @@ function UpdateGroup() {
                 dispatch(thunkUpdateGroup(groupData))
                 .then((updatedGroup) => {
                     setLoading(false);
-                    console.log(updatedGroup)
                     history.push(`/groups/${updatedGroup.id}`)
                 })
                 .catch(async(errors) => {

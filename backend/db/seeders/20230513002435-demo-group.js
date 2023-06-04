@@ -56,7 +56,7 @@ module.exports = {
         city: 'Austin',
         state: 'TX'
       },
-    ]).catch(e=>console.log(e))
+    ])
   },
 
   async down (queryInterface, Sequelize) {
