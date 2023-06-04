@@ -15,7 +15,7 @@ function Select({name, label, placeholder, error, value, setValue, disabled, val
             className='select'
         >
             <option className='default-value' value='none'>{placeholder}</option>
-            {values.map(value => {
+            {values?.map(value => {
                 return (
                     <option key={value.value} value={value.value}>{value.label}</option>
                 )

@@ -120,6 +120,9 @@ router.get('/:eventId', async (req, res) => {
                 include: {
                     model: User,
                     as: 'Organizer'
+                },
+                include: {
+                    model: Venue
                 }
             },
             {
@@ -212,6 +215,7 @@ const validateEditEvent = [
     check('name').optional().exists({checkFalsy: true}).isLength({min: 5}).withMessage('Name must be at leat 5 characters'),
     check('type').optional().exists({checkFalsy: true}).isIn(['In person', 'Online']).withMessage('Type must be Online or In person'),
     check('capacity').optional().exists({checkFalsy: true}).isInt().withMessage('Capacity must be an integer'),
+    check('private').optional().exists().isBoolean().withMessage('Private must be a boolean'),
     check('price').optional().custom(async (price) => {
         let priceRegex = /^\d+(?:\.\d+)?(?:,\d+(?:\.\d{2})?)*$/;
         if (!priceRegex.test(price)) throw new Error('Price is invalid')

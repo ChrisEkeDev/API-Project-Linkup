@@ -407,6 +407,7 @@ const validateCreateEvent = [
     check('name').exists({checkFalsy: true}).isLength({min: 5}).withMessage('Name must be at leat 5 characters'),
     check('type').exists({checkFalsy: true}).isIn(['In person', 'Online']).withMessage('Type must be Online or In person'),
     check('capacity').exists().isInt().withMessage('Capacity must be an integer'),
+    check('private').exists().isBoolean().withMessage('Private must be a boolean'),
     check('price').custom(async (price) => {
         let priceRegex = /^\d+(?:\.\d+)?(?:,\d+(?:\.\d{2})?)*$/;
         if (!priceRegex.test(price)) throw new Error('Price is invalid')
@@ -420,7 +421,6 @@ const validateCreateEvent = [
     check('endDate').custom(async (date, {req}) => {
         let convDate = new Date(date);
         let startDate = new Date(req.body.startDate)
-        // console.log(req.)
         if (convDate < startDate) throw new Error('End date is less than start date')
     }),
     handleValidationErrors

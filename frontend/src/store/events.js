@@ -97,8 +97,8 @@ export const thunkCreateEvent = (id, event, image) => async dispatch => {
     }
 }
 
-export const thunkUpdateEvent = (event) => async dispatch => {
-    const res = await csrfFetch(`/api/events/${event.id}`, {
+export const thunkUpdateEvent = (event, id) => async dispatch => {
+    const res = await csrfFetch(`/api/events/${id}`, {
         method: 'PUT',
         body: JSON.stringify(event)
     });

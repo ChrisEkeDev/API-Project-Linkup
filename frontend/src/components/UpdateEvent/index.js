@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, Redirect } from 'react-router-dom';
 import { useLoading } from '../../context/LoadingProvider';
 import { useDispatch, useSelector } from 'react-redux';
-import { thunkCreateEvent } from '../../store/events';
+import { thunkGetSingleEvent, thunkUpdateEvent } from '../../store/events';
 import { FaAngleLeft } from 'react-icons/fa';
 import Inputs from '../Inputs/Inputs';
 import TextArea from '../Inputs/TextArea';
@@ -11,33 +11,16 @@ import Select from '../Inputs/Select';
 import DateTime from '../Inputs/DateTime';
 import Number from '../Inputs/Number';
 import Price from '../Inputs/Price';
-import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
-import './CreateEvent.css';
+import '../CreateEvent/CreateEvent.css';
 
-function CreateEvent() {
+function UpdateEvent() {
     const { groupId } = useParams();
-    const { setLoading } = useLoading();
-    const [ venueId, setVenueId ] = useState(null)
-    const [ name, setName ] = useState('');
-    const [ type, setType ] = useState('none');
-    const [ price, setPrice ] = useState('0.00');
-    const [ capacity, setCapacity ] = useState(0);
-    const [ startDateDate, setStartDateDate ] = useState('')
-    const [ startDateTime, setStartDateTime ] = useState('')
-    const [ endDateDate, setEndDateDate ] = useState('')
-    const [ endDateTime, setEndDateTime ] = useState('')
-    const [ isPrivate, setIsPrivate ] = useState('none');
-    const [ imageUrl, setImageUrl ] = useState('');
-    const [ description, setDescription] = useState('');
-    const [ errors, setErrors ] = useState({});
-    const dispatch = useDispatch();
-    const history = useHistory();
+    const event = useSelector(state => state.events.singleEvent)
     const user = useSelector(state => state.session.user);
     const group = useSelector(state => state.groups.singleGroup);
 
-    if (!group) return <Redirect to='/' />
     let venues = []
-    venues = group?.Venues?.map((venue) => {
+    venues = event?.Group?.Venues?.map((venue) => {
         const venueObj = {};
         venueObj.value = venue.id;
         venueObj.label = `${venue.address} ${venue.city}, ${venue.state}`
@@ -53,7 +36,25 @@ function CreateEvent() {
         {value: 'In person', label: 'In person'},
         {value: 'Online', label: 'Online'}
     ]
+    const [ startDate, startTime ] = event?.startDate?.split(' ') ?? [];
+    const [ endDate, endTime ] = event?.endDate?.split(' ') ?? [];
+    const { setLoading } = useLoading();
+    const [ venueId, setVenueId ] = useState(event?.venueId)
+    const [ name, setName ] = useState(event?.name);
+    const [ type, setType ] = useState(event?.type);
+    const [ price, setPrice ] = useState(event?.price?.toFixed(2));
+    const [ capacity, setCapacity ] = useState(event?.capacity);
+    const [ startDateDate, setStartDateDate ] = useState(startDate)
+    const [ startDateTime, setStartDateTime ] = useState(startTime)
+    const [ endDateDate, setEndDateDate ] = useState(endDate)
+    const [ endDateTime, setEndDateTime ] = useState(endTime)
+    const [ isPrivate, setIsPrivate ] = useState(event?.private);
+    const [ description, setDescription] = useState(event?.description);
+    const [ errors, setErrors ] = useState({});
+    const dispatch = useDispatch();
+    const history = useHistory();
 
+    if (!group) return <Redirect to='/' />
 
     const submit = (e) => {
         e.preventDefault();
@@ -72,12 +73,8 @@ function CreateEvent() {
                 startDate: eventStart,
                 endDate: eventEnd
             }
-            const imageData = {
-                url: imageUrl,
-                preview: true
-            }
             return (
-                dispatch(thunkCreateEvent(groupId, eventData, imageData))
+                dispatch(thunkUpdateEvent(eventData, event.id))
                 .then((newEvent) => {
                     setLoading(false);
                     history.push(`/events/${newEvent.id}`)
@@ -116,11 +113,6 @@ function CreateEvent() {
         if (!priceRegex.test(price)) {
             errors.price = 'Price is invalid Ex: 50.00'
         }
-        const fileTypes = ['.png', '.jpg', '.jpeg'];
-        const validImage = fileTypes.map(type => imageUrl.endsWith(type))
-        if (!validImage.some(x => x)) {
-            errors.imageUrl = 'Image URL must end in .png, .jpg, or .jpeg';
-        }
         setErrors(errors)
     }
 
@@ -132,8 +124,8 @@ function CreateEvent() {
                     Back
                 </div>
                 <header className='create_event-header'>
-                <h3 className='body green'>START AN EVENT</h3>
-                <h2 className='subheading'>Create an event for {group?.name}</h2>
+                    <h3 className='body green'>UPDATE AN EVENT</h3>
+                    <h2 className='subheading'>Update the event for {group?.name}</h2>
                 </header>
                 <form className='create_event-form' onSubmit={submit}>
                     <fieldset className='create_event-fieldset'>
@@ -216,16 +208,6 @@ function CreateEvent() {
                         />
                     </fieldset>
                     <fieldset className='create_event-fieldset'>
-                        <Inputs
-                            label='Please add in image url for your event below'
-                            placeholder='Image Url'
-                            name='url'
-                            value={imageUrl}
-                            setValue={(x) => setImageUrl(x.target.value)}
-                            error={errors.imageUrl}
-                        />
-                    </fieldset>
-                    <fieldset className='create_event-fieldset'>
                         <TextArea
                             label='Please describe your event'
                             placeholder='Please write at least 30 characters'
@@ -237,13 +219,14 @@ function CreateEvent() {
                     </fieldset>
                     <Button
                         style='create_event-btn'
-                        label='Create Event'
+                        label='Update Event'
                         type='primary'
                     />
                 </form>
             </div>
         </main>
+
     )
 }
 
-export default CreateEvent
+export default UpdateEvent

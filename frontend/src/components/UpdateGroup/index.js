@@ -15,7 +15,6 @@ function UpdateGroup() {
     const { groupId } = useParams();
     const group = useSelector(state => state.groups.singleGroup)
     const user = useSelector(state => state.session.user);
-    console.log(group, groupId)
     const { setLoading } = useLoading();
     const [ name, setName ] = useState(group?.name);
     const [ about, setAbout ] = useState(group?.about);

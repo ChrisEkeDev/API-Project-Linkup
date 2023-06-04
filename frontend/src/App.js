@@ -18,6 +18,7 @@ import CreateGroup from './components/CreateGroup';
 import UpdateGroup from './components/UpdateGroup';
 import Event from './components/Events/Event';
 import CreateEvent from './components/CreateEvent';
+import UpdateEvent from './components/UpdateEvent';
 import './index.css';
 
 function App() {
@@ -90,6 +91,9 @@ function App() {
             </Route>
             <Route path='/create-event/:groupId'>
               <CreateEvent/>
+            </Route>
+            <Route path='/update-event/:eventId'>
+              <UpdateEvent/>
             </Route>
         </Switch>
       </LoadingProvider>
