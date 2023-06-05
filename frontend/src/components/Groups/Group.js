@@ -21,7 +21,8 @@ function Group() {
     const events = useSelector(state => state.events.allEvents);
     const normalizedEvents = Object.values(events);
     const groupEvents = normalizedEvents.filter(event => event.groupId === Number(groupId));
-    const [ deleting, setDeleting ] = useState(false)
+    const [ deleting, setDeleting ] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(true);
 
     const upcomingEvents = groupEvents.filter(event => new Date(event.startDate).getTime() > new Date().getTime());
     const pastEvents = groupEvents.filter(event => new Date(event.startDate).getTime() < new Date().getTime());
@@ -49,8 +50,10 @@ function Group() {
 
     useEffect(() => {
         dispatch(thunkGetSingleGroup(groupId))
+        .then(() => setIsLoading(false))
     }, [dispatch])
 
+    if (isLoading) return <div className='loading'>Loading...</div>
 
   return (
     <main className='group-wrapper'>
@@ -83,12 +86,12 @@ function Group() {
                     Groups
                 </Link>
                 <div className='group-contents'>
-                    <div className='group-image'></div>
+                    {group ? <div className='group-image bg-image' style={{backgroundImage: `url(${group?.GroupImages[0]?.url})` }}></div> : null }
                     <div className='group_details-wrapper'>
                         <div className='group_details-contents'>
                             <h1 className='heading'>{group?.name}</h1>
                             <small className='body small'>{group?.city}, {group?.state}</small>
-                            <small className='body small'>{groupEvents.length} {groupEvents.length === 1 ? 'event' : 'events'}<span> &#8729; </span>{group?.private ? 'Private' : 'Public'}</small>
+                            <small className='body small'>{groupEvents?.length} {groupEvents?.length === 1 ? 'event' : 'events'}<span> &#8729; </span>{group?.private ? 'Private' : 'Public'}</small>
                             <small className='body small'>Organized by <span className='caps'>{group?.Organizer?.firstName} {group?.Organizer?.lastName}</span></small>
                         </div>
                         {
@@ -133,13 +136,13 @@ function Group() {
                 <article className='group_section-events_calendar'>
                     <section className='group_section-events'>
                         {
-                           upcomingEvents.length ?
+                           upcomingEvents?.length ?
                            <div className='group_section-event_list'>
-                            <h2 className='subheading'>Upcoming Events ({upcomingEvents.length})</h2>
+                            <h2 className='subheading'>Upcoming Events ({upcomingEvents?.length})</h2>
                             <ul>
-                                {upcomingEvents.map(event => {
+                                {upcomingEvents?.map(event => {
                                         return (
-                                            <EventItem key={event.id}  contained={true} id={event.id} />
+                                            <EventItem key={event?.id}  contained={true} id={event?.id} />
                                         )
                                 })}
                            </ul>
@@ -147,13 +150,13 @@ function Group() {
                            null
                         }
                         {
-                           pastEvents.length ?
+                           pastEvents?.length ?
                            <div className='group_section-event_list'>
-                            <h2 className='subheading'>Past events ({pastEvents.length})</h2>
+                            <h2 className='subheading'>Past events ({pastEvents?.length})</h2>
                             <ul>
-                                {pastEvents.map(event => {
+                                {pastEvents?.map(event => {
                                         return (
-                                            <EventItem key={event.id} contained={true} id={event.id} />
+                                            <EventItem key={event?.id} contained={true} id={event?.id} />
                                         )
                                 })}
                            </ul>

@@ -16,6 +16,7 @@ function UpdateGroup() {
     const group = useSelector(state => state.groups.singleGroup)
     const user = useSelector(state => state.session.user);
     const { setLoading } = useLoading();
+    const [ isLoading, setIsLoading ] = useState(true);
     const [ name, setName ] = useState(group?.name);
     const [ about, setAbout ] = useState(group?.about);
     const [ type, setType ] = useState(group?.type);
@@ -99,7 +100,11 @@ function UpdateGroup() {
 
     useEffect(() => {
         dispatch(thunkGetSingleGroup(groupId))
+        .then(() => setIsLoading(false))
     }, [dispatch])
+
+
+    if (isLoading) return <div className='loading'>Loading...</div>
 
   return (
     <main className='create_group-wrapper'>

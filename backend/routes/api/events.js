@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { Event, Group, Venue, EventImage, User, Attendance } = require('../../db/models');
+const { Event, Group, Venue, EventImage, User, Attendance, GroupImage } = require('../../db/models');
 const { Op } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
 
@@ -54,10 +54,12 @@ router.get('/', async (req, res) => {
             {
                 model: Group,
                 attributes: ['id', 'name', 'city', 'state'],
-                include: {
+                include: [{
                     model: User,
                     as: 'Organizer'
-                }
+                }, {
+                    model: GroupImage
+                }]
             },
             {
                 model: Venue,
@@ -117,13 +119,19 @@ router.get('/:eventId', async (req, res) => {
                 attributes: {
                     exclude: ['organizerId', 'about', 'type', 'createdAt', 'updatedAt']
                 },
-                include: {
-                    model: User,
-                    as: 'Organizer'
-                },
-                include: {
-                    model: Venue
-                }
+                include: [
+                    {
+                        model: User,
+                        as: 'Organizer'
+                    },
+                    {
+                        model: Venue
+                    },
+                    {
+                        model: GroupImage
+                    }
+                ],
+
             },
             {
                 model: Venue,

@@ -22,7 +22,6 @@
 
     .landing-image {
         width: 100%;
-        background-color: var(--dark-gray);
         height: 100%;
         border-radius: 10px;
     }
@@ -57,10 +56,9 @@
     align-items: center;
 
     .landing_hiw-image {
-        height: 100px;
+        height: 150px;
         aspect-ratio: 1;
-        background-color: var(--dark-gray);
-        margin-bottom: 24px;
+        margin-bottom: 12px;
         border-radius: 100px;
     }
 

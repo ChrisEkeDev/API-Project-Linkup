@@ -56,9 +56,15 @@
 }
 
 .user-image {
-    height: 50px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--white);
     aspect-ratio: 1;
-    background-color: var(--dark-gray);
+    background-color: var(--teal);
     border-radius: 50px;
     cursor: pointer;
 }

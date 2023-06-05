@@ -13,13 +13,13 @@ function GroupItem({id}) {
     <li className='group_item-wrapper'>
         <Link to={`/groups/${id}`} className='group-link'>
             <article className='group_item-contents'>
-                <div className='group_item-image'></div>
+                <div className='group_item-image bg-image' style={{backgroundImage: `url(${groupItem.previewImage})` }}></div>
                 <div className='group_item-information'>
                     <h2 className='subheading'>{groupItem?.name}</h2>
                     <small className='small'>{groupItem?.city}, {groupItem?.state}</small>
                     <p className='body'>{groupItem?.about}</p>
                     <div className='group_item-details'>
-                        <small className='small'>{groupEvents.length} {groupEvents.length === 1 ? 'event' : 'events'}<span> &#8729; </span>{groupItem?.private ? 'Private' : 'Public'}</small>
+                        <small className='small'>{groupEvents?.length} {groupEvents?.length === 1 ? 'event' : 'events'}<span> &#8729; </span>{groupItem?.private ? 'Private' : 'Public'}</small>
                     </div>
                 </div>
             </article>

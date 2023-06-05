@@ -18,35 +18,18 @@ function Event() {
   const { setLoading } = useLoading();
   const { eventId } = useParams();
   const user = useSelector(state => state.session.user)
-  const event = useSelector(state => state.events.allEvents[eventId]);
-  const [ deleting, setDeleting ] = useState(false)
+  const event = useSelector(state => state.events.singleEvent);
+  const [ deleting, setDeleting ] = useState(false);
+  const [ isLoading, setIsLoading ] = useState(true);
 
-  let formattedStartDate;
-  let formattedEndDate;
-  let formattedStartTime;
-  let formattedEndTime;
-
-  if (event) {
-    const startDate = new Date(event?.startDate);
-    const endDate = new Date(event?.endDate);
-    const dateOptions = {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-    }
-    formattedStartDate = new Intl.DateTimeFormat('en-US', dateOptions).format(startDate);
-    formattedEndDate = new Intl.DateTimeFormat('en-US', dateOptions).format(endDate);
-    const timeOptions = {
-        hour: "numeric",
-        minute: "numeric",
-    }
-    formattedStartTime = new Intl.DateTimeFormat('en-US', timeOptions).format(startDate);
-    formattedEndTime = new Intl.DateTimeFormat('en-US', timeOptions).format(endDate);
-  }
+  const dateOptions = { year: "numeric", month: "numeric", day: "numeric" }
+  const timeOptions = { hour: "numeric", minute: "numeric" }
 
   const navigate = (route) => {
     history.push(route)
   }
+
+  console.log(event)
 
   const deleteEvent = (e) => {
     e.preventDefault();
@@ -67,7 +50,10 @@ function Event() {
 
   useEffect(() => {
     dispatch(thunkGetSingleEvent(eventId))
+    .then(() => setIsLoading(false))
   }, [dispatch])
+
+  if (isLoading) return <div className='loading'>Loading...</div>
 
   return (
     <main className='event-wrapper'>
@@ -106,10 +92,10 @@ function Event() {
         <section className='event_section-wrapper' >
           <div className='event_section-contents' >
             <div className='event_section-information' >
-              <div className='event_section-image'></div>
+              <div className='event_section-image bg-image' style={{backgroundImage: `url(${event?.EventImages[0]?.url})` }}></div>
               <aside className='event_section-aside'>
                   <div onClick={() => navigate('/groups/1')} className='event_section-group'>
-                    <div className='event_section-group_image'></div>
+                    <div className='event_section-group_image bg-image'  style={{backgroundImage: `url(${event?.Group?.GroupImages[0]?.url})` }}></div>
                     <div className='event_section-group_info'>
                       <p className='body bold'>{event?.Group?.name}</p>
                       <p className='body small'>{event?.Group?.private ? 'Private' : 'Public'}</p>
@@ -119,8 +105,10 @@ function Event() {
                     <div className='event_section-details_item'>
                       <FaRegClock className='icon'/>
                       <p className='small'>
-                        START - {event && formattedStartDate} @ {event && formattedStartTime}<br/>
-                        END - {event && formattedEndDate} @ {event && formattedEndTime}
+                        START - {new Intl.DateTimeFormat('en-US', dateOptions).format(new Date(event?.startDate))} @
+                                {new Intl.DateTimeFormat('en-US', timeOptions).format(new Date(event?.startDate))}<br/>
+                        END - {new Intl.DateTimeFormat('en-US', dateOptions).format(new Date(event?.endDate))} @
+                              {new Intl.DateTimeFormat('en-US', timeOptions).format(new Date(event?.endDate))}
                       </p>
                     </div>
                     <div className='event_section-details_item'>

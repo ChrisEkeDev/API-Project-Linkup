@@ -34,7 +34,10 @@ function NavigationMenu({user}) {
 
   return (
     <div className='navigation_menu-wrapper'>
-        <div onClick={() => navigate('/dashboard')} className='user-image'></div>
+        <div onClick={() => navigate('/dashboard')} className='user-image'>
+            {user?.firstName.charAt(0)}
+            {user?.lastName.charAt(0)}
+        </div>
         {menu ?
             <FaChevronUp
                 onClick={() => setMenu(false)}

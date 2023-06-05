@@ -81,7 +81,7 @@ function App() {
             <Route path='/groups/:groupId'>
               <Group/>
             </Route>
-            <Route path='/group/new'>
+            <Route path='/create-group'>
               <CreateGroup/>
             </Route>
             <Route path='/update-group/:groupId'>
@@ -90,7 +90,7 @@ function App() {
             <Route path='/events/:eventId'>
               <Event/>
             </Route>
-            <Route path='/create-event/:groupId'>
+            <Route path='/create-event'>
               <CreateEvent/>
             </Route>
             <Route path='/update-event/:eventId'>

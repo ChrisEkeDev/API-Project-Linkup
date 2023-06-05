@@ -15,7 +15,7 @@ function DashboardGroups({user, groups}) {
 
   return (
     <div className='dashboard_groups-wrapper'>
-        <h2>My Groups</h2>
+        <h2 className='subheading'>My Groups</h2>
         <div className='dashboard_groups-tabs'>
             <p onClick={() => setTab('organizer')} className={`body dash_tab ${tab === 'organizer' ? 'dash_tab--active' : ''}`}>Organizer</p>
             <p onClick={() => setTab('member')} className={`body dash_tab ${tab === 'member' ? 'dash_tab--active' : ''}`}>Member</p>
@@ -24,7 +24,13 @@ function DashboardGroups({user, groups}) {
             {
                 tab === 'organizer' ?
                 <ul>
-                {organizedGroups.length === 0 ?
+                {organizedGroups.length ?
+                organizedGroups.map((group => {
+                    return (
+                        <DashboardGroupItem key={group.id} group={group} organizer={true}/>
+                    )
+                }))
+                :
                 <div className='dash-no_groups'>
                     <p className='body small'>You haven't created any groups yet.</p>
                     <Button
@@ -34,15 +40,16 @@ function DashboardGroups({user, groups}) {
                         action={() => navigate('/group/new')}
                     />
                 </div>
-                :
-                organizedGroups.map((group => {
-                    return (
-                        <DashboardGroupItem key={group.id} group={group} organizer={true}/>
-                    )
-                }))}
+                }
                 </ul> :
                 <ul>
-                {memberOfGroups.length === 0 ?
+                {memberOfGroups.length ?
+                memberOfGroups.map((group => {
+                    return (
+                        <DashboardGroupItem key={group.id} group={group}/>
+                    )
+                }))
+                :
                 <div className='dash-no_groups'>
                     <p className='body small'>You aren't a member of any groups yet.</p>
                     <Button
@@ -52,12 +59,7 @@ function DashboardGroups({user, groups}) {
                         action={() => navigate('/search/groups')}
                     />
                 </div>
-                :
-                memberOfGroups.map((group => {
-                    return (
-                        <DashboardGroupItem key={group.id} group={group}/>
-                    )
-                }))}
+                }
                 </ul>
             }
         </section>

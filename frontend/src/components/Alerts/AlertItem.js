@@ -12,9 +12,11 @@ useEffect(() => {
 
   return (
     <div className='alert-wrapper'>
+      <div className='alert-label'>
         <FaExclamation className='alert-icon'/>
         <p className='body'>{alert.message}</p>
-        <FaTimes className='alert-close' onClick={() => removeAlerts(alert)}/>
+      </div>
+      <FaTimes className='alert-close' onClick={() => removeAlerts(alert)}/>
     </div>
   )
 }

@@ -13,27 +13,27 @@ module.exports = {
    await queryInterface.bulkInsert(options, [
     {
       eventId: 1,
-      url: 'Image url 1',
+      url: 'https://images.unsplash.com/photo-1628924172947-113fb23621b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
       preview: true
     },
     {
       eventId: 2,
-      url: 'Image url 2',
+      url: 'https://images.unsplash.com/photo-1628924172947-113fb23621b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
       preview: true
     },
     {
       eventId: 3,
-      url: 'Image url 3',
+      url: 'https://images.unsplash.com/photo-1563606618307-9549e58243ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80',
       preview: true
     },
     {
       eventId: 4,
-      url: 'Image url 4',
+      url: 'https://images.unsplash.com/photo-1582266255765-fa5cf1a1d501?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
       preview: true
     },
     {
       eventId: 5,
-      url: 'Image url 5',
+      url: 'https://images.unsplash.com/photo-1470049384172-927891aad5e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
       preview: true
     }
    ])

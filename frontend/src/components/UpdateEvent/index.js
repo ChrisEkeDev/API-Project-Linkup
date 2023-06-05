@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory, useParams, Redirect } from 'react-router-dom';
 import { useLoading } from '../../context/LoadingProvider';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,28 +14,11 @@ import Price from '../Inputs/Price';
 import '../CreateEvent/CreateEvent.css';
 
 function UpdateEvent() {
-    const { groupId } = useParams();
+    const { eventId } = useParams();
     const event = useSelector(state => state.events.singleEvent)
     const user = useSelector(state => state.session.user);
     const group = useSelector(state => state.groups.singleGroup);
-
-    let venues = []
-    venues = event?.Group?.Venues?.map((venue) => {
-        const venueObj = {};
-        venueObj.value = venue.id;
-        venueObj.label = `${venue.address} ${venue.city}, ${venue.state}`
-        return venueObj
-    })
-
-    const visibilities = [
-        {value: true, label: 'Private'},
-        {value: false, label: 'Public'}
-    ]
-
-    const types = [
-        {value: 'In person', label: 'In person'},
-        {value: 'Online', label: 'Online'}
-    ]
+    const [ isLoading, setIsLoading ] = useState(true);
     const [ startDate, startTime ] = event?.startDate?.split(' ') ?? [];
     const [ endDate, endTime ] = event?.endDate?.split(' ') ?? [];
     const { setLoading } = useLoading();
@@ -54,7 +37,23 @@ function UpdateEvent() {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    if (!group) return <Redirect to='/' />
+    let venues = []
+    venues = event?.Group?.Venues?.map((venue) => {
+        const venueObj = {};
+        venueObj.value = venue.id;
+        venueObj.label = `${venue.address} ${venue.city}, ${venue.state}`
+        return venueObj
+    })
+
+    const visibilities = [
+        {value: true, label: 'Private'},
+        {value: false, label: 'Public'}
+    ]
+
+    const types = [
+        {value: 'In person', label: 'In person'},
+        {value: 'Online', label: 'Online'}
+    ]
 
     const submit = (e) => {
         e.preventDefault();
@@ -115,6 +114,13 @@ function UpdateEvent() {
         }
         setErrors(errors)
     }
+
+    useEffect(() => {
+        dispatch(thunkGetSingleEvent(eventId))
+        .then(() => setIsLoading(false))
+    }, [dispatch])
+
+    if (isLoading) return <div className='loading'>Loading...</div>
 
     return (
         <main className='create_event-wrapper'>

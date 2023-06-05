@@ -112,8 +112,8 @@
 }
 
 .event_section-group_image {
-    height: 90px;
-    aspect-ratio: 1;
+    height: 80px;
+    width: 120px;
     border-radius: 10px;
     background-color: var(--dark-gray);
 }
