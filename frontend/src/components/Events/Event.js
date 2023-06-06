@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetSingleEvent, thunkDeleteEvent } from '../../store/events';
+import { thunkGetAttendees } from '../../store/attendances';
+import EventAttendeeItem from './EventAttendeeItem';
 import Button from '../Buttons/Button';
 import { useLoading } from '../../context/LoadingProvider';
 import { useAlerts } from '../../context/AlertsProvider';
@@ -19,6 +21,8 @@ function Event() {
   const { eventId } = useParams();
   const user = useSelector(state => state.session.user)
   const event = useSelector(state => state.events.singleEvent);
+  const attendees = useSelector(state => state.attendances.currentAttendees)
+  const normalizedAttendees = Object.values(attendees)
   const [ deleting, setDeleting ] = useState(false);
   const [ isLoading, setIsLoading ] = useState(true);
 
@@ -50,6 +54,7 @@ function Event() {
 
   useEffect(() => {
     dispatch(thunkGetSingleEvent(eventId))
+    .then(() => dispatch(thunkGetAttendees(eventId)))
     .then(() => setIsLoading(false))
   }, [dispatch])
 
@@ -139,8 +144,25 @@ function Event() {
                   </div>
               </aside>
             </div>
-            <h2 className='subheading'>Details</h2>
-            <p className='body'>{event?.description}</p>
+            <div className='event_details-section'>
+              <h2 className='subheading'>Details</h2>
+              <p className='body'>{event?.description}</p>
+            </div>
+            <div className='event_details-section'>
+              <div className='heading_link-wrapper'>
+                <h2 className='subheading'>Attendees</h2>
+                {normalizedAttendees.length > 8 ? <Link to='/manage-event/1'>See all</Link> : null}
+              </div>
+              <ul>
+                {
+                  normalizedAttendees?.slice(0,8).map(attendee => {
+                    return (
+                      <EventAttendeeItem key={attendee.id} organizerId={event?.Group?.Organizer?.id} attendee={attendee}/>
+                    )
+                  })
+                }
+              </ul>
+            </div>
           </div>
         </section>
     </main>

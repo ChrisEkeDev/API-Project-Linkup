@@ -362,7 +362,7 @@ router.get('/:eventId/attendees', async (req, res) => {
         attributes: [],
         include: {
             model: User,
-            attributes: ['id', 'firstName', 'lastName'],
+            attributes: ['id', 'firstName', 'lastName', 'profileImage'],
             through: {
                 attributes: ['status']
             }
@@ -373,7 +373,7 @@ router.get('/:eventId/attendees', async (req, res) => {
         attributes: [],
         include: {
             model: User,
-            attributes: ['id', 'firstName', 'lastName'],
+            attributes: ['id', 'firstName', 'lastName', 'profileImage'],
             through: {
                 attributes: ['status'],
                 where: {

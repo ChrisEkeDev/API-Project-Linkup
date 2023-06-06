@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetSingleGroup, thunkDeleteGroup,  } from '../../store/groups';
+import { thunkGetMembers } from '../../store/memberships';
 import { FaAngleLeft } from 'react-icons/fa';
 import { useLoading } from '../../context/LoadingProvider';
 import { useAlerts } from '../../context/AlertsProvider';
@@ -9,7 +10,6 @@ import Modal from '../Modal';
 import EventItem from '../Events/EventItem';
 import Button from '../Buttons/Button';
 import './Group.css';
-import { thunkGetMembers } from '../../store/memberships';
 import GroupMemberItem from './GroupMemberItem';
 
 function Group() {
@@ -59,10 +59,10 @@ function Group() {
     }
 
     useEffect(() => {
+        // dispatch(thunkGetMemberships(groupId))
         dispatch(thunkGetSingleGroup(groupId))
-        .then(() => {
-            dispatch(thunkGetMembers(groupId))
-        }).then(() => setIsLoading(false))
+        .then(() => dispatch(thunkGetMembers(groupId)))
+        .then(() => setIsLoading(false))
     }, [dispatch])
 
     if (isLoading) return <div className='loading'>Loading...</div>
@@ -178,11 +178,14 @@ function Group() {
                     </section>
                     <aside className='group_aside-wrapper'>
                         <div className='group_aside-members'>
-                            <h2 className='subheading'>Members</h2>
+                            <div className='heading_link-wrapper'>
+                                <h2 className='subheading'>Members</h2>
+                                {normalizeMembers.length > 8 ? <Link to='/manage-group/1'>See all</Link> : null}
+                            </div>
                             <ul>
-                                {sortedMembers?.map(member => {
+                                {sortedMembers?.slice(0,8).map(member => {
                                     return (
-                                        <GroupMemberItem organizerId={group?.Organizer?.id} member={member} />
+                                        <GroupMemberItem key={member.id} organizerId={group?.Organizer?.id} member={member} />
                                     )
                                 })}
                             </ul>

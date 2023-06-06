@@ -522,6 +522,25 @@ router.get('/:groupId/members', async (req, res) => {
 })
 
 
+// Get all Memberships from Group Id
+router.get('/:groupId/memberships', async (req, res) => {
+    const { groupId } = req.params;
+    const userId = req.user.id;
+    const group = await Group.findByPk(groupId);
+
+    // Checks if the group exists
+    if (!group) {
+        return res.status(404).json({
+            message: "Group couldn't be found"
+        })
+    }
+
+    const memberships = await group.getMemberships();
+    return res.status(200).json({
+        Memberships: memberships
+    })
+})
+
 
 // Request a Membership for a Group based on the Group's id
 router.post('/:groupId/membership', requireAuth, async (req, res) => {
@@ -556,16 +575,13 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
     }
 
 
-    await Membership.create({
+    const newMembership = await Membership.create({
         userId: userId,
         groupId: groupId,
         status: 'pending'
     })
 
-    return res.status(200).json({
-        memberId: userId,
-        status: 'pending'
-    })
+    return res.status(200).json(newMembership)
 
 })
 

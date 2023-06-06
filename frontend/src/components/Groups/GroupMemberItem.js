@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-function GroupMemberItem({organizerId, member}) {
+function GroupMemberItem({ organizerId, member}) {
     const { status } = member.Membership;
     const host = ['co-host', 'organizer'];
 
@@ -13,7 +13,7 @@ function GroupMemberItem({organizerId, member}) {
             </div>
         </div>
         <div className='group_member-data'>
-            <p className='body'>{member.firstName} {member.lastName}</p>
+            <p>{member.firstName} {member.lastName}</p>
             <p className='small'>{organizerId === member.id ? 'organizer' : status}</p>
         </div>
     </li>
