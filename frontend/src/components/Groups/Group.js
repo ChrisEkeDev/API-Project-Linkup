@@ -21,7 +21,7 @@ function Group() {
     const user = useSelector(state => state.session.user)
     const group = useSelector(state => state.groups.singleGroup);
     const events = useSelector(state => state.events.allEvents);
-    const members = useSelector(state => state.memberships)
+    const members = useSelector(state => state.memberships.currentMembers)
     const normalizedEvents = Object.values(events);
     const normalizeMembers = Object.values(members);
     const groupEvents = normalizedEvents.filter(event => event.groupId === Number(groupId));
