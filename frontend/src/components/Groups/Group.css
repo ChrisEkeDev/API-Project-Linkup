@@ -147,3 +147,60 @@
 .group_section-event_list {
     padding: 36px 0;
 }
+
+.group_aside-wrapper {
+    padding: 36px 0;
+}
+
+
+.group_aside-members ul {
+    padding: 24px 0;
+    margin: 36px 0;
+    background-color: var(--white);
+    padding: 24px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.group_member-wrapper {
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.group_member-image {
+    height: 60px;
+    aspect-ratio: 1;
+    border-radius: 60px;
+    background-color: var(--dark-gray);
+    margin-right: 24px;
+}
+
+.host-image {
+    border: 5px solid var(--teal)
+}
+
+.organizer-image {
+    border: 5px solid var(--red)
+}
+
+.member-status {
+    position: absolute;
+    top: -12px;
+    font-size: 12px;
+    padding: 6px 12px;
+    color: var(--white);
+    border-radius: 6px;
+    background-color: var(--red);
+}
+
+.group_member-data {
+    text-transform: capitalize;
+    .body {
+        margin: 0;
+    }
+    /* text-align: center; */
+}

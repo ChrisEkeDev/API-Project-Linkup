@@ -16,11 +16,11 @@ const actionGetMembers = (members) => ({
 
 // THUNKS
 
-export const thunkGetMembers = (group) => async dispatch => {
-    const res = await csrfFetch(`/api/groups/${group.id}/members`);
+export const thunkGetMembers = (groupId) => async dispatch => {
+    const res = await csrfFetch(`/api/groups/${groupId}/members`);
     if (res.ok) {
         const data = await res.json();
-        console.log(data)
+        dispatch(actionGetMembers(data.Members))
     } else {
         const errors = await res.json();
         console.log(errors)
@@ -30,10 +30,13 @@ export const thunkGetMembers = (group) => async dispatch => {
 
 
 // REDUCER
+
+const initialState = { }
 const membershipsReducer = (state = initialState, action) => {
     switch(action.type) {
         case GET_MEMBERS: {
             const newState = { ...state };
+            action.payload.forEach(member => newState[member.id] = member)
             return newState;
         }
         default:

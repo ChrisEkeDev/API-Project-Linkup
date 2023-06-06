@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { thunkGetSingleGroup, thunkDeleteGroup } from '../../store/groups';
+import { thunkGetSingleGroup, thunkDeleteGroup,  } from '../../store/groups';
 import { FaAngleLeft } from 'react-icons/fa';
 import { useLoading } from '../../context/LoadingProvider';
 import { useAlerts } from '../../context/AlertsProvider';
@@ -9,6 +9,8 @@ import Modal from '../Modal';
 import EventItem from '../Events/EventItem';
 import Button from '../Buttons/Button';
 import './Group.css';
+import { thunkGetMembers } from '../../store/memberships';
+import GroupMemberItem from './GroupMemberItem';
 
 function Group() {
     const dispatch = useDispatch();
@@ -19,17 +21,20 @@ function Group() {
     const user = useSelector(state => state.session.user)
     const group = useSelector(state => state.groups.singleGroup);
     const events = useSelector(state => state.events.allEvents);
+    const members = useSelector(state => state.memberships)
     const normalizedEvents = Object.values(events);
+    const normalizeMembers = Object.values(members);
     const groupEvents = normalizedEvents.filter(event => event.groupId === Number(groupId));
     const [ deleting, setDeleting ] = useState(false);
     const [ isLoading, setIsLoading ] = useState(true);
-
     const upcomingEvents = groupEvents.filter(event => new Date(event.startDate).getTime() > new Date().getTime());
     const pastEvents = groupEvents.filter(event => new Date(event.startDate).getTime() < new Date().getTime());
 
     const navigate = (route) => {
         history.push(route)
     }
+
+    console.log(members)
 
     const deleteGroup = (e) => {
         e.preventDefault();
@@ -50,7 +55,9 @@ function Group() {
 
     useEffect(() => {
         dispatch(thunkGetSingleGroup(groupId))
-        .then(() => setIsLoading(false))
+        .then(() => {
+            dispatch(thunkGetMembers(groupId))
+        }).then(() => setIsLoading(false))
     }, [dispatch])
 
     if (isLoading) return <div className='loading'>Loading...</div>
@@ -164,8 +171,17 @@ function Group() {
                            null
                         }
                     </section>
-                    <aside className='group_section-calendar'>
-
+                    <aside className='group_aside-wrapper'>
+                        <div className='group_aside-members'>
+                            <h2 className='subheading'>Members</h2>
+                            <ul>
+                                {normalizeMembers?.map(member => {
+                                    return (
+                                        <GroupMemberItem organizerId={group?.Organizer?.id} member={member} />
+                                    )
+                                })}
+                            </ul>
+                        </div>
                     </aside>
                 </article>
             </div>
