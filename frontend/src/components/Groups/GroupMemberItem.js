@@ -6,9 +6,11 @@ function GroupMemberItem({organizerId, member}) {
 
   return (
     <li className='group_member-wrapper'>
-        <div className={`group_member-image
+        <div className={`group_member-image bg-image
             ${host.includes(status) ? 'host-image' :
-            organizerId === member.id ? 'organizer-image' : ''}`}>
+            organizerId === member.id ? 'organizer-image' : ''}`}
+            style={{backgroundImage: `url(${member?.profileImage})` }}
+            >
         </div>
         <div className='group_member-data'>
             <p className='body'>{member.firstName} {member.lastName}</p>

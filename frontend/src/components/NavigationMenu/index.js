@@ -34,9 +34,10 @@ function NavigationMenu({user}) {
 
   return (
     <div className='navigation_menu-wrapper'>
-        <div onClick={() => navigate('/dashboard')} className='user-image'>
-            {user?.firstName.charAt(0)}
-            {user?.lastName.charAt(0)}
+        <div onClick={() => navigate('/dashboard')} className='user-image bg-image' style={{backgroundImage: `url(${user?.profileImage})` }}>
+            {user.profileImage ? null :
+            `${user?.firstName.charAt(0)}
+            ${user?.lastName.charAt(0)}`}
         </div>
         {menu ?
             <FaChevronUp

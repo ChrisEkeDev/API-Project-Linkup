@@ -19,6 +19,7 @@ module.exports = {
       username: 'cartyp',
       email: 'pcartwirght@email.com',
       hashedPassword: bcrypt.hashSync('password1', 13),
+      profileImage: 'https://xsgames.co/randomusers/assets/avatars/male/35.jpg'
     },
     {
       firstName: 'Beatrice',
@@ -26,6 +27,7 @@ module.exports = {
       username: 'thequeenb',
       email: 'bhobbs@email.com',
       hashedPassword: bcrypt.hashSync('password2', 13),
+      profileImage: 'https://xsgames.co/randomusers/assets/avatars/female/33.jpg'
     },
     {
       firstName: 'Craig',
@@ -33,6 +35,7 @@ module.exports = {
       username: 'craigmack',
       email: 'cmackey@email.com',
       hashedPassword: bcrypt.hashSync('password3', 13),
+      profileImage: 'https://xsgames.co/randomusers/assets/avatars/male/40.jpg'
     },
     {
       firstName: 'Marshall',
@@ -40,6 +43,7 @@ module.exports = {
       username: 'mandm',
       email: 'mmitchell@email.com',
       hashedPassword: bcrypt.hashSync('password4', 13),
+      profileImage: 'https://xsgames.co/randomusers/assets/avatars/male/3.jpg'
     },
     {
       firstName: 'Megan',
@@ -47,6 +51,7 @@ module.exports = {
       username: 'megtheballion',
       email: 'mballion@email.com',
       hashedPassword: bcrypt.hashSync('password5', 13),
+      profileImage: 'https://xsgames.co/randomusers/assets/avatars/female/3.jpg'
     },
    ])
   },
