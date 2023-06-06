@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory, useParams, Redirect } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useLoading } from '../../context/LoadingProvider';
 import { useDispatch, useSelector } from 'react-redux';
-import { thunkGetSingleEvent, thunkUpdateEvent } from '../../store/events';
+import { thunkUpdateEvent } from '../../store/events';
 import { FaAngleLeft } from 'react-icons/fa';
 import Inputs from '../Inputs/Inputs';
 import TextArea from '../Inputs/TextArea';
@@ -13,12 +13,9 @@ import Number from '../Inputs/Number';
 import Price from '../Inputs/Price';
 import '../CreateEvent/CreateEvent.css';
 
-function UpdateEvent() {
-    const { eventId } = useParams();
-    const event = useSelector(state => state.events.singleEvent)
+function UpdateEvent({event}) {
     const user = useSelector(state => state.session.user);
     const group = useSelector(state => state.groups.singleGroup);
-    const [ isLoading, setIsLoading ] = useState(true);
     const [ startDate, startTime ] = event?.startDate?.split(' ') ?? [];
     const [ endDate, endTime ] = event?.endDate?.split(' ') ?? [];
     const { setLoading } = useLoading();
@@ -114,13 +111,6 @@ function UpdateEvent() {
         }
         setErrors(errors)
     }
-
-    useEffect(() => {
-        dispatch(thunkGetSingleEvent(eventId))
-        .then(() => setIsLoading(false))
-    }, [dispatch])
-
-    if (isLoading) return <div className='loading'>Loading...</div>
 
     return (
         <main className='create_event-wrapper'>

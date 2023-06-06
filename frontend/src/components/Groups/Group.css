@@ -171,20 +171,30 @@
     align-items: center;
 }
 
+.profile_image-wrapper  {
+    height: 70px;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 65px;
+    background-color: var(--white);
+    margin-right: 24px;
+}
+
 .group_member-image {
     height: 60px;
     aspect-ratio: 1;
     border-radius: 60px;
     background-color: var(--dark-gray);
-    margin-right: 24px;
 }
 
 .host-image {
-    border: 5px solid var(--teal)
+    border: 2px solid var(--teal)
 }
 
 .organizer-image {
-    border: 5px solid var(--red)
+    border: 2px solid var(--red)
 }
 
 .member-status {

@@ -34,7 +34,12 @@ function Group() {
         history.push(route)
     }
 
-    console.log(members)
+    const sortedMembers = normalizeMembers?.reduce((acc, member) => {
+        if (member.status === 'organizer') return [ member, ...acc ]
+        if (member.status === 'co-host') return [ member, ...acc ]
+        if (member.status === 'member') return [ member, ...acc ]
+        return [ ...acc, member ]
+    }, [])
 
     const deleteGroup = (e) => {
         e.preventDefault();
@@ -175,7 +180,7 @@ function Group() {
                         <div className='group_aside-members'>
                             <h2 className='subheading'>Members</h2>
                             <ul>
-                                {normalizeMembers?.map(member => {
+                                {sortedMembers?.map(member => {
                                     return (
                                         <GroupMemberItem organizerId={group?.Organizer?.id} member={member} />
                                     )

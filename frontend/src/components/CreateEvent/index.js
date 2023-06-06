@@ -69,6 +69,7 @@ function CreateEvent() {
                 capacity: parseInt(capacity),
                 price: parseInt(price),
                 description,
+                private: isPrivate  === 'Private' ? true : false,
                 startDate: eventStart,
                 endDate: eventEnd
             }

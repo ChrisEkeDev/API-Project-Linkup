@@ -15,10 +15,11 @@ import Signup from './components/Signup';
 import Search from './components/Search';
 import Group from './components/Groups/Group';
 import CreateGroup from './components/CreateGroup';
-import UpdateGroup from './components/UpdateGroup';
+import UpdateGroupWrapper from './components/UpdateGroupWrapper';
 import Event from './components/Events/Event';
 import CreateEvent from './components/CreateEvent';
-import UpdateEvent from './components/UpdateEvent';
+// import UpdateEvent from './components/UpdateEvent';
+import UpdateEventWrapper from './components/UpdateEventWrapper';
 import './index.css';
 
 function App() {
@@ -85,7 +86,7 @@ function App() {
               <CreateGroup/>
             </Route>
             <Route path='/update-group/:groupId'>
-              <UpdateGroup/>
+              <UpdateGroupWrapper/>
             </Route>
             <Route path='/events/:eventId'>
               <Event/>
@@ -94,7 +95,7 @@ function App() {
               <CreateEvent/>
             </Route>
             <Route path='/update-event/:eventId'>
-              <UpdateEvent/>
+              <UpdateEventWrapper/>
             </Route>
         </Switch>
       </LoadingProvider>

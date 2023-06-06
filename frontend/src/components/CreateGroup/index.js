@@ -35,6 +35,10 @@ function CreateGroup() {
         {value: 'Online', label: 'Online'}
     ]
 
+    const normalizedStates = states.map(state => {
+        return { value: state, label: state}
+    })
+
     const submit = (e) => {
         e.preventDefault();
         setLoading(true);
@@ -130,7 +134,7 @@ function CreateGroup() {
                         value={state}
                         setValue={(x) => setState(x.target.value)}
                         name='state'
-                        values={states}
+                        values={normalizedStates}
                         error={errors.state}
                     />
                 </fieldset>

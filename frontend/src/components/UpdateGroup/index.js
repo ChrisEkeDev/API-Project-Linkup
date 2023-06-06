@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useHistory,  } from 'react-router-dom';
 import { useLoading } from '../../context/LoadingProvider';
 import { useDispatch, useSelector } from 'react-redux';
-import { thunkGetSingleGroup, thunkUpdateGroup } from '../../store/groups';
+import { thunkUpdateGroup } from '../../store/groups';
 import { FaAngleLeft } from 'react-icons/fa';
 import Inputs from '../Inputs/Inputs';
 import TextArea from '../Inputs/TextArea';
@@ -11,18 +11,15 @@ import Select from '../Inputs/Select';
 import { states } from '../../utils/states';
 import '../CreateGroup/CreateGroup.css';
 
-function UpdateGroup() {
-    const { groupId } = useParams();
-    const group = useSelector(state => state.groups.singleGroup)
+function UpdateGroup({group}) {
     const user = useSelector(state => state.session.user);
     const { setLoading } = useLoading();
-    const [ isLoading, setIsLoading ] = useState(true);
-    const [ name, setName ] = useState(group?.name);
-    const [ about, setAbout ] = useState(group?.about);
-    const [ type, setType ] = useState(group?.type);
-    const [ isPrivate, setIsPrivate ] = useState(group?.private ? 'Private' : 'Public');
-    const [ city, setCity ] = useState(group?.city);
-    const [ state, setState ] = useState(group?.state);
+    const [ name, setName ] = useState(group.name);
+    const [ about, setAbout ] = useState(group.about);
+    const [ type, setType ] = useState(group.type);
+    const [ isPrivate, setIsPrivate ] = useState(group.private ? 'Private' : 'Public');
+    const [ city, setCity ] = useState(group.city);
+    const [ state, setState ] = useState(group.state);
     const [ errors, setErrors ] = useState({});
     const dispatch = useDispatch();
     const history = useHistory();
@@ -37,13 +34,17 @@ function UpdateGroup() {
         {value: 'Online', label: 'Online'}
     ]
 
+    const normalizedStates = states.map(state => {
+        return { value: state, label: state}
+    })
+
     const submit = (e) => {
         e.preventDefault();
         setLoading(true);
         validateForm();
         if (!Object.values(errors).length) {
             const groupData = {
-                id: groupId,
+                id: group.id,
                 organizerId: user.id,
                 name,
                 about,
@@ -97,17 +98,8 @@ function UpdateGroup() {
         setErrors(errors)
     }
 
-
-    useEffect(() => {
-        dispatch(thunkGetSingleGroup(groupId))
-        .then(() => setIsLoading(false))
-    }, [dispatch])
-
-
-    if (isLoading) return <div className='loading'>Loading...</div>
-
   return (
-    <main className='create_group-wrapper'>
+   <main className='create_group-wrapper'>
         <div className='create_group-contents'>
                 <div className='group-back' onClick={history.goBack}>
                     <FaAngleLeft className='back-icon'/>
@@ -133,7 +125,7 @@ function UpdateGroup() {
                         value={state}
                         setValue={(x) => setState(x.target.value)}
                         name='state'
-                        values={states}
+                        values={normalizedStates}
                         error={errors.state}
                     />
                 </fieldset>
@@ -180,7 +172,7 @@ function UpdateGroup() {
                         placeholder='select one'
                         name='private'
                         values={visibilities}
-                        value={isPrivate}
+                        value={isPrivate === 'Private' ? true : false}
                         setValue={(x) => setIsPrivate(x.target.value)}
                         error={errors.private}
                     />
