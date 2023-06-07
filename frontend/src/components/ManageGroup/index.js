@@ -1,27 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams, Switch, Route } from 'react-router-dom';
+import { Link, useParams, useHistory, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAlerts } from '../../context/AlertsProvider';
-import { thunkGetSingleGroup } from '../../store/groups';
-import { thunkGetMembers, thunkUpdateMembership, thunkDeleteMemnership } from '../../store/memberships';
+import { thunkGetSingleGroup, thunkDeleteGroup } from '../../store/groups';
+import { thunkGetGroupMembers, thunkUpdateMembership,thunkGetGroupMemberships, thunkDeleteMembership } from '../../store/memberships';
 import { FaAngleLeft } from 'react-icons/fa';
+import { useLoading } from '../../context/LoadingProvider';
+import Modal from '../Modal';
 import Button from '../Buttons/Button';
 import './ManageGroup.css';
 import GroupMemberItem from '../Groups/GroupMemberItem';
 
 function ManageGroup() {
     const { groupId } = useParams();
+    const [ deleting, setDeleting ] = useState(false);
     const dispatch = useDispatch();
+    const history = useHistory();
     const [ isLoading, setIsLoading ] = useState(true);
     const [ selectedMember, setSelectedMember ] = useState(null);
     const { handleAlerts } = useAlerts();
+    const { setLoading } = useLoading();
     const group = useSelector(state => state.groups.singleGroup);
-    const members = useSelector(state => state.memberships.currentMembers)
-    const memberships = useSelector(state => state.memberships.memberships);
+    const members = useSelector(state => state.memberships.groupMembers)
+    const memberships = useSelector(state => state.memberships.groupMemberships);
     const normalizeMembers = Object.values(members);
     const normalizeMemberships = Object.values(memberships)
 
-    console.log(selectedMember)
+    const navigate = (route) => {
+        history.push(route)
+    }
 
     const handleSelectMember = (member) => {
         const memberData = {}
@@ -36,8 +43,11 @@ function ManageGroup() {
             memberId: parseInt(data.member.id),
             status: status
         }
+        setSelectedMember(null)
         return (
             dispatch(thunkUpdateMembership(data.membership, memberData))
+            .then(() => dispatch(thunkGetGroupMembers(groupId)))
+            .then(() => handleAlerts({message: 'Status updated'}))
             .catch(async(errors) => {
                 const alert = await errors.json();
                 handleAlerts(alert)
@@ -49,8 +59,10 @@ function ManageGroup() {
         const memberData = {
             memberId: parseInt(data.member.id),
         }
+        setSelectedMember(null)
         return (
-            dispatch(thunkDeleteMemnership(data.membership, memberData))
+            dispatch(thunkDeleteMembership(data.membership, memberData))
+            .then(() => handleAlerts({message: 'Member removed'}))
             .catch(async(errors) => {
                 const alert = await errors.json();
                 handleAlerts(alert)
@@ -58,9 +70,27 @@ function ManageGroup() {
         )
     }
 
+    const deleteGroup = (e) => {
+        e.preventDefault();
+        setLoading(true)
+        return (
+            dispatch(thunkDeleteGroup(group))
+            .then((alert) => {
+                handleAlerts(alert);
+                navigate('/search/groups');
+                setLoading(false);
+            })
+            .catch(async(errors) => {
+                handleAlerts({message: 'There was an issue deleting your group'})
+                setLoading(false)
+            })
+        )
+    }
+
     useEffect(() => {
         dispatch(thunkGetSingleGroup(groupId))
-        .then(() => dispatch(thunkGetMembers(groupId)))
+        .then(() => dispatch(thunkGetGroupMembers(groupId)))
+        .then(() => dispatch(thunkGetGroupMemberships(groupId)))
         .then(() => setIsLoading(false))
     }, [dispatch])
 
@@ -68,6 +98,28 @@ function ManageGroup() {
 
   return (
     <div className='manage_group-wrapper'>
+        {
+            deleting ?
+            <Modal>
+                <form className='modal-contents'>
+                    <h2 className='subheading'>Confirm Delete</h2>
+                    <p className='body'>Are you sure you want to remove this group?</p>
+                    <Button
+                        style='spaced'
+                        type='primary'
+                        label='Yes (Delete Group)'
+                        action={(e) => deleteGroup(e)}
+                    />
+                    <Button
+                        style='spaced'
+                        type='tertiary'
+                        label='No (Keep Group)'
+                        action={() => setDeleting(false)}
+                    />
+                </form>
+            </Modal> :
+            null
+        }
         <header className='manage_group-header'>
             <div className='manage_group-header-contents'>
                 <Link className='group-back' to='/dashboard'>
@@ -76,9 +128,24 @@ function ManageGroup() {
                 </Link>
                 <h1>Manage {group.name}</h1>
                 <div className='manage_group-actions'>
-                    <Button style='small-btn' label='Create Event' type='secondary'/>
-                    <Button style='small-btn' label='Update Group' type='secondary'/>
-                    <Button style='small-btn' label='Delete Group' type='secondary'/>
+                    <Button
+                        style='small-btn'
+                        label='Create Event'
+                        type='secondary'
+                        action={() => navigate(`/create-event/${group?.id}`)}
+                    />
+                    <Button
+                        style='small-btn'
+                        label='Update Group'
+                        type='secondary'
+                        action={() => navigate(`/update-group/${group?.id}`)}
+                    />
+                    <Button
+                        style='small-btn'
+                        label='Delete Group'
+                        type='secondary'
+                        action={() => setDeleting(true)}
+                    />
                 </div>
             </div>
         </header>
@@ -87,6 +154,7 @@ function ManageGroup() {
                 <div className='manage_group-grid'>
                     <section className='manage_group-members'>
                         <h2 className='subheading'>Members</h2>
+                        {normalizeMembers.length > 0 &&
                         <ul>
                             {normalizeMembers.map(member => {
                                 return (
@@ -95,7 +163,7 @@ function ManageGroup() {
                                     </li>
                                 )
                             })}
-                        </ul>
+                        </ul>}
                     </section>
                     <aside className='manage_group-member-actions'>
                         {

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { thunkRestoreUser } from './store/session';
 import { thunkGetAllEvents } from './store/events';
 import { thunkGetAllGroups } from './store/groups';
-import { thunkGetAllMemberships } from './store/memberships';
 import { Switch, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import LoadingProvider from './context/LoadingProvider';
@@ -45,7 +44,6 @@ function App() {
       restoreSession();
       dispatch(thunkGetAllEvents());
       dispatch(thunkGetAllGroups());
-      dispatch(thunkGetAllMemberships());
   }, [dispatch])
 
   useEffect(() => {

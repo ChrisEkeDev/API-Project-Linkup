@@ -1,11 +1,15 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaUserFriends, FaMapMarkerAlt } from 'react-icons/fa';
 
 
-function DashboardGroupItem({group, organizer}) {
-    const id = group.id;
+function DashboardGroupItem({data}) {
+    const id = data.groupId
+    const group = useSelector(state => state.groups.allGroups[data.groupId]);
     const history = useHistory();
+
+    const organizer = data.status === 'organizer'
 
     const navigate = (route) => {
         history.push(route)

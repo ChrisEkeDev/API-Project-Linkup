@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import DashboardGroupItem from './DashboardGroupItem';
 import Button from '../Buttons/Button';
 
-function DashboardGroups({user, groups}) {
+function DashboardGroups({myMemberships}) {
     const [tab, setTab] = useState('organizer');
-    // const memberships = useSelector(state => state.memberships.memberships);
-    const organizedGroups = groups.filter(group => group.organizerId === user?.id);
-    const memberOfGroups = groups.filter(group => group.organizerId !== user?.id);
-    // const activeMemberInGroup = memberOfGroups.filter(group => group.)
+    const normalizedMemberships = Object.values(myMemberships);
+    const organizedMemberships = normalizedMemberships.filter(membership => membership.status === 'organizer');
+    const approvedMemberships = normalizedMemberships.filter(membership => membership.status === 'member');
+    const pendingMemberships = normalizedMemberships.filter(membership => membership.status === 'pending');
     const history = useHistory();
 
     const navigate = (route) => {
         history.push(route)
     }
+
 
   return (
     <div className='dashboard_groups-wrapper'>
@@ -22,16 +22,16 @@ function DashboardGroups({user, groups}) {
         <div className='dashboard_groups-tabs'>
             <p onClick={() => setTab('organizer')} className={`body dash_tab ${tab === 'organizer' ? 'dash_tab--active' : ''}`}>Organizer</p>
             <p onClick={() => setTab('member')} className={`body dash_tab ${tab === 'member' ? 'dash_tab--active' : ''}`}>Member</p>
-            <p onClick={() => setTab('pending')} className={`body dash_tab ${tab === 'pending' ? 'dash_tab--active' : ''}`}>Pending Approval</p>
+            <p onClick={() => setTab('pending')} className={`body dash_tab ${tab === 'pending' ? 'dash_tab--active' : ''}`}>Pending</p>
         </div>
         <section className='dashboard_groups-groups'>
             {
                 tab === 'organizer' ?
                 <ul>
-                {organizedGroups.length ?
-                organizedGroups.map((group => {
+                {organizedMemberships.length ?
+                organizedMemberships.map((group => {
                     return (
-                        <DashboardGroupItem key={group.id} group={group} organizer={true}/>
+                        <DashboardGroupItem key={group.id} data={group}/>
                     )
                 }))
                 :
@@ -48,10 +48,10 @@ function DashboardGroups({user, groups}) {
                 </ul> :
                 tab === 'member' ?
                 <ul>
-                {memberOfGroups.length ?
-                memberOfGroups.map((group => {
+                {approvedMemberships.length ?
+                approvedMemberships.map((group => {
                     return (
-                        <DashboardGroupItem key={group.id} group={group} organizer={false}/>
+                        <DashboardGroupItem key={group.id} data={group}/>
                     )
                 }))
                 :
@@ -66,7 +66,25 @@ function DashboardGroups({user, groups}) {
                 </div>
                 }
                 </ul> :
-                null
+                <ul>
+                {pendingMemberships.length ?
+                pendingMemberships.map((group => {
+                    return (
+                        <DashboardGroupItem key={group.id} data={group}/>
+                    )
+                }))
+                :
+                <div className='dash-no_groups'>
+                    <p className='body small'>You don't have any pending requests yet.</p>
+                    <Button
+                        type='primary'
+                        style='small-btn'
+                        label='Search Groups'
+                        action={() => navigate('/search/groups')}
+                    />
+                </div>
+                }
+                </ul>
             }
         </section>
     </div>

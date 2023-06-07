@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetSingleGroup, thunkDeleteGroup,  } from '../../store/groups';
-import { thunkGetMembers, thunkDeleteMemnership, thunkAddMembership } from '../../store/memberships';
+import { thunkGetGroupMembers, thunkGetGroupMemberships, thunkDeleteMembership, thunkAddMembership } from '../../store/memberships';
 import { FaAngleLeft } from 'react-icons/fa';
 import { useLoading } from '../../context/LoadingProvider';
 import { useAlerts } from '../../context/AlertsProvider';
@@ -25,39 +25,29 @@ function Group() {
     const user = useSelector(state => state.session.user)
     const group = useSelector(state => state.groups.singleGroup);
     const events = useSelector(state => state.events.allEvents);
-    const members = useSelector(state => state.memberships.currentMembers);
-    const memberships = useSelector(state => state.memberships.allMemberships)
+    const members = useSelector(state => state.memberships.groupMembers);
+    const memberships = useSelector(state => state.memberships.groupMemberships)
     // Normalized Data
     const normalizedEvents = Object.values(events);
     const normalizeMembers = Object.values(members);
     const normalizeMemberships = Object.values(memberships)
     // Group Data
-    const groupMemberships = normalizeMemberships.filter(memberships => memberships.groupId === groupId)
     const groupEvents = normalizedEvents.filter(event => event.groupId === Number(groupId));
     const upcomingEvents = groupEvents.filter(event => new Date(event.startDate).getTime() > new Date().getTime());
     const pastEvents = groupEvents.filter(event => new Date(event.startDate).getTime() < new Date().getTime());
     // User Data
-    const myMembership = groupMemberships.find(membership => user.id === membership.userId)
+    const myMembership = normalizeMemberships.find(membership => user.id === membership.userId)
 
     const navigate = (route) => {
         history.push(route)
     }
-
-    const sortedMembers = normalizeMembers?.reduce((acc, member) => {
-        if (member.status === 'organizer') return [ member, ...acc ]
-        if (member.status === 'co-host') return [ member, ...acc ]
-        if (member.status === 'member') return [ member, ...acc ]
-        return [ ...acc, member ]
-    }, [])
-
-    console.log(myMembership)
 
     const deleteMemberStatus = (data) => {
         const memberData = {
             memberId: parseInt(user.id),
         }
         return (
-            dispatch(thunkDeleteMemnership(myMembership, memberData))
+            dispatch(thunkDeleteMembership(myMembership, memberData))
             .catch(async(errors) => {
                 const alert = await errors.json();
                 handleAlerts(alert)
@@ -94,7 +84,8 @@ function Group() {
 
     useEffect(() => {
         dispatch(thunkGetSingleGroup(groupId))
-        .then(() => dispatch(thunkGetMembers(groupId)))
+        .then(() => dispatch(thunkGetGroupMembers(groupId)))
+        .then(() => dispatch(thunkGetGroupMemberships(groupId)))
         .then(() => setIsLoading(false))
     }, [dispatch])
 
@@ -235,7 +226,11 @@ function Group() {
                                 {normalizeMembers.length > 8 ? <Link to='/manage-group/1'>See all</Link> : null}
                             </div>
                             <ul>
-                                {sortedMembers?.slice(0,8).map(member => {
+                                {normalizeMembers?.reduce((acc, member) => {
+                                    if (member.status === 'organizer') return [ member, ...acc ]
+                                    if (member.status === 'pending') return [  ...acc, member ]
+                                    return [ ...acc, member ]
+                                }, []).slice(0,8).map(member => {
                                     return (
                                         <li key={member.id}>
                                             <GroupMemberItem organizerId={group?.Organizer?.id} member={member} />

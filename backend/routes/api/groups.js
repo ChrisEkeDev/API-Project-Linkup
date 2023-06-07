@@ -90,7 +90,7 @@ router.get('/:groupId', async (req, res) => {
             {
                 model: User,
                 as: "Organizer",
-                attributes: ['id', 'firstName', 'lastName']
+                attributes: ['id', 'firstName', 'lastName', 'profileImage']
             },
             {
                 model: Venue
@@ -133,6 +133,13 @@ router.post('/', validateCreateGroup, async (req, res) => {
     // Creates the group
     const group = await user.createGroup({
         name, about, type, private, city, state
+    })
+
+    // Create the Membership
+    await Membership.create({
+        userId: userId,
+        groupId: group.id,
+        status: 'organizer'
     })
 
     return res.status(201).json(group)

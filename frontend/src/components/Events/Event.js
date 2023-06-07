@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetSingleEvent, thunkDeleteEvent } from '../../store/events';
-import { thunkGetAttendees } from '../../store/attendances';
+import { thunkGetEventAttendees } from '../../store/attendances';
 import EventAttendeeItem from './EventAttendeeItem';
 import Button from '../Buttons/Button';
 import { useLoading } from '../../context/LoadingProvider';
@@ -54,7 +54,7 @@ function Event() {
 
   useEffect(() => {
     dispatch(thunkGetSingleEvent(eventId))
-    .then(() => dispatch(thunkGetAttendees(eventId)))
+    .then(() => dispatch(thunkGetEventAttendees(eventId)))
     .then(() => setIsLoading(false))
   }, [dispatch])
 

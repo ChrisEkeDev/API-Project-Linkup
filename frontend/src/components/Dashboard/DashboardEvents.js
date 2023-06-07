@@ -28,7 +28,7 @@ function DashboardEvents({attendance}) {
                     {Object.values(attendance).length ?
                         attending.map(event => {
                             return (
-                                <DashboardEventItem id={event.eventId}/>
+                                <DashboardEventItem key={event.id} id={event.eventId}/>
                             )
                         })
                     :

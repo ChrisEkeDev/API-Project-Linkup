@@ -4,19 +4,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import DashboardGroups from './DashboardGroups';
 import { thunkGetCurrentGroups } from '../../store/groups';
 import { thunkGetAttendance } from '../../store/events';
+import { thunkGetMyMemberships } from '../../store/memberships';
 import './Dashboard.css';
 import DashboardEvents from './DashboardEvents';
 
 function Dashboard() {
     const dispatch = useDispatch();
     const user = useSelector(state => state.session.user)
-    const groups = useSelector(state => state.groups.currentGroups);
+    const myMemberships = useSelector(state => state.memberships.myMemberships)
     const attendance = useSelector(state => state.events.attendance);
-    const normalizedGroups = Object.values(groups);
 
     useEffect(() => {
-      dispatch(thunkGetCurrentGroups());
       dispatch(thunkGetAttendance());
+      dispatch(thunkGetMyMemberships())
     }, [dispatch])
 
     if (!user) return <Redirect to='/' />
@@ -29,7 +29,7 @@ function Dashboard() {
             </header>
             <section className='dashboard-main'>
             <section className='dashboard-section'>
-              <DashboardGroups user={user} groups={normalizedGroups}/>
+              <DashboardGroups myMemberships={myMemberships}/>
               <DashboardEvents attendance={attendance}/>
             </section>
             <aside className='dashboard-aside'>

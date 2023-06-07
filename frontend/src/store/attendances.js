@@ -1,20 +1,26 @@
 import { csrfFetch } from './csrf';
 
 // TYPES
-const GET_CURRENT_ATTENDEES = '/linkup/attendances/GET_CURRENT_ATTENDANCES';
-const GET_ATTENDANCES = '/linkup/attendances/GET_ATTENDANCES';
+const GET_EVENT_ATTENDEES = '/linkup/attendances/GET_EVENT_ATTENDEES';
+const GET_EVENT_ATTENDANCES = '/linkup/attendances/GET_EVENT_ATTENDANCES';
+const GET_MY_ATTENDANCES = '/linkup/attendances/GET_MY_ATTENDANCES';
 const ADD_ATTENDANCE = '/linkup/attendances/ADD_ATTENDANCE';
 const UPDATE_ATTENDANCE = '/linkup/attendances/UPDATE_ATTENDANCE';
 const DELETE_ATTENDANCE = '/linkup/attendances/DELETE_ATTENDANCE';
 
 // ACTIONS
-const actionGetCurrentAttendees = (attendees) => ({
-    type: GET_CURRENT_ATTENDEES,
+const actionGetEventAttendees = (attendees) => ({
+    type: GET_EVENT_ATTENDEES,
     payload: attendees
 })
 
-const actionGetAttendances = (attendances) => ({
-    type: GET_ATTENDANCES,
+const actionGetEventAttendances = (attendances) => ({
+    type: GET_EVENT_ATTENDANCES,
+    payload: attendances
+})
+
+const actionGetMyAttendances = (attendances) => ({
+    type: GET_MY_ATTENDANCES,
     payload: attendances
 })
 
@@ -35,30 +41,41 @@ const actionDeleteAttendance = (attendances) => ({
 
 
 // THUNKS
-export const thunkGetAttendees = (eventId) => async dispatch => {
+export const thunkGetEventAttendees = (eventId) => async dispatch => {
     const res = await csrfFetch(`/api/events/${eventId}/attendees`);
     if (res.ok) {
         const data = await res.json();
-        dispatch(actionGetCurrentAttendees(data.Attendees))
+        dispatch(actionGetEventAttendees(data.Attendees))
     } else {
         const errors = await res.json();
         console.log(errors)
     }
 }
 
-export const thunkGetAttendances = (eventId) => async dispatch => {
+export const thunkGetEventAttendances = (eventId) => async dispatch => {
     const res = await csrfFetch(`/api/events/${eventId}/attendances`)
     if (res.ok) {
         const data = await res.json();
-        dispatch(actionGetAttendances(data.Attendances))
+        dispatch(actionGetEventAttendances(data.Attendances))
     } else {
         const errors = await res.json();
         console.log(errors)
     }
 }
 
-export const thunkAddAttendance = (attendance) => async dispatch => {
-    const res = await csrfFetch(`/api/events/${attendance.id}/attendances`, {
+export const thunkGetMyAttendances = () => async dispatch => {
+    const res = await csrfFetch('/api/attendances');
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(actionGetMyAttendances(data.Attendances))
+    } else {
+        const errors = await res.json();
+        console.log(errors)
+    }
+}
+
+export const thunkAddAttendance = (eventId) => async dispatch => {
+    const res = await csrfFetch(`/api/events/${eventId}/attendances`, {
         method: 'POST'
     })
     if (res.ok) {
@@ -70,9 +87,10 @@ export const thunkAddAttendance = (attendance) => async dispatch => {
     }
 }
 
-export const thunkUpdateAttendance = (attendance) => async dispatch => {
-    const res = await csrfFetch(`/api/events/${attendance.id}/attendance`, {
-        method: 'PUT'
+export const thunkUpdateAttendance = (attendance, attendeeData) => async dispatch => {
+    const res = await csrfFetch(`/api/events/${attendance.eventId}/attendance`, {
+        method: 'PUT',
+        body: JSON.stringify(attendeeData)
     })
     if (res.ok) {
         const data = await res.json();
@@ -83,9 +101,10 @@ export const thunkUpdateAttendance = (attendance) => async dispatch => {
     }
 }
 
-export const thunkDeleteAttendance = (attendance) => async dispatch => {
-    const res = await csrfFetch(`/api/events/${attendance.id}/attendance`, {
-        method: 'DELETE'
+export const thunkDeleteAttendance = (attendance, attendeeData) => async dispatch => {
+    const res = await csrfFetch(`/api/events/${attendance.eventId}/attendance`, {
+        method: 'DELETE',
+        body: JSON.stringify(attendeeData)
     })
     if (res.ok) {
         const message = await res.json();
@@ -99,28 +118,30 @@ export const thunkDeleteAttendance = (attendance) => async dispatch => {
 
 // REDUCER
 
-const initialState = { currentAttendees: {}, attendances: {} }
+const initialState = { myAttendances: {}, eventAttendances: {}, eventAttendees: {}}
 const attendancesReducer = (state = initialState, action) => {
     switch(action.type) {
-        case GET_CURRENT_ATTENDEES: {
-            const newState = { ...state };
-            action.payload.forEach(attendee => newState.currentAttendees[attendee.id] = attendee)
+        case GET_EVENT_ATTENDEES: {
+            const newState = { myAttendances: {...state.myAttendances}, eventAttendances: {...state.eventAttendances}, eventAttendees: {} };
+            action.payload.forEach(attendee => newState.eventAttendees[attendee.id] = attendee)
             return newState;
         }
-        case GET_ATTENDANCES: {
-            const newState = { ...state };
-            action.payload.forEach(attendance => newState.attendances[attendance.id] = attendance)
+        case GET_EVENT_ATTENDANCES: {
+            const newState = { myAttendances: {...state.myAttendances}, eventAttendances: {}, eventAttendees:{...state.eventAttendees}  };
+            action.payload.forEach(attendance => newState.eventAttendances[attendance.id] = attendance)
             return newState;
         }
         case ADD_ATTENDANCE:
         case UPDATE_ATTENDANCE: {
-            const newState = { ...state };
-            newState.attendances = { ...newState.attendances, [action.payload.id]: action.payload};
+            const newState = { eventAttendees: {}, myAttendances: {...state.myAttendances}, eventAttendances:{...state.eventAttendances}  };
+            newState.myAttendances = { ...newState.myAttendances, [action.payload.id]: action.payload}
+            newState.eventAttendances = { ...newState.eventAttendances, [action.payload.id]: action.payload};
             return newState;
         }
         case DELETE_ATTENDANCE: {
-            const newState = { ...state };
-            delete newState.attendances[action.payload.id];
+            const newState = { eventAttendees: {}, myAttendances: {...state.myAttendances}, eventAttendances:{...state.eventAttendances}  };;
+            delete newState.myAttendances[action.payload.id];
+            delete newState.eventAttendances[action.payload.id];
             return newState;
         }
         default:
