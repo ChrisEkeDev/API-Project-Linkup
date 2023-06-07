@@ -393,6 +393,25 @@ router.get('/:eventId/attendees', async (req, res) => {
     }
 })
 
+// Get all Attendances from an Event id
+router.get('/:eventId/attendances', async (req, res) => {
+    const { eventId } = req.params;
+    const event = await Event.findByPk(eventId);
+
+    // Checks if the group exists
+    if (!event) {
+        return res.status(404).json({
+            message: "Event couldn't be found"
+        })
+    }
+
+    const attendances = await Event.getAttendances();
+    return res.status(200).json({
+        Attendances: attendances
+    })
+
+})
+
 
 // Request to Attend an Event based on the Event's id
 router.post('/:eventId/attendance', requireAuth, async (req, res) => {
@@ -439,16 +458,13 @@ router.post('/:eventId/attendance', requireAuth, async (req, res) => {
         return res.status(403).json({message: 'Forbidden'})
     }
 
-    await Attendance.create({
+    const attendance = await Attendance.create({
         userId: userId,
         eventId: eventId,
         status: 'waitlist'
     })
 
-    return res.status(200).json({
-        userId: userId,
-        status: 'waitlist'
-    })
+    return res.status(200).json(attendance)
 })
 
 
