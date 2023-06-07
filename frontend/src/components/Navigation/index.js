@@ -25,7 +25,7 @@ function Navigation({setAuthForm}) {
             </div>
             {user ?
             <div className='nav_user-contents'>
-                <Link className='new_group-link' to='/group/new'>Start a new group</Link>
+                <Link className='new_group-link' to='/create-group'>Start a new group</Link>
                 <NavigationMenu user={user} />
             </div>
              :
