@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetSingleGroup, thunkDeleteGroup,  } from '../../store/groups';
-import { thunkGetMembers } from '../../store/memberships';
+import { thunkGetMembers, thunkDeleteMemnership, thunkAddMembership } from '../../store/memberships';
 import { FaAngleLeft } from 'react-icons/fa';
 import { useLoading } from '../../context/LoadingProvider';
 import { useAlerts } from '../../context/AlertsProvider';
@@ -13,22 +13,31 @@ import './Group.css';
 import GroupMemberItem from './GroupMemberItem';
 
 function Group() {
+    const [ deleting, setDeleting ] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(true);
+    // Hooks
     const dispatch = useDispatch();
     const history = useHistory();
     const { handleAlerts } = useAlerts();
     const { setLoading } = useLoading();
     const { groupId } = useParams();
+    // Store Data
     const user = useSelector(state => state.session.user)
     const group = useSelector(state => state.groups.singleGroup);
     const events = useSelector(state => state.events.allEvents);
-    const members = useSelector(state => state.memberships.currentMembers)
+    const members = useSelector(state => state.memberships.currentMembers);
+    const memberships = useSelector(state => state.memberships.allMemberships)
+    // Normalized Data
     const normalizedEvents = Object.values(events);
     const normalizeMembers = Object.values(members);
+    const normalizeMemberships = Object.values(memberships)
+    // Group Data
+    const groupMemberships = normalizeMemberships.filter(memberships => memberships.groupId === groupId)
     const groupEvents = normalizedEvents.filter(event => event.groupId === Number(groupId));
-    const [ deleting, setDeleting ] = useState(false);
-    const [ isLoading, setIsLoading ] = useState(true);
     const upcomingEvents = groupEvents.filter(event => new Date(event.startDate).getTime() > new Date().getTime());
     const pastEvents = groupEvents.filter(event => new Date(event.startDate).getTime() < new Date().getTime());
+    // User Data
+    const myMembership = groupMemberships.find(membership => user.id === membership.userId)
 
     const navigate = (route) => {
         history.push(route)
@@ -40,6 +49,31 @@ function Group() {
         if (member.status === 'member') return [ member, ...acc ]
         return [ ...acc, member ]
     }, [])
+
+    console.log(myMembership)
+
+    const deleteMemberStatus = (data) => {
+        const memberData = {
+            memberId: parseInt(user.id),
+        }
+        return (
+            dispatch(thunkDeleteMemnership(myMembership, memberData))
+            .catch(async(errors) => {
+                const alert = await errors.json();
+                handleAlerts(alert)
+            })
+        )
+    }
+
+    const joinAsMember = () => {
+        return (
+            dispatch(thunkAddMembership(group.id))
+            .catch(async(errors) => {
+                const alert = await errors.json();
+                handleAlerts(alert)
+            })
+        )
+    }
 
     const deleteGroup = (e) => {
         e.preventDefault();
@@ -59,7 +93,6 @@ function Group() {
     }
 
     useEffect(() => {
-        // dispatch(thunkGetMemberships(groupId))
         dispatch(thunkGetSingleGroup(groupId))
         .then(() => dispatch(thunkGetMembers(groupId)))
         .then(() => setIsLoading(false))
@@ -125,12 +158,31 @@ function Group() {
                                     action={() => setDeleting(true)}
                                 />
                             </div> :
+                            null}
+                            {
+                            myMembership &&  user?.id !== group?.Organizer?.id && myMembership.status !== 'pending' ?
+                            <Button
+                                label='Leave this group'
+                                type='secondary'
+                                style='small-btn'
+                                action={() => deleteMemberStatus(myMembership)}
+                            /> :
+                            !myMembership ?
                             <Button
                                 label='Join this group'
                                 type='primary'
-                            />
-                        }
-
+                                style='small-btn'
+                                action={() => joinAsMember()}
+                            />:
+                            myMembership.status === 'pending' ?
+                            <Button
+                                label='Withdraw Request'
+                                type='secondary'
+                                style='small-btn'
+                                action={() => joinAsMember()}
+                            />:
+                            null
+                            }
                     </div>
                 </div>
             </div>
@@ -185,7 +237,9 @@ function Group() {
                             <ul>
                                 {sortedMembers?.slice(0,8).map(member => {
                                     return (
-                                        <GroupMemberItem key={member.id} organizerId={group?.Organizer?.id} member={member} />
+                                        <li key={member.id}>
+                                            <GroupMemberItem organizerId={group?.Organizer?.id} member={member} />
+                                        </li>
                                     )
                                 })}
                             </ul>

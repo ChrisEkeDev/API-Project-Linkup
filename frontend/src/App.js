@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { thunkRestoreUser } from './store/session';
 import { thunkGetAllEvents } from './store/events';
 import { thunkGetAllGroups } from './store/groups';
+import { thunkGetAllMemberships } from './store/memberships';
 import { Switch, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import LoadingProvider from './context/LoadingProvider';
@@ -15,10 +16,10 @@ import Signup from './components/Signup';
 import Search from './components/Search';
 import Group from './components/Groups/Group';
 import CreateGroup from './components/CreateGroup';
+import ManageGroup from './components/ManageGroup';
 import UpdateGroupWrapper from './components/UpdateGroupWrapper';
 import Event from './components/Events/Event';
 import CreateEvent from './components/CreateEvent';
-// import UpdateEvent from './components/UpdateEvent';
 import UpdateEventWrapper from './components/UpdateEventWrapper';
 import './index.css';
 
@@ -44,6 +45,7 @@ function App() {
       restoreSession();
       dispatch(thunkGetAllEvents());
       dispatch(thunkGetAllGroups());
+      dispatch(thunkGetAllMemberships());
   }, [dispatch])
 
   useEffect(() => {
@@ -87,6 +89,9 @@ function App() {
             </Route>
             <Route path='/update-group/:groupId'>
               <UpdateGroupWrapper/>
+            </Route>
+            <Route path='/manage-group/:groupId'>
+              <ManageGroup/>
             </Route>
             <Route path='/events/:eventId'>
               <Event/>

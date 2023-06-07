@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import DashboardGroupItem from './DashboardGroupItem';
 import Button from '../Buttons/Button';
 
 function DashboardGroups({user, groups}) {
     const [tab, setTab] = useState('organizer');
+    // const memberships = useSelector(state => state.memberships.memberships);
     const organizedGroups = groups.filter(group => group.organizerId === user?.id);
     const memberOfGroups = groups.filter(group => group.organizerId !== user?.id);
+    // const activeMemberInGroup = memberOfGroups.filter(group => group.)
     const history = useHistory();
 
     const navigate = (route) => {
@@ -19,6 +22,7 @@ function DashboardGroups({user, groups}) {
         <div className='dashboard_groups-tabs'>
             <p onClick={() => setTab('organizer')} className={`body dash_tab ${tab === 'organizer' ? 'dash_tab--active' : ''}`}>Organizer</p>
             <p onClick={() => setTab('member')} className={`body dash_tab ${tab === 'member' ? 'dash_tab--active' : ''}`}>Member</p>
+            <p onClick={() => setTab('pending')} className={`body dash_tab ${tab === 'pending' ? 'dash_tab--active' : ''}`}>Pending Approval</p>
         </div>
         <section className='dashboard_groups-groups'>
             {
@@ -42,11 +46,12 @@ function DashboardGroups({user, groups}) {
                 </div>
                 }
                 </ul> :
+                tab === 'member' ?
                 <ul>
                 {memberOfGroups.length ?
                 memberOfGroups.map((group => {
                     return (
-                        <DashboardGroupItem key={group.id} group={group}/>
+                        <DashboardGroupItem key={group.id} group={group} organizer={false}/>
                     )
                 }))
                 :
@@ -60,7 +65,8 @@ function DashboardGroups({user, groups}) {
                     />
                 </div>
                 }
-                </ul>
+                </ul> :
+                null
             }
         </section>
     </div>

@@ -18,8 +18,9 @@ const dateOptions = { weekday: "long", year: "numeric", month: "long", day: "num
                     <div className='event_item-image bg-image' style={{backgroundImage: `url(${event?.previewImage})` }}></div>
                     <div className='event_item-details'>
                         <h3 className='body green'>
-                            {new Intl.DateTimeFormat('en-US', dateOptions).format(new Date(event?.startDate))} @
-                            {new Intl.DateTimeFormat('en-US', timeOptions).format(new Date(event?.startDate))}
+                            {new Intl.DateTimeFormat('en-US', dateOptions).format(new Date(event?.startDate))}
+                            <span> @ </span>
+                             {new Intl.DateTimeFormat('en-US', timeOptions).format(new Date(event?.startDate))}
                         </h3>
                         <h2 className='subheading'>{event?.name}</h2>
                         <small className='body small'>{event?.Group.city}, {event?.Group.state}</small>

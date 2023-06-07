@@ -3,7 +3,7 @@ import { csrfFetch } from './csrf';
 
 // TYPES
 const GET_CURRENT_MEMBERS = '/linkup/memberships/GET_CURRENT_MEMBERS'
-const GET_MEMBERSHIPS = '/linkup/memberships/GET_CURRENT_MEMBERSHIPS'
+const GET_ALL_MEMBERSHIPS = '/linkup/memberships/GET_ALL_MEMBERSHIPS'
 const ADD_MEMBERSHIP = '/linkup/memberships/ADD_MEMBERSHIP'
 const UPDATE_MEMBERSHIP = '/linkup/memberships/UPDATE_MEMBERSHIP'
 const DELETE_MEMBERSHIP = '/linkup/memberships/DELETE_MEMBERSHIP'
@@ -16,8 +16,8 @@ const actionGetCurrentMembers = (members) => ({
     payload: members
 })
 
-const actionGetCurrentMemberships = (memberships) => ({
-    type: GET_MEMBERSHIPS,
+const actionGetAllMemberships = (memberships) => ({
+    type: GET_ALL_MEMBERSHIPS,
     payload: memberships
 })
 
@@ -50,19 +50,20 @@ export const thunkGetMembers = (groupId) => async dispatch => {
     }
 }
 
-export const thunkGetMemberships = (groupId) => async dispatch => {
-    const res = await csrfFetch(`/api/groups/${groupId}/memberships`);
+export const thunkGetAllMemberships = () => async dispatch => {
+    const res = await csrfFetch('/api/memberships');
     if (res.ok) {
         const data = await res.json();
-        dispatch(actionGetCurrentMemberships(data.Memberships))
+        dispatch(actionGetAllMemberships(data.Memberships))
     } else {
         const errors = await res.json();
-        return errors;
+        console.log(errors)
     }
 }
 
-export const thunkAddMembership = (memberhsip) => async dispatch => {
-    const res = await csrfFetch(`/api/groups/${memberhsip.groupId}/memberships`, {
+
+export const thunkAddMembership = (groupId) => async dispatch => {
+    const res = await csrfFetch(`/api/groups/${groupId}/membership`, {
         method: 'POST'
     });
     if (res.ok) {
@@ -74,10 +75,10 @@ export const thunkAddMembership = (memberhsip) => async dispatch => {
     }
 }
 
-export const thunkUpdateMembership = (memberhsip) => async dispatch => {
-    const res = await csrfFetch(`/api/groups/${memberhsip.groupId}/memberships`, {
+export const thunkUpdateMembership = (memberhsip, memberData) => async dispatch => {
+    const res = await csrfFetch(`/api/groups/${memberhsip.groupId}/membership`, {
         method: 'PUT',
-        body: JSON.stringify(memberhsip)
+        body: JSON.stringify(memberData)
     });
 
     if (res.ok) {
@@ -89,9 +90,10 @@ export const thunkUpdateMembership = (memberhsip) => async dispatch => {
     }
 }
 
-export const thunkDeleteMemnership = (memberhsip) => async dispatch => {
-    const res = await csrfFetch(`/api/groups/${memberhsip.groupId}/memberships`, {
-        method: 'DELETE'
+export const thunkDeleteMemnership = (memberhsip, memberData) => async dispatch => {
+    const res = await csrfFetch(`/api/groups/${memberhsip.groupId}/membership`, {
+        method: 'DELETE',
+        body: JSON.stringify(memberData)
     });
     if (res.ok) {
         const message = res.json();
@@ -107,28 +109,28 @@ export const thunkDeleteMemnership = (memberhsip) => async dispatch => {
 
 // REDUCER
 
-const initialState = { currentMembers: {}, memberships:{} }
+const initialState = { currentMembers: {}, allMemberships:{} }
 const membershipsReducer = (state = initialState, action) => {
     switch(action.type) {
         case GET_CURRENT_MEMBERS: {
-            const newState = { ...state };
+            const newState = { ...state, currentMembers: {}};
             action.payload.forEach(member => newState.currentMembers[member.id] = member)
             return newState;
         };
-        case GET_MEMBERSHIPS: {
-            const newState = { ...state };
-            action.payload.forEach(membership => newState.memberships[membership.id] = membership);
+        case GET_ALL_MEMBERSHIPS: {
+            const newState = { ...state, allMemberships: {}}
+            action.payload.forEach(membership => newState.allMemberships[membership.id] = membership);
             return newState;
-        };
+        }
         case ADD_MEMBERSHIP:
         case UPDATE_MEMBERSHIP: {
-            const newState = { ...state };
-            newState.memberships = {...newState.memberships, [action.payload.id]: action.payload};
+            const newState = { currentMembers: {}, ...state };
+            newState.allMemberships = {...newState.allMemberships, [action.payload.id]: action.payload};
             return newState;
         }
         case DELETE_MEMBERSHIP: {
-            const newState = { ...state };
-            delete newState.memberships[action.payload.id];
+            const newState = { currentMembers: {}, ...state };
+            delete newState.allMemberships[action.payload.id];
             return newState;
         }
         default:
