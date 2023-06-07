@@ -2,6 +2,7 @@ import React, { useEffect, useState }  from 'react'
 import GroupItem from './GroupItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetAllGroups } from '../../store/groups';
+import DataLoading from '../Loading/DataLoading';
 import './Group.css';
 
 function Groups() {
@@ -15,7 +16,7 @@ function Groups() {
     .then(() => setIsLoading(false));
 }, [dispatch])
 
-  if (isLoading) return <div className='loading'>Loading...</div>
+  if (isLoading) return <DataLoading></DataLoading>
 
   return (
     <ul className='groups-wrapper'>

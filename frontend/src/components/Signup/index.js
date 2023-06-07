@@ -130,7 +130,7 @@ function Signup({close}) {
                 disabled={false}
             />
             <Button
-                style='spaced'
+                style='spaced small-btn'
                 type='primary'
                 label='Sign up'
                 disabled={Object.values(errors).length}

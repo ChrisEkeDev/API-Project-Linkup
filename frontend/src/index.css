@@ -28,6 +28,11 @@
     width: 100dvw;
   }
 
+  a {
+    text-decoration: unset;
+    color: unset
+  }
+
   body, html {
     width: calc(100dvw - 10px);
     width: calc(100vw - 10px);

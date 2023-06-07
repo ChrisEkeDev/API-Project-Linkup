@@ -19,6 +19,7 @@ import ManageGroup from './components/ManageGroup';
 import UpdateGroupWrapper from './components/UpdateGroupWrapper';
 import Event from './components/Events/Event';
 import CreateEvent from './components/CreateEvent';
+import ManageEvent from './components/ManageEvent';
 import UpdateEventWrapper from './components/UpdateEventWrapper';
 import './index.css';
 
@@ -99,6 +100,9 @@ function App() {
             </Route>
             <Route path='/update-event/:eventId'>
               <UpdateEventWrapper/>
+            </Route>
+            <Route path='/manage-event/:eventId'>
+              <ManageEvent/>
             </Route>
         </Switch>
       </LoadingProvider>

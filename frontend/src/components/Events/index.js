@@ -2,6 +2,7 @@ import React, { useEffect, useState }  from 'react';
 import EventItem from './EventItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetAllEvents } from '../../store/events';
+import DataLoading from '../Loading/DataLoading';
 import './Event.css';
 
 function Events() {
@@ -15,7 +16,7 @@ function Events() {
     .then(() => setIsLoading(false));
 }, [dispatch])
 
-  if (isLoading) return <div className='loading'>Loading...</div>
+  if (isLoading) return <DataLoading></DataLoading>
 
 
   return (

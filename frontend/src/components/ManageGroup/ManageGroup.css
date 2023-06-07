@@ -24,7 +24,7 @@
 
 .manage_group-contents {
     background-color: var(--light-gray);
-    padding: 24px 0;
+    padding: 48px 0;
     flex: 1;
 }
 
@@ -40,7 +40,7 @@
     width: calc(100% - 24px);
 }
 
-.manage_group-members ul {
+.manage_group-members-contents {
     background-color: var(--white);
     padding: 24px;
     border-radius: 10px;
@@ -75,4 +75,8 @@
 .selected-member {
     border: 2px solid var(--red);
     border-radius: 10px;
+}
+
+.manage_group-events {
+    padding: 48px 0;
 }

@@ -3,6 +3,7 @@ import { Link, useParams, useHistory, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAlerts } from '../../context/AlertsProvider';
 import { thunkGetSingleGroup, thunkDeleteGroup } from '../../store/groups';
+import DataLoading from '../Loading/DataLoading';
 import { thunkGetGroupMembers, thunkUpdateMembership,thunkGetGroupMemberships, thunkDeleteMembership } from '../../store/memberships';
 import { FaAngleLeft } from 'react-icons/fa';
 import { useLoading } from '../../context/LoadingProvider';
@@ -10,6 +11,7 @@ import Modal from '../Modal';
 import Button from '../Buttons/Button';
 import './ManageGroup.css';
 import GroupMemberItem from '../Groups/GroupMemberItem';
+import EventItem from '../Events/EventItem';
 
 function ManageGroup() {
     const { groupId } = useParams();
@@ -20,9 +22,13 @@ function ManageGroup() {
     const [ selectedMember, setSelectedMember ] = useState(null);
     const { handleAlerts } = useAlerts();
     const { setLoading } = useLoading();
+    const user = useSelector(state => state.session.user);
     const group = useSelector(state => state.groups.singleGroup);
     const members = useSelector(state => state.memberships.groupMembers)
     const memberships = useSelector(state => state.memberships.groupMemberships);
+    const events = useSelector(state => state.events.allEvents);
+    const normalizedEvents = Object.values(events);
+    const groupEvents = normalizedEvents.filter(event => event.groupId === Number(groupId));
     const normalizeMembers = Object.values(members);
     const normalizeMemberships = Object.values(memberships)
 
@@ -92,10 +98,11 @@ function ManageGroup() {
         dispatch(thunkGetSingleGroup(groupId))
         .then(() => dispatch(thunkGetGroupMembers(groupId)))
         .then(() => dispatch(thunkGetGroupMemberships(groupId)))
+
         .then(() => setIsLoading(false))
     }, [dispatch])
 
-    if (isLoading) return <div className='loading'>Loading...</div>
+    if (isLoading) return <DataLoading></DataLoading>
 
   return (
     <div className='manage_group-wrapper'>
@@ -153,19 +160,33 @@ function ManageGroup() {
         <div className='manage_group-contents'>
             <div className='manage_group-grid-wrapper'>
                 <div className='manage_group-grid'>
-                    <section className='manage_group-members'>
-                        <h2 className='subheading'>Members</h2>
-                        {normalizeMembers.length > 0 &&
-                        <ul>
-                            {normalizeMembers.map(member => {
-                                return (
-                                    <li className={`member-wrapper ${selectedMember?.member?.id === member?.id ? 'selected-member' : ''}`} onClick={() => handleSelectMember(member)} key={member.id}>
-                                        <GroupMemberItem organizerId={group?.Organizer?.id} member={member}/>
-                                    </li>
-                                )
-                            })}
-                        </ul>}
-                    </section>
+                    <div>
+                        <section className='manage_group-members'>
+                            <h2 className='subheading'>Members</h2>
+                            {normalizeMembers.length > 0 &&
+                            <ul className='manage_group-members-contents'>
+                                {normalizeMembers.map(member => {
+                                    return (
+                                        <li className={`member-wrapper ${selectedMember?.member?.id === member?.id ? 'selected-member' : ''}`} onClick={() => handleSelectMember(member)} key={member.id}>
+                                            <GroupMemberItem organizerId={group?.Organizer?.id} member={member}/>
+                                        </li>
+                                    )
+                                })}
+                            </ul>}
+                        </section>
+                        <section className='manage_group-events'>
+                            <h2 className='subheading'>Events</h2>
+                            <ul>
+                                {
+                                    groupEvents.map((event => {
+                                        return (
+                                            <EventItem manager={true} contained={true}  id={event.id}/>
+                                        )
+                                    }))
+                                }
+                            </ul>
+                        </section>
+                    </div>
                     <aside className='manage_group-member-actions'>
                         {
                             selectedMember ?

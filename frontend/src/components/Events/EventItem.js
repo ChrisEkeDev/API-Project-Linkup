@@ -3,7 +3,7 @@ import './Event.css';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-function EventItem({id, contained}) {
+function EventItem({id, contained, manager}) {
 const event = useSelector(state => state.events.allEvents[id]);
 
 const timeOptions = { hour: "numeric", minute: "numeric" }
@@ -12,7 +12,7 @@ const dateOptions = { weekday: "long", year: "numeric", month: "long", day: "num
 
   return (
     <li className='event_item-wrapper'>
-        <Link to={`/events/${id}`} className='event-link'>
+        <Link to={manager ? `/manage-event/${id}` : `/events/${id}`} className='event-link'>
             <article className={`event_item-contents ${contained ? 'contained' : ''}`}>
                 <div className='event_item-information'>
                     <div className='event_item-image bg-image' style={{backgroundImage: `url(${event?.previewImage})` }}></div>
@@ -26,7 +26,7 @@ const dateOptions = { weekday: "long", year: "numeric", month: "long", day: "num
                         <small className='body small'>{event?.Group.city}, {event?.Group.state}</small>
                     </div>
                 </div>
-                <p className='body'>{event?.description}</p>
+                {manager ? null : <p className='body'>{event?.description}</p>}
             </article>
         </Link>
     </li>

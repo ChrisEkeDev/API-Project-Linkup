@@ -51,6 +51,7 @@ function Landing({setAuthForm}) {
                 <Button
                     label='Join Linkup'
                     type='secondary'
+                    style='small-btn'
                     action={user ? () => navigate('/dashboard') : () => setAuthForm('signup')}
                 />
             </section>

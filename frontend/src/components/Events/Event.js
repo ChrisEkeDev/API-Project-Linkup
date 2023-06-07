@@ -7,6 +7,7 @@ import EventAttendeeItem from './EventAttendeeItem';
 import Button from '../Buttons/Button';
 import { useLoading } from '../../context/LoadingProvider';
 import { useAlerts } from '../../context/AlertsProvider';
+import DataLoading from '../Loading/DataLoading';
 import Modal from '../Modal';
 import { FaRegClock, FaMapPin, FaDollarSign, FaAngleLeft } from 'react-icons/fa';
 import './Event.css';
@@ -101,7 +102,7 @@ const requestAttendance = () => {
     .then(() => setIsLoading(false))
   }, [dispatch])
 
-  if (isLoading) return <div className='loading'>Loading...</div>
+  if (isLoading) return <DataLoading></DataLoading>
 
   return (
     <main className='event-wrapper'>

@@ -93,13 +93,13 @@ function Login({close}) {
                 disabled={false}
             />
             <Button
-                style='spaced'
+                style='spaced small-btn'
                 type='primary'
                 label='Sign in'
                 disabled={Object.values(errors).length}
             />
             <Button
-                style='spaced'
+                style='spaced small-btn'
                 type='secondary'
                 label='Demo user'
                 action={(e) => submitDemoLogin(e)}

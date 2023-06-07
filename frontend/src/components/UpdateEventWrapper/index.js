@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import UpdateEvent from '../UpdateEvent'
 import { thunkGetSingleEvent } from '../../store/events';
+import DataLoading from '../Loading/DataLoading';
 
 function UpdateEventWrapper() {
     const { eventId } = useParams();
@@ -15,7 +16,7 @@ function UpdateEventWrapper() {
         .then(() => setIsLoading(false))
     }, [dispatch])
 
-if (isLoading || !event) return <div className='loading'>Loading...</div>
+if (isLoading || !event) return <DataLoading></DataLoading>
 
   return <UpdateEvent event={event}/>
 }

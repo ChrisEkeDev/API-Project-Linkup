@@ -33,3 +33,11 @@
     animation-timing-function: linear;
     animation-iteration-count: infinite;
 }
+
+.data_loading-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

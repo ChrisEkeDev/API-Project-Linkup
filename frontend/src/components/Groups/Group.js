@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetSingleGroup, thunkDeleteGroup,  } from '../../store/groups';
 import { thunkGetGroupMembers, thunkGetGroupMemberships, thunkDeleteMembership, thunkAddMembership } from '../../store/memberships';
 import GroupMemberItem from './GroupMemberItem';
+import DataLoading from '../Loading/DataLoading';
 import { FaAngleLeft } from 'react-icons/fa';
 import { useLoading } from '../../context/LoadingProvider';
 import { useAlerts } from '../../context/AlertsProvider';
@@ -103,7 +104,7 @@ function Group() {
         .then(() => setIsLoading(false))
     }, [dispatch])
 
-    if (isLoading) return <div className='loading'>Loading...</div>
+    if (isLoading) return <DataLoading></DataLoading>
 
   return (
     <main className='group-wrapper'>

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import UpdateGroup from '../UpdateGroup';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetSingleGroup } from '../../store/groups';
+import DataLoading from '../Loading/DataLoading';
 
 
 
@@ -17,7 +18,7 @@ function UpdateGroupWrapper() {
     .then(() => setIsLoading(false))
   }, [dispatch])
 
-  if (isLoading || !group) return <div className='loading'>Loading...</div>
+  if (isLoading || !group) return <DataLoading></DataLoading>
 
   return <UpdateGroup group={group}/>
 }

@@ -36,7 +36,10 @@
 .event_item-information {
     display: flex;
     gap: 24px;
-    margin-bottom: 24px;
+}
+
+.event_item-information + .body {
+    margin-top: 24px;
 }
 
 .event_item-image {
