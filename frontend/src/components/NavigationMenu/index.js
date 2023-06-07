@@ -16,14 +16,14 @@ function NavigationMenu({user}) {
         history.push(route)
     }
 
-    const submitLogOut = (e) => {
+    const submitLogOut = async (e) => {
         e.preventDefault();
+        navigate('/')
         return (
             dispatch(thunkLogOut())
             .then((alert) => {
                 setMenu(false);
                 handleAlerts(alert);
-                history.push('/')
             })
             .catch((alert) => {
                 handleAlerts(alert);
@@ -57,6 +57,7 @@ function NavigationMenu({user}) {
                 </div>
                 <Button
                     type='secondary'
+                    style='small-btn'
                     label='Log out'
                     action={(e) => submitLogOut(e)}
                 />

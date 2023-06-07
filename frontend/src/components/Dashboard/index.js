@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import DashboardGroups from './DashboardGroups';
-import { thunkGetCurrentGroups } from '../../store/groups';
-import { thunkGetAttendance } from '../../store/events';
+import { thunkGetMyAttendances } from '../../store/attendances';
 import { thunkGetMyMemberships } from '../../store/memberships';
 import './Dashboard.css';
 import DashboardEvents from './DashboardEvents';
@@ -12,10 +11,10 @@ function Dashboard() {
     const dispatch = useDispatch();
     const user = useSelector(state => state.session.user)
     const myMemberships = useSelector(state => state.memberships.myMemberships)
-    const attendance = useSelector(state => state.events.attendance);
+    const myAttendances = useSelector(state => state.attendances.myAttendances);
 
     useEffect(() => {
-      dispatch(thunkGetAttendance());
+      dispatch(thunkGetMyAttendances());
       dispatch(thunkGetMyMemberships())
     }, [dispatch])
 
@@ -30,7 +29,7 @@ function Dashboard() {
             <section className='dashboard-main'>
             <section className='dashboard-section'>
               <DashboardGroups myMemberships={myMemberships}/>
-              <DashboardEvents attendance={attendance}/>
+              <DashboardEvents myAttendances={myAttendances}/>
             </section>
             <aside className='dashboard-aside'>
                 <h2 className='subheading'>Calendar</h2>

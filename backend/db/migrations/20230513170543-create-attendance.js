@@ -36,7 +36,7 @@ module.exports = {
       status: {
         type: Sequelize.ENUM,
         allowNull: false,
-        values: ['co-host', 'attending', 'waitlist'],
+        values: ['co-host', 'attending', 'waitlist', 'organizer'],
         defaultValue: 'waitlist'
       },
       createdAt: {

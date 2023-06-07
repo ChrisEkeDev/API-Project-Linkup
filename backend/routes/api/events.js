@@ -92,6 +92,19 @@ router.get('/', async (req, res) => {
     return res.status(200).json({Events: events})
 })
 
+// Get all Events attended by the current user
+router.get('/current', requireAuth, async (req, res) => {
+    const userId = req.user.id;
+    const events = await Event.findAll({
+        include: {
+            model: Attendance,
+            where: { userId: userId},
+            attributes: []
+        }
+    })
+    return res.status(200).json({Events: events})
+})
+
 
 // Get details of an Event specified by its id
 router.get('/:eventId', async (req, res) => {
@@ -389,7 +402,7 @@ router.get('/:eventId/attendances', async (req, res) => {
         })
     }
 
-    const attendances = await Event.getAttendances();
+    const attendances = await event.getAttendances();
     return res.status(200).json({
         Attendances: attendances
     })
@@ -444,7 +457,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res) => {
 
     const attendance = await Attendance.create({
         userId: userId,
-        eventId: eventId,
+        eventId: parseInt(eventId),
         status: 'waitlist'
     })
 

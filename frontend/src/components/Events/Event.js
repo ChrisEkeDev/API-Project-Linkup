@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetSingleEvent, thunkDeleteEvent } from '../../store/events';
-import { thunkGetEventAttendees } from '../../store/attendances';
+import { thunkGetEventAttendees, thunkGetEventAttendances, thunkDeleteAttendance, thunkAddAttendance } from '../../store/attendances';
 import EventAttendeeItem from './EventAttendeeItem';
 import Button from '../Buttons/Button';
 import { useLoading } from '../../context/LoadingProvider';
@@ -14,26 +14,68 @@ import './Event.css';
 
 
 function Event() {
+  const [ deleting, setDeleting ] = useState(false);
+  const [ isLoading, setIsLoading ] = useState(true);
+  // Hooks
   const history = useHistory();
   const dispatch = useDispatch();
   const { handleAlerts } = useAlerts();
   const { setLoading } = useLoading();
   const { eventId } = useParams();
+  // Store Data
   const user = useSelector(state => state.session.user)
   const event = useSelector(state => state.events.singleEvent);
-  const attendees = useSelector(state => state.attendances.currentAttendees)
-  const normalizedAttendees = Object.values(attendees)
-  const [ deleting, setDeleting ] = useState(false);
-  const [ isLoading, setIsLoading ] = useState(true);
-
+  const attendees = useSelector(state => state.attendances.eventAttendees)
+  const attendances = useSelector(state => state.attendances.eventAttendances)
+  // Normalized Data
+  const normalizedAttendees = Object.values(attendees);
+  const normalizedAttendances = Object.values(attendances);
+  // User Data
+  const myAttendance = normalizedAttendances.find(attendance => user?.id === attendance?.userId)
+  // Time Options
   const dateOptions = { year: "numeric", month: "numeric", day: "numeric" }
   const timeOptions = { hour: "numeric", minute: "numeric" }
 
+  const isOrganizer = user?.id === event?.Group?.Organizer?.id || myAttendance?.status === 'co-host'
   const navigate = (route) => {
     history.push(route)
   }
 
-  console.log(event)
+  const order = {
+        'organizer': 0,
+        'co-host': 1,
+        'attending': 2,
+        'waitlist': 3
+  }
+
+  const sortMembers = (a, b) => {
+      if (a === b) return 0
+      return a < b ? -1 : 1
+  }
+
+  const deleteAttendanceStatus = () => {
+    const attendeeData = {
+        userId: parseInt(user.id),
+    }
+    return (
+        dispatch(thunkDeleteAttendance(myAttendance, attendeeData))
+        .then(() => handleAlerts({message: 'Attendance removed'}))
+        .catch(async(errors) => {
+            const alert = await errors.json();
+            handleAlerts(alert)
+        })
+    )
+}
+
+const requestAttendance = () => {
+  return (
+      dispatch(thunkAddAttendance(event.id))
+      .then(() => handleAlerts({message: 'Attendance requested'}))
+      .catch(async(error) => {
+          handleAlerts(error)
+      })
+  )
+}
 
   const deleteEvent = (e) => {
     e.preventDefault();
@@ -55,6 +97,7 @@ function Event() {
   useEffect(() => {
     dispatch(thunkGetSingleEvent(eventId))
     .then(() => dispatch(thunkGetEventAttendees(eventId)))
+    .then(() => dispatch(thunkGetEventAttendances(eventId)))
     .then(() => setIsLoading(false))
   }, [dispatch])
 
@@ -124,23 +167,50 @@ function Event() {
                       <FaMapPin className='icon'/>
                       <p className='small'>{event?.type}</p>
                     </div>
-                    {user?.id === event?.Group?.Organizer?.id ?
-                    <div className='event-actions absolute'>
-                    <Button
-                      style='small-btn'
-                      type='secondary'
-                      label='Update'
-                      action={() => navigate(`/update-event/${event?.id}`)}
-                    />
-                    <Button
-                      style='small-btn'
-                      type='secondary'
-                      label='Delete'
-                      action={() => setDeleting(true)}
-                    />
-                    </div> :
-                    null }
+                    <div>
 
+                    <div className='event-actions'>
+                    {isOrganizer ?
+                    <>
+                      <Button
+                        style='small-btn'
+                        type='secondary'
+                        label='Update'
+                        action={() => navigate(`/update-event/${event?.id}`)}
+                      />
+                      <Button
+                        style='small-btn'
+                        type='secondary'
+                        label='Delete'
+                        action={() => setDeleting(true)}
+                      />
+                      </> :
+                      null }
+                      {myAttendance?.status === 'waitlist' ?
+                      <Button
+                        style='small-btn'
+                        type='secondary'
+                        label='Withdraw Request'
+                        action={() => deleteAttendanceStatus()}
+                      /> :
+                      myAttendance?.status === 'attending' || myAttendance?.status === 'co-host' ?
+                      <Button
+                        style='small-btn'
+                        type='secondary'
+                        label='Remove Attendance'
+                        action={() => deleteAttendanceStatus()}
+                      /> :
+                      !myAttendance ?
+                      <Button
+                        style='small-btn'
+                        type='secondary'
+                        label='Request Attendance'
+                        action={() => requestAttendance()}
+                      /> :
+                      null
+                    }
+                    </div>
+                    </div>
                   </div>
               </aside>
             </div>
@@ -151,11 +221,15 @@ function Event() {
             <div className='event_details-section'>
               <div className='heading_link-wrapper'>
                 <h2 className='subheading'>Attendees</h2>
-                {normalizedAttendees.length > 8 ? <Link to='/manage-event/1'>See all</Link> : null}
+                {normalizedAttendees?.length > 8 ? <Link to='/manage-event/1'>See all</Link> : null}
               </div>
               <ul>
                 {
-                  normalizedAttendees?.slice(0,8).map(attendee => {
+                  normalizedAttendees?.sort((a, b) => {
+                    let idxRes = sortMembers(order[a?.Attendance?.status], order[b?.Attendance?.status])
+                    if (idxRes === 0) return sortMembers(a?.Attendance?.status, b?.Attendance?.status)
+                    else return idxRes
+                }).slice(0,8).map(attendee => {
                     return (
                       <EventAttendeeItem key={attendee.id} organizerId={event?.Group?.Organizer?.id} attendee={attendee}/>
                     )

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 function GroupMemberItem({ organizerId, member}) {
-    const { status } = member.Membership;
+    const status = member?.Membership?.status;
     const memberships = useSelector(state => state.memberships.memberships)
     const host = ['co-host', 'organizer'];
 

@@ -2,7 +2,7 @@ import { csrfFetch } from './csrf';
 
 // TYPES
 const GET_ALL_EVENTS = '/linkup/events/GET_ALL_EVENTS';
-const GET_ATTENDANCE = '/linkup/events/GET_ATTENDANCE';
+const GET_CURRENT_EVENTS = '/linkup/events/GET_CURRENT_EVENTS';
 const GET_SINGLE_EVENT = '/linkup/events/GET_SINGLE_EVENT';
 const CREATE_EVENT = '/linkup/events/CREATE_EVENT';
 const UPDATE_EVENT = '/linkup/events/UPDATE_EVENT';
@@ -16,8 +16,8 @@ const actionGetAllEvents = (events) => ({
     payload: events
 })
 
-const actionGetAttendance = (events) => ({
-    type: GET_ATTENDANCE,
+const actionGetCurrentEvents = (events) => ({
+    type: GET_CURRENT_EVENTS,
     payload: events
 })
 
@@ -54,11 +54,11 @@ export const thunkGetAllEvents = () => async dispatch => {
     }
 }
 
-export const thunkGetAttendance = () => async dispatch => {
+export const thunkGetCurrentEvents = () => async dispatch => {
     const res = await csrfFetch('/api/events/current');
     if (res.ok) {
         const data = await res.json();
-        dispatch(actionGetAttendance(data.Attendance))
+        dispatch(actionGetCurrentEvents(data.Events))
     } else {
         const errors = await res.json();
         return errors;
@@ -127,7 +127,7 @@ export const thunkDeleteEvent = (event) => async dispatch => {
 
 
 // REDUCER
-const initialState = { allEvents: {}, singleEvent: {}, attendance: {}};
+const initialState = { allEvents: {}, singleEvent: {}, currentEvents: {}};
 
 const eventsReducer = (state = initialState, action) => {
     switch(action.type) {
@@ -136,9 +136,9 @@ const eventsReducer = (state = initialState, action) => {
             action.payload.forEach(event => newState.allEvents[event.id] = event);
             return newState;
         };
-        case GET_ATTENDANCE: {
-            const newState = { ...state, attendance: {} };
-           action.payload.forEach(attendance => newState.attendance[attendance.id] = attendance);
+        case GET_CURRENT_EVENTS: {
+            const newState = { ...state, currentEvents: {} };
+           action.payload.forEach(event => newState.currentEvents[event.id] = event);
             return newState;
         };
         case GET_SINGLE_EVENT: {

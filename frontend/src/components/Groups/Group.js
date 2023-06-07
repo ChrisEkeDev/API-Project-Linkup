@@ -3,6 +3,7 @@ import { Link, useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetSingleGroup, thunkDeleteGroup,  } from '../../store/groups';
 import { thunkGetGroupMembers, thunkGetGroupMemberships, thunkDeleteMembership, thunkAddMembership } from '../../store/memberships';
+import GroupMemberItem from './GroupMemberItem';
 import { FaAngleLeft } from 'react-icons/fa';
 import { useLoading } from '../../context/LoadingProvider';
 import { useAlerts } from '../../context/AlertsProvider';
@@ -10,7 +11,6 @@ import Modal from '../Modal';
 import EventItem from '../Events/EventItem';
 import Button from '../Buttons/Button';
 import './Group.css';
-import GroupMemberItem from './GroupMemberItem';
 
 function Group() {
     const [ deleting, setDeleting ] = useState(false);
@@ -36,18 +36,31 @@ function Group() {
     const upcomingEvents = groupEvents.filter(event => new Date(event.startDate).getTime() > new Date().getTime());
     const pastEvents = groupEvents.filter(event => new Date(event.startDate).getTime() < new Date().getTime());
     // User Data
-    const myMembership = normalizeMemberships.find(membership => user.id === membership.userId)
+    const myMembership = normalizeMemberships.find(membership => user?.id === membership.userId)
 
     const navigate = (route) => {
         history.push(route)
     }
 
-    const deleteMemberStatus = (data) => {
+    const order = {
+        'organizer': 0,
+        'co-host': 1,
+        'member': 2,
+        'pending': 3
+    }
+
+    const sortMembers = (a, b) => {
+        if (a === b) return 0
+        return a < b ? -1 : 1
+    }
+
+    const deleteMemberStatus = () => {
         const memberData = {
             memberId: parseInt(user.id),
         }
         return (
             dispatch(thunkDeleteMembership(myMembership, memberData))
+            .then(() => handleAlerts({message: 'Removed from group'}))
             .catch(async(errors) => {
                 const alert = await errors.json();
                 handleAlerts(alert)
@@ -58,6 +71,7 @@ function Group() {
     const joinAsMember = () => {
         return (
             dispatch(thunkAddMembership(group.id))
+            .then(() => handleAlerts({message: 'Request to join group'}))
             .catch(async(errors) => {
                 const alert = await errors.json();
                 handleAlerts(alert)
@@ -170,7 +184,7 @@ function Group() {
                                 label='Withdraw Request'
                                 type='secondary'
                                 style='small-btn'
-                                action={() => joinAsMember()}
+                                action={() => deleteMemberStatus(myMembership)}
                             />:
                             null
                             }
@@ -223,14 +237,14 @@ function Group() {
                         <div className='group_aside-members'>
                             <div className='heading_link-wrapper'>
                                 <h2 className='subheading'>Members</h2>
-                                {normalizeMembers.length > 8 ? <Link to='/manage-group/1'>See all</Link> : null}
+                                {normalizeMembers.length > 8 ? <div>See all</div> : null}
                             </div>
                             <ul>
-                                {normalizeMembers?.reduce((acc, member) => {
-                                    if (member.status === 'organizer') return [ member, ...acc ]
-                                    if (member.status === 'pending') return [  ...acc, member ]
-                                    return [ ...acc, member ]
-                                }, []).slice(0,8).map(member => {
+                                {normalizeMembers?.sort((a, b) => {
+                                    let idxRes = sortMembers(order[a.Membership.status], order[b.Membership.status])
+                                    if (idxRes === 0) return sortMembers(a.Membership.status, b.Membership.status)
+                                    else return idxRes
+                                }).slice(0,8).map(member => {
                                     return (
                                         <li key={member.id}>
                                             <GroupMemberItem organizerId={group?.Organizer?.id} member={member} />

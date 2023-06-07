@@ -5,7 +5,6 @@ import { FaUserFriends, FaMapMarkerAlt } from 'react-icons/fa';
 
 
 function DashboardGroupItem({data}) {
-    const id = data.groupId
     const group = useSelector(state => state.groups.allGroups[data.groupId]);
     const history = useHistory();
 
@@ -17,7 +16,7 @@ function DashboardGroupItem({data}) {
 
 
   return (
-        <div onClick={organizer ? () => navigate(`/manage-group/${id}`) : () => navigate(`/groups/${id}`)} className='dash_group_item-wrapper'>
+        <div onClick={organizer ? () => navigate(`/manage-group/${data.groupId}`) : () => navigate(`/groups/${data.groupId}`)} className='dash_group_item-wrapper'>
             <div className='dash_group_item-image bg-image'  style={{backgroundImage: `url(${group?.previewImage})` }}></div>
             <div className='dash_group_item-information'>
                 <h2 className='subheading'>{group.name} - <span className='body small'>{group.type}</span></h2>

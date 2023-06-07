@@ -75,7 +75,7 @@ export const thunkGetMyAttendances = () => async dispatch => {
 }
 
 export const thunkAddAttendance = (eventId) => async dispatch => {
-    const res = await csrfFetch(`/api/events/${eventId}/attendances`, {
+    const res = await csrfFetch(`/api/events/${eventId}/attendance`, {
         method: 'POST'
     })
     if (res.ok) {
@@ -131,15 +131,22 @@ const attendancesReducer = (state = initialState, action) => {
             action.payload.forEach(attendance => newState.eventAttendances[attendance.id] = attendance)
             return newState;
         }
-        case ADD_ATTENDANCE:
+        case ADD_ATTENDANCE: {
+            const newState = { eventAttendees: {...state.eventAttendees}, myAttendances: {...state.myAttendances}, eventAttendances:{...state.eventAttendances}  };
+            newState.myAttendances = { ...newState.myAttendances, [action.payload.id]: action.payload}
+            newState.eventAttendances = { ...newState.eventAttendances, [action.payload.id]: action.payload};
+            return newState;
+        }
         case UPDATE_ATTENDANCE: {
-            const newState = { eventAttendees: {}, myAttendances: {...state.myAttendances}, eventAttendances:{...state.eventAttendances}  };
+            const newState = { eventAttendees: {...state.eventAttendees}, myAttendances: {...state.myAttendances}, eventAttendances:{...state.eventAttendances}  };
+            newState.eventAttendees = { ...newState.eventAttendees, [action.payload.userId]: action.payload}
             newState.myAttendances = { ...newState.myAttendances, [action.payload.id]: action.payload}
             newState.eventAttendances = { ...newState.eventAttendances, [action.payload.id]: action.payload};
             return newState;
         }
         case DELETE_ATTENDANCE: {
-            const newState = { eventAttendees: {}, myAttendances: {...state.myAttendances}, eventAttendances:{...state.eventAttendances}  };;
+            const newState = { eventAttendees: {...state.eventAttendees}, myAttendances: {...state.myAttendances}, eventAttendances:{...state.eventAttendances}  };
+            delete newState.eventAttendees[action.payload.userId]
             delete newState.myAttendances[action.payload.id];
             delete newState.eventAttendances[action.payload.id];
             return newState;

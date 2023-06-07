@@ -3,9 +3,9 @@ import { useHistory } from 'react-router-dom';
 import DashboardEventItem from './DashboardEventItem'
 import Button from '../Buttons/Button'
 
-function DashboardEvents({attendance}) {
+function DashboardEvents({myAttendances}) {
     const [tab, setTab] = useState('attending');
-    const normalizeAttendance = Object.values(attendance);
+    const normalizeAttendance = Object.values(myAttendances);
     const attending = normalizeAttendance.filter(event => event.status === 'attending');
     const waitlist = normalizeAttendance.filter(event => event.status === 'waitlist');
     const history = useHistory();
@@ -25,7 +25,7 @@ function DashboardEvents({attendance}) {
             {
                 tab === 'attending' ?
                 <ul>
-                    {Object.values(attendance).length ?
+                    {normalizeAttendance.length ?
                         attending.map(event => {
                             return (
                                 <DashboardEventItem key={event.id} id={event.eventId}/>
@@ -44,7 +44,7 @@ function DashboardEvents({attendance}) {
                     }
                 </ul> :
                 <ul>
-                    {Object.values(attendance).length ?
+                    {normalizeAttendance.length ?
                         waitlist.map(event => {
                             return (
                                 <DashboardEventItem id={event.eventId}/>

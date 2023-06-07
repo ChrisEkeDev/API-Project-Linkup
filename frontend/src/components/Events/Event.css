@@ -134,7 +134,9 @@
 
 .event-actions {
     display: flex;
+    justify-content: flex-end;
     gap: 12px;
+    padding-top: 12px;
 }
 .event_section-details_item {
     display: flex;

@@ -100,6 +100,7 @@ export const thunkUpdateMembership = (membership, memberData) => async dispatch 
 
     if (res.ok) {
         const data = await res.json();
+        console.log(data)
         dispatch(actionUpdateMembership(data))
     } else {
         const errors = res.json();
@@ -144,15 +145,22 @@ const membershipsReducer = (state = initialState, action) => {
             action.payload.forEach(membership => newState.myMemberships[membership.id] = membership);
             return newState;
         }
-        case ADD_MEMBERSHIP:
+        case ADD_MEMBERSHIP: {
+            const newState = { groupMembers: {...state.groupMembers},  myMemberships: {...state.myMemberships}, groupMemberships: {...state.groupMemberships} };
+            newState.myMemberships = {...newState.myMemberships, [action.payload.id]: action.payload};
+            newState.groupMemberships = {...newState.groupMemberships, [action.payload.id]: action.payload}
+            return newState;
+        }
         case UPDATE_MEMBERSHIP: {
-            const newState = { groupMembers: {},  myMemberships: {...state.myMemberships}, groupMemberships: {...state.groupMemberships} };
+            const newState = { groupMembers: {...state.groupMembers},  myMemberships: {...state.myMemberships}, groupMemberships: {...state.groupMemberships} };
+            newState.groupMembers = {...newState.groupMembers, [action.payload.userId]: action.payload}
             newState.myMemberships = {...newState.myMemberships, [action.payload.id]: action.payload};
             newState.groupMemberships = {...newState.groupMemberships, [action.payload.id]: action.payload}
             return newState;
         }
         case DELETE_MEMBERSHIP: {
-            const newState = { groupMembers: {}, myMemberships: {...state.myMemberships}, groupMemberships: {...state.groupMemberships} };
+            const newState = { groupMembers: {...state.groupMembers}, myMemberships: {...state.myMemberships}, groupMemberships: {...state.groupMemberships} };
+            delete newState.groupMembers[action.payload.userId]
             delete newState.myMemberships[action.payload.id];
             delete newState.groupMemberships[action.payload.id];
             return newState;

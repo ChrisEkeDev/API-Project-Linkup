@@ -30,6 +30,8 @@ function ManageGroup() {
         history.push(route)
     }
 
+    console.log(selectedMember)
+
     const handleSelectMember = (member) => {
         const memberData = {}
         const membership = normalizeMemberships.find(membership => member.id === membership.userId);
@@ -43,10 +45,9 @@ function ManageGroup() {
             memberId: parseInt(data.member.id),
             status: status
         }
-        setSelectedMember(null)
         return (
             dispatch(thunkUpdateMembership(data.membership, memberData))
-            .then(() => dispatch(thunkGetGroupMembers(groupId)))
+            .then(() => setSelectedMember(null))
             .then(() => handleAlerts({message: 'Status updated'}))
             .catch(async(errors) => {
                 const alert = await errors.json();
@@ -59,9 +60,9 @@ function ManageGroup() {
         const memberData = {
             memberId: parseInt(data.member.id),
         }
-        setSelectedMember(null)
         return (
             dispatch(thunkDeleteMembership(data.membership, memberData))
+            .then(() => setSelectedMember(null))
             .then(() => handleAlerts({message: 'Member removed'}))
             .catch(async(errors) => {
                 const alert = await errors.json();
@@ -72,12 +73,12 @@ function ManageGroup() {
 
     const deleteGroup = (e) => {
         e.preventDefault();
-        setLoading(true)
+        setLoading(true);
+        navigate('/search/groups');
         return (
             dispatch(thunkDeleteGroup(group))
             .then((alert) => {
                 handleAlerts(alert);
-                navigate('/search/groups');
                 setLoading(false);
             })
             .catch(async(errors) => {
