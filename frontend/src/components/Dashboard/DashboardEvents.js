@@ -25,7 +25,7 @@ function DashboardEvents({myAttendances}) {
             {
                 tab === 'attending' ?
                 <ul>
-                    {normalizeAttendance.length ?
+                    {attending.length ?
                         attending.map(event => {
                             return (
                                 <DashboardEventItem key={event.id} id={event.eventId}/>
@@ -44,7 +44,7 @@ function DashboardEvents({myAttendances}) {
                     }
                 </ul> :
                 <ul>
-                    {normalizeAttendance.length ?
+                    {waitlist.length ?
                         waitlist.map(event => {
                             return (
                                 <DashboardEventItem id={event.eventId}/>

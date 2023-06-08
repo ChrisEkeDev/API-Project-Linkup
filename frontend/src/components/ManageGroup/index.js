@@ -11,11 +11,12 @@ import Modal from '../Modal';
 import Button from '../Buttons/Button';
 import './ManageGroup.css';
 import GroupMemberItem from '../Groups/GroupMemberItem';
-import EventItem from '../Events/EventItem';
+import ManageGroupEventItem from './ManageGroupEventItem';
 
 function ManageGroup() {
     const { groupId } = useParams();
     const [ deleting, setDeleting ] = useState(false);
+    const [ tab, setTab ] = useState('members');
     const dispatch = useDispatch();
     const history = useHistory();
     const [ isLoading, setIsLoading ] = useState(true);
@@ -35,8 +36,6 @@ function ManageGroup() {
     const navigate = (route) => {
         history.push(route)
     }
-
-    console.log(selectedMember)
 
     const handleSelectMember = (member) => {
         const memberData = {}
@@ -155,12 +154,17 @@ function ManageGroup() {
                         action={() => setDeleting(true)}
                     />
                 </div>
+                <div className='manage_group-tabs'>
+                    <p onClick={() => setTab('members')} className={`body manage_group-tab ${tab === 'members' ? 'dash_tab--active' : ''}`}>Members</p>
+                    <p onClick={() => setTab('events')} className={`body manage_group-tab ${tab === 'events' ? 'dash_tab--active' : ''}`}>Events</p>
+                </div>
             </div>
         </header>
         <div className='manage_group-contents'>
             <div className='manage_group-grid-wrapper'>
                 <div className='manage_group-grid'>
                     <div>
+                        {tab === 'members' ?
                         <section className='manage_group-members'>
                             <h2 className='subheading'>Members</h2>
                             {normalizeMembers.length > 0 &&
@@ -174,20 +178,28 @@ function ManageGroup() {
                                 })}
                             </ul>}
                         </section>
+                        :
                         <section className='manage_group-events'>
                             <h2 className='subheading'>Events</h2>
                             <ul>
                                 {
                                     groupEvents.map((event => {
                                         return (
-                                            <EventItem manager={true} contained={true}  id={event.id}/>
+                                            <li className='event_item-wrapper'>
+                                                <Link to={`/manage-event/${event?.id}`} className='event-link'>
+                                                    <ManageGroupEventItem key={event?.id} contained={true}  id={event?.id}/>
+                                                </Link>
+                                            </li>
                                         )
                                     }))
                                 }
                             </ul>
                         </section>
+                        }
                     </div>
-                    <aside className='manage_group-member-actions'>
+                    {
+                        tab === 'members' ?
+                        <aside className='manage_group-member-actions'>
                         {
                             selectedMember ?
                             <>
@@ -225,20 +237,25 @@ function ManageGroup() {
                                             /> :
                                             null
                                     }
+                                    {
+                                        selectedMember.member.Membership.status === 'organizer' ?
+                                        null :
                                         <Button
                                             style='small-btn'
                                             label='Remove'
                                             type='secondary'
                                             action={() => deleteMemberStatus(selectedMember)}
                                         />
-
+                                    }
                                 </div>
                             </div>
-                            </>:
+                            </> :
                             null
-                        }
+                            }
+                        </aside>:
+                    null
+                    }
 
-                    </aside>
                 </div>
             </div>
         </div>

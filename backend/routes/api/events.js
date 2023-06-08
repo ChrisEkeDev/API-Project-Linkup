@@ -214,8 +214,11 @@ router.post('/:eventId/images', requireAuth, validateImage,  async (req, res) =>
 // Edit an Event specified by its id
 const validateEditEvent = [
     check('venueId').optional().custom(async(id) => {
-        const venue = await Venue.findByPk(id);
-        if (!venue) throw new Error('Venue does not exist')
+        if (id !== null) {
+            const venue = await Venue.findByPk(id);
+            if (!venue) throw new Error('Venue does not exist')
+            else return
+        } else return
     }),
     check('name').optional().exists({checkFalsy: true}).isLength({min: 5}).withMessage('Name must be at leat 5 characters'),
     check('type').optional().exists({checkFalsy: true}).isIn(['In person', 'Online']).withMessage('Type must be Online or In person'),
@@ -250,13 +253,6 @@ router.put('/:eventId', requireAuth, validateEditEvent, async (req, res) => {
     if (!event) {
         return res.status(404).json({
             message: "Event couldn't be found"
-        })
-    }
-
-    // Checks if venue exists
-    if (!venue) {
-        return res.status(404).json({
-            message: "Venue couldn't be found"
         })
     }
 

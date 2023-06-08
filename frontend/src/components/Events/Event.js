@@ -201,7 +201,7 @@ const requestAttendance = () => {
                         label='Remove Attendance'
                         action={() => deleteAttendanceStatus()}
                       /> :
-                      !myAttendance ?
+                      !myAttendance && !isOrganizer ?
                       <Button
                         style='small-btn'
                         type='secondary'
@@ -219,6 +219,7 @@ const requestAttendance = () => {
               <h2 className='subheading'>Details</h2>
               <p className='body'>{event?.description}</p>
             </div>
+            {normalizedAttendees.length > 0 ?
             <div className='event_details-section'>
               <div className='heading_link-wrapper'>
                 <h2 className='subheading'>Attendees</h2>
@@ -238,6 +239,14 @@ const requestAttendance = () => {
                 }
               </ul>
             </div>
+            :
+            <div className='event_details-section'>
+              <div className='heading_link-wrapper'>
+                <h2 className='subheading'>No Attendees</h2>
+              </div>
+            </div>
+            }
+
           </div>
         </section>
     </main>

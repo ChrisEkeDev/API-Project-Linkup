@@ -78,7 +78,7 @@ function CreateEvent() {
                 preview: true
             }
             return (
-                dispatch(thunkCreateEvent(groupId, eventData, imageData))
+                dispatch(thunkCreateEvent(group.id, eventData, imageData))
                 .then((newEvent) => {
                     setLoading(false);
                     history.push(`/events/${newEvent.id}`)

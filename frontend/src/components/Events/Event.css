@@ -179,6 +179,7 @@
     padding: 24px 12px;
     border-radius: 10px;
     font-size: 15px;
+    text-transform: capitalize;
 }
 
 .attendee_item-image-wrapper {
@@ -196,6 +197,7 @@
     height: 70px;
     aspect-ratio: 1;
     border-radius: 60px;
+    background-color: var(--dark-gray);
 }
 
 .host-image {

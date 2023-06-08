@@ -77,6 +77,12 @@
     border-radius: 10px;
 }
 
-.manage_group-events {
-    padding: 48px 0;
+.manage_group-tabs {
+    display: flex;
+    gap: 36px;
+    padding-top: 36px;
+}
+
+.manage_group-tab {
+    cursor: pointer;
 }

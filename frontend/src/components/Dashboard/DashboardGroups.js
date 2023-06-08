@@ -41,7 +41,7 @@ function DashboardGroups({myMemberships}) {
                         type='primary'
                         style='small-btn'
                         label='Start a group'
-                        action={() => navigate('/group/new')}
+                        action={() => navigate('/create-group')}
                     />
                 </div>
                 }

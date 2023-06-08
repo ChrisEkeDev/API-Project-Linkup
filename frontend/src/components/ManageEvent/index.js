@@ -14,7 +14,7 @@ import '../ManageGroup/ManageGroup.css';
 import EventAttendeeItem from '../Events/EventAttendeeItem'
 
 function ManageEvent() {
-    const { groupId } = useParams();
+    const { eventId } = useParams();
     const [ deleting, setDeleting ] = useState(false);
     const dispatch = useDispatch();
     const history = useHistory();
@@ -32,8 +32,6 @@ function ManageEvent() {
     const navigate = (route) => {
         history.push(route)
     }
-
-    console.log(selectedAttendee)
 
     const handleSelectAttendee = (attendee) => {
         const attendeeData = {}
@@ -92,9 +90,9 @@ function ManageEvent() {
     }
 
     useEffect(() => {
-        dispatch(thunkGetSingleEvent(event.id))
-        .then(() => dispatch(thunkGetEventAttendees(event.id)))
-        .then(() => dispatch(thunkGetEventAttendances(event.id)))
+        dispatch(thunkGetSingleEvent(eventId))
+        .then(() => dispatch(thunkGetEventAttendees(eventId)))
+        .then(() => dispatch(thunkGetEventAttendances(eventId)))
         .then(() => setIsLoading(false))
     }, [dispatch])
 
@@ -151,7 +149,7 @@ function ManageEvent() {
             <div className='manage_group-grid-wrapper'>
                 <div className='manage_group-grid'>
                     <section className='manage_group-members'>
-                        <h2 className='subheading'>Members</h2>
+                        <h2 className='subheading'>{normalizeAttendees.length ? 'Attendees' : 'No Attendees'}</h2>
                         {normalizeAttendees.length > 0 &&
                         <ul className='manage_group-members-contents'>
                             {normalizeAttendees.map(attendee => {
