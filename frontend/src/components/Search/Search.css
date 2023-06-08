@@ -22,7 +22,8 @@
 .search-tab {
     font-size: var(--subheading);
     text-decoration: none;
-    color: var(--black)
+    color: var(--black);
+    cursor: pointer;
 }
 .active-tab {
     color: var(--teal);

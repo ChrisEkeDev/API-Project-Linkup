@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import NavigationMenu from '../NavigationMenu';
 import './Navigation.css';
+import SearchBar from '../SearchBar';
 
 
 function Navigation({setAuthForm}) {
@@ -23,6 +24,7 @@ function Navigation({setAuthForm}) {
               <img className='logo' src={logo}/>
               <h1 className='logo-text'>linkup</h1>
             </div>
+            <SearchBar/>
             {user ?
             <div className='nav_user-contents'>
                 <Link className='new_group-link' to='/create-group'>Start a new group</Link>

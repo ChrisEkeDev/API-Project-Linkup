@@ -5,13 +5,15 @@ import groupsReducer from './groups';
 import eventsReducer from './events';
 import membershipsReducer from './memberships';
 import attendancesReducer from './attendances';
+import searchReducer from './search';
 
 const rootReducer = combineReducers({
     session: sessionReducer,
     groups: groupsReducer,
     events: eventsReducer,
     memberships: membershipsReducer,
-    attendances: attendancesReducer
+    attendances: attendancesReducer,
+    search: searchReducer
 })
 
 let enhancer;

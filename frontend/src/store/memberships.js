@@ -100,7 +100,6 @@ export const thunkUpdateMembership = (membership, memberData) => async dispatch 
 
     if (res.ok) {
         const data = await res.json();
-        console.log(data)
         dispatch(actionUpdateMembership(data))
     } else {
         const errors = res.json();

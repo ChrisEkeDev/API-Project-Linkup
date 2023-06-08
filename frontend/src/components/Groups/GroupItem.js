@@ -16,10 +16,10 @@ function GroupItem({id}) {
                 <div className='group_item-image bg-image' style={{backgroundImage: `url(${groupItem.previewImage})` }}></div>
                 <div className='group_item-information'>
                     <h2 className='subheading'>{groupItem?.name}</h2>
-                    <small className='small'>{groupItem?.city}, {groupItem?.state}</small>
+                    <p className='small'>{groupItem?.city}, {groupItem?.state}</p>
                     <p className='body'>{groupItem?.about}</p>
                     <div className='group_item-details'>
-                        <small className='small'>{groupEvents?.length} {groupEvents?.length === 1 ? 'event' : 'events'}<span> &#8729; </span>{groupItem?.private ? 'Private' : 'Public'}</small>
+                        <p className='small'>{groupEvents?.length} {groupEvents?.length === 1 ? 'event' : 'events'}<span> &#8729; </span>{groupItem?.private ? 'Private' : 'Public'}</p>
                     </div>
                 </div>
             </article>

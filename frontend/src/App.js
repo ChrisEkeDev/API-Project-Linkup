@@ -21,6 +21,7 @@ import Event from './components/Events/Event';
 import CreateEvent from './components/CreateEvent';
 import ManageEvent from './components/ManageEvent';
 import UpdateEventWrapper from './components/UpdateEventWrapper';
+import SearchResults from './components/SearchResults';
 import './index.css';
 
 function App() {
@@ -76,6 +77,9 @@ function App() {
             </Route>
             <Route path='/dashboard'>
               <Dashboard/>
+            </Route>
+            <Route path='/search-results'>
+              <SearchResults/>
             </Route>
             <Route path='/search'>
               <Search/>
