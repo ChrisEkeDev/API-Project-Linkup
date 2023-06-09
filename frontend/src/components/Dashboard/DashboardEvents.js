@@ -14,6 +14,8 @@ function DashboardEvents({myAttendances}) {
         history.push(route)
     }
 
+    console.log(attending, waitlist)
+
   return (
     <section className='dashboard-events'>
         <h2 className='subheading'>Events</h2>

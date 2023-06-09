@@ -47,8 +47,8 @@ function ManageEvent() {
             status: status
         }
         return (
-            dispatch(thunkUpdateAttendance(data.attendance, attendeeData))
-            .then(() => setSelectedAttendee(null))
+            dispatch(thunkUpdateAttendance(data, attendeeData))
+            // .then(() => setSelectedAttendee(null))
             .then(() => handleAlerts({message: 'Status updated'}))
             .catch(async(errors) => {
                 const alert = await errors.json();

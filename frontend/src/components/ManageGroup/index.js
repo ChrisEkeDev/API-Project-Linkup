@@ -45,14 +45,16 @@ function ManageGroup() {
         setSelectedMember(memberData)
     }
 
+    console.log(selectedMember)
+
     const updateMemberStatus = (data, status) => {
         const memberData = {
             memberId: parseInt(data.member.id),
             status: status
         }
         return (
-            dispatch(thunkUpdateMembership(data.membership, memberData))
-            .then(() => setSelectedMember(null))
+            dispatch(thunkUpdateMembership(data, memberData))
+            // .then(() => setSelectedMember(null))
             .then(() => handleAlerts({message: 'Status updated'}))
             .catch(async(errors) => {
                 const alert = await errors.json();

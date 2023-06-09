@@ -87,14 +87,16 @@ export const thunkAddAttendance = (eventId) => async dispatch => {
     }
 }
 
-export const thunkUpdateAttendance = (attendance, attendeeData) => async dispatch => {
-    const res = await csrfFetch(`/api/events/${attendance.eventId}/attendance`, {
+export const thunkUpdateAttendance = (data, attendeeData) => async dispatch => {
+    const res = await csrfFetch(`/api/events/${data.attendance.eventId}/attendance`, {
         method: 'PUT',
         body: JSON.stringify(attendeeData)
     })
     if (res.ok) {
-        const data = await res.json();
-        dispatch(actionUpdateAttendance(data))
+        const attendance = await res.json();
+        data.attendee.Attendance.status = attendance.status;
+        const payload = {attendance: attendance, attendee: data.attendee}
+        dispatch(actionUpdateAttendance(payload))
     } else {
         const errors = await res.json();
         console.log(errors)
@@ -131,6 +133,11 @@ const attendancesReducer = (state = initialState, action) => {
             action.payload.forEach(attendance => newState.eventAttendances[attendance.id] = attendance)
             return newState;
         }
+        case GET_MY_ATTENDANCES: {
+            const newState = { myAttendances: {}, eventAttendances: {...state.eventAttendances}, eventAttendees:{...state.eventAttendees}};
+            action.payload.forEach(attendance => newState.myAttendances[attendance.id] = attendance)
+            return newState;
+        }
         case ADD_ATTENDANCE: {
             const newState = { eventAttendees: {...state.eventAttendees}, myAttendances: {...state.myAttendances}, eventAttendances:{...state.eventAttendances}  };
             newState.myAttendances = { ...newState.myAttendances, [action.payload.id]: action.payload}
@@ -139,9 +146,9 @@ const attendancesReducer = (state = initialState, action) => {
         }
         case UPDATE_ATTENDANCE: {
             const newState = { eventAttendees: {...state.eventAttendees}, myAttendances: {...state.myAttendances}, eventAttendances:{...state.eventAttendances}  };
-            newState.eventAttendees = { ...newState.eventAttendees, [action.payload.userId]: action.payload}
-            newState.myAttendances = { ...newState.myAttendances, [action.payload.id]: action.payload}
-            newState.eventAttendances = { ...newState.eventAttendances, [action.payload.id]: action.payload};
+            newState.eventAttendees = { ...newState.eventAttendees, [action.payload.attendee.id]: action.payload.attendee}
+            newState.myAttendances = { ...newState.myAttendances, [action.payload.attendance.id]: action.payload.attendance}
+            newState.eventAttendances = { ...newState.eventAttendances, [action.payload.attendance.id]: action.payload.attendance};
             return newState;
         }
         case DELETE_ATTENDANCE: {

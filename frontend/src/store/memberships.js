@@ -92,15 +92,17 @@ export const thunkAddMembership = (groupId) => async dispatch => {
     }
 }
 
-export const thunkUpdateMembership = (membership, memberData) => async dispatch => {
-    const res = await csrfFetch(`/api/groups/${membership.groupId}/membership`, {
+export const thunkUpdateMembership = (data, memberData) => async dispatch => {
+    const res = await csrfFetch(`/api/groups/${data.membership.groupId}/membership`, {
         method: 'PUT',
         body: JSON.stringify(memberData)
     });
 
     if (res.ok) {
-        const data = await res.json();
-        dispatch(actionUpdateMembership(data))
+        const membership = await res.json();
+        data.member.Membership.status = membership.status
+        const payload = {membership: membership, member: data.member }
+        dispatch(actionUpdateMembership(payload))
     } else {
         const errors = res.json();
         return errors;
@@ -152,9 +154,9 @@ const membershipsReducer = (state = initialState, action) => {
         }
         case UPDATE_MEMBERSHIP: {
             const newState = { groupMembers: {...state.groupMembers},  myMemberships: {...state.myMemberships}, groupMemberships: {...state.groupMemberships} };
-            newState.groupMembers = {...newState.groupMembers, [action.payload.userId]: action.payload}
-            newState.myMemberships = {...newState.myMemberships, [action.payload.id]: action.payload};
-            newState.groupMemberships = {...newState.groupMemberships, [action.payload.id]: action.payload}
+            newState.groupMembers = {...newState.groupMembers, [action.payload.member.id]: action.payload.member}
+            newState.myMemberships = {...newState.myMemberships, [action.payload.membership.id]: action.payload.membership};
+            newState.groupMemberships = {...newState.groupMemberships, [action.payload.membership.id]: action.payload.membership}
             return newState;
         }
         case DELETE_MEMBERSHIP: {
