@@ -121,7 +121,7 @@ function CreateGroup() {
             <form className='create_group-form' onSubmit={submit}>
                 <fieldset className='create_group-fieldset'>
                     <h2 className='subheading'>First, set your group's location.</h2>
-                    <p className='body subheader'>Meetup groups meet locally, in person and online. We'll connect you with people in your area, and more can join you online.</p>
+                    <p className='body subheader'>Linkup groups link locally, in person and online. We'll connect you with people in your area, and more can join you online.</p>
                     <Inputs
                         placeholder='City'
                         value={city}
@@ -195,7 +195,7 @@ function CreateGroup() {
                     />
                 </fieldset>
                 <Button
-                    style='create_group-btn'
+                    style='create_group-btn small-btn'
                     label='Create group'
                     type='primary'
                 />

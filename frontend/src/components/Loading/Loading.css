@@ -41,3 +41,7 @@
     align-items: center;
     justify-content: center;
 }
+
+.fixed-height {
+    height: 400px;
+}

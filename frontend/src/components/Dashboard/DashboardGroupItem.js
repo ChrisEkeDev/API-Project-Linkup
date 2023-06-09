@@ -19,7 +19,7 @@ function DashboardGroupItem({data}) {
         <div onClick={organizer ? () => navigate(`/manage-group/${data.groupId}`) : () => navigate(`/groups/${data.groupId}`)} className='dash_group_item-wrapper'>
             <div className='dash_group_item-image bg-image'  style={{backgroundImage: `url(${group?.previewImage})` }}></div>
             <div className='dash_group_item-information'>
-                <h2 className='subheading'>{group.name} - <span className='body small'>{group.type}</span></h2>
+                <h2 className='subheading'>{group.name} </h2>
                 <div className='dash_group_item-info_section'>
                     <FaUserFriends className='dash_group-icon'/>
                     <p className='small'>{group.numMembers} members</p>
@@ -29,6 +29,7 @@ function DashboardGroupItem({data}) {
                     <p className='small'>{group.city}, {group.state}</p>
                 </div>
             </div>
+            <span className='status-node body small'>{group.type}</span>
         </div>
   )
 }

@@ -9,6 +9,8 @@ function Events() {
   const dispatch = useDispatch();
   const events = useSelector(state => state.events.allEvents);
   const normalizedEvents = Object.values(events);
+  const upcomingEvents = normalizedEvents.filter(event => new Date(event.startDate).getTime() > new Date().getTime());
+  const pastEvents = normalizedEvents.filter(event => new Date(event.startDate).getTime() < new Date().getTime());
   const [ isLoading, setIsLoading ] = useState(true);
 
   useEffect(() => {
@@ -16,12 +18,21 @@ function Events() {
     .then(() => setIsLoading(false));
 }, [dispatch])
 
-  if (isLoading) return <DataLoading></DataLoading>
+  if (isLoading) return <DataLoading fixed={true}></DataLoading>
 
 
   return (
     <ul className='events-wrapper'>
-        {normalizedEvents.map(event => {
+        {upcomingEvents?.sort((a,b) => {
+          return new Date(a.startDate) - new Date(b.startDate)
+        }).map(event => {
+            return (
+                <EventItem key={event.id} id={event.id}/>
+            )
+        })}
+        {pastEvents?.sort((a,b) => {
+          return new Date(a.startDate) - new Date(b.startDate)
+        }).map(event => {
             return (
                 <EventItem key={event.id} id={event.id}/>
             )

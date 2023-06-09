@@ -48,7 +48,7 @@ export const thunkGetEventAttendees = (eventId) => async dispatch => {
         dispatch(actionGetEventAttendees(data.Attendees))
     } else {
         const errors = await res.json();
-        console.log(errors)
+        return errors
     }
 }
 
@@ -59,7 +59,7 @@ export const thunkGetEventAttendances = (eventId) => async dispatch => {
         dispatch(actionGetEventAttendances(data.Attendances))
     } else {
         const errors = await res.json();
-        console.log(errors)
+        return errors
     }
 }
 
@@ -70,7 +70,7 @@ export const thunkGetMyAttendances = () => async dispatch => {
         dispatch(actionGetMyAttendances(data.Attendances))
     } else {
         const errors = await res.json();
-        console.log(errors)
+        return errors
     }
 }
 
@@ -83,7 +83,7 @@ export const thunkAddAttendance = (eventId) => async dispatch => {
         dispatch(actionAddAttendance(data))
     } else {
         const errors = await res.json();
-        console.log(errors)
+        return errors
     }
 }
 
@@ -99,7 +99,7 @@ export const thunkUpdateAttendance = (data, attendeeData) => async dispatch => {
         dispatch(actionUpdateAttendance(payload))
     } else {
         const errors = await res.json();
-        console.log(errors)
+        return errors
     }
 }
 
@@ -114,7 +114,7 @@ export const thunkDeleteAttendance = (attendance, attendeeData) => async dispatc
         return message
     } else {
         const errors = await res.json();
-        console.log(errors)
+        return errors
     }
 }
 

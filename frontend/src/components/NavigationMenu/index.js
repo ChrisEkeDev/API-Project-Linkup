@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import OutsideClicker from '../../hooks/useOutsideClick';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { thunkLogOut } from '../../store/session';
@@ -13,6 +14,7 @@ function NavigationMenu({user}) {
     const history = useHistory();
 
     const navigate = (route) => {
+        setMenu(false);
         history.push(route)
     }
 
@@ -35,7 +37,7 @@ function NavigationMenu({user}) {
   return (
     <div className='navigation_menu-wrapper'>
         <div onClick={() => navigate('/dashboard')} className='user-image bg-image' style={{backgroundImage: `url(${user?.profileImage})` }}>
-            {user.profileImage ? null :
+            {user?.profileImage ? null :
             `${user?.firstName.charAt(0)}
             ${user?.lastName.charAt(0)}`}
         </div>
@@ -50,18 +52,25 @@ function NavigationMenu({user}) {
             />
         }
         {menu ?
-            <section className='navigation_menu-contents'>
-                <div>
-                    <p className='body'>Hello, {user?.firstName}</p>
-                    <p className='body'>{user?.email}</p>
-                </div>
-                <Button
-                    type='secondary'
-                    style='small-btn'
-                    label='Log out'
-                    action={(e) => submitLogOut(e)}
-                />
-            </section> :
+            <OutsideClicker cb={() => setMenu(false)} >
+                <section className='navigation_menu-contents'>
+                    <div>
+                        <p className='body'>Hello, {user?.firstName}</p>
+                        <p className='body'>{user?.email}</p>
+                    </div>
+                    <div className="navigation_menu-links">
+                        <p className="navigation_menu-link" onClick={() => navigate(`/search/groups`)}>View Groups</p>
+                        <p className="navigation_menu-link" onClick={() => navigate('/search/events')}>View Events</p>
+                    </div>
+                    <Button
+                        type='secondary'
+                        style='small-btn'
+                        label='Log out'
+                        action={(e) => submitLogOut(e)}
+                    />
+                </section>
+            </OutsideClicker>
+             :
             null
         }
 

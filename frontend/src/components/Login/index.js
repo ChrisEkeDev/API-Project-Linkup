@@ -63,8 +63,8 @@ function Login({close}) {
         if (credential.trim().length < 4) {
           errors.credential = 'Username or Email must be at least 4 characters';
         }
-        if (password.trim().length < 4) {
-          errors.password = 'Password must be at least 4 characters';
+        if (password.trim().length < 6) {
+          errors.password = 'Password must be at least 6 characters';
         }
         setErrors(errors)
     }, [credential, password])
@@ -95,7 +95,7 @@ function Login({close}) {
             <Button
                 style='spaced small-btn'
                 type='primary'
-                label='Sign in'
+                label='Log in'
                 disabled={Object.values(errors).length}
             />
             <Button

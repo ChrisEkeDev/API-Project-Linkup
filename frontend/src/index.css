@@ -76,7 +76,7 @@
 
   .small {
     color: var(--dark-gray);
-    font-size: var(--body);
+    font-size: 15px;
     margin-bottom: 6px;
   }
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { useLoading } from '../../context/LoadingProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkUpdateEvent } from '../../store/events';
@@ -111,6 +111,8 @@ function UpdateEvent({event}) {
         }
         setErrors(errors)
     }
+
+     if (user?.id !== group?.organizerId) return <Redirect to='/'></Redirect>
 
     return (
         <main className='create_event-wrapper'>

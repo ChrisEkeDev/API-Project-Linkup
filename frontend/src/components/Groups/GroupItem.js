@@ -17,7 +17,7 @@ function GroupItem({id}) {
                 <div className='group_item-information'>
                     <h2 className='subheading'>{groupItem?.name}</h2>
                     <p className='small'>{groupItem?.city}, {groupItem?.state}</p>
-                    <p className='body'>{groupItem?.about}</p>
+                    <p className='group_item-description body'>{groupItem?.about}</p>
                     <div className='group_item-details'>
                         <p className='small'>{groupEvents?.length} {groupEvents?.length === 1 ? 'event' : 'events'}<span> &#8729; </span>{groupItem?.private ? 'Private' : 'Public'}</p>
                     </div>

@@ -7,7 +7,6 @@ const GET_SINGLE_GROUP = '/linkup/groups/GET_SINGLE_GROUP';
 const CREATE_GROUP = '/linkup/groups/CREATE_GROUP';
 const UPDATE_GROUP = '/linkup/groups/UPDATE_GROUP';
 const DELETE_GROUP = '/linkup/groups/DELETE_GROUP';
-const SEARCH_GROUPS = '/linkup/groups/SEARCH_GROUP';
 
 
 
@@ -42,10 +41,6 @@ const actionDeleteGroup = (group) => ({
     payload: group
 })
 
-const actionSearchGroup = (groups) => ({
-    type: SEARCH_GROUPS,
-    payload: groups
-})
 
 //THUNKS
 

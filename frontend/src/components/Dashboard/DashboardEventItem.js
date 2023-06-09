@@ -18,7 +18,7 @@ function DashboardEventItem({id}) {
         <div onClick={() => navigate(`/events/${id}`)} className='dash_group_item-wrapper'>
             <div className='dash_group_item-image bg-image'  style={{backgroundImage: `url(${event?.previewImage})` }}></div>
             <div className='dash_group_item-information'>
-            <h2 className='subheading'>{event?.name} - <span className='body small'>{event?.type}</span></h2>
+            <h2 className='subheading'>{event?.name} </h2>
             <div className='dash_group_item-info_section'>
                 <FaCalendarAlt className='dash_group-icon'/>
                 <p className='small'>
@@ -27,6 +27,7 @@ function DashboardEventItem({id}) {
                 </p>
             </div>
             </div>
+            <span className='status-node body small'>{event?.type}</span>
         </div>
   )
 }

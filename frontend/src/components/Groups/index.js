@@ -16,7 +16,7 @@ function Groups() {
     .then(() => setIsLoading(false));
 }, [dispatch])
 
-  if (isLoading) return <DataLoading></DataLoading>
+  if (isLoading) return <DataLoading fixed={true}></DataLoading>
 
   return (
     <ul className='groups-wrapper'>

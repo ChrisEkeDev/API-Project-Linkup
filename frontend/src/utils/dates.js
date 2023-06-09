@@ -29,6 +29,11 @@ export const sameDay = (date1, date2) => {
     date1.getDate() === date2.getDate()
 }
 
+export const sameMonth = (date1, date2) => {
+    return date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth()
+}
+
 export const startOfMonth = (year, month) => {
     return new Date(year, month, 1)
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams, useHistory, Route } from 'react-router-dom';
+import { Link, useParams, useHistory, Route, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAlerts } from '../../context/AlertsProvider';
 import { thunkGetSingleGroup, thunkDeleteGroup } from '../../store/groups';
@@ -45,8 +45,6 @@ function ManageGroup() {
         setSelectedMember(memberData)
     }
 
-    console.log(selectedMember)
-
     const updateMemberStatus = (data, status) => {
         const memberData = {
             memberId: parseInt(data.member.id),
@@ -54,7 +52,6 @@ function ManageGroup() {
         }
         return (
             dispatch(thunkUpdateMembership(data, memberData))
-            // .then(() => setSelectedMember(null))
             .then(() => handleAlerts({message: 'Status updated'}))
             .catch(async(errors) => {
                 const alert = await errors.json();
@@ -104,6 +101,8 @@ function ManageGroup() {
     }, [dispatch])
 
     if (isLoading) return <DataLoading></DataLoading>
+
+    if (user?.id !== group?.organizerId) return <Redirect to='/'></Redirect>
 
   return (
     <div className='manage_group-wrapper'>

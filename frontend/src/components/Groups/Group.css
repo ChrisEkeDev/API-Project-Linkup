@@ -7,7 +7,6 @@
 
     .small {
         color: var(--dark-gray);
-        font-size: var(--body);
     }
 }
 
@@ -30,6 +29,14 @@
 .group_item-contents {
     display: flex;
     gap: 24px;
+}
+
+.group_item-description {
+   overflow: hidden;
+   display: -webkit-box;
+   -webkit-line-clamp: 3;
+           line-clamp: 3;
+   -webkit-box-orient: vertical;
 }
 
 .group_item-image {
@@ -149,17 +156,19 @@
 }
 
 .group_aside-wrapper {
+    padding: 72px 0;
+}
+
+.group_aside-members {
     padding: 36px 0;
 }
 
-
 .group_aside-members ul {
-    margin: 24px 0;
     background-color: var(--white);
     padding: 24px;
     border-radius: 10px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     gap: 24px;
 }
 

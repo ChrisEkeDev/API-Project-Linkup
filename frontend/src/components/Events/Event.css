@@ -26,6 +26,11 @@
     padding: 24px 0;
 }
 
+.no-padding {
+    padding: 0;
+    margin-bottom: 24px;
+}
+
 .contained {
     border-top: none;
     padding: 24px;
@@ -54,6 +59,15 @@
     .body {
         flex-grow: 1;
     }
+}
+
+.event_item-description {
+    margin-top: 12px;
+    overflow: hidden;
+   display: -webkit-box;
+   -webkit-line-clamp: 3;
+           line-clamp: 3;
+   -webkit-box-orient: vertical;
 }
 
 .event_item-details {

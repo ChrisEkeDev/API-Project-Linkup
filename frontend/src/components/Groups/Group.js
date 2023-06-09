@@ -11,6 +11,7 @@ import { useAlerts } from '../../context/AlertsProvider';
 import Modal from '../Modal';
 import EventItem from '../Events/EventItem';
 import Button from '../Buttons/Button';
+import Calendar from '../Calendar';
 import './Group.css';
 
 function Group() {
@@ -146,6 +147,8 @@ function Group() {
                             <small className='body small'>Organized by <span className='caps'>{group?.Organizer?.firstName} {group?.Organizer?.lastName}</span></small>
                         </div>
                         {
+                            !user ?
+                            null :
                             user?.id === group?.Organizer?.id ?
                             <div className='group-actions'>
                                 <Button
@@ -165,7 +168,12 @@ function Group() {
                                 />
                             </div> :
                             null}
+
+
+
                             {
+                                !user ?
+                                null :
                             myMembership &&  user?.id !== group?.Organizer?.id && myMembership.status !== 'pending' ?
                             <Button
                                 label='Leave this group'
@@ -210,7 +218,9 @@ function Group() {
                            <div className='group_section-event_list'>
                             <h2 className='subheading'>Upcoming Events ({upcomingEvents?.length})</h2>
                             <ul>
-                                {upcomingEvents?.map(event => {
+                                {upcomingEvents?.sort((a,b) => {
+                                    return new Date(a.startDate) - new Date(b.startDate)
+                                }).map(event => {
                                         return (
                                             <EventItem key={event?.id}  contained={true} id={event?.id} />
                                         )
@@ -224,7 +234,9 @@ function Group() {
                            <div className='group_section-event_list'>
                             <h2 className='subheading'>Past events ({pastEvents?.length})</h2>
                             <ul>
-                                {pastEvents?.map(event => {
+                                {pastEvents?.sort((a,b) => {
+                                    return new Date(a.startDate) - new Date(b.startDate)
+                                }).map(event => {
                                         return (
                                             <EventItem key={event?.id} contained={true} id={event?.id} />
                                         )
@@ -233,8 +245,6 @@ function Group() {
                            </div>:
                            null
                         }
-                    </section>
-                    <aside className='group_aside-wrapper'>
                         <div className='group_aside-members'>
                             <div className='heading_link-wrapper'>
                                 <h2 className='subheading'>Members</h2>
@@ -254,6 +264,9 @@ function Group() {
                                 })}
                             </ul>
                         </div>
+                    </section>
+                    <aside className='group_aside-wrapper'>
+                        <Calendar/>
                     </aside>
                 </article>
             </div>

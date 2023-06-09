@@ -237,7 +237,7 @@ function CreateEvent() {
                         />
                     </fieldset>
                     <Button
-                        style='create_event-btn'
+                        style='create_event-btn small-btn'
                         label='Create Event'
                         type='primary'
                     />

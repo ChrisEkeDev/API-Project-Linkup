@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Link, useParams, useHistory, Route } from 'react-router-dom';
+import { Link, useParams, useHistory, Route, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAlerts } from '../../context/AlertsProvider';
 import { thunkGetSingleEvent, thunkDeleteEvent } from '../../store/events';
@@ -48,7 +48,6 @@ function ManageEvent() {
         }
         return (
             dispatch(thunkUpdateAttendance(data, attendeeData))
-            // .then(() => setSelectedAttendee(null))
             .then(() => handleAlerts({message: 'Status updated'}))
             .catch(async(errors) => {
                 const alert = await errors.json();
@@ -97,6 +96,8 @@ function ManageEvent() {
     }, [dispatch])
 
     if (isLoading) return <DataLoading></DataLoading>
+
+    if (user?.id !== event?.Group?.Organizer?.id) return <Redirect to='/'></Redirect>
 
   return (
     <div className='manage_group-wrapper'>

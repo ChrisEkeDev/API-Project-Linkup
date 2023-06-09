@@ -4,8 +4,8 @@ import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import './Calendar.css';
 
 
-function Calendar() {
-    const [ date, setDate ] = useState(new Date())
+function Calendar({dateProp}) {
+    const [ date, setDate ] = useState(dateProp || new Date())
     const [ month, setMonth ] = useState(startOfMonth(date.getFullYear(), date.getMonth()))
     let weekStartDate = startOfWeek(month);
     const monthStart = startOfMonth(month.getFullYear(), month.getMonth());
@@ -26,27 +26,29 @@ function Calendar() {
     }
 
     let days = [];
+    let weekIdx = 0
     while (day <= endDate) {
         for (let i = 0; i < 7; i++) {
             let cloneDay = day;
             days.push(
-                <div onClick={() => selectDay(cloneDay)} className={`calendar_day ${sameDay(new Date(), day) ? 'today' : sameDay(date, day) ? 'selected' : ''}`} key={day}>
+                <div onClick={() => selectDay(cloneDay)}
+                    className={`calendar_day ${sameDay(new Date(), day) ? 'today' : sameDay(date, day) ? 'selected' : ''}`} key={day}>
                     <span>{day.getDate()}</span>
                 </div>
             )
             day = addDays(day, 1)
         }
         weekRows.push(
-            <div className='calendar_week'>
+            <div key={weekIdx} className='calendar_week'>
                 {days}
             </div>
         )
         days = []
+        weekIdx++
     }
 
     const selectDay = (day) => {
         setDate(new Date(day))
-        console.log(day)
     }
 
     const nextMonth = () => {

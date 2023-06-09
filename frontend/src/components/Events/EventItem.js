@@ -11,7 +11,7 @@ const dateOptions = { weekday: "long", year: "numeric", month: "long", day: "num
 
 
   return (
-    <li className='event_item-wrapper'>
+    <li className={`event_item-wrapper ${contained ? 'no-padding' : ''}`}>
         <Link to={`/events/${id}`} className='event-link'>
             <article className={`event_item-contents ${contained ? 'contained' : ''}`}>
                 <div className='event_item-information'>
@@ -19,14 +19,15 @@ const dateOptions = { weekday: "long", year: "numeric", month: "long", day: "num
                     <div className='event_item-details'>
                         <h3 className='body green'>
                             {new Intl.DateTimeFormat('en-US', dateOptions).format(new Date(event?.startDate))}
-                            <span> @ </span>
+                            <span> &#8729; </span>
                              {new Intl.DateTimeFormat('en-US', timeOptions).format(new Date(event?.startDate))}
                         </h3>
                         <h2 className='subheading'>{event?.name}</h2>
                         <small className='body small'>{event?.Group.city}, {event?.Group.state}</small>
+                        <p className='event_item-description body'>{event?.description}</p>
                     </div>
                 </div>
-                <p className='body'>{event?.description}</p>
+
             </article>
         </Link>
     </li>

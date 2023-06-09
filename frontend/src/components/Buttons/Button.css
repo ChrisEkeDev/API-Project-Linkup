@@ -24,6 +24,10 @@
     color: white;
 }
 
+.tertiary {
+    background-color: var(--dark-gray);
+    color: var(--white)
+}
 .spaced {
     margin: 10px 0;
 }

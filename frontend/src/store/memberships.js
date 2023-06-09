@@ -52,7 +52,7 @@ export const thunkGetGroupMembers = (groupId) => async dispatch => {
         dispatch(actionGetGroupMembers(data.Members))
     } else {
         const errors = await res.json();
-        console.log(errors)
+        return errors
     }
 }
 
@@ -63,7 +63,7 @@ export const thunkGetGroupMemberships = (groupId) => async dispatch => {
         dispatch(actionGetGroupMemberships(data.Memberships))
     } else {
         const errors = await res.json();
-        console.log(errors)
+        return errors
     }
 }
 
@@ -74,7 +74,7 @@ export const thunkGetMyMemberships = () => async dispatch => {
         dispatch(actionGetMyMemberships(data.Memberships))
     } else {
         const errors = await res.json();
-        console.log(errors)
+        return errors
     }
 }
 

@@ -22,7 +22,7 @@
 .search-tab {
     font-size: var(--subheading);
     text-decoration: none;
-    color: var(--black);
+    color: var(--dark-gray);
     cursor: pointer;
 }
 .active-tab {

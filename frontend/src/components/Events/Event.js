@@ -85,7 +85,7 @@ const requestAttendance = () => {
         dispatch(thunkDeleteEvent(event))
         .then((alert) => {
             handleAlerts(alert);
-            navigate('/search/events');
+            navigate(`/groups/${event.groupId}`);
             setLoading(false);
         })
         .catch(async(errors) => {
@@ -101,6 +101,7 @@ const requestAttendance = () => {
     .then(() => dispatch(thunkGetEventAttendances(eventId)))
     .then(() => setIsLoading(false))
   }, [dispatch])
+
 
   if (isLoading) return <DataLoading></DataLoading>
 
@@ -154,15 +155,15 @@ const requestAttendance = () => {
                     <div className='event_section-details_item'>
                       <FaRegClock className='icon'/>
                       <p className='small'>
-                        START - {new Intl.DateTimeFormat('en-US', dateOptions).format(new Date(event?.startDate))} @
+                        START - {new Intl.DateTimeFormat('en-US', dateOptions).format(new Date(event?.startDate))} <span> &#8729; </span>
                                 {new Intl.DateTimeFormat('en-US', timeOptions).format(new Date(event?.startDate))}<br/>
-                        END - {new Intl.DateTimeFormat('en-US', dateOptions).format(new Date(event?.endDate))} @
+                        END - {new Intl.DateTimeFormat('en-US', dateOptions).format(new Date(event?.endDate))} <span> &#8729; </span>
                               {new Intl.DateTimeFormat('en-US', timeOptions).format(new Date(event?.endDate))}
                       </p>
                     </div>
                     <div className='event_section-details_item'>
                       <FaDollarSign className='icon'/>
-                      <p className='small'>{event?.price > 0 ? event?.price.toFixed(2) : 'FREE'}</p>
+                      <p className='small'>{event?.price > 0 ? `$${event?.price.toFixed(2)}` : 'FREE'}</p>
                     </div>
                     <div className='event_section-details_item'>
                       <FaMapPin className='icon'/>
@@ -175,19 +176,21 @@ const requestAttendance = () => {
                     <>
                       <Button
                         style='small-btn'
-                        type='secondary'
+                        type='tertiary'
                         label='Update'
                         action={() => navigate(`/update-event/${event?.id}`)}
                       />
                       <Button
                         style='small-btn'
-                        type='secondary'
+                        type='tertiary'
                         label='Delete'
                         action={() => setDeleting(true)}
                       />
                       </> :
                       null }
-                      {myAttendance?.status === 'waitlist' ?
+                      {!user ?
+                      null :
+                      myAttendance?.status === 'waitlist' ?
                       <Button
                         style='small-btn'
                         type='secondary'
@@ -209,14 +212,16 @@ const requestAttendance = () => {
                         action={() => requestAttendance()}
                       /> :
                       null
-                    }
+                      }
+
+
                     </div>
                     </div>
                   </div>
               </aside>
             </div>
             <div className='event_details-section'>
-              <h2 className='subheading'>Details</h2>
+              <h2 className='subheading'>Description</h2>
               <p className='body'>{event?.description}</p>
             </div>
             {normalizedAttendees.length > 0 ?
