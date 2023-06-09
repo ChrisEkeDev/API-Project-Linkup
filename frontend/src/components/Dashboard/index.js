@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import DashboardGroups from './DashboardGroups';
 import { thunkGetMyAttendances } from '../../store/attendances';
 import { thunkGetMyMemberships } from '../../store/memberships';
+import Calendar from '../Calendar';
 import './Dashboard.css';
 import DashboardEvents from './DashboardEvents';
 
@@ -32,7 +33,7 @@ function Dashboard() {
               <DashboardEvents myAttendances={myAttendances}/>
             </section>
             <aside className='dashboard-aside'>
-                <h2 className='subheading'>Calendar</h2>
+                <Calendar/>
               </aside>
             </section>
         </section>
