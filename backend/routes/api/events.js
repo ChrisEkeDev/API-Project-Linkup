@@ -8,9 +8,9 @@ const { requireAuth } = require('../../utils/auth');
 
 // Get All Events with optional query filters
 router.get('/', async (req, res) => {
-    let { page, size, name, type, startDate } = req.query;
+    let { page, size, query } = req.query;
 
-    const where = {}
+    let where = {}
     const pagination = {}
 
     if (size) {
@@ -29,24 +29,18 @@ router.get('/', async (req, res) => {
         }
     }
 
-    if ( name ) {
-        where.name = {
-            [Op.like]: `%${name}%`
+    if ( query ) {
+        where = {
+            [Op.or]: [
+                { name: { [Op.like]:`%${query}%`  }},
+                { description: { [Op.like]:`%${query}%`  }}
+            ]
         }
     }
 
-    if ( type ) {
-        where.type = type
-    }
-
-    if ( startDate ) {
-        where.startDate = {
-            [Op.like]: `%${startDate}%`
-        }
-    }
 
     const events = await Event.findAll({
-        where,
+        where: where,
         attributes: {
             exclude: ['capacity', 'price']
         },
@@ -332,7 +326,7 @@ router.delete('/:eventId', requireAuth, async (req, res) => {
 // Get all Attendees of an Event specified by its id
 router.get('/:eventId/attendees', async (req, res) => {
     const { eventId } = req.params;
-    const userId = req.user.id;
+    const userId = req.user?.id;
     const event = await Event.findByPk(eventId);
 
     // Checks if the group exists
@@ -345,11 +339,7 @@ router.get('/:eventId/attendees', async (req, res) => {
     let groupId = event.dataValues.groupId;
     const group = await Group.findByPk(groupId)
 
-    const membership = await group.getMemberships({
-        where: {
-            userId: userId
-        }
-    })
+    const membership = await group.getMemberships();
 
     let attendeesAuth = await Event.findByPk(eventId, {
         attributes: [],
@@ -379,7 +369,7 @@ router.get('/:eventId/attendees', async (req, res) => {
     });
 
     let status = membership[0]?.dataValues.status;
-    if (userId === group.dataValues.organizerId || status === 'co-host') {
+    if (userId && userId === group.dataValues.organizerId || status === 'co-host') {
         return res.status(200).json({Attendees: attendeesAuth.Users})
     } else {
         return res.status(200).json({Attendees: attendeesNoAuth.Users})

@@ -476,7 +476,7 @@ router.post('/:groupId/events', requireAuth, validateCreateEvent, async (req, re
 // Get all Members of a Group specified by its id
 router.get('/:groupId/members', async (req, res) => {
     const { groupId } = req.params;
-    const userId = req.user.id;
+    const userId = req.user?.id;
     const group = await Group.findByPk(groupId);
 
     // Checks if the group exists
@@ -486,11 +486,13 @@ router.get('/:groupId/members', async (req, res) => {
         })
     }
 
-    const membership = await group.getMemberships({
-        where: {
-            userId: userId
-        }
-    })
+    let membership
+    if (userId) {
+        membership = await group.getMemberships({
+            where: { userId }
+        })
+    }
+
 
     let membersAuth = await Group.findByPk(groupId, {
         attributes: [],
@@ -519,8 +521,10 @@ router.get('/:groupId/members', async (req, res) => {
         }
     });
 
-    let status = membership[0]?.dataValues.status
-    if (userId === group.dataValues.organizerId || status === 'co-host') {
+    let status;
+    if (membership) status = membership[0]?.dataValues?.status
+
+    if (userId && userId === group.dataValues.organizerId || status && status === 'co-host') {
         return res.status(200).json({Members: membersAuth.Users})
     } else {
         return res.status(200).json({Members: membersNoAuth.Users})
@@ -532,7 +536,6 @@ router.get('/:groupId/members', async (req, res) => {
 // Get all Memberships from Group Id
 router.get('/:groupId/memberships', async (req, res) => {
     const { groupId } = req.params;
-    const userId = req.user.id;
     const group = await Group.findByPk(groupId);
 
     // Checks if the group exists

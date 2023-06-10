@@ -8,6 +8,7 @@ const groupImageRouter = require('./groupImages.js');
 const eventImageRouter = require('./eventImages.js');
 const membershipRouter = require('./memberships.js');
 const attendanceRouter = require('./attendances.js');
+const searchRouter = require('./search.js');
 const { restoreUser } = require('../../utils/auth.js');
 
 // Connect restoreUser middleware to the API router
@@ -29,8 +30,10 @@ router.use('/group-images', groupImageRouter);
 
 router.use('/event-images', eventImageRouter);
 
-router.use('/memberships', membershipRouter)
+router.use('/memberships', membershipRouter);
 
-router.use('/attendances', attendanceRouter)
+router.use('/attendances', attendanceRouter);
+
+router.use('/search', searchRouter);
 
 module.exports = router;
