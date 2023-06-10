@@ -1,5 +1,29 @@
 # LinkUp - Meetup Clone
 
+![linkup image](backend/db-schema/linkup-image.png)
+
+## Introduction
+
+Linkup is an web development project that aims to replicate the essence of the popular website "Meetup" while offering a unique and user-friendly experience. As a clone of Meetup, Linkup inherits the core features that have made Meetup so successful.
+
+## Technologies Used
+
+* Front End
+  * React
+  * Redux
+  * CSS
+
+* Back End
+  * Express
+  * SQL with PostGres
+  * Deployed with Render
+
+## Screenshots
+
+![screenshot 1](backend/db-schema/linkup-page.png)
+
+![screenshot 2](backend/db-schema/linkup-page2.png)
+
 ## Database Schema Design
 
 ![database schema](backend/db-schema/linkup-db-schema.png)
