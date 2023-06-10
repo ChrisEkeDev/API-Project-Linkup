@@ -15,7 +15,7 @@ Linkup is an web development project that aims to replicate the essence of the p
 
 * Back End
   * Express
-  * SQL with PostGres
+  * PostgresQL
   * Deployed with Render
 
 ## Screenshots
