@@ -163,7 +163,7 @@ const requestAttendance = () => {
                     </div>
                     <div className='event_section-details_item'>
                       <FaDollarSign className='icon'/>
-                      <p className='small'>{event?.price > 0 ? `$${event?.price.toFixed(2)}` : 'FREE'}</p>
+                      <p className='small'>{event?.price > 0 ? `$${parseInt(event?.price).toFixed(2)}` : 'FREE'}</p>
                     </div>
                     <div className='event_section-details_item'>
                       <FaMapPin className='icon'/>
