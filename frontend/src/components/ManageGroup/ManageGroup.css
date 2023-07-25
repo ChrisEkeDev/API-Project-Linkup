@@ -86,3 +86,38 @@
 .manage_group-tab {
     cursor: pointer;
 }
+
+
+
+@media screen and (max-width: 1109px) {
+    .manage_group-header-contents {
+        width: 100%;
+        padding: 0 7.5%;
+    }
+    .manage_group-grid-wrapper {
+        width: 100%;
+        padding: 0 7.5%;
+    }
+
+    .manage_group-grid {
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .manage_group-members-contents {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+    .manage_group-actions {
+        flex-wrap: wrap;
+    }
+
+    .manage_group-members-contents {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

@@ -135,7 +135,62 @@
     background: #FF5A5F;
   }
 
-  Handle on hover
+  /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     background: var(--red);
   }
+
+
+  /* Tablet */
+@media screen and (max-width: 1109px) {
+  .display {
+    font-size: 40px;
+    line-height: 40px;
+  }
+
+  .heading {
+    font-size: 28px;
+    line-height: 28px;
+    margin-bottom: 6px;
+  }
+
+  .subheading {
+    font-size: 20px;
+    line-height: 20px;
+    margin-bottom: 6px;
+  }
+
+  .small {
+    font-size: 12px;
+  }
+
+}
+
+/* Mobile */
+@media screen and (max-width: 600px) {
+  .display {
+    font-size: 35px;
+    line-height: 35px;
+  }
+
+  .heading {
+    font-size: 25px;
+    line-height: 25px;
+    margin-bottom: 6px;
+  }
+
+  .subheading {
+    font-size: 20px;
+    line-height: 20px;
+    margin-bottom: 6px;
+  }
+
+  .body {
+    font-size: 16px;
+  }
+
+  .small {
+    font-size: 12px;
+  }
+
+}

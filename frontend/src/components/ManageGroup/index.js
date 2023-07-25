@@ -134,7 +134,7 @@ function ManageGroup() {
                     <FaAngleLeft className='back-icon'/>
                     Dashboard
                 </Link>
-                <h1>Manage {group.name}</h1>
+                <h1 className='display'>Manage {group.name}</h1>
                 <div className='manage_group-actions'>
                     <Button
                         style='small-btn'

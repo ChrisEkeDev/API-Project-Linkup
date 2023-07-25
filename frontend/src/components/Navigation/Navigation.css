@@ -119,3 +119,27 @@
 .navigation_menu-link {
     cursor: pointer;
 }
+
+
+/* Tablet */
+@media screen and (max-width: 1109px) {
+
+    .nav-contents {
+        padding: 12px 7.5%;
+    }
+}
+
+/* Mobile */
+@media screen and (max-width: 600px) {
+    .nav-contents {
+        padding: 12px 5%;
+
+        .actions {
+            gap: 20px;
+        }
+        .link {
+            font-size: 15px;
+        }
+    }
+
+}
