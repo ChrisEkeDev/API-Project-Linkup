@@ -3,41 +3,57 @@ import { Redirect, Link, useHistory } from 'react-router-dom';
 import { FaTimes } from 'react-icons/fa';
 import { useLoading } from '../../context/LoadingProvider';
 import { useDispatch, useSelector } from 'react-redux';
+import { useAlerts } from '../../context/AlertsProvider'
 import { thunkSignUp } from '../../store/session';
 import useInitialRender from '../../hooks/useInitialRender';
 import Inputs from '../Inputs/Inputs';
 import Button from '../Buttons/Button';
+import Image from '../Inputs/Image';
 
 function Signup({close}) {
     const user = useSelector(state => state.session.user);
     const { setLoading } = useLoading();
+    const { handleAlerts } = useAlerts();
     const [ firstName, setFirstName ] = useState('');
     const [ lastName, setLastName ] = useState('');
     const [ email, setEmail ] = useState('');
     const [ username, setUsername ] = useState('');
     const [ password, setPassword ] = useState('');
+    const [ image, setImage] = useState(undefined);
     const [ confirmPassword, setConfirmPassword ] = useState('');
     const [ errors, setErrors ] = useState({});
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const submitForm = (e) => {
+    const submitForm = async (e) => {
         e.preventDefault();
-        const data = {firstName, lastName, email, username, password};
         setLoading(true);
-        return (
-            dispatch(thunkSignUp(data))
-            .then(() => {
-              close();
-              setLoading(false)
-              history.push('/dashboard')
-            })
-            .catch(async(errors) => {
-              const data = await errors.json();
-              if (data && data.errors) setErrors(data.errors)
-              setLoading(false)
-            })
-        )
+        try {
+          const userData = {
+            firstName,
+            lastName,
+            email,
+            username,
+            password,
+            image: image ? image : null
+          }
+          const formData = new FormData();
+          formData.append("firstName", userData.firstName)
+          formData.append("lastName", userData.lastName)
+          formData.append("email", userData.email)
+          formData.append("username", userData.username)
+          formData.append("password", userData.password)
+          if (userData.image) formData.append("image", userData.image)
+          const data = await dispatch(thunkSignUp(formData))
+          handleAlerts({message: 'User created successfully'})
+          history.push('/dashboard')
+          close();
+        } catch (error) {
+          console.log(error)
+          handleAlerts({message: "There was an error while creating your account."})
+        } finally {
+          setLoading(false)
+        }
     }
 
     useInitialRender(() => {
@@ -66,8 +82,12 @@ function Signup({close}) {
       if (password !== confirmPassword) {
         errors.confirmPassword = 'Passwords must match';
       }
+      const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png']
+      if (image && !validFileTypes.find(type => type === image.type)) {
+          errors.image = "Please select a valid file type (png, jpg)"
+      }
       setErrors(errors)
-    }, [firstName, lastName, email, password, confirmPassword, username])
+    }, [firstName, lastName, email, password, confirmPassword, username, image])
 
     if (user) return <Redirect to='/' />
 
@@ -128,6 +148,13 @@ function Signup({close}) {
                 name='confirm-password'
                 error={errors.confirmPassword}
                 disabled={false}
+            />
+            <Image
+                type='user'
+                name='image'
+                value={image}
+                setValue={setImage}
+                error={errors.image}
             />
             <Button
                 style='spaced small-btn'

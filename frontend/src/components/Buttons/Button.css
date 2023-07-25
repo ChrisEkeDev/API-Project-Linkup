@@ -38,3 +38,26 @@
     background-color: var(--light-gray);
     color: var(--dark-gray)
 }
+
+
+.upload-btn {
+    padding: 10px 15px;
+    border: 1px solid var(--light-gray);
+    font-size: 15px;
+    border-radius: 5px;
+    z-index: 50px;
+    cursor: pointer;
+}
+
+.upload_input--wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.value--not_populated {
+    color: var(--light-gray)
+}

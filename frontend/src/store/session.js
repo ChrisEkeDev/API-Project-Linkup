@@ -1,4 +1,14 @@
 import { csrfFetch } from "./csrf";
+import Cookies from 'js-cookie';
+
+function isJSON(res) {
+  try {
+    JSON.parse(res);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
 
 // TYPES
 
@@ -63,19 +73,25 @@ export const thunkRestoreUser = () => async dispatch => {
     }
 }
 
-export const thunkSignUp = (user) => async dispatch => {
-    const res = await csrfFetch('/api/users', {
+export const thunkSignUp = (userData) => async dispatch => {
+    const res = await fetch('/api/users', {
         method: 'POST',
-        body: JSON.stringify(user)
+        headers: {"XSRF-TOKEN": Cookies.get('XSRF-TOKEN')},
+        body: userData
     })
 
-    if (res.ok) {
+    if (res && res.ok) {
         const data = await res.json();
         dispatch(actionSetSession(data.user))
         return { message: 'Created account successfully' };
     } else {
-        const errors = await res.json();
-        return errors;
+        let errors;
+        if (isJSON(res)) {
+            errors = await res.json()
+            return errors;
+        } else {
+            console.log(res)
+        }
     }
 }
 

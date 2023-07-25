@@ -169,3 +169,35 @@
 .select-without-label {
     margin-top: 30px;
 }
+
+.image--preview {
+    height: 100px;
+    aspect-ratio: 1;
+    border-radius: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-bottom: 15px;
+    align-self: center;
+}
+
+.button_input--wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.media--input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    z-index: -1;
+}
+
+.value--not_populated {
+    font-size: 15px;
+    color: var(--text-label)
+}
+.value--populated {
+    font-size: 15px;
+}
