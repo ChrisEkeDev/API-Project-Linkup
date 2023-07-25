@@ -22,6 +22,7 @@ import CreateEvent from './components/CreateEvent';
 import ManageEvent from './components/ManageEvent';
 import UpdateEventWrapper from './components/UpdateEventWrapper';
 import SearchResults from './components/SearchResults';
+import Footer from './components/Footer';
 import './index.css';
 
 function App() {
@@ -109,6 +110,7 @@ function App() {
               <ManageEvent/>
             </Route>
         </Switch>
+        <Footer/>
       </LoadingProvider>
     </div>
   );
