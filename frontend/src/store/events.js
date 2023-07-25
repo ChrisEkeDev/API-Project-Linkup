@@ -1,4 +1,5 @@
 import { csrfFetch } from './csrf';
+import Cookies from 'js-cookie';
 
 // TYPES
 const GET_ALL_EVENTS = '/linkup/events/GET_ALL_EVENTS';
@@ -76,7 +77,7 @@ export const thunkGetSingleEvent = (eventId) => async dispatch => {
     }
 }
 
-export const thunkCreateEvent = (id, event, image) => async dispatch => {
+export const thunkCreateEvent = (id, event, imageData) => async dispatch => {
     const res = await csrfFetch(`/api/groups/${id}/events`, {
         method: 'POST',
         body: JSON.stringify(event)
@@ -85,9 +86,10 @@ export const thunkCreateEvent = (id, event, image) => async dispatch => {
     if (res.ok) {
         const newEvent = await res.json();
         dispatch(actionCreateEvent(newEvent))
-        await csrfFetch(`/api/events/${newEvent.id}/images`, {
+        await fetch(`/api/events/${newEvent.id}/images`, {
             method: 'POST',
-            body: JSON.stringify(image)
+            headers: {"XSRF-TOKEN": Cookies.get('XSRF-TOKEN')},
+            body: imageData
         })
         return newEvent;
     } else {

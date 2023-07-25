@@ -1,4 +1,5 @@
 import { csrfFetch } from './csrf';
+import Cookies from 'js-cookie';
 
 // TYPES
 const GET_ALL_GROUPS = '/linkup/groups/GET_ALL_GROUPS';
@@ -77,7 +78,7 @@ export const thunkGetSingleGroup = (groupId) => async dispatch => {
     }
 }
 
-export const thunkCreateGroup = (group, image) => async dispatch => {
+export const thunkCreateGroup = (group, imageData) => async dispatch => {
     const res = await csrfFetch('/api/groups', {
         method: 'POST',
         body: JSON.stringify(group)
@@ -86,9 +87,10 @@ export const thunkCreateGroup = (group, image) => async dispatch => {
     if (res.ok) {
         const newGroup = await res.json();
         dispatch(actionCreateGroup(newGroup))
-        await csrfFetch(`/api/groups/${newGroup.id}/images`, {
+        await fetch(`/api/groups/${newGroup.id}/images`, {
             method: 'POST',
-            body: JSON.stringify(image)
+            headers: {"XSRF-TOKEN": Cookies.get('XSRF-TOKEN')},
+            body: imageData
         })
         return newGroup;
     } else {

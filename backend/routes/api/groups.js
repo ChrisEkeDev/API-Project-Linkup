@@ -6,8 +6,29 @@ const { Group, Membership, User, GroupImage, Venue, Attendance } = require('../.
 const { requireAuth } = require('../../utils/auth');
 const { Op } = require('sequelize');
 const { states } = require('../../utils/states');
+const AWS = require('aws-sdk');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+const bodyParser = require('body-parser');
+const s3 = new AWS.S3();
 
+AWS.config.update({
+    region: process.env.AWS_S3_REGION,
+    correctClockSkew: true
+})
 
+router.use(bodyParser.json())
+
+const upload = multer({
+    storage: multerS3({
+        s3: s3,
+        acl: 'public-read',
+        bucket: 'linkup-bucket',
+        key: function (req, file, cb) {
+            cb(null, file.originalname); //use Date.now() for unique file keys
+        }
+    })
+})
 
 // Get all groups
 router.get('/', async (req, res) => {
@@ -129,10 +150,17 @@ router.post('/', validateCreateGroup, async (req, res) => {
     const { name, about, type, private, city, state } = req.body;
     const userId = req.user.id;
     const user = await User.findByPk(userId)
+    const image = req.file;
 
     // Creates the group
     const group = await user.createGroup({
-        name, about, type, private, city, state
+        name,
+        about,
+        type,
+        private,
+        city,
+        state,
+
     })
 
     // Create the Membership
@@ -149,16 +177,16 @@ router.post('/', validateCreateGroup, async (req, res) => {
 
 // Add an image to a group based on id
 const validateImage = [
-    check('url').exists({checkFalsy: true}).withMessage('Url is required'),
     check('preview').exists().isBoolean().withMessage('Preview must be a boolean'),
     handleValidationErrors
 ]
 
-router.post('/:groupId/images', validateImage, async (req, res) => {
+router.post('/:groupId/images', requireAuth, upload.single('image'), validateImage, async (req, res) => {
     const { groupId } = req.params;
     const userId = req.user.id;
-    const { url, preview } = req.body;
-    let group = await Group.findByPk(groupId)
+    const { preview } = req.body;
+    let group = await Group.findByPk(groupId);
+    const image = req.file;
 
     // Checks if the groups exists
     if (!group) {
@@ -178,18 +206,16 @@ router.post('/:groupId/images', validateImage, async (req, res) => {
     let status = user[0]?.dataValues.Membership.dataValues.status;
     if ( status === "co-host" || userId === group.dataValues.organizerId ) {
         // Creates the image
-        let image = await group.createGroupImage({
-            url,
+        let newImage = await group.createGroupImage({
+            url: image.location,
             preview
         })
-        return res.status(200).json(image)
+        return res.status(200).json(newImage)
     } else {
         return res.status(403).json({
             message: "Forbidden"
         })
     }
-
-
 })
 
 
@@ -254,8 +280,27 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
         })
     }
 
+    const images = await GroupImage.findAll({
+        where: {
+            groupId: group.id
+        }
+    })
+
+
     // Authorization
     if (userId === group.dataValues.organizerId) {
+        if (images.length) {
+            images.forEach(async(image) => {
+                const imageKey = image.url.split('/');
+                const imageKeyUnencoded = imageKey[imageKey.length - 1]
+                const key = decodeURI(imageKeyUnencoded)
+                const params = {
+                    Bucket: "linkup-bucket",
+                    Key: key
+                }
+                await s3.deleteObject(params).promise();
+            })
+        }
         await group.destroy();
         return res.status(200).json({
             message: "Successfully deleted"

@@ -110,7 +110,6 @@ function App() {
               <ManageEvent/>
             </Route>
         </Switch>
-        <Footer/>
       </LoadingProvider>
     </div>
   );

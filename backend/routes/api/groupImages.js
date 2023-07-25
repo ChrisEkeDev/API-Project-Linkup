@@ -1,7 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const  { Group, GroupImage } = require('../../db/models')
-const { requireAuth } = require('../../utils/auth')
+const { requireAuth } = require('../../utils/auth');
+const AWS = require('aws-sdk');
+const bodyParser = require('body-parser');
+const s3 = new AWS.S3();
+
+AWS.config.update({
+    region: process.env.AWS_S3_REGION,
+    correctClockSkew: true
+})
+
+router.use(bodyParser.json())
 
 // Delete an Image for a Group
 router.delete('/:imageId', requireAuth, async (req, res) => {
@@ -26,6 +36,14 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
 
     let status = membership[0]?.dataValues.status
     if (userId === group.dataValues.organizerId || status === 'co-host') {
+        const imageKey = image.url.split('/');
+        const imageKeyUnencoded = imageKey[imageKey.length - 1]
+        const key = decodeURI(imageKeyUnencoded)
+        const params = {
+            Bucket: "linkup-bucket",
+            Key: key
+        }
+        await s3.deleteObject(params).promise();
         await image.destroy();
         return res.status(200).json({
             message: "Successfully deleted"

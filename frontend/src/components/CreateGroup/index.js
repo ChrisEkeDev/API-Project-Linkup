@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useAlerts } from '../../context/AlertsProvider';
 import { useLoading } from '../../context/LoadingProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkCreateGroup } from '../../store/groups';
@@ -8,19 +9,21 @@ import Inputs from '../Inputs/Inputs';
 import TextArea from '../Inputs/TextArea';
 import Button from '../Buttons/Button';
 import Select from '../Inputs/Select';
+import Image from '../Inputs/Image';
 import { states } from '../../utils/states';
 import './CreateGroup.css';
 
 function CreateGroup() {
     const user = useSelector(state => state.session.user);
     const { setLoading } = useLoading();
+    const { handleAlerts } = useAlerts();
     const [ name, setName ] = useState('');
     const [ about, setAbout ] = useState('');
     const [ type, setType ] = useState('none');
     const [ isPrivate, setIsPrivate ] = useState('none');
     const [ city, setCity ] = useState('');
     const [ state, setState ] = useState('none');
-    const [ imageUrl, setImageUrl ] = useState('')
+    const [ image, setImage ] = useState(undefined)
     const [ errors, setErrors ] = useState({});
     const dispatch = useDispatch();
     const history = useHistory();
@@ -39,38 +42,39 @@ function CreateGroup() {
         return { value: state, label: state}
     })
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
         setLoading(true);
         validateForm();
         if (!Object.values(errors).length) {
-            const groupData = {
-                organizerId: user.id,
-                name,
-                about,
-                type,
-                private: isPrivate === 'Private' ? true : false,
-                city,
-                state
+            try {
+                const groupData = {
+                    organizerId: user.id,
+                    name,
+                    about,
+                    type,
+                    private: isPrivate === 'Private' ? true : false,
+                    city,
+                    state
+                }
+                const imageData = {
+                    preview: true,
+                    image
+                }
+                const formData = new FormData();
+                formData.append("image", imageData.image)
+                formData.append("preview", imageData.preview)
+                const newGroup = await dispatch(thunkCreateGroup(groupData, formData))
+                handleAlerts({message: 'Group created successfully'})
+                history.push(`/groups/${newGroup.id}`)
+            } catch(error) {
+                console.log(error)
+                handleAlerts({message: "There was an error while creating your group."})
+            } finally {
+                setLoading(false);
             }
-            const imageData = {
-                url: imageUrl,
-                preview: true
-            }
-            return (
-                dispatch(thunkCreateGroup(groupData, imageData))
-                .then((newGroup) => {
-                    setLoading(false);
-                    history.push(`/groups/${newGroup.id}`)
-                })
-                .catch(async(errors) => {
-                    const data = await errors.json();
-                    if (data && data.errors) setErrors(data.errors)
-                    setLoading(false)
-                })
-            )
         }
-        setLoading(false);
+
     }
 
     const validateForm = () => {
@@ -99,10 +103,9 @@ function CreateGroup() {
         if (state === 'none') {
             errors.state = 'Please select a state';
         }
-        const fileTypes = ['.png', '.jpg', '.jpeg'];
-        const validImage = fileTypes.map(type => imageUrl.endsWith(type))
-        if (!validImage.some(x => x)) {
-            errors.imageUrl = 'Image URL must end in .png, .jpg, or .jpeg';
+        const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png']
+        if (image && !validFileTypes.find(type => type === image.type)) {
+            errors.image = "Please select a valid file type (png, jpg)"
         }
         setErrors(errors)
     }
@@ -185,14 +188,16 @@ function CreateGroup() {
                         setValue={(x) => setIsPrivate(x.target.value)}
                         error={errors.private}
                     />
-                    <Inputs
-                        label='Please add in image url for your group below'
-                        placeholder='Image Url'
-                        name='url'
-                        value={imageUrl}
-                        setValue={(x) => setImageUrl(x.target.value)}
-                        error={errors.imageUrl}
+                    <div className='image_upload--wrapper'>
+                    <span className='image_upload--label'>Upload an image for your group.</span>
+                    <Image
+                        type='group'
+                        name='image'
+                        value={image}
+                        setValue={setImage}
+                        error={errors.image}
                     />
+                    </div>
                 </fieldset>
                 <Button
                     style='create_group-btn small-btn'

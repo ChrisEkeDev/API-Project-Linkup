@@ -37,6 +37,15 @@
     cursor: pointer;
 }
 
+.image_upload--wrapper {
+    margin-top: 35px;
+
+}
+
+.image_upload--label {
+    font-size: 18px;
+}
+
 @media screen and (max-width: 1109px) {
     .create_group-contents {
         width: 100%;

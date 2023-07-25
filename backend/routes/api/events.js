@@ -5,6 +5,29 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { Event, Group, Venue, EventImage, User, Attendance, GroupImage } = require('../../db/models');
 const { Op } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
+const AWS = require('aws-sdk');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+const bodyParser = require('body-parser');
+const s3 = new AWS.S3();
+
+AWS.config.update({
+    region: process.env.AWS_S3_REGION,
+    correctClockSkew: true
+})
+
+router.use(bodyParser.json())
+
+const upload = multer({
+    storage: multerS3({
+        s3: s3,
+        acl: 'public-read',
+        bucket: 'linkup-bucket',
+        key: function (req, file, cb) {
+            cb(null, file.originalname); //use Date.now() for unique file keys
+        }
+    })
+})
 
 // Get All Events with optional query filters
 router.get('/', async (req, res) => {
@@ -160,16 +183,16 @@ router.get('/:eventId', async (req, res) => {
 
 // Add an Image to a Event based on the Event's id
 const validateImage = [
-    check('url').exists({checkFalsy: true}).withMessage('Url is required'),
     check('preview').exists().isBoolean().withMessage('Preview must be a boolean'),
     handleValidationErrors
 ]
 
-router.post('/:eventId/images', requireAuth, validateImage,  async (req, res) => {
+router.post('/:eventId/images', requireAuth, upload.single('image'), validateImage,  async (req, res) => {
     const { eventId } = req.params;
     const userId = req.user.id;
-    const { url, preview } = req.body;
+    const { preview } = req.body;
     let event = await Event.findByPk(eventId);
+    const image = req.file;
 
     // Checks if event exists
     if (!event) {
@@ -192,11 +215,11 @@ router.post('/:eventId/images', requireAuth, validateImage,  async (req, res) =>
     let status = user[0]?.Membership.dataValues.status;
     if ( status === "co-host" || status === 'attending' || userId === group.dataValues.organizerId ) {
         // Creates the image
-        let image = await event.createEventImage({
-            url,
+        let  newImage = await event.createEventImage({
+            url: image.location,
             preview
         })
-        return res.status(200).json(image)
+        return res.status(200).json(newImage)
     } else {
         return res.status(403).json({
             message: "Forbidden"
@@ -308,9 +331,27 @@ router.delete('/:eventId', requireAuth, async (req, res) => {
         }
     });
 
+    const images = await EventImage.findAll({
+        where: {
+            eventId: event.id
+        }
+    })
+
     // Authorization
     let status = user[0]?.Membership.dataValues.status;
     if ( status === "co-host" || userId === group.dataValues.organizerId ) {
+        if (images.length) {
+            images.forEach(async(image) => {
+                const imageKey = image.url.split('/');
+                const imageKeyUnencoded = imageKey[imageKey.length - 1]
+                const key = decodeURI(imageKeyUnencoded)
+                const params = {
+                    Bucket: "linkup-bucket",
+                    Key: key
+                }
+                await s3.deleteObject(params).promise();
+            })
+        }
         await event.destroy();
         return res.status(200).json({
             message: "Successfully deleted"

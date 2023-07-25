@@ -5,6 +5,29 @@ const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { User } = require('../../db/models');
+const AWS = require('aws-sdk');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+const bodyParser = require('body-parser');
+const s3 = new AWS.S3();
+
+AWS.config.update({
+    region: process.env.AWS_S3_REGION,
+    correctClockSkew: true
+})
+
+router.use(bodyParser.json())
+
+const upload = multer({
+    storage: multerS3({
+        s3: s3,
+        acl: 'public-read',
+        bucket: 'linkup-bucket',
+        key: function (req, file, cb) {
+            cb(null, file.originalname); //use Date.now() for unique file keys
+        }
+    })
+})
 
 const validateSignUp = [
     check('firstName').exists({checkFalsy: true}).withMessage('First Name is required'),
@@ -17,8 +40,9 @@ const validateSignUp = [
 ]
 
 // Signup
-router.post('/', validateSignUp, async (req, res) => {
+router.post('/', upload.single('image'), validateSignUp, async (req, res) => {
     const { firstName, lastName, username, email, password } = req.body;
+    const image = req.file;
 
     const userExistsEmail = await User.findOne({
         where: {
@@ -57,7 +81,8 @@ router.post('/', validateSignUp, async (req, res) => {
         lastName,
         username,
         email,
-        hashedPassword
+        hashedPassword,
+        profileImage: image ? image.location : null
     })
 
     const safeUser = {

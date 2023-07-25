@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useLoading } from '../../context/LoadingProvider';
+import { useAlerts } from '../../context/AlertsProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkCreateEvent } from '../../store/events';
 import { FaAngleLeft } from 'react-icons/fa';
@@ -10,6 +11,7 @@ import Button from '../Buttons/Button';
 import Select from '../Inputs/Select';
 import DateTime from '../Inputs/DateTime';
 import Number from '../Inputs/Number';
+import Image from '../Inputs/Image';
 import Price from '../Inputs/Price';
 import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 import './CreateEvent.css';
@@ -17,6 +19,7 @@ import './CreateEvent.css';
 function CreateEvent() {
     const { groupId } = useParams();
     const { setLoading } = useLoading();
+    const { handleAlerts } = useAlerts();
     const [ venueId, setVenueId ] = useState(null)
     const [ name, setName ] = useState('');
     const [ type, setType ] = useState('none');
@@ -27,7 +30,7 @@ function CreateEvent() {
     const [ endDateDate, setEndDateDate ] = useState('')
     const [ endDateTime, setEndDateTime ] = useState('')
     const [ isPrivate, setIsPrivate ] = useState('none');
-    const [ imageUrl, setImageUrl ] = useState('');
+    const [ image, setImage ] = useState(undefined)
     const [ description, setDescription] = useState('');
     const [ errors, setErrors ] = useState({});
     const dispatch = useDispatch();
@@ -55,42 +58,43 @@ function CreateEvent() {
     ]
 
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
         setLoading(true);
         validateForm();
         if(!Object.values(errors).length) {
-            const eventStart = `${startDateDate} ${startDateTime}`;
-            const eventEnd = `${endDateDate} ${endDateTime}`;
-            const eventData = {
-                venueId: parseInt(venueId),
-                name,
-                type,
-                capacity: parseInt(capacity),
-                price: parseInt(price),
-                description,
-                private: isPrivate  === 'Private' ? true : false,
-                startDate: eventStart,
-                endDate: eventEnd
+            try {
+                const eventStart = `${startDateDate} ${startDateTime}`;
+                const eventEnd = `${endDateDate} ${endDateTime}`;
+                const eventData = {
+                    venueId: parseInt(venueId),
+                    name,
+                    type,
+                    capacity: parseInt(capacity),
+                    price: parseInt(price),
+                    description,
+                    private: isPrivate  === 'Private' ? true : false,
+                    startDate: eventStart,
+                    endDate: eventEnd
+                }
+                const imageData = {
+                    preview: true,
+                    image
+                }
+                const formData = new FormData();
+                formData.append("image", imageData.image)
+                formData.append("preview", imageData.preview)
+                const newEvent = await dispatch(thunkCreateEvent(group.id, eventData, formData))
+                handleAlerts({message: 'Event created successfully'})
+                history.push(`/events/${newEvent.id}`)
+            } catch(error) {
+                console.log(error)
+                handleAlerts({message: "There was an error while creating your event."})
+            } finally {
+                setLoading(false);
             }
-            const imageData = {
-                url: imageUrl,
-                preview: true
-            }
-            return (
-                dispatch(thunkCreateEvent(group.id, eventData, imageData))
-                .then((newEvent) => {
-                    setLoading(false);
-                    history.push(`/events/${newEvent.id}`)
-                })
-                .catch(async(errors) => {
-                    const data = await errors.json();
-                    if (data && data.errors) setErrors(data.errors)
-                    setLoading(false)
-                })
-            )
         }
-        setLoading(false);
+
     }
 
     const validateForm = () => {
@@ -117,10 +121,9 @@ function CreateEvent() {
         if (!priceRegex.test(price)) {
             errors.price = 'Price is invalid Ex: 50.00'
         }
-        const fileTypes = ['.png', '.jpg', '.jpeg'];
-        const validImage = fileTypes.map(type => imageUrl.endsWith(type))
-        if (!validImage.some(x => x)) {
-            errors.imageUrl = 'Image URL must end in .png, .jpg, or .jpeg';
+        const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png']
+        if (image && !validFileTypes.find(type => type === image.type)) {
+            errors.image = "Please select a valid file type (png, jpg)"
         }
         setErrors(errors)
     }
@@ -217,14 +220,16 @@ function CreateEvent() {
                         />
                     </fieldset>
                     <fieldset className='create_event-fieldset'>
-                        <Inputs
-                            label='Please add in image url for your event below'
-                            placeholder='Image Url'
-                            name='url'
-                            value={imageUrl}
-                            setValue={(x) => setImageUrl(x.target.value)}
-                            error={errors.imageUrl}
+                        <div className='image_upload--wrapper'>
+                        <span className='image_upload--label'>Upload an image for your event.</span>
+                        <Image
+                            type='group'
+                            name='image'
+                            value={image}
+                            setValue={setImage}
+                            error={errors.image}
                         />
+                        </div>
                     </fieldset>
                     <fieldset className='create_event-fieldset'>
                         <TextArea

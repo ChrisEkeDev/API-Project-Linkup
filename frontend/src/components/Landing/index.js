@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import Footer from '../Footer'
 import { Link, useHistory } from 'react-router-dom';
 import home from '../../assets/home-img.svg';
 import join from '../../assets/join-img.svg';
@@ -56,6 +57,7 @@ function Landing({setAuthForm}) {
                 />
             </section>
         </section>
+        <Footer/>
     </main>
   )
 }
