@@ -87,11 +87,13 @@ export const thunkCreateGroup = (group, imageData) => async dispatch => {
     if (res.ok) {
         const newGroup = await res.json();
         dispatch(actionCreateGroup(newGroup))
-        await fetch(`/api/groups/${newGroup.id}/images`, {
-            method: 'POST',
-            headers: {"XSRF-TOKEN": Cookies.get('XSRF-TOKEN')},
-            body: imageData
-        })
+        if (imageData) {
+            await fetch(`/api/groups/${newGroup.id}/images`, {
+                method: 'POST',
+                headers: {"XSRF-TOKEN": Cookies.get('XSRF-TOKEN')},
+                body: imageData
+            })
+        }
         return newGroup;
     } else {
         const errors = await res.json();

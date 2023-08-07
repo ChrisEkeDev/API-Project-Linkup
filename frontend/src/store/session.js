@@ -90,7 +90,8 @@ export const thunkSignUp = (userData) => async dispatch => {
             errors = await res.json()
             return errors;
         } else {
-            console.log(res)
+            errors = res;
+            return errors
         }
     }
 }

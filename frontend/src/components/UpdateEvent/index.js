@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
 import { useLoading } from '../../context/LoadingProvider';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,7 +23,7 @@ function UpdateEvent({event}) {
     const [ name, setName ] = useState(event?.name);
     const [ type, setType ] = useState(event?.type);
     const [ price, setPrice ] = useState(event?.price?.toFixed(2));
-    const [ capacity, setCapacity ] = useState(event?.capacity);
+    const [ capacity, setCapacity ] = useState(event?.capacity || 0);
     const [ startDateDate, setStartDateDate ] = useState(startDate)
     const [ startDateTime, setStartDateTime ] = useState(startTime)
     const [ endDateDate, setEndDateDate ] = useState(endDate)
@@ -55,7 +55,6 @@ function UpdateEvent({event}) {
     const submit = (e) => {
         e.preventDefault();
         setLoading(true);
-        validateForm();
         if(!Object.values(errors).length) {
             const eventStart = `${startDateDate} ${startDateTime}`;
             const eventEnd = `${endDateDate} ${endDateTime}`;
@@ -85,7 +84,7 @@ function UpdateEvent({event}) {
         setLoading(false);
     }
 
-    const validateForm = () => {
+    useEffect(() => {
         const errors = {};
         if (name.trim().length === 0) {
             errors.name = 'Name is required';
@@ -110,7 +109,7 @@ function UpdateEvent({event}) {
             errors.price = 'Price is invalid Ex: 50.00'
         }
         setErrors(errors)
-    }
+    }, [name, description, type, isPrivate, capacity, price, startDateDate, startDateTime, endDateDate, endDateTime])
 
      if (user?.id !== group?.organizerId) return <Redirect to='/'></Redirect>
 
@@ -219,6 +218,7 @@ function UpdateEvent({event}) {
                         style='create_event-btn'
                         label='Update Event'
                         type='primary'
+                        disabled={Object.keys(errors).length}
                     />
                 </form>
             </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAlerts } from '../../context/AlertsProvider';
 import { useLoading } from '../../context/LoadingProvider';
@@ -45,39 +45,37 @@ function CreateGroup() {
     const submit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        validateForm();
-        if (!Object.values(errors).length) {
-            try {
-                const groupData = {
-                    organizerId: user.id,
-                    name,
-                    about,
-                    type,
-                    private: isPrivate === 'Private' ? true : false,
-                    city,
-                    state
-                }
-                const imageData = {
-                    preview: true,
-                    image
-                }
-                const formData = new FormData();
+        try {
+            const groupData = {
+                organizerId: user.id,
+                name,
+                about,
+                type,
+                private: isPrivate === 'Private' ? true : false,
+                city,
+                state
+            }
+            const imageData = {
+                preview: true,
+                image
+            }
+            let formData
+            if (image) {
+                formData = new FormData();
                 formData.append("image", imageData.image)
                 formData.append("preview", imageData.preview)
-                const newGroup = await dispatch(thunkCreateGroup(groupData, formData))
-                handleAlerts({message: 'Group created successfully'})
-                history.push(`/groups/${newGroup.id}`)
-            } catch(error) {
-                console.log(error)
-                handleAlerts({message: "There was an error while creating your group."})
-            } finally {
-                setLoading(false);
             }
+            const newGroup = await dispatch(thunkCreateGroup(groupData, formData))
+            handleAlerts({message: 'Group created successfully'})
+            history.push(`/groups/${newGroup.id}`)
+        } catch(error) {
+            handleAlerts({message: "There was an error while creating your group."})
+        } finally {
+            setLoading(false);
         }
-
     }
 
-    const validateForm = () => {
+    useEffect(() => {
         const errors = {};
         if (name.trim().length === 0) {
             errors.name = 'Name is required';
@@ -108,7 +106,7 @@ function CreateGroup() {
             errors.image = "Please select a valid file type (png, jpg)"
         }
         setErrors(errors)
-    }
+    }, [name, about, type, isPrivate, city, state, image])
 
   return (
     <main className='create_group-wrapper'>
@@ -203,6 +201,7 @@ function CreateGroup() {
                     style='create_group-btn small-btn'
                     label='Create group'
                     type='primary'
+                    disabled={Object.keys(errors).length}
                 />
             </form>
         </div>

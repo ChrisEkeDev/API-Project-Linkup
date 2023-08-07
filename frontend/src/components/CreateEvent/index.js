@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useLoading } from '../../context/LoadingProvider';
 import { useAlerts } from '../../context/AlertsProvider';
@@ -38,7 +38,7 @@ function CreateEvent() {
     const user = useSelector(state => state.session.user);
     const group = useSelector(state => state.groups.singleGroup);
 
-    if (!group) return <Redirect to='/' />
+
     let venues = []
     venues = group?.Venues?.map((venue) => {
         const venueObj = {};
@@ -61,43 +61,45 @@ function CreateEvent() {
     const submit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        validateForm();
-        if(!Object.values(errors).length) {
-            try {
-                const eventStart = `${startDateDate} ${startDateTime}`;
-                const eventEnd = `${endDateDate} ${endDateTime}`;
-                const eventData = {
-                    venueId: parseInt(venueId),
-                    name,
-                    type,
-                    capacity: parseInt(capacity),
-                    price: parseInt(price),
-                    description,
-                    private: isPrivate  === 'Private' ? true : false,
-                    startDate: eventStart,
-                    endDate: eventEnd
-                }
-                const imageData = {
-                    preview: true,
-                    image
-                }
-                const formData = new FormData();
+        try {
+            const eventStart = `${startDateDate} ${startDateTime}`;
+            const eventEnd = `${endDateDate} ${endDateTime}`;
+            const eventData = {
+                venueId: parseInt(venueId),
+                name,
+                type,
+                capacity: parseInt(capacity),
+                price: parseInt(price),
+                description,
+                private: isPrivate  === 'Private' ? true : false,
+                startDate: eventStart,
+                endDate: eventEnd
+            }
+
+
+            const imageData = {
+                preview: true,
+                image
+            }
+            let formData;
+            if (image) {
+                formData = new FormData();
                 formData.append("image", imageData.image)
                 formData.append("preview", imageData.preview)
-                const newEvent = await dispatch(thunkCreateEvent(group.id, eventData, formData))
-                handleAlerts({message: 'Event created successfully'})
-                history.push(`/events/${newEvent.id}`)
-            } catch(error) {
-                console.log(error)
-                handleAlerts({message: "There was an error while creating your event."})
-            } finally {
-                setLoading(false);
             }
+            const newEvent = await dispatch(thunkCreateEvent(group.id, eventData, formData))
+            handleAlerts({message: 'Event created successfully'})
+            history.push(`/events/${newEvent.id}`)
+        } catch(error) {
+            const {errors} = await error.json();
+            setErrors(errors)
+            handleAlerts({message: "There was an error while creating your event."})
+        } finally {
+            setLoading(false);
         }
-
     }
 
-    const validateForm = () => {
+    useEffect(() => {
         const errors = {};
         if (name.trim().length === 0) {
             errors.name = 'Name is required';
@@ -126,7 +128,9 @@ function CreateEvent() {
             errors.image = "Please select a valid file type (png, jpg)"
         }
         setErrors(errors)
-    }
+    }, [name, description, type, isPrivate, price, image, startDateDate, startDateTime, endDateDate, endDateTime])
+
+    if (!group) return <Redirect to='/' />
 
     return (
         <main className='create_event-wrapper'>
@@ -245,6 +249,7 @@ function CreateEvent() {
                         style='create_event-btn small-btn'
                         label='Create Event'
                         type='primary'
+                        disabled={Object.keys(errors).length}
                     />
                 </form>
             </div>

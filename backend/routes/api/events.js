@@ -239,7 +239,7 @@ const validateEditEvent = [
     }),
     check('name').optional().exists({checkFalsy: true}).isLength({min: 5}).withMessage('Name must be at leat 5 characters'),
     check('type').optional().exists({checkFalsy: true}).isIn(['In person', 'Online']).withMessage('Type must be Online or In person'),
-    check('capacity').optional().exists({checkFalsy: true}).isInt().withMessage('Capacity must be an integer'),
+    check('capacity').optional().exists().isInt().withMessage('Capacity must be an integer'),
     check('private').optional().exists().isBoolean().withMessage('Private must be a boolean'),
     check('price').optional().custom(async (price) => {
         let priceRegex = /^\d+(?:\.\d+)?(?:,\d+(?:\.\d{2})?)*$/;
@@ -478,8 +478,6 @@ router.post('/:eventId/attendance', requireAuth, async (req, res) => {
         if (status === 'attending') {
             return res.status(400).json({message: "User is already an attendee of the event"})
         }
-    } else {
-        return res.status(403).json({message: 'Forbidden'})
     }
 
     const attendance = await Attendance.create({

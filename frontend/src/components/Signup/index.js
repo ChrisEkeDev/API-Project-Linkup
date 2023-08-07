@@ -49,14 +49,13 @@ function Signup({close}) {
           history.push('/dashboard')
           close();
         } catch (error) {
-          console.log(error)
           handleAlerts({message: "There was an error while creating your account."})
         } finally {
           setLoading(false)
         }
     }
 
-    useInitialRender(() => {
+    useEffect(() => {
       const errors = {};
       if (firstName.trim().length === 0) {
         errors.firstName = 'Please enter a First Name';

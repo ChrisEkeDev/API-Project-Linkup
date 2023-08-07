@@ -58,7 +58,7 @@ function Login({close}) {
         )
     }
 
-    useInitialRender(() => {
+    useEffect(() => {
         const errors = {};
         if (credential.trim().length < 4) {
           errors.credential = 'Username or Email must be at least 4 characters';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory, Redirect  } from 'react-router-dom';
 import { useLoading } from '../../context/LoadingProvider';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,7 +41,6 @@ function UpdateGroup({group}) {
     const submit = (e) => {
         e.preventDefault();
         setLoading(true);
-        validateForm();
         if (!Object.values(errors).length) {
             const groupData = {
                 id: group.id,
@@ -69,7 +68,7 @@ function UpdateGroup({group}) {
         setLoading(false);
     }
 
-    const validateForm = () => {
+    useEffect(() => {
         const errors = {};
         if (name.trim().length === 0) {
             errors.name = 'Name is required';
@@ -96,7 +95,7 @@ function UpdateGroup({group}) {
             errors.state = 'Please select a state';
         }
         setErrors(errors)
-    }
+    }, [name, about, type, isPrivate, city, state])
 
     if (user?.id !== group?.organizerId) return <Redirect to='/'></Redirect>
 
@@ -183,6 +182,7 @@ function UpdateGroup({group}) {
                     style='create_group-btn'
                     label='Update group'
                     type='primary'
+                    disabled={Object.keys(errors).length}
                 />
             </form>
         </div>
