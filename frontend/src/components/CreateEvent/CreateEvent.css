@@ -33,7 +33,7 @@
 @media screen and (max-width: 1109px) {
     .create_event-contents {
         width: 100%;
-        padding: 0 7.5%;
+        padding: 50px 7.5% 0 7.5%;
     }
 
     .create_event-fieldset {
@@ -56,6 +56,6 @@
         padding: 125px 0;
     }
     .create_event-contents {
-        padding: 0 5%;
+        padding: 50px 5% 0 5%;
     }
 }

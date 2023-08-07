@@ -92,7 +92,7 @@
 @media screen and (max-width: 1109px) {
     .manage_group-header-contents {
         width: 100%;
-        padding: 0 7.5%;
+        padding: 50px 7.5% 0 7.5%;
     }
     .manage_group-grid-wrapper {
         width: 100%;

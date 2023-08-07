@@ -231,7 +231,7 @@
 @media screen and (max-width: 1109px) {
     .group_header-contents {
         width: 100%;
-        padding: 0 7.5%;
+        padding: 50px 7.5% 0 7.5%;
     }
 
     .group_section-contents {

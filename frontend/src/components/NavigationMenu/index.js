@@ -60,7 +60,7 @@ function NavigationMenu({user}) {
                         <p className='body'>{user?.email}</p>
                     </div>
                     <div className='navigation_menu-new_group'>
-                        <Link className='mobile-new_group-link' to='/create-group'>Start a new group</Link>
+                        <p className='mobile-new_group-link' onClick={() => navigate('/create-group')}>Start a new group</p>
                     </div>
                     <div className="navigation_menu-links">
                         <p className="navigation_menu-link" onClick={() => navigate(`/search/groups`)}>View Groups</p>
