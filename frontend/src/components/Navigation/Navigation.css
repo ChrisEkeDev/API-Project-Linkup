@@ -120,12 +120,34 @@
     cursor: pointer;
 }
 
+.navigation_menu-new_group {
+    display: none;
+}
+
 
 /* Tablet */
 @media screen and (max-width: 1109px) {
 
     .nav-contents {
-        padding: 12px 7.5%;
+        padding: 12px 5%;
+        display: grid;
+        gap: 15px;
+        grid-template-areas:
+            "logo profile"
+            "search search";
+    }
+
+    .logo-wrapper {
+        grid-area: logo;
+    }
+
+    .nav_user-contents,
+    .actions {
+        grid-area: profile;
+    }
+
+    .searchbar-wrapper {
+        grid-area: search;
     }
 }
 
@@ -141,5 +163,30 @@
             font-size: 15px;
         }
     }
+
+    .user-image {
+        height: 40px;
+    }
+
+    .logo-text {
+        display: none;
+    }
+
+    .new_group-link {
+        display: none;
+    }
+
+    .navigation_menu-new_group {
+        display: block;
+        border-top: 1px solid var(--light-gray);
+        padding-top: 10px;
+        color: var(--teal);
+        font-weight: 600;
+    }
+
+    .nav_user-contents {
+        justify-content: flex-end;
+    }
+
 
 }

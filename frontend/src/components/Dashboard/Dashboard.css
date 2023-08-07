@@ -146,10 +146,15 @@
 
     .dash_group_item-wrapper {
         flex-direction: column;
+        padding-bottom: 60px;
     }
 
     .dash_group_item-image {
         height: 150px;
         width: 100%;
+    }
+
+    .status-node {
+        margin: 0;
     }
 }

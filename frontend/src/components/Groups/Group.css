@@ -277,7 +277,7 @@
 /* Mobile */
 @media screen and (max-width: 600px) {
     .group_header-contents {
-        padding: 0 5%;
+        padding: 50px 5%;
     }
 
     .group_section-contents {

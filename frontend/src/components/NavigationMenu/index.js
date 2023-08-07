@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'
 import OutsideClicker from '../../hooks/useOutsideClick';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -57,6 +58,9 @@ function NavigationMenu({user}) {
                     <div>
                         <p className='body'>Hello, {user?.firstName}</p>
                         <p className='body'>{user?.email}</p>
+                    </div>
+                    <div className='navigation_menu-new_group'>
+                        <Link className='mobile-new_group-link' to='/create-group'>Start a new group</Link>
                     </div>
                     <div className="navigation_menu-links">
                         <p className="navigation_menu-link" onClick={() => navigate(`/search/groups`)}>View Groups</p>

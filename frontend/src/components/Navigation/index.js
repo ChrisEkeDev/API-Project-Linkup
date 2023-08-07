@@ -24,7 +24,7 @@ function Navigation({setAuthForm}) {
               <img className='logo' src={logo}/>
               <h1 className='logo-text'>linkup</h1>
             </div>
-            {/* <SearchBar/> */}
+            <SearchBar/>
             {user ?
             <div className='nav_user-contents'>
                 <Link className='new_group-link' to='/create-group'>Start a new group</Link>

@@ -120,4 +120,8 @@
     .manage_group-members-contents {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .manage_group-header {
+        padding: 175px 0 36px 0;
+    }
 }

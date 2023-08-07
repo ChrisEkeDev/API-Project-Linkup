@@ -44,7 +44,7 @@ function SearchResults() {
                     }
                 </ul>
                 :
-                <div>NO results</div>:
+                <div>No Results</div>:
                 groups.length > 0 ?
                 <ul>
                     {
@@ -56,7 +56,7 @@ function SearchResults() {
                     }
                 </ul>
                  :
-                <div>No results</div>
+                <div>No Results</div>
                 }
             </section>
         </div>
