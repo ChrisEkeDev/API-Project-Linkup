@@ -213,8 +213,6 @@ const requestAttendance = () => {
                       /> :
                       null
                       }
-
-
                     </div>
                     </div>
                   </div>

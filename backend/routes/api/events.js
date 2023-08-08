@@ -284,7 +284,7 @@ router.put('/:eventId', requireAuth, validateEditEvent, async (req, res) => {
     });
 
     // Authorization
-    let status = user[0]?.Membership.status;
+    let status = user[0]?.Attendance.status;
     if ( status === "co-host" || userId === group.organizerId ) {
 
         // Update event
