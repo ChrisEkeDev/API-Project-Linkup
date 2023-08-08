@@ -22,7 +22,7 @@ function UpdateEvent({event}) {
     const [ venueId, setVenueId ] = useState(event?.venueId)
     const [ name, setName ] = useState(event?.name);
     const [ type, setType ] = useState(event?.type);
-    const [ price, setPrice ] = useState(event?.price?.toFixed(2));
+    const [ price, setPrice ] = useState(parseInt(event?.price).toFixed(2));
     const [ capacity, setCapacity ] = useState(event?.capacity || 0);
     const [ startDateDate, setStartDateDate ] = useState(startDate)
     const [ startDateTime, setStartDateTime ] = useState(startTime)

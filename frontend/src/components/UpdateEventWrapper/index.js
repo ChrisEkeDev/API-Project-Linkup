@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import UpdateEvent from '../UpdateEvent'
 import { thunkGetSingleEvent } from '../../store/events';
+import { thunkGetSingleGroup } from '../../store/groups';
 import DataLoading from '../Loading/DataLoading';
 
 function UpdateEventWrapper() {
@@ -13,6 +14,7 @@ function UpdateEventWrapper() {
 
     useEffect(() => {
         dispatch(thunkGetSingleEvent(eventId))
+        .then(() => dispatch(thunkGetSingleGroup(event.groupId)))
         .then(() => setIsLoading(false))
     }, [dispatch])
 
