@@ -86,11 +86,13 @@ export const thunkCreateEvent = (id, event, imageData) => async dispatch => {
     if (res.ok) {
         const newEvent = await res.json();
         dispatch(actionCreateEvent(newEvent))
-        await fetch(`/api/events/${newEvent.id}/images`, {
-            method: 'POST',
-            headers: {"XSRF-TOKEN": Cookies.get('XSRF-TOKEN')},
-            body: imageData
-        })
+        if (imageData) {
+            await fetch(`/api/events/${newEvent.id}/images`, {
+                method: 'POST',
+                headers: {"XSRF-TOKEN": Cookies.get('XSRF-TOKEN')},
+                body: imageData
+            })
+        }
         return newEvent;
     } else {
         const errors = await res.json();

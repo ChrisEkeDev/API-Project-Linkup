@@ -59,7 +59,7 @@ function CreateGroup() {
                 preview: true,
                 image
             }
-            let formData
+            let formData = null
             if (image) {
                 formData = new FormData();
                 formData.append("image", imageData.image)

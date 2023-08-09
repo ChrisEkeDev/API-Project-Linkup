@@ -160,7 +160,6 @@ router.post('/', validateCreateGroup, async (req, res) => {
         private,
         city,
         state,
-
     })
 
     // Create the Membership
