@@ -1,0 +1,43 @@
+@import url('../App/index.css');
+
+.search_wrapper {
+    height: 100%;
+    padding: .5rem;
+}
+
+.search_contents {
+    display: flex;
+    align-items: center;
+}
+
+.search_icon {
+    height: 3rem;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.light-theme {
+    .search_input {
+        color: var(--black)
+    }
+}
+
+.dark-theme {
+    .search_input {
+        color: var(--white)
+    }
+}
+
+.search_input {
+    background: transparent;
+    height: 2rem;
+    font-size: 1rem;
+    border: none;
+    &:focus {
+        outline: transparent;
+    }
+
+}

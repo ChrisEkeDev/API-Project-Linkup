@@ -1,0 +1,53 @@
+'use strict';
+
+/** @type {import('sequelize-cli').Migration} */
+
+const bcrypt = require("bcryptjs");
+
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA
+}
+
+module.exports = {
+  async up (queryInterface, Sequelize) {
+   options.tableName = 'Players';
+   await queryInterface.bulkInsert(options, [
+    {
+      name: 'Phil',
+      email: 'pcartwirght@email.com',
+      hashedPassword: bcrypt.hashSync('password1', 13),
+      profileImage: 'https://xsgames.co/randomusers/assets/avatars/male/35.jpg'
+    },
+    {
+      name: 'Beatrice',
+      email: 'bhobbs@email.com',
+      hashedPassword: bcrypt.hashSync('password2', 13),
+      profileImage: 'https://xsgames.co/randomusers/assets/avatars/female/33.jpg'
+    },
+    {
+      name: 'Craig',
+      email: 'cmackey@email.com',
+      hashedPassword: bcrypt.hashSync('password3', 13),
+      profileImage: 'https://xsgames.co/randomusers/assets/avatars/male/40.jpg'
+    },
+    {
+      name: 'Marshall',
+      email: 'mmitchell@email.com',
+      hashedPassword: bcrypt.hashSync('password4', 13),
+      profileImage: 'https://xsgames.co/randomusers/assets/avatars/male/3.jpg'
+    },
+    {
+      name: 'Megan',
+      email: 'mballion@email.com',
+      hashedPassword: bcrypt.hashSync('password5', 13),
+      profileImage: 'https://xsgames.co/randomusers/assets/avatars/female/3.jpg'
+    },
+   ])
+  },
+
+  async down (queryInterface, Sequelize) {
+    options.tableName = 'Players';
+    await queryInterface.bulkDelete(options)
+  }
+};

@@ -1,0 +1,9 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "Backcourts API",
+      "description": "API for Backcourts App",
+      "version": "0.0.1"
+    },
+    "paths": {}
+}
