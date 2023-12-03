@@ -1,0 +1,43 @@
+export const appOptions = {
+    theme: "dark",
+    sortBy: "happeningSoon",
+}
+
+export const appThemes = {
+    light: {
+        name: "Light",
+        mapId: "fc1ef067cfa808f9"
+    },
+    dark: {
+        name: "Dark",
+        mapId: "147b32231f3ba7c1"
+    }
+}
+
+export const sortValues = {
+    happeningSoon: 'Happening Soon',
+    mostPlayers: 'Most Players',
+    newest: "Newest"
+}
+
+export const sortFunctions = {
+    happeningSoon: (a,b) => {
+        return new Date(a.startDate) - new Date(b.startDate);
+    },
+    mostPlayers: (a,b) => {
+        return b.CheckIns?.length - a.CheckIns?.length;
+    },
+    newest: (a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+    }
+}
+
+
+export const timeFormatOptions = {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+}

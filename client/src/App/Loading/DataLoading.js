@@ -1,10 +1,10 @@
 import React from 'react';
-import './Loading.css';
-import logo from '../../assets/linkup-logo.svg';
+import './Styles.scss';
+import logo from '../../App/assets/linkup-logo.svg';
 
 function DataLoading({fixed}) {
   return (
-    <div className={`data_loading-container ${fixed ? 'fixed-height' : ''}`}>
+    <div className={`data_loading-container`}>
         <img className='loading-logo' src={logo}/>
     </div>
   )

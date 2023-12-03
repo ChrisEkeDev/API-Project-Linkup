@@ -40,11 +40,17 @@
     }
 }
 
-// .date_time-input-wrapper {
-//     position: relative;
-//     display: block;
-//     margin-top: 60px;
-// }
+.date_time-input-wrapper {
+    position: relative;
+    display: block;
+    margin: 1.5rem 0;
+}
+
+.number_input-wrapper {
+    position: relative;
+    display: block;
+    margin: 1.5rem 0;
+}
 
 // .price_input-wrapper {
 //     position: relative;
@@ -69,15 +75,18 @@
     padding: 0 1rem;
     height: 3rem;
     font-size: 1rem;
-    border-radius: 3rem;
+    border-radius: .5rem;
 }
 
 .date_input {
-    width: 250px;
+    width: 50%;
+    position: relative;
 }
 
-.time_input {
-    width: 150px;
+.time_input,
+.number_input {
+    width: 25%;
+    position: relative;
 }
 
 
@@ -87,7 +96,7 @@
     left: .5rem;
     font-size: .8rem;
     padding: .25rem .5rem;
-    border-radius: 1rem;
+    border-radius: .5rem;
 }
 
 .price_input-wrapper .input-error {

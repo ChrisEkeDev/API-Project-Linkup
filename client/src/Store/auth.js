@@ -56,27 +56,25 @@ export const thunkSignOutPlayer = () => async dispatch => {
         dispatch(actionRemoveAuthPlayer());
         return jsonResponse;
     } catch (error) {
-        return { error }
+        console.error(error);
     }
 }
 
 export const thunkRestorePlayerSession = () => async dispatch => {
     const res = await csrfFetch('/api/auth');
-
     try {
         const jsonResponse = await res.json();
         dispatch(actionGetAuthPlayer(jsonResponse.data))
         return jsonResponse;
     } catch (error) {
-        return { error }
+        console.error(error);
     }
 }
 
 export const thunkSignUpPlayer = (playerData) => async dispatch => {
-    const res = await fetch('/api/players', {
+    const res = await csrfFetch('/api/players', {
         method: 'POST',
-        headers: {"XSRF-TOKEN": Cookies.get('XSRF-TOKEN')},
-        body: playerData
+        body: JSON.stringify(playerData)
     })
 
     try {
@@ -84,26 +82,26 @@ export const thunkSignUpPlayer = (playerData) => async dispatch => {
         dispatch(actionSetAuthPlayer(jsonResponse.data))
         return jsonResponse;
     } catch(error) {
-        return { error }
+        console.error(error);
     }
 }
 
 
 // REDUCER
 
-const initialState = { auth: null, currentPlayer: null };
+const initialState = { player: null };
 
 const authReducer = (state = initialState, action) => {
     switch(action.type) {
         case SET_AUTH:
         case GET_AUTH: {
             const newState = { ...state };
-            newState.auth = action.payload;
+            newState.player = action.payload;
             return newState
         };
         case REMOVE_AUTH: {
             const newState = { ...state };
-            newState.auth = null;
+            newState.player = null;
             return newState
         };
         default:

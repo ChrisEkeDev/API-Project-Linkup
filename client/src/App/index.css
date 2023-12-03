@@ -6,12 +6,14 @@
     --light-gray: #ededed;
     --red: #23589d;
     --teal: #00525E;
+    --success: #226e52;
+    --warning: #dcb226;
     --light-teal: #E8F0FE;
     --display: 46px;
     --heading: 36px;
     --subheading: 24px;
     --border: #f1f1f1;
-    --dark-border: #494949;
+    --dark-border: #ffffff0d;
     --white-hover: #f8f8f8;
     --error: #fa4c4c;
     --body: 18px;
@@ -24,6 +26,7 @@
   html,body {
     margin: 0;
     font-size: 14px;
+    height: 100vh;
   }
 
   * {
@@ -135,28 +138,24 @@
     border: none;
     background-color: var(--red);
     color: white;
-    box-shadow: 0px 0px 5px 1px rgba(0,0,0, .15);
   }
 
   .dark-theme .secondary {
     background-color: var(--dark-bg);
     border: 1px solid var(--dark-border);
     color: var(--white);
-    box-shadow: 0px 0px 5px 1px rgba(0,0,0, .15);
   }
 
   .light-theme .primary {
     border: none;
     background-color: var(--red);
     color: white;
-    box-shadow: 0px 0px 5px 1px rgba(0,0,0, .15);
   }
 
   .light-theme .secondary {
     background-color: var(--white);
+    border: 1px solid var(--border);
     color: var(--red);
-    border: none;
-    box-shadow: 0px 0px 5px 1px rgba(0,0,0, .15);
   }
 
 
@@ -164,23 +163,43 @@
   /* width */
   ::-webkit-scrollbar {
     width: 0px;
-    height: 0;
+    height: 3px;
   }
 
   /* Track */
-  ::-webkit-scrollbar-track {
-    background: white;
+  .light-theme {
+    ::-webkit-scrollbar-track {
+      background: white;
+    }
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #FF5A5F;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--red);
+    }
   }
 
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #FF5A5F;
+   /* Track */
+   .dark-theme {
+    ::-webkit-scrollbar-track {
+      background: var(--dark-bg);
+    }
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: var(--dark-border);
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--red);
+    }
   }
 
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--red);
-  }
+
+
 
 
   /* Tablet */

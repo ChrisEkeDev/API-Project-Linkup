@@ -1,5 +1,4 @@
 import React from 'react';
-import { useApp } from '../App/Context/AppContext';
 
 function NavigationMenuLink(props) {
     const { label, action, icon } = props;

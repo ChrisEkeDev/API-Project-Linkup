@@ -11,13 +11,14 @@ router.get('/', requireAuth,  async (req, res) => {
         where: { playerId }
     });
 
-    res.status(200).json({
+    return res.status(200).json({
         status: 200,
         message: "",
         data: checkins,
         errors: {}
     })
 })
+
 
 
 module.exports = router;

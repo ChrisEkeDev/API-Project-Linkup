@@ -12,6 +12,11 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'id'
       })
 
+      Session.belongsTo(models.Court, {
+        foreignKey: 'courtId',
+        targetKey: 'id'
+      })
+
       Session.belongsToMany(models.Player, {
         through: models.CheckIn,
         foreignKey: 'sessionId',
@@ -24,6 +29,14 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'sessionId',
         sourceKey: 'id'
       })
+
+
+      Session.hasMany(models.Comment, {
+        foreignKey: 'sessionId',
+        sourceKey: 'id'
+      })
+
+
 
       Session.hasMany(models.CheckIn, {
         foreignKey: 'sessionId',
@@ -51,21 +64,9 @@ module.exports = (sequelize, DataTypes) => {
         len: [5,60]
       }
     },
-    address: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    lat: {
-      type: DataTypes.DECIMAL,
+    courtId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      min: -90,
-      max: 90
-    },
-    lng: {
-      type: DataTypes.DECIMAL,
-      allowNull: false,
-      min: -180,
-      max: 180
     },
     private: {
       type: DataTypes.BOOLEAN,

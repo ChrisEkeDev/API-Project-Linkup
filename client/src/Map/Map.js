@@ -1,17 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { useApp } from '../App/Context/AppContext';
+import useInitilizeMap from "./hooks/useInitializeMap";
 
 function Map() {
-    const { theme, initializeMap, refreshMapTheme } = useApp();
     const ref = useRef();
+    const [map, initializeMap] = useInitilizeMap();
 
     useEffect(() => {
-        initializeMap(ref);
-    }, []);
-
-    useEffect(() => {
-        refreshMapTheme(ref);
-    }, [theme])
+        initializeMap(ref)
+    }, [])
 
     return (
         <div className='map_container' ref={ref}></div>

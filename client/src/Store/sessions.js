@@ -22,25 +22,25 @@ const actionGetAllSessions = (sessions) => ({
 //     payload: sessions
 // })
 
-// const actionGetSingleSession = (session) => ({
-//     type: GET_SINGLE_SESSION,
-//     payload: session
-// })
+const actionGetSingleSession = (session) => ({
+    type: GET_SINGLE_SESSION,
+    payload: session
+})
 
-// const actionCreateSession = (session) => ({
-//     type: CREATE_SESSION,
-//     payload: session
-// })
+const actionCreateSession = (session) => ({
+    type: CREATE_SESSION,
+    payload: session
+})
 
-// const actionUpdateSession = (session) => ({
-//     type: UPDATE_SESSION,
-//     payload: session
-// })
+const actionUpdateSession = (session) => ({
+    type: UPDATE_SESSION,
+    payload: session
+})
 
-// const actionDeleteSession = (session) => ({
-//     type: DELETE_SESSION,
-//     payload: session
-// })
+const actionDeleteSession = (session) => ({
+    type: DELETE_SESSION,
+    payload: session
+})
 
 //THUNKS
 
@@ -66,68 +66,57 @@ export const thunkGetAllSessions = () => async dispatch => {
 //     }
 // }
 
-// export const thunkGetSingleSession = (sessionId) => async dispatch => {
-//     const res = await csrfFetch(`/api/sessions/${sessionId}`);
-//     if (res.ok) {
-//         const session = await res.json();
-//         dispatch(actionGetSingleSession(session))
-//     } else {
-//         const errors = await res.json();
-//         return errors;
-//     }
-// }
+export const thunkGetSingleSession = (sessionId) => async dispatch => {
+    const res = await csrfFetch(`/api/sessions/${sessionId}`);
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionGetSingleSession(jsonResponse.data));
+        return jsonResponse;
+    } catch(error) {
+        console.error(error)
+    }
+}
 
-// export const thunkCreateSession = (id, session, imageData) => async dispatch => {
-//     const res = await csrfFetch(`/api/groups/${id}/sessions`, {
-//         method: 'POST',
-//         body: JSON.stringify(session)
-//     });
+export const thunkCreateNewSession = (sessionData) => async dispatch => {
+    const res = await csrfFetch(`/api/sessions`, {
+        method: 'POST',
+        body: JSON.stringify(sessionData)
+    });
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionCreateSession(jsonResponse.data));
+        return jsonResponse;
+    } catch(error) {
+        console.error(error)
+    }
+}
 
-//     if (res.ok) {
-//         const newSession = await res.json();
-//         dispatch(actionCreateSession(newSession))
-//         if (imageData) {
-//             await fetch(`/api/sessions/${newSession.id}/images`, {
-//                 method: 'POST',
-//                 headers: {"XSRF-TOKEN": Cookies.get('XSRF-TOKEN')},
-//                 body: imageData
-//             })
-//         }
-//         return newSession;
-//     } else {
-//         const errors = await res.json();
-//         return errors;
-//     }
-// }
+export const thunkUpdateSession = (sessionData, sessionId) => async dispatch => {
+    const res = await csrfFetch(`/api/sessions/${sessionId}`, {
+        method: 'PUT',
+        body: JSON.stringify(sessionData)
+    });
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionUpdateSession(jsonResponse.data));
+        return jsonResponse;
+    } catch(error) {
+        console.error(error)
+    }
+}
 
-// export const thunkUpdateSession = (session, id) => async dispatch => {
-//     const res = await csrfFetch(`/api/sessions/${id}`, {
-//         method: 'PUT',
-//         body: JSON.stringify(session)
-//     });
-//     if (res.ok) {
-//         const updatedSession = await res.json();
-//         dispatch(actionUpdateSession(updatedSession))
-//         return updatedSession
-//     } else {
-//         const errors = await res.json();
-//         return errors;
-//     }
-// }
-
-// export const thunkDeleteSession = (session) => async dispatch => {
-//     const res = await csrfFetch(`/api/sessions/${session.id}`, {
-//         method: 'DELETE'
-//     })
-//     if (res.ok) {
-//         const message = await res.json();
-//         dispatch(actionDeleteSession(session))
-//         return message
-//     } else {
-//         const errors = await res.json();
-//         return errors;
-//     }
-// }
+export const thunkDeleteSession = (session) => async dispatch => {
+    const res = await csrfFetch(`/api/sessions/${session.id}`, {
+        method: 'DELETE'
+    })
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionDeleteSession(jsonResponse.data));
+        return jsonResponse;
+    } catch(error) {
+        console.error(error)
+    }
+}
 
 
 // REDUCER

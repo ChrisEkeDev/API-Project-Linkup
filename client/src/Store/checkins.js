@@ -1,161 +1,129 @@
 import { csrfFetch } from './csrf';
 
 // TYPES
-const GET_SESSION_ATTENDEES = '/linkup/attendances/GET_SESSION_ATTENDEES';
-const GET_SESSION_ATTENDANCES = '/linkup/attendances/GET_SESSION_ATTENDANCES';
-const GET_MY_ATTENDANCES = '/linkup/attendances/GET_MY_ATTENDANCES';
-const ADD_ATTENDANCE = '/linkup/attendances/ADD_ATTENDANCE';
-const UPDATE_ATTENDANCE = '/linkup/attendances/UPDATE_ATTENDANCE';
-const DELETE_ATTENDANCE = '/linkup/attendances/DELETE_ATTENDANCE';
+// const GET_SESSION_ATTENDEES = '/linkup/checkIns/GET_SESSION_ATTENDEES';
+const GET_CHECKINS = '/linkup/checkIns/GET_CHECKINS';
+// const GET_MY_CHECKINS = '/linkup/checkIns/GET_MY_CHECKINS';
+const ADD_CHECKIN = '/linkup/checkIns/ADD_CHECKIN';
+// const UPDATE_CHECKIN = '/linkup/checkIns/UPDATE_CHECKIN';
+const DELETE_CHECKIN = '/linkup/checkIns/DELETE_CHECKIN';
 
-// ACTIONS
-const actionGetSessionAttendees = (attendees) => ({
-    type: GET_SESSION_ATTENDEES,
-    payload: attendees
+// // ACTIONS
+// const actionGetSessionAttendees = (attendees) => ({
+//     type: GET_SESSION_ATTENDEES,
+//     payload: attendees
+// })
+
+const actionGetCheckIns = (checkIns) => ({
+    type: GET_CHECKINS,
+    payload: checkIns
 })
 
-const actionGetSessionAttendances = (attendances) => ({
-    type: GET_SESSION_ATTENDANCES,
-    payload: attendances
+// const actionGetMyCheckIns = (checkIns) => ({
+//     type: GET_MY_CHECKINS,
+//     payload: checkIns
+// })
+
+const actionAddCheckIn = (checkIns) => ({
+    type: ADD_CHECKIN,
+    payload: checkIns
 })
 
-const actionGetMyAttendances = (attendances) => ({
-    type: GET_MY_ATTENDANCES,
-    payload: attendances
-})
-
-const actionAddAttendance = (attendances) => ({
-    type: ADD_ATTENDANCE,
-    payload: attendances
-})
-
-const actionUpdateAttendance = (attendances) => ({
-    type: UPDATE_ATTENDANCE,
-    payload: attendances
-})
-
-const actionDeleteAttendance = (attendances) => ({
-    type: DELETE_ATTENDANCE,
-    payload: attendances
+const actionDeleteCheckIn = (checkIns) => ({
+    type: DELETE_CHECKIN,
+    payload: checkIns
 })
 
 
 // THUNKS
-export const thunkGetSessionAttendees = (sessionId) => async dispatch => {
-    const res = await csrfFetch(`/api/sessions/${sessionId}/attendees`);
-    if (res.ok) {
-        const data = await res.json();
-        dispatch(actionGetSessionAttendees(data.Attendees))
-    } else {
-        const errors = await res.json();
-        return errors
+// export const thunkGetSessionAttendees = (sessionId) => async dispatch => {
+//     const res = await csrfFetch(`/api/sessions/${sessionId}/attendees`);
+//     if (res.ok) {
+//         const data = await res.json();
+//         dispatch(actionGetSessionAttendees(data.Attendees))
+//     } else {
+//         const errors = await res.json();
+//         return errors
+//     }
+// }
+
+export const thunkGetCheckIns = (sessionId) => async dispatch => {
+    const res = await csrfFetch(`/api/sessions/${sessionId}/check-ins`)
+    try {
+        const jsonResponse = await res.json();
+        dispatch(actionGetCheckIns(jsonResponse.data))
+        return jsonResponse;
+    } catch(error) {
+        console.error(error)
     }
 }
 
-export const thunkGetSessionAttendances = (sessionId) => async dispatch => {
-    const res = await csrfFetch(`/api/sessions/${sessionId}/attendances`)
-    if (res.ok) {
-        const data = await res.json();
-        dispatch(actionGetSessionAttendances(data.Attendances))
-    } else {
-        const errors = await res.json();
-        return errors
-    }
-}
+// export const thunkGetMyCheckIns = () => async dispatch => {
+//     const res = await csrfFetch('/api/checkIns');
+//     if (res.ok) {
+//         const data = await res.json();
+//         dispatch(actionGetMyCheckIns(data.CheckIns))
+//     } else {
+//         const errors = await res.json();
+//         return errors
+//     }
+// }
 
-export const thunkGetMyAttendances = () => async dispatch => {
-    const res = await csrfFetch('/api/attendances');
-    if (res.ok) {
-        const data = await res.json();
-        dispatch(actionGetMyAttendances(data.Attendances))
-    } else {
-        const errors = await res.json();
-        return errors
-    }
-}
-
-export const thunkAddAttendance = (sessionId) => async dispatch => {
-    const res = await csrfFetch(`/api/sessions/${sessionId}/attendance`, {
+export const thunkAddCheckIn = (sessionId) => async dispatch => {
+    const res = await csrfFetch(`/api/sessions/${sessionId}/check-ins`, {
         method: 'POST'
     })
-    if (res.ok) {
-        const data = await res.json();
-        dispatch(actionAddAttendance(data))
-    } else {
-        const errors = await res.json();
-        return errors
+    try {
+        const jsonResponse = await res.json();
+        dispatch(actionAddCheckIn(jsonResponse.data))
+        return jsonResponse;
+    } catch(error) {
+        console.error(error)
     }
 }
 
-export const thunkUpdateAttendance = (data, attendeeData) => async dispatch => {
-    const res = await csrfFetch(`/api/sessions/${data.attendance.sessionId}/attendance`, {
-        method: 'PUT',
-        body: JSON.stringify(attendeeData)
-    })
-    if (res.ok) {
-        const attendance = await res.json();
-        data.attendee.Attendance.status = attendance.status;
-        const payload = {attendance: attendance, attendee: data.attendee}
-        dispatch(actionUpdateAttendance(payload))
-    } else {
-        const errors = await res.json();
-        return errors
-    }
-}
-
-export const thunkDeleteAttendance = (attendance, attendeeData) => async dispatch => {
-    const res = await csrfFetch(`/api/sessions/${attendance.sessionId}/attendance`, {
+export const thunkDeleteCheckIn = (checkIn) => async dispatch => {
+    const res = await csrfFetch(`/api/sessions/${checkIn.sessionId}/checkIn`, {
         method: 'DELETE',
-        body: JSON.stringify(attendeeData)
+        body: JSON.stringify(checkIn)
     })
-    if (res.ok) {
-        const message = await res.json();
-        dispatch(actionDeleteAttendance(attendance))
-        return message
-    } else {
-        const errors = await res.json();
-        return errors
+    try {
+        const jsonResponse = await res.json();
+        dispatch(actionDeleteCheckIn(jsonResponse.data))
+        return jsonResponse;
+    } catch(error) {
+        console.error(error)
     }
 }
 
 // REDUCER
 
-const initialState = { myAttendances: {}, sessionAttendances: {}, sessionAttendees: {}}
+const initialState = { sessionCheckIns: {} }
 const checkInsReducer = (state = initialState, action) => {
     switch(action.type) {
-        case GET_SESSION_ATTENDEES: {
-            const newState = { myAttendances: {...state.myAttendances}, sessionAttendances: {...state.sessionAttendances}, sessionAttendees: {} };
-            action.payload.forEach(attendee => newState.sessionAttendees[attendee.id] = attendee)
+        // case GET_SESSION_ATTENDEES: {
+        //     const newState = { myCheckIns: {...state.myCheckIns}, sessionCheckIns: {...state.sessionCheckIns}, sessionAttendees: {} };
+        //     action.payload.forEach(attendee => newState.sessionAttendees[attendee.id] = attendee)
+        //     return newState;
+        // }
+        case GET_CHECKINS: {
+            const newState = { ...state, sessionCheckIns: {} };
+            action.payload.forEach(checkIn => newState.sessionCheckIns[checkIn.id] = checkIn)
             return newState;
         }
-        case GET_SESSION_ATTENDANCES: {
-            const newState = { myAttendances: {...state.myAttendances}, sessionAttendances: {}, sessionAttendees:{...state.sessionAttendees}  };
-            action.payload.forEach(attendance => newState.sessionAttendances[attendance.id] = attendance)
+        // case GET_MY_CHECKINS: {
+        //     const newState = { myCheckIns: {}, sessionCheckIns: {...state.sessionCheckIns}, sessionAttendees:{...state.sessionAttendees}};
+        //     action.payload.forEach(checkIn => newState.myCheckIns[checkIn.id] = checkIn)
+        //     return newState;
+        // }
+        case ADD_CHECKIN: {
+            const newState = { ...state };
+            newState.sessionCheckIns = {...newState.sessionCheckIns, [action.payload.id]: action.payload }
             return newState;
         }
-        case GET_MY_ATTENDANCES: {
-            const newState = { myAttendances: {}, sessionAttendances: {...state.sessionAttendances}, sessionAttendees:{...state.sessionAttendees}};
-            action.payload.forEach(attendance => newState.myAttendances[attendance.id] = attendance)
-            return newState;
-        }
-        case ADD_ATTENDANCE: {
-            const newState = { sessionAttendees: {...state.sessionAttendees}, myAttendances: {...state.myAttendances}, sessionAttendances:{...state.sessionAttendances}  };
-            newState.myAttendances = { ...newState.myAttendances, [action.payload.id]: action.payload}
-            newState.sessionAttendances = { ...newState.sessionAttendances, [action.payload.id]: action.payload};
-            return newState;
-        }
-        case UPDATE_ATTENDANCE: {
-            const newState = { sessionAttendees: {...state.sessionAttendees}, myAttendances: {...state.myAttendances}, sessionAttendances:{...state.sessionAttendances}  };
-            newState.sessionAttendees = { ...newState.sessionAttendees, [action.payload.attendee.id]: action.payload.attendee}
-            newState.myAttendances = { ...newState.myAttendances, [action.payload.attendance.id]: action.payload.attendance}
-            newState.sessionAttendances = { ...newState.sessionAttendances, [action.payload.attendance.id]: action.payload.attendance};
-            return newState;
-        }
-        case DELETE_ATTENDANCE: {
-            const newState = { sessionAttendees: {...state.sessionAttendees}, myAttendances: {...state.myAttendances}, sessionAttendances:{...state.sessionAttendances}  };
-            delete newState.sessionAttendees[action.payload.userId]
-            delete newState.myAttendances[action.payload.id];
-            delete newState.sessionAttendances[action.payload.id];
+        case DELETE_CHECKIN: {
+            const newState = { ...state };
+            delete newState.sessionCheckIns[action.payload.id]
             return newState;
         }
         default:

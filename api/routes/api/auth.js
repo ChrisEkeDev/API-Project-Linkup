@@ -1,22 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { Op } = require('sequelize')
 const bcrypt = require('bcryptjs')
-const { requireAuth } = require('../../utils/auth');
 const { setTokenCookie } = require('../../utils/jwt')
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../errors/validationErrors');
+const { validateLogin } = require('./validation/expressValidations');
 const { Player } = require('../../db/models');
 
-// Validate the credential
-const validateLogin = [
-    check('email').exists({checkFalsy: true}).withMessage('Email is required'),
-    check('password').exists({checkFalsy: true}).withMessage('Password is required.'),
-    handleValidationErrors("There was a problem signing you in")
-]
 
 // Restore session
-router.get('/', requireAuth, (req, res) => {
+router.get('/', (req, res) => {
     const { player } = req;
     if (!player) {
         return res.status(200).json({

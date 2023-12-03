@@ -1,6 +1,5 @@
 import './Styles.scss';
 import { useApp } from '../App/Context/AppContext';
-import ProfilePicture from './ProfilePicture';
 import Search from '../Search';
 import ThemeHandler from './ThemeHandler';
 import LocationServicesHandler from './LocationServicesHandler';

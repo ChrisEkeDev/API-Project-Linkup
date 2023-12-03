@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import Button from '../Shared/components/Button'
-import { TbMoon, TbSun, TbUser, TbMapPinOff, TbMapPin, TbPlus, TbLogout, TbLogin, TbUserPlus } from 'react-icons/tb';
+import { TbMoon, TbSun, TbUser, TbMapPinOff, TbMapPin, TbPlus, TbLogout, TbLogin, TbUserPlus, TbCode, TbAB } from 'react-icons/tb';
 import { appRoutes  } from "../Shared/constants/routes";
 import { useApp } from '../App/Context/AppContext';
 import { signOutAlerts } from '../Shared/constants/alertData';
@@ -9,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import NavigationMenuLink from './NavigationMenuLink';
 
 function MainMenu() {
-  const player = useSelector(state => state.auth.auth)
+  const player = useSelector(state => state.auth.player)
   const { locationServices, handleLocationServices, theme, handleTheme } = useApp();
   const { signOutFailure, signOutSuccess } = signOutAlerts;
   const { signInPage } = appRoutes;
@@ -28,12 +27,11 @@ function MainMenu() {
       } finally {
         setLoading(false)
       }
-    }
+  }
 
 
   return (
     <div className='menu_modal_wrapper'>
-      <div>
         <div className='menu_modal_mobile'>
             <NavigationMenuLink
               label={`${theme} Mode`}
@@ -77,8 +75,13 @@ function MainMenu() {
               action={() => navigate('/sign-up')}
             />
           </>
+
         }
-      </div>
+        <NavigationMenuLink
+              label="Test"
+              icon={<TbAB />}
+              action={() => handleAlerts(signOutFailure)}
+            />
     </div>
   )
 }

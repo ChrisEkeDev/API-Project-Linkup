@@ -2,8 +2,16 @@
 
 .dashboard_wrapper {
     // padding-top: 4rem;
+    background-color: purple;
+    background-color: var(--dark-gray);
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+.dashboard_body {
+    display: flex;
     flex: 1;
-    background-color: yellow;
 }
 
 .landing--contents {

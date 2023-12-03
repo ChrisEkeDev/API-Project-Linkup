@@ -7,6 +7,8 @@ const sessionImageRouter = require('./sessionImages.js');
 const membershipRouter = require('./memberships.js');
 const checkInRouter = require('./checkIn.js');
 const searchRouter = require('./search.js');
+const commentRouter = require('./comments.js')
+const likeRouter = require('./likes.js')
 
 const { restoreUser } = require('../../utils/jwt.js');
 
@@ -30,6 +32,10 @@ router.use('/memberships', membershipRouter);
 router.use('/check-ins', checkInRouter);
 
 router.use('/search', searchRouter);
+
+router.use('/comments', commentRouter);
+
+router.use('/likes', likeRouter);
 
 
 

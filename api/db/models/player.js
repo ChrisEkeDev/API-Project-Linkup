@@ -6,22 +6,22 @@ module.exports = (sequelize, DataTypes) => {
   class Player extends Model {
 
     static associate(models) {
-      Player.hasMany(models.Team, {
-        foreignKey: 'captainId',
+      Player.hasMany(models.Comment, {
+        foreignKey: 'playerId',
         sourceKey: 'id'
       })
-      Player.belongsToMany(models.Team, {
-        through: models.Membership,
-        foreignKey: 'playerId',
-        otherKey: 'teamId',
-        sourceKey: 'id',
-        targetKey: 'id'
-      })
+      // Player.belongsToMany(models.Team, {
+      //   through: models.Membership,
+      //   foreignKey: 'playerId',
+      //   otherKey: 'teamId',
+      //   sourceKey: 'id',
+      //   targetKey: 'id'
+      // })
 
-      Player.hasMany(models.Membership, {
-        foreignKey: 'playerId',
-        sourceKey: 'id'
-      })
+      // Player.hasMany(models.Membership, {
+      //   foreignKey: 'playerId',
+      //   sourceKey: 'id'
+      // })
 
       Player.belongsToMany(models.Session, {
         through: models.CheckIn,
@@ -32,6 +32,11 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       Player.hasMany(models.CheckIn, {
+        foreignKey: 'playerId',
+        sourceKey: 'id'
+      })
+
+      Player.hasMany(models.Like, {
         foreignKey: 'playerId',
         sourceKey: 'id'
       })

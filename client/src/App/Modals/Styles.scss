@@ -1,4 +1,16 @@
-@import url('../../../App/index.css');
+@import url('../index.css');
+
+.light-theme {
+    .modal_container {
+        background-color: white;
+    }
+}
+
+.dark-theme {
+    .modal_container {
+        background-color: var(--dark-bg);
+    }
+}
 
 .modal_wrapper {
     position: fixed;
@@ -16,7 +28,6 @@
 }
 
 .modal_container {
-    background-color: white;
     border-radius: .5rem;
 }
 
@@ -25,7 +36,6 @@
     display: flex;
     flex-direction: column;
     padding: 24px 24px 24px 24px;
-    background-color: white;
     border-radius: 10px;
     position: relative;
     text-align: center;
@@ -59,4 +69,11 @@
     width: 100%;
     height: 3rem;
     font-weight: 600;
+}
+
+.modal_actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 1rem;
 }

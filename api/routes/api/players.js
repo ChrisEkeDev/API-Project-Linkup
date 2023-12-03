@@ -1,18 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs')
-const { setTokenCookie, restoreUser } = require('../../utils/auth');
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../errors/validationErrors');
+const { setTokenCookie } = require('../../utils/jwt')
 const { Player } = require('../../db/models');
 const { uploadImage, deleteImages } = require('../../utils/aws');
+const { validateSignUp } = require('./validation/expressValidations');
 
-const validateSignUp = [
-    check('name').exists({checkFalsy: true}).withMessage('How are we going to know what to call you?'),
-    check('email').exists({checkFalsy: true}).isEmail().withMessage('Really? We need a working email address.'),
-    check('password').exists({checkFalsy: true}).isLength({min: 6}).withMessage('Your password is too short. Get creative.'),
-    handleValidationErrors("There was a problem signing you up")
-]
 
 // Signup
 router.post('/', uploadImage, validateSignUp, async (req, res) => {

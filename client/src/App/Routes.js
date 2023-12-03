@@ -14,7 +14,7 @@ function Routes() {
       <Route exact path='/sign-up'>
         <SignUp />
       </Route>
-      <Route exact path='/'>
+      <Route exact path='/*'>
         <Dashboard />
       </Route>
       <Route>
