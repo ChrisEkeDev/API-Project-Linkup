@@ -1,42 +1,37 @@
 @import url('../App/index.css');
 
-.search_wrapper {
-    height: 100%;
-    padding: .5rem;
-}
-
-.search_contents {
+.search--wrapper {
     display: flex;
     align-items: center;
-}
-
-.search_icon {
-    height: 3rem;
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
+    gap: 1rem;
+    padding: 0 1rem;
+    flex: 1;
+    .icon {
+        font-size: 1.25rem;
+    }
 }
 
 .light-theme {
-    .search_input {
+    .search--input {
         color: var(--black)
     }
 }
 
 .dark-theme {
-    .search_input {
+    .search--input {
         color: var(--white)
     }
 }
 
-.search_input {
+.search--input {
     background: transparent;
-    height: 2rem;
+    padding: .5rem 1rem;
     font-size: 1rem;
     border: none;
+    width: 100%;
+    border-radius: .5rem;
     &:focus {
+        background-color: var(--dark-border);
         outline: transparent;
     }
 

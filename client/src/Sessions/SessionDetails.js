@@ -12,14 +12,18 @@ function SessionDetails() {
     return (
         <div className='sessions_details--wrapper'>
             <div className='sessions_details--contents'>
-                <h1>{session.name}</h1>
-                <div className='flex'>
-                    <TbMapPin className='session__details--icon'/>
+                <div className='detail-grid'>
+                    <small>What</small>
+                    <p>{session.name}</p>
+                </div>
+                <div className='detail-grid'>
+                    <small>Where</small>
                     <p>{session.Court?.address}</p>
                 </div>
-                <div className='flex'>
-                    <TbClock className='session__details--icon'/>
+                <div className='detail-grid'>
+                    <small>When</small>
                     {/* <p>{formattedTime}</p> */}
+                    <p>12:55 PM</p>
                 </div>
             </div>
         </div>

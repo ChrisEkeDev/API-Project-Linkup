@@ -6,16 +6,19 @@ import { useDispatch } from 'react-redux';
 import Button from "../Shared/components/Button"
 import useGetSession from './hooks/useGetSession';
 import DataLoading from '../App/Loading/DataLoading';
-import { TbArrowLeft } from 'react-icons/tb';
+import { TbArrowLeft, TbCheck, TbEdit, TbTrash } from 'react-icons/tb';
 import { useApp } from '../App/Context/AppContext';
 import { sessionsAlerts } from '../Shared/constants/alertData';
 import Players from '../Players';
 import Modal from '../App/Modals';
 import { thunkAddCheckIn } from '../Store/checkins';
-import Comments from '../App/Comments';
+import Comments from '../Comments';
 import Back from '../Shared/components/Button/Back';
 import SessionCreator from './SessionCreator';
 import SessionDetails from './SessionDetails';
+import PageWrapper from '../Shared/components/Layout/PageWrapper';
+import SectionHeader from '../Shared/components/Layout/SectionHeader';
+import PageSection from '../Shared/components/Layout/PageSection';
 
 function SessionPage() {
     const { id } = useParams();
@@ -74,7 +77,7 @@ function SessionPage() {
     if (data === false || !session ) return <div>Not Found</div>
 
     return (
-        <section className='sessions__single_page--wrapper'>
+        <PageWrapper>
             {
                 deleteSessionModal &&
                 <Modal
@@ -83,7 +86,7 @@ function SessionPage() {
                     confirm={() => deleteSession()}
                     decline={() => setDeleteSessionModal(false)}
                 />
-            }
+             }
             {
                 checkInModal &&
                 <Modal
@@ -93,44 +96,45 @@ function SessionPage() {
                     decline={() => setCheckInModal(false)}
                 />
             }
-            <header className='sessions__single_page--header'>
+            <PageSection>
+            <SectionHeader>
                 <Back/>
-                <div className='sessions__single_page--header-actions'>
-                {
+                <div className='page--actions'>
+                    {
                     isCreator ?
                     <>
                         <Button
-                            style='sessions__results_header--button'
-                            type="primary"
+                            styles='primary page--button'
                             label="Edit Session"
+                            icon={TbEdit}
                             action={() => navigate(`/sessions/${session.id}/update`)}
                         />
                         <Button
-                            style='sessions__results_header--button'
-                            type="primary"
+                            styles='secondary page--button'
+                            icon={TbTrash}
                             label="Delete Session"
                             action={() => setDeleteSessionModal(true)}
                         />
-                    </> :
-                    <>
+                      </> :
+                      <>
                         <Button
-                            style='sessions__results_header--button'
-                            type="primary"
+                            styles='primary page--button'
                             label="Check In"
+                            icon={TbCheck}
                             action={() => setCheckInModal(true)}
                         />
-                    </>
-                }
-
+                      </>
+                    }
                 </div>
-            </header>
-            <div className='sessions__single_page--contents'>
-                <SessionCreator/>
-                <SessionDetails/>
-                {/* <Players /> */}
-                <Comments />
+            </SectionHeader>
+            <div className='section--flex'>
+                <SessionCreator />
+                <SessionDetails />
             </div>
-        </section>
+            </PageSection>
+            <Players />
+            <Comments />
+        </PageWrapper>
     )
 }
 

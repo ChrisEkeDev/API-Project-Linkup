@@ -33,16 +33,16 @@
     align-items: center;
     justify-content: space-between;
     h1 {
-        font-size:  1.25rem;
+        font-size:  1rem;
+        opacity: .5;
     }
 }
 
 
 .players__list {
     display: flex;
-    gap: 2rem;
     overflow-x: scroll;
-    padding: 1rem 0rem;
+    padding:  1rem 1rem 2rem 1rem;
 }
 
 .players__item {
@@ -50,6 +50,12 @@
     flex-direction: column;
     align-items: center;
     gap: .5rem;
+    padding: 0 1rem;
+
+    p {
+        font-size: 1rem;
+        font-weight: 600;
+    }
 }
 
 

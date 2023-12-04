@@ -186,22 +186,16 @@ router.delete('/:commentId', requireAuth, async(req, res) => {
 
     comment.destroy();
 
-    // const allComments = await Comment.findAll({
-    //     where: { replyTo: commentId }
-    // });
+    const allComments = await Comment.findAll({
+        where: { replyTo: commentId }
+    });
 
-    // for (let c of allComments) {
-    //     await c.set({
-    //         replyTo: null
-    //     })
-    //     c.save();
-    // }
-    // allComments.forEach( async (comment) => {
-    //     await comment.set({
-    //         replyTo: null
-    //     })
-    //     comment.save();
-    // })
+    for (let c of allComments) {
+        await c.set({
+            replyTo: null
+        })
+        await c.save();
+    }
 
     return res.status(200).json({
         status: 200,

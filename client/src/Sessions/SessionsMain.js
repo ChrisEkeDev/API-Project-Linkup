@@ -8,7 +8,9 @@ import { sortValues } from '../Shared/constants/predefinedValues';
 import Button from '../Shared/components/Button'
 import { TbPlus } from 'react-icons/tb';
 import { useApp } from '../App/Context/AppContext';
-
+import PageWrapper from '../Shared/components/Layout/PageWrapper';
+import SectionHeader from '../Shared/components/Layout/SectionHeader';
+import PageSection from '../Shared/components/Layout/PageSection';
 
 function SessionsMain() {
 
@@ -16,28 +18,24 @@ function SessionsMain() {
   const player = useSelector(state => state.auth.player);
 
   return (
-    <div className='sessions__main--wrapper'>
-      {
 
-      }
-      <header className='sessions__results_header--wrapper'>
-            <section className='sessions__results_header--contents'>
-                <span  className='sessions__results_header--title' >Results</span>
-                <div className='sessions__results_header--options'>
-                    {/* <SessionsFilter/> */}
-                    <SessionsSort/>
-                    <Button
-                        style='sessions__results_header--button'
-                        type="primary"
-                        label={player ? "New" : "Sign in to create a session"}
-                        icon={TbPlus}
-                        action={player ? () => navigate('/new-session') : () => navigate('/sign-in')}
-                    />
-                </div>
-            </section>
-        </header>
+    <PageWrapper>
+      <SectionHeader>
+        <h2 className='page--title'>Results</h2>
+        <div className='page--actions'>
+          <SessionsSort/>
+          <Button
+            styles='primary page--button'
+            label={player ? "New" : "Sign in to create a session"}
+            icon={TbPlus}
+            action={player ? () => navigate('/new-session') : () => navigate('/sign-in')}
+          />
+        </div>
+      </SectionHeader>
+      <PageSection>
         <SessionsList />
-    </div>
+      </PageSection>
+    </PageWrapper>
   )
 }
 

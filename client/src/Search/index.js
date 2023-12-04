@@ -5,14 +5,9 @@ import './Styles.scss';
 
 function Search() {
   return (
-    <section className='search_wrapper'>
-        <div className='search_contents'>
-            <div className='search_icon'>
-                <TbSearch/>
-            </div>
-            <input className='search_input' placeholder='Search by name or location'/>
-            {/* <Button type="primary" styles="search_button" label="Search"/> */}
-        </div>
+    <section className='search--wrapper'>
+      <TbSearch className="icon"/>
+      <input className='search--input' placeholder='Search by name or location'/>
     </section>
   )
 }

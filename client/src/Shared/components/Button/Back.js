@@ -6,11 +6,9 @@ function Back() {
     const { goBack } = useApp();
 
   return (
-    <div className='sessions__single_page--header-back'>
-        <span onClick={() => goBack(-1)} className='sessions__single_page--back'>
-            <TbArrowLeft />
-        </span>
-        <span>Back to results</span>
+    <div onClick={() => goBack()} className='back--button'>
+        <TbArrowLeft className='icon'/>
+        <span>Go Back</span>
     </div>
   )
 }

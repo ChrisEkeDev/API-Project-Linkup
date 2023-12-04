@@ -41,9 +41,24 @@ router.get('/', async (req, res) => {
 
 
     const sessions = await Session.findAll({
-        include: {
-                model: CheckIn
-        }
+        include: [
+            {
+                model: Player,
+                as: "creator",
+                attributes: ['name', 'profileImage']
+            },
+            {
+                model: Court,
+                attributes: ['address']
+            },
+            {
+                model: CheckIn,
+                include: {
+                    model: Player,
+                    as: 'player',
+                }
+            }
+        ]
     });
 
     return res.status(200).json({

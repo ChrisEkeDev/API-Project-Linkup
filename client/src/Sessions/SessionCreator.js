@@ -12,8 +12,8 @@ function SessionCreator() {
                         style={{backgroundImage: `url(${session.creator?.profileImage})`}}/>
                 </div>
                 <div className='sessions__creator--text'>
-                    <h5>Created By</h5>
-                    <p>{session.creator?.name}</p>
+                    <p>Created By</p>
+                    <h5>{session.creator?.name}</h5>
                 </div>
             </div>
         </div>

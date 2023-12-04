@@ -10,7 +10,9 @@ module.exports = (sequelize, DataTypes) => {
 
             Comment.belongsTo(models.Comment, {
                 foreignKey: "replyTo",
-                targetKey: 'id'
+                targetKey: 'id',
+                onDelete: 'SET NULL',
+                hooks: true
             })
 
             Comment.hasOne(models.Comment, {

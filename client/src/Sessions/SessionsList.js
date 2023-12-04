@@ -9,13 +9,11 @@ function SessionsList() {
     const { sortBy } = useApp();
 
     return (
-        <div className='sessions__results_list--wrapper'>
-            <ul className='sessions__results_list--contents'>
-                {sessions.sort(sortFunctions[sortBy]).map(session => (
-                    <SessionItem session={session} key={session.id}/>
-                ))}
-            </ul>
-        </div>
+        <ul className='session--list'>
+            {sessions.sort(sortFunctions[sortBy]).map(session => (
+                <SessionItem session={session} key={session.id}/>
+            ))}
+        </ul>
     )
 }
 

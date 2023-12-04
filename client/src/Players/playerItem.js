@@ -6,7 +6,7 @@ function PlayerItem({player}) {
         <div className='players__item--wrapper'>
           <div className='players__item--image' style={{backgroundImage: `url(${player.profileImage})`}}/>
         </div>
-        <span className='players__item--name'>{player?.name}</span>
+        <p className='players__item--name'>{player?.name}</p>
     </li>
   )
 }

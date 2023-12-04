@@ -12,16 +12,14 @@ function Navigation() {
 
   return (
     <nav className={`navigation_wrapper ${theme}-theme`}>
-      <div className='navigation_contents'>
         <Search/>
         <div className='navigation_section'>
-          <LocationServicesHandler/>
-          <ThemeHandler/>
+          {/* <LocationServicesHandler/>
+          <ThemeHandler/> */}
           <Menu>
             <MainMenu/>
           </Menu>
         </div>
-      </div>
     </nav>
   )
 }

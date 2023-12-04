@@ -4,7 +4,8 @@
     --dark-bg: #1a1a1a;
     --dark-gray: #999999;
     --light-gray: #ededed;
-    --red: #23589d;
+    --main: #e6bd4e;
+    --main-hover: #daa431;
     --teal: #00525E;
     --success: #226e52;
     --warning: #dcb226;
@@ -135,27 +136,37 @@
   }
 
   .dark-theme .primary {
-    border: none;
-    background-color: var(--red);
-    color: white;
+    background-color: var(--main);
+    color: var(--black);
+    &:hover {
+      background-color: var(--main-hover);
+    }
   }
 
   .dark-theme .secondary {
     background-color: var(--dark-bg);
-    border: 1px solid var(--dark-border);
+    outline: 1px solid var(--dark-border);
     color: var(--white);
+    &:hover {
+      background-color: var(--dark-border);
+    }
   }
 
   .light-theme .primary {
-    border: none;
-    background-color: var(--red);
-    color: white;
+    background-color: var(--main);
+    color: var(--black);
+    &:hover {
+      background-color: var(--main-hover);
+    }
   }
 
   .light-theme .secondary {
     background-color: var(--white);
-    border: 1px solid var(--border);
-    color: var(--red);
+    outline: 1px solid var(--border);
+    color: var(--main);
+    &:hover {
+      background-color: var(--white-hover);
+    }
   }
 
 
@@ -178,7 +189,7 @@
 
     /* Handle on hover */
     ::-webkit-scrollbar-thumb:hover {
-      background: var(--red);
+      background: var(--main);
     }
   }
 
@@ -194,7 +205,7 @@
 
     /* Handle on hover */
     ::-webkit-scrollbar-thumb:hover {
-      background: var(--red);
+      background: var(--main);
     }
   }
 
