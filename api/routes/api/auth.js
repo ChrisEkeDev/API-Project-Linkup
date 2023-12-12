@@ -10,8 +10,8 @@ const { Player } = require('../../db/models');
 router.get('/', (req, res) => {
     const { player } = req;
     if (!player) {
-        return res.status(200).json({
-            status: 200,
+        return res.status(404).json({
+            status: 404,
             message: "No session found",
             data: null,
             errors: {}

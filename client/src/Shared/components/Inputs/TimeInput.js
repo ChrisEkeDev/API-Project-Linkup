@@ -1,11 +1,14 @@
 import React from 'react'
-import { TbAlertCircle } from 'react-icons/tb'
-import './Styles.scss'
+import { TbAlertCircle, TbClock } from 'react-icons/tb';
+import { globalStyles } from '../../../constants/styles';
+import './styles.scss'
 
-function DateTime({name, label, error, value, setValue, disabled}) {
+function TimeInput({name, label, error, value, setValue, disabled}) {
+  const { errorBorder } = globalStyles;
 
   return (
     <label htmlFor={name} className={`date_time-input-wrapper time_input`}>
+        <TbClock className='icon'/>
         <input
             id={name}
             name={name}
@@ -13,7 +16,7 @@ function DateTime({name, label, error, value, setValue, disabled}) {
             onChange={setValue}
             type='time'
             className='input'
-            style={error ? {border: '1px solid #ff1313'} : null}
+            style={error ? {outline: errorBorder} : null}
             disabled={disabled}
         />
         {label ? <span className='input-label'>{label}</span> : null}
@@ -27,4 +30,4 @@ function DateTime({name, label, error, value, setValue, disabled}) {
   )
 }
 
-export default DateTime
+export default TimeInput

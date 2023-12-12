@@ -1,5 +1,5 @@
 import React from 'react';
-import './Styles.scss';
+import './styles.scss';
 import logo from '../../App/assets/linkup-logo.svg';
 
 function DataLoading({fixed}) {

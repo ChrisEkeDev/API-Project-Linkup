@@ -38,7 +38,7 @@ router.post('/', uploadImage, validateSignUp, async (req, res) => {
 
     const playerPublic = {
         id: player.id,
-        name: player.firstName,
+        name: player.name,
         email: player.email,
         profileImage: player.profileImage,
         createdAt: player.createdAt,

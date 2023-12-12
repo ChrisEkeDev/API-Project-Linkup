@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import configureStore from './Store'
 import { Provider } from 'react-redux';
-import AppProvider from './App/Context/AppContext'
-import './App/index.css';
-import App from './App/App';
+import AppProvider from './context/AppContext'
+import './index.css';
+import App from './App';
 import { restoreCSRF, csrfFetch } from './Store/csrf';
 import * as authActions from "./Store/auth";
 
@@ -19,8 +19,8 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 
-function Root() {
-  return (
+ReactDOM.render(
+  <React.StrictMode>
     <Provider store={store}>
         <BrowserRouter>
           <AppProvider>
@@ -28,12 +28,6 @@ function Root() {
           </AppProvider>
         </BrowserRouter>
     </Provider>
-  )
-}
-
-ReactDOM.render(
-  <React.StrictMode>
-    <Root/>
   </React.StrictMode>,
   document.getElementById('root')
 );

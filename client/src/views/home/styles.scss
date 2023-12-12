@@ -1,0 +1,58 @@
+@import url('../../index.css');
+
+
+
+.side_pane {
+    --mobile-width: 100%;
+    --desktop-width: 70%;
+    --width: 50%;
+    --offset-mobile-width: -100%;
+    --offset-desktop-width: -70%;
+    --offset-width: -50%;
+    position: absolute;
+    left: 0;
+    height: 100%;
+    border-right: var(--border);
+    width: var(--width);
+
+    .side_pane-button {
+        position: absolute;
+        right: -3.5rem;
+        top: 1rem;
+    }
+}
+
+.side_pane--open {
+    left: 0%;
+}
+.side_pane--closed {
+    left: var(--offset-width);
+}
+
+// /* Tablet */
+@media screen and (max-width: 1109px) {
+    .side_pane {
+        width: var(--desktop-width);
+    }
+    .side_pane--closed {
+        left: var(--offset-desktop-width);
+    }
+}
+
+/* Mobile */
+@media screen and (max-width: 900px) {
+    .side_pane {
+        width: var(--mobile-width);
+        border: none;
+    }
+    .side_pane--closed {
+        left: var(--offset-mobile-width);
+    }
+    .side_pane--open {
+        .side_pane-button{
+            border: none;
+            right: 1rem;
+        }
+    }
+
+}

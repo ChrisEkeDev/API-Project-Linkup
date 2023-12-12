@@ -1,7 +1,7 @@
 import React from 'react'
-import './Styles.scss';
+import './styles.scss';
 import { TbAlertCircle } from 'react-icons/tb';
-import { globalStyles } from '../../constants/globalStyles';
+import { globalStyles } from '../../../constants/styles';
 
 function DurationInput({name, label, error, value, setValue, disabled}) {
   const { errorBorder } = globalStyles

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import './Styles.scss';
-import { globalStyles } from '../../constants/globalStyles';
+import './styles.scss';
+import { globalStyles } from '../../../constants/styles';
 import {TbAlertCircle, TbEye, TbEyeOff } from 'react-icons/tb'
 
 
@@ -21,7 +21,7 @@ function Inputs({name, label, placeholder, iconRight, iconLeft, type, error, val
           type={type === 'password' ? passwordHidden ? 'password' : 'text' : type}
           className={`input ${iconLeft ? 'pad-left' : ''}`}
           placeholder={placeholder}
-          style={error ? {border: errorBorder} : null}
+          style={error ? {outline: errorBorder} : null}
           disabled={disabled}
         />
         {label ? <span className='input-label'>{label}</span> : null}

@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from '../Button';
-import { useApp } from '../../../App/Context/AppContext';
+import { useApp } from '../../../context/AppContext';
 import { TbCurrentLocation } from 'react-icons/tb';
 
 function LocationServices(props) {

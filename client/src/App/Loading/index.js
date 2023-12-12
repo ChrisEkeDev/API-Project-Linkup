@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '../assets/linkup-logo.svg';
-import './Styles.scss';
+import './styles.scss';
 
 function Loading() {
   return (

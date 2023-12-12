@@ -1,6 +1,6 @@
 import React from 'react';
 import AlertItem from './AlertItem';
-import './Styles.scss';
+import './styles.scss';
 
 function Alerts({removeAlerts, alerts}) {
   const alertsArray = Object.values(alerts);

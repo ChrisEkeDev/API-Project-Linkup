@@ -1,6 +1,6 @@
 import React from 'react';
-import './Styles.scss';
-import Button from '../../Shared/components/Button';
+import './styles.scss';
+import Button from '../../components/shared/button';
 
 function Modal(props) {
   const { title, message, icon, confirm, decline } = props;

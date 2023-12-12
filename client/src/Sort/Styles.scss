@@ -1,0 +1,35 @@
+@import url('../App/index.css');
+
+.light-theme {
+    .sessions--sort {
+        background-color: var(--white);
+    }
+}
+
+.dark-theme {
+    .sessions--select {
+        color: var(--white) ;
+        option {
+            background-color: var(--dark-bg);
+        }
+    }
+    .sessions--sort {
+        background-color: var(--dark-bg);
+        outline: 1px solid var(--dark-border)
+    }
+}
+
+.sessions--sort {
+    padding: 0 .5rem;
+}
+
+
+.sessions--select {
+    padding: .5rem .5rem .5rem 0;
+    border-radius:  .5rem;
+    background-color: transparent;
+    border: none;
+    &:focus {
+        background-color: var(--dark-border);
+    }
+}

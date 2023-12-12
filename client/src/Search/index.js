@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '../Shared/components/Button';
 import { TbSearch } from 'react-icons/tb';
-import './Styles.scss';
+import './styles.scss';
 
 function Search() {
   return (

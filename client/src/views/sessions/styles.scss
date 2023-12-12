@@ -1,0 +1,339 @@
+@import url('../../index.css');
+
+.sessions__results_sort {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    .sessions__results_sort--select {
+        padding: .5rem;
+        border: none;
+        background: transparent;
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////
+
+.session_list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    flex: 1;
+    padding: 1rem 0 5rem;
+}
+
+.session_item {
+    padding:  0 1rem;
+    cursor: pointer;
+    position: relative;
+    display: grid;
+    grid-template-columns: 40% auto;
+    border-radius: .5rem;
+
+    .creator {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        .image {
+            height: 5rem;
+            aspect-ratio: 1;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: .5rem;
+        }
+        span {
+            font-weight: 600;
+        }
+    }
+}
+
+.sessions-sorter {
+    padding: 0 .5rem;
+    border-radius: .5rem;
+    cursor: pointer;
+    &:hover {
+        outline: var(--border);
+        background-color: var(--white-hover);
+    }
+    .select {
+        height: 2.5rem;
+        padding-right: .5rem;
+        border: none;
+        background-color: transparent;
+        &:focus {
+            outline: transparent
+        }
+    }
+}
+
+
+.sessions__session_item--player_count {
+    position: absolute;
+    right: 2rem;
+    bottom: 1rem;
+    opacity: .5;
+    font-weight: 600;
+
+    .count {
+        font-size: 1rem;
+        opacity: 1;
+    }
+}
+.sessions__session_item--details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .sessions__session_item--date {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        span {
+            font-weight: 700;
+            font-size: 2rem;
+            &:first-of-type {
+                font-size: 1rem;
+                text-transform: uppercase;
+            }
+        }
+    }
+
+    .sessions__session_item--at,
+    .sessions__session_item--time {
+        font-weight: 700;
+        font-size: 2rem;
+    }
+
+}
+
+.sessions__results_header--button {
+    height: 2.5rem
+}
+
+
+///////////////////////////////////////////////////////////////
+
+.sessions__single_page--wrapper {
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+
+}
+
+.sessions__single_page--back {
+    font-size: 1.25rem;
+    height: 3rem;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: .5;
+    &:hover {
+        opacity: 1;
+    }
+
+}
+
+.sessions__single_page--header {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sessions__single_page--header-back {
+    display: flex;
+    align-items: center;
+}
+
+.sessions__single_page--header-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.sessions__single_page--contents {
+    padding: 0rem;
+    overflow-y: scroll;
+    flex: 1;
+    .flex-container {
+        display: grid;
+        grid-template-columns: auto auto;
+        align-items: center;
+    }
+    .sessions__page--section  {
+
+    }
+    h1 {
+        font-size: 1rem;
+    }
+}
+
+.sessions__single_page--creator {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+}
+
+.sessions__single_page--image {
+    height: 5rem;
+    border-radius: 7rem;
+    aspect-ratio: 1;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.sessions__single_page--text {
+    display: flex;
+    flex-direction: column;
+}
+
+.sessions__single_page--form {
+    padding: 2rem 0;
+}
+
+.sessions__single_page--input {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.sessions__single_page--input_button {
+    position: absolute;
+    height: 3rem;
+    top: 1.5rem;
+    right: 0;
+    border: none;
+}
+
+.sessions__single_page--date_time {
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+}
+
+.session_single_page--actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 2rem 0;
+}
+
+.session_single_page--button {
+    height: 3rem;
+}
+
+.sessions__single_page--section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0;
+}
+
+
+.sessions__creator--wrapper {
+    .sessions__creator--contents {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .sessions__creator--text {
+        h5 {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        p {
+            font-size: 1rem;
+            font-weight: 600;
+            opacity: .5;
+        }
+    }
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 70px auto;
+
+    p {
+        font-size: 1rem;
+    }
+
+    small {
+        opacity: .5;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+}
+
+.sessions_details--wrapper {
+    .sessions_details--contents {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+
+        p {
+            font-size: 1rem;
+            font-weight: 700
+        }
+
+    }
+}
+
+.session--form {
+    display: flex;
+    flex-direction: column;
+    flex:1;
+    padding: 1rem 2rem;
+    h2 {
+        padding: 1rem 0;
+        font-size: 1rem;
+        opacity: .5;
+    }
+}
+
+.form--flex {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .page--button {
+        position: absolute;
+        right: .25rem;
+        top: 1.875rem;
+    }
+}
+
+.date--flex {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+
+
+
+@media screen and (max-width: 1109px) {
+
+}
+
+/* Mobile */
+@media screen and (max-width: 900px) {
+    .sessions .header {
+        padding-right: 4.5rem;
+    }
+
+}
+
+/* Mobile */
+@media screen and (max-width: 500px) {
+
+
+}

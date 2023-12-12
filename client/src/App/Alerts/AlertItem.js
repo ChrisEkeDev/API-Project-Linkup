@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from "react";
-import { useApp } from '../Context/AppContext';
-import './Styles.scss';
+import { useApp } from '../../context/AppContext';
+import './styles.scss';
 import { TbX, TbCircleX, TbAlertCircle, TbCircleCheck } from 'react-icons/tb';
 
 

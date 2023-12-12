@@ -1,6 +1,6 @@
 import React from 'react'
 import { TbBrandDribbble, TbBrandGithub, TbBrandLinkedin } from 'react-icons/tb';
-import './Styles.scss'
+import './styles.scss'
 
 function Footer() {
   return (

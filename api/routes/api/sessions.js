@@ -100,7 +100,8 @@ router.get('/:sessionId', async (req, res) => {
                 attributes: ['name', 'profileImage']
             },
             {
-                model: Court
+                model: Court,
+                attributes: ['address']
             },
             {
                 model: CheckIn,
@@ -166,6 +167,10 @@ router.post('/', requireAuth, uploadImage, validateCreateSession, async (req, re
         lng: lngData
     })
 
+    await CheckIn.create({
+        sessionId: session.id, playerId
+    })
+
     if (image) {
         await SessionImage.create({
             sessionId: session.id,
@@ -173,11 +178,32 @@ router.post('/', requireAuth, uploadImage, validateCreateSession, async (req, re
         })
     }
 
+    const newSession = await Session.findByPk(session.id, {
+        include: [
+            {
+                model: Player,
+                as: "creator",
+                attributes: ['name', 'profileImage']
+            },
+            {
+                model: Court,
+                attributes: ['address']
+            },
+            {
+                model: CheckIn,
+                include: {
+                    model: Player,
+                    as: 'player',
+                }
+            }
+        ]
+    });
+
 
     return res.status(201).json({
         status: 201,
         message: "",
-        data: session,
+        data: newSession,
         errors: {}
     })
 
