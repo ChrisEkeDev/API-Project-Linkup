@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { thunkSignOutPlayer } from '../../../Store/auth';
+import { thunkSignOutPlayer } from '../../../store/auth';
 import { useApp } from '../../../context/AppContext';
 
 const useNavMenu = () => {

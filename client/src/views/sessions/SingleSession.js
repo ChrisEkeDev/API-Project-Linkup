@@ -1,17 +1,19 @@
 import Back from '../../components/shared/button/Back';
+import { useApp } from '../../context/AppContext';
+import useSession from './hooks/useSession';
+import Button from '../../components/shared/button';
+import Modal from '../../components/shared/modal';
+import SessionPlayer from './components/SessionPlayer';
+import Comments from '../../components/comments';
+import { TbBallBasketball, TbClock, TbMapPin } from 'react-icons/tb';
+import ProfileImage from '../../components/shared/profileImage';
+import { format, parseISO } from 'date-fns';
 
 
 function SingleSession() {
-    // const { id } = useParams();
-    // const  { handleAlerts, navigate, setLoading } = useApp();
-    // const [ data, loading ] = useGetSession(id);
-    // const [ deleteSessionModal, setDeleteSessionModal ] = useState(false);
-    // const [ checkInModal, setCheckInModal ] = useState(false);
-    // const player = useSelector(state => state.auth.player)
-    // const session = useSelector(state => state.sessions.singleSession);
-    // const isCreator = player?.id == session?.creatorId;
-    // const { deleteSessionSuccess, deleteSessionError, checkInSuccess, checkInError } = sessionsAlerts;
-    // const dispatch = useDispatch();
+    const { session, checkIns } = useSession();
+    const { auth, navigate, isModalOpen, onOpenModal, onCloseModal } = useApp();
+    const isCreator = auth?.id == session?.creatorId;
 
 
 
@@ -54,76 +56,96 @@ function SingleSession() {
     // }
 
 
-    // if (loading) return <DataLoading />
-    // if (data === false || !session ) return <div>Not Found</div>
+    if (!session) return <div>Not Found</div>
 
     return (
-        <main className='page new-session'>
+        <main className='page single-session'>
         <header className='header'>
             <Back/>
             <div className='actions'>
-
+                {
+                    isCreator ?
+                    <>
+                        <Button
+                            styles=''
+                            label="Edit Session"
+                            action={() => navigate(`/sessions/${session.id}/update`)}
+                        />
+                        <Button
+                            styles=''
+                            label="Delete Session"
+                            action={onOpenModal}
+                        />
+                    </> :
+                    <>
+                        <Button
+                            styles=''
+                            label="Check In"
+                            // action={}
+                        />
+                    </>
+                }
             </div>
         </header>
+        <section className='section scroll'>
+            <div className='session_creator'>
+                <ProfileImage
+                    player={session.creator}
+                    size={6}
+                />
+                <div className='details'>
+                    <small>Created By</small>
+                    <p>{session.creator?.name}</p>
+                </div>
+            </div>
+            <div className='sessions_info'>
+                <div className='grid'>
+                    <TbBallBasketball className='icon'/>
+                    <div className='details'>
+                        <small>What</small>
+                        <p className='med'>{session.name}</p>
+                    </div>
+                </div>
+                <div className='grid'>
+                    <TbMapPin className='icon'/>
+                    <div className='details'>
+                        <small>Where</small>
+                        <p className='time'>{session.Court?.address}</p>
+                    </div>
+                </div>
+                <div className='grid'>
+                    <TbClock className='icon'/>
+                    <div className='details'>
+                        <small>When</small>
+                        <p className='time'>
+                            {/* {format(parseISO(session?.startDate), 'EEEE')},
+                            {format(parseISO(session?.startDate), 'P').slice(0, -5)} @
+                            {format(parseISO(session?.startDate), "p") } */}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div className='session_players'>
+                <header className='sub_header'>
+                    <h2>Players</h2>
+                </header>
+                <ul className='checkIn_list'>
+                    {
+                        checkIns.map(checkIn => (
+                            <SessionPlayer checkIn={checkIn}/>
+                        ))
+                    }
+                </ul>
+            </div>
+            <Comments/>
+        </section>
+        <Modal
+            isModalOpen={isModalOpen}
+            onCloseModal={onCloseModal}
+        >
+                <div>1</div>
+        </Modal>
     </main>
-        // <PageWrapper>
-        //     {
-        //         deleteSessionModal &&
-        //         <Modal
-        //             title="Delete Session"
-        //             message="Are you sure you want to delete this sessions?"
-        //             confirm={() => deleteSession()}
-        //             decline={() => setDeleteSessionModal(false)}
-        //         />
-        //      }
-        //     {
-        //         checkInModal &&
-        //         <Modal
-        //             title="Check In"
-        //             message="Let everyone know youll be there and encourage others to check in too."
-        //             confirm={() => checkIn()}
-        //             decline={() => setCheckInModal(false)}
-        //         />
-        //     }
-        //     <PageSection>
-        //     <SectionHeader>
-        //         <Back/>
-        //         <div className='page--actions'>
-        //             {
-        //             isCreator ?
-        //             <>
-        //                 <Button
-        //                     styles='primary page--button'
-        //                     label="Edit Session"
-        //                     icon={TbEdit}
-        //                     action={() => navigate(`/sessions/${session.id}/update`)}
-        //                 />
-        //                 <Button
-        //                     styles='secondary page--button'
-        //                     icon={TbTrash}
-        //                     label="Delete Session"
-        //                     action={() => setDeleteSessionModal(true)}
-        //                 />
-        //               </> :
-        //               <>
-        //                 <Button
-        //                     styles='primary page--button'
-        //                     label="Check In"
-        //                     icon={TbCheck}
-        //                     action={() => setCheckInModal(true)}
-        //                 />
-        //               </>
-        //             }
-        //         </div>
-        //     </SectionHeader>
-        //     <div className='section--flex'>
-        //         <SessionCreator />
-        //         <SessionDetails />
-        //     </div>
-        //     </PageSection>
-        //     <Players />
-        //     <Comments />
-        // </PageWrapper>
     )
 }
 

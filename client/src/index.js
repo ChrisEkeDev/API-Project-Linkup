@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import configureStore from './Store'
+import configureStore from './store'
 import { Provider } from 'react-redux';
 import AppProvider from './context/AppContext'
 import './index.css';
 import App from './App';
-import { restoreCSRF, csrfFetch } from './Store/csrf';
-import * as authActions from "./Store/auth";
+import { restoreCSRF, csrfFetch } from './store/csrf';
+import * as authActions from "./store/auth";
 
 const store = configureStore();
 

@@ -1,11 +1,11 @@
 import React from 'react'
-import NavPlayer from './NavPlayer'
 import { Link } from 'react-router-dom'
 import { navMenuLinks } from '../../../constants/constants';
 import useNavMenu from '../hooks/useNavMenu';
 import { useApp } from '../../../context/AppContext';
 import { PLAYER_AUTHORIZED, PLAYER_NOT_AUTHORIZED } from '../../../constants/constants';
 import { TbLogout } from 'react-icons/tb';
+import ProfileImage from '../../shared/profileImage';
 
 const NavLink = (props) => {
     const { link } = props;
@@ -37,10 +37,12 @@ function NavMenu() {
             className='nav-menu'
             ref={menuRef}
         >
-            <NavPlayer
-                menuOpen={menuOpen}
-                toggleMenu={menuOpen ? onMenuClose : onMenuOpen}
-            />
+            <div onClick={menuOpen ? onMenuClose : onMenuOpen}>
+                <ProfileImage
+                    player={auth}
+                    size={2.5}
+                />
+            </div>
             {
                 menuOpen ?
                 <ul className='nav-links'>

@@ -1,0 +1,67 @@
+@import url('../../index.css');
+
+
+.session_comments {
+    border-top: var(--border);
+}
+
+.comments_list {
+    padding: 0 1rem 5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.comment {
+    position: relative;
+    padding: 1rem 1rem 3.5rem 1rem;
+    border-radius: .5rem;
+    display: flex;
+    // outline: var(--border);
+    gap: 1rem;
+    &:hover {
+        background-color: var(--black-hover);
+    }
+
+    .reply_icon {
+        font-size: 1.25rem;
+        margin-top: 1.625rem;
+        margin-left: 2rem;
+    }
+}
+
+.comment_contents {
+    padding: .5rem 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.comment_creator {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.comment_text {
+    width: 100%;
+    resize: none;
+    padding: .5rem;
+    border-radius: .5rem;
+    font-size: 1rem;
+    border: none;
+    color: var(--white);
+    &:disabled {
+        background-color: transparent;
+    }
+    background-color: var(--background);
+}
+
+.comment_actions {
+    position: absolute;
+    display: flex;
+    right: 1rem;
+    gap: 1.5rem;
+    bottom: 1rem;
+}

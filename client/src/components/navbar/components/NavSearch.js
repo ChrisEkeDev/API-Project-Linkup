@@ -1,5 +1,5 @@
 import React from 'react'
-import Input from '../../shared/input'
+import Input from '../../shared/inputs/textInput'
 import IconButton from '../../shared/button/IconButton'
 import { TbSearch } from 'react-icons/tb'
 

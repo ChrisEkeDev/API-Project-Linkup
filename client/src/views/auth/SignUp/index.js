@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles.scss';
-import Input from '../../../components/shared/input';
+import Input from '../../../components/shared/inputs/textInput';
 import Button from '../../../components/shared/button';
 import useSignUp from '../hooks/useSignUp';
 
@@ -23,7 +23,7 @@ function SignUp() {
         <section className='auth_form--contents'>
           <Input
             label="Name"
-            placeholder='Name'
+            placeholder='Joe Smith'
             type='text'
             value={formData.name}
             setValue={handleInput}
@@ -33,7 +33,7 @@ function SignUp() {
           />
           <Input
             label="Email"
-            placeholder='Email'
+            placeholder='joesmith@email.com'
             type='text'
             value={formData.email}
             setValue={handleInput}
@@ -43,7 +43,7 @@ function SignUp() {
           />
           <Input
             label="Password"
-            placeholder='Password'
+            placeholder='yoursecrect'
             type='password'
             value={formData.password}
             setValue={handleInput}
@@ -53,7 +53,7 @@ function SignUp() {
           />
           <Input
             label="Confirm Password"
-            placeholder='Confirm Password'
+            placeholder='yoursecrect'
             type='password'
             value={formData.confirmPassword}
             setValue={handleInput}

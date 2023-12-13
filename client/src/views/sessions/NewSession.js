@@ -1,16 +1,4 @@
 import React from 'react'
-import { useApp } from '../../context/AppContext';
-import { useDispatch } from 'react-redux';
-import { TbMapPinQuestion , TbMapPinCheck , TbExclamationCircle, TbLocation } from 'react-icons/tb';
-import { CgSpinner } from "react-icons/cg";
-import Input from '../../Shared/components/Inputs/Input'
-import Button from '../../components/shared/button';
-import DateInput from '../../Shared/components/Inputs/DateInput';
-import { thunkCreateNewSession } from '../../Store/sessions';
-import TimeInput from '../../Shared/components/Inputs/TimeInput';
-import DurationInput from '../../Shared/components/Inputs/DurationInput';
-import { sessionsAlerts } from "../../constants/alerts";
-import useSessionValidation from './hooks/useSessionValidation';
 import Back from '../../components/shared/button/Back';
 
 

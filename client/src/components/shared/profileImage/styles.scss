@@ -1,0 +1,27 @@
+@import url('../../../index.css');
+
+.image_border {
+    aspect-ratio: 1;
+    border-radius: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: var(--main-border);
+
+    .initial {
+
+    }
+
+    .image {
+        aspect-ratio: 1;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        background-color: var(--main);
+    }
+    .details {
+        p {
+            font-size: 1rem;
+        }
+    }
+}

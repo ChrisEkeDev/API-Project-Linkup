@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { thunkGetAllSessions } from '../Store/sessions';
+import { thunkGetAllSessions } from '../store/sessions';
 
 const useSessions = () => {
     const dispatch = useDispatch();

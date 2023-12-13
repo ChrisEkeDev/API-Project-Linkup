@@ -5,7 +5,7 @@ import { timeFormatOptions } from "../../Shared/constants/predefinedValues";
 import { addHours, subHours, getHours } from "date-fns";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { thunkGetSingleSession } from "../../Store/sessions";
+import { thunkGetSingleSession } from "../../store/sessions";
 
 
 function useEditSessionValidation(id) {

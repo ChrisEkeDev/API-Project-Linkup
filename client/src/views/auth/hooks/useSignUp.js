@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { thunkSignUpPlayer } from '../../../Store/auth';
+import { thunkSignUpPlayer } from '../../../store/auth';
 
 const useSignUp = () => {
     const dispatch = useDispatch();

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useApp } from '../context/AppContext'
 import { useSelector, useDispatch } from "react-redux";
-import { thunkRestorePlayerSession } from "../Store/auth";
+import { thunkRestorePlayerSession } from "../store/auth";
 
 
 const useAuth = () => {

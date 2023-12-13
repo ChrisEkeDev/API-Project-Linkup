@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Input from '../../../components/shared/input';
+import Input from '../../../components/shared/inputs/textInput';
 import Button from '../../../components/shared/button';
 import '../styles.scss';
 import useSignIn from '../hooks/useSignIn';
