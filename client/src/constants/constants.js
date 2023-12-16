@@ -50,15 +50,15 @@ export const sortValues = {
 }
 
 export const sortFunctions = {
-    happeningSoon: (a,b) => {
-        return new Date(a.startDate) - new Date(b.startDate);
+    happeningSoon: (a, b) => {
+        return new Date(a?.startDate) - new Date(b?.startDate);
     },
-    mostPlayers: (a,b) => {
-        return b.CheckIns?.length - a.CheckIns?.length;
+    mostPlayers: (a, b) => {
+        return b?.CheckIns?.length - a?.CheckIns?.length;
     },
     newest: (a, b) => {
-        return new Date(b.createdAt) - new Date(a.createdAt);
-    }
+        return new Date(b?.createdAt) - new Date(a?.createdAt);
+    },
 }
 
 

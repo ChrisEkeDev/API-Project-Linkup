@@ -30,6 +30,16 @@
     }
 }
 
+.deleting_comment {
+    background-color: var(--black-hover);
+    pointer-events: none;
+    padding: 1rem;
+}
+
+.new-comment {
+    background-color: var(--black-hover);
+}
+
 .comment_contents {
     padding: .5rem 0;
     width: 100%;
@@ -64,4 +74,16 @@
     right: 1rem;
     gap: 1.5rem;
     bottom: 1rem;
+}
+
+.no_comments {
+    outline: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+    border-radius: .5rem;
+    p {
+        opacity: .5;
+    }
 }

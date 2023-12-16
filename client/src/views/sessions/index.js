@@ -1,23 +1,29 @@
-
+import React, { useState } from 'react';
 import './styles.scss';
 import SessionItem from './components/SessionItem';
 import * as ROUTE from '../../constants/routes';
 import SessionsSorter from './components/SessionSorter';
 import Button from '../../components/shared/button';
 import { useApp } from '../../context/AppContext';
-import useSort from './hooks/useSort';
+import useSessions from '../../hooks/useSessions';
+import LoadingData from '../../components/shared/loading';
+import { sortFunctions } from '../../constants/constants';
 
 
 function Sessions() {
-  const { sessions, navigate } = useApp();
-  const { sortedSessions, setSortBy } = useSort(sessions)
+  const [ sortBy, setSortBy] = useState('happeningSoon')
+  const { navigate } = useApp();
+  const { loading, sessions } = useSessions();
+
+
+  if (loading) return <LoadingData/>
 
   return (
       <main className='page sessions'>
         <header className='header'>
             <h2>Showing All Sessions ({sessions.length})</h2>
             <div className='actions'>
-              <SessionsSorter setSortBy={setSortBy}/>
+              <SessionsSorter sortBy={sortBy} setSortBy={setSortBy}/>
               <Button
                 label='New Session'
                 styles="new_session-button"
@@ -27,7 +33,7 @@ function Sessions() {
         </header>
         <section className='section'>
           <ul className='session_list scroll'>
-            {sortedSessions.map(session => (
+            {sessions.sort(sortFunctions[sortBy]).map(session => (
               <SessionItem session={session} />
             ))}
           </ul>

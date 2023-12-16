@@ -5,7 +5,7 @@ import { useApp } from '../../../context/AppContext';
 const useNavMenu = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
-    const { dispatch } = useApp();
+    const { dispatch, navigate } = useApp();
 
     const onMenuOpen = () => {
         setMenuOpen(true)
@@ -28,6 +28,7 @@ const useNavMenu = () => {
             console.log(res)
             if (res.status === 201) {
                 // Handle Alerts
+                navigate('/sign-in')
             } else {
                 throw new Error()
             }

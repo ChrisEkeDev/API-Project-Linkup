@@ -3,24 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useApp } from '../../../context/AppContext';
 import { thunkCreateComment } from '../../../store/comments';
 
-function useCreateReply(replyTo) {
+function useReplyComment(replyTo) {
     const session = useSelector(state => state.sessions.singleSession);
     const player = useSelector(state => state.auth.player);
     const [ replying, setReplying] = useState(false);
     const [ text, setText ] = useState('');
     const dispatch = useDispatch();
-    const ref2 = useRef();
-
-    const handleReplying = () => {
-        setReplying(!replying)
-    }
+    const replyRef = useRef();
 
     const handleInput = (e) => {
         setText(e.target.value);
     }
 
     const handleClickOutside = (e) => {
-        if (ref2.current && !ref2.current.contains(e.target)) {
+        if (replyRef.current && !replyRef.current.contains(e.target)) {
             setReplying(false)
         }
     }
@@ -32,7 +28,7 @@ function useCreateReply(replyTo) {
         }
      }, [])
 
-    const createComment = async (e) => {
+    const createReply = async (e) => {
         const newComment = {
             playerId: player.id,
             courtId: session.Court.id,
@@ -53,7 +49,7 @@ function useCreateReply(replyTo) {
     }
 
 
-    return { ref2, replying, setReplying, handleReplying, text, handleInput, createComment }
+    return { replyRef, replying, setReplying, text, handleInput, createReply }
 }
 
-export default useCreateReply
+export default useReplyComment

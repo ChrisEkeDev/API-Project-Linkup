@@ -360,27 +360,74 @@ router.post('/:sessionId/check-ins', requireAuth, async (req, res) => {
     })
 
     if (existingCheckIn) {
-        return res.status(405).json({
-            status: 405,
-            message: "You've already checked in to this session",
+        return res.status(403).json({
+            status: 403,
+            message: "You have already checked in to this session.",
             data: null,
             errors: {}
+
         })
+
     }
 
     const checkIn = await CheckIn.create({
         sessionId, playerId
     })
 
+    const newCheckIn = await CheckIn.findByPk(checkIn.id, {
+        include: {
+            model: Player,
+            as: 'player',
+        }
+    })
+
     return res.status(201).json({
         status: 201,
-        message: "",
-        data: checkIn,
+        message: "You have checked in to this session.",
+        data: newCheckIn,
         errors: {}
 
     })
 })
 
 
+////////////////////////////////////////////////////////////
+
+// Check Out of a Session
+
+////////////////////
+router.delete('/:sessionId/check-ins', requireAuth, async (req, res) => {
+    const { sessionId } = req.params;
+    const playerId = req.player.id;
+    const session = await Session.findByPk(sessionId);
+
+    if (!session) {
+        return res.status(404).json(sessionNotFound)
+    }
+
+    const existingCheckIn = await CheckIn.findOne({
+        where: { sessionId, playerId }
+    })
+
+    if (!existingCheckIn) {
+        return res.status(404).json({
+            status: 404,
+            message: "You haven't checked in to this session yet.",
+            data: null,
+            errors: {}
+
+        })
+
+    }
+
+    await existingCheckIn.destroy();
+    return res.status(200).json({
+        status: 200,
+        message: "You have checked out of this session.",
+        data: existingCheckIn,
+        errors: {}
+
+    })
+})
 
 module.exports = router;

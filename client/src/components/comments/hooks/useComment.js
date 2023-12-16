@@ -1,13 +1,13 @@
 import { useEffect, useState, useRef } from "react";
 import { useApp } from "../../../context/AppContext";
 import { useSelector } from 'react-redux';
-import { thunkCreateComment, thunkUpdateComment } from "../../../store/comments";
+import { thunkDeleteComment, thunkUpdateComment } from "../../../store/comments";
 
 const useComment = (comment) => {
     const { auth, dispatch } = useApp();
     const session = useSelector(state => state.sessions.singleSession);
     const [ value, setValue ] = useState(comment.text);
-    const [ mode, setMode ] = useState(null);
+    const [ updating, setUpdating ] = useState(false);
     const ref = useRef(null);
 
     const onValueChange = (e) => {
@@ -16,22 +16,15 @@ const useComment = (comment) => {
 
     const handleClickOutside = (e) => {
         if (ref.current && !ref.current.contains(e.target)) {
-            setMode(null)
+            setUpdating(false)
         }
     }
 
-    const createComment = async (replyTo) => {
-        const newComment = {
-            playerId: auth.id,
-            courtId: session.Court.id,
-            sessionId: session.id,
-            text: value,
-            replyTo: replyTo ? replyTo : null
-        }
+    const updateComment = async () => {
         try {
-            const response = await dispatch(thunkCreateComment(newComment));
-            if (response.status === 201) {
-                setMode(null)
+            const response = await dispatch(thunkUpdateComment({value}, comment?.id ));
+            if (response.status === 200) {
+                setUpdating(false)
             } else {
                 throw new Error()
             }
@@ -40,13 +33,13 @@ const useComment = (comment) => {
         }
     }
 
-    const updateComment = async () => {
+    const deleteComment = async (comment, cb) => {
         try {
-            const response = await dispatch(thunkUpdateComment({value}, comment?.id ));
-            if (response.status === 200) {
-                setMode(null)
+            const response = await dispatch(thunkDeleteComment(comment.id))
+            if ( response.status === 200) {
+                cb(false)
             } else {
-                throw new Error()
+                throw new Error
             }
         } catch(error) {
             console.log(error)
@@ -65,11 +58,11 @@ const useComment = (comment) => {
     return {
         ref,
         setValue,
-        mode,
-        setMode,
+        updating,
+        setUpdating,
         onValueChange,
-        createComment,
-        updateComment
+        updateComment,
+        deleteComment
     }
 }
 

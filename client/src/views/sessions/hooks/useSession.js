@@ -1,31 +1,55 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useApp } from "../../../context/AppContext";
-import { thunkGetSingleSession } from "../../../store/sessions";
-import { useParams } from "react-router-dom";
-import { thunkGetCheckIns } from "../../../store/checkins";
+import { thunkDeleteSession } from "../../../store/sessions";
+import { thunkAddCheckIn, thunkDeleteCheckIn } from "../../../store/checkins"
 
-function useSession() {
-    const { id } = useParams();
-    const { dispatch } = useApp();
-    const session = useSelector(state => state.sessions.singleSession)
-    const checkInData = useSelector(state => state.checkIns.sessionCheckIns)
-    const checkIns = Object.values(checkInData);
+const useSession = (session) => {
+    const { dispatch, navigate } = useApp();
 
-    useEffect(() => {
-        const getSession = () => {
-            try {
-                dispatch(thunkGetSingleSession(id));
-                dispatch(thunkGetCheckIns(id))
-            } catch(e) {
-                console.log(e)
+    const deleteSession = async () => {
+        try {
+            const res = await dispatch(thunkDeleteSession(session));
+            if (res.status === 200) {
+                navigate("/")
+            } else {
+                throw new Error();
             }
+        } catch(e) {
+            console.log(e)
         }
-        getSession();
 
-    }, [dispatch, id])
+    }
 
-    return { session, checkIns }
+    const checkIn = async () => {
+        try {
+            const res = await dispatch(thunkAddCheckIn(session.id));
+            if (res.status === 201 || res.status === 200) {
+                console.log(res)
+            } else {
+                throw new Error();
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const checkOut = async () => {
+        try {
+            const res = await dispatch(thunkDeleteCheckIn(session.id));
+            if (res.status === 200) {
+                console.log(res)
+            } else {
+                throw new Error();
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    return {
+        deleteSession,
+        checkIn,
+        checkOut
+    }
 }
 
 export default useSession;

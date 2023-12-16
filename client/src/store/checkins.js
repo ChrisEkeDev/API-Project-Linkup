@@ -24,14 +24,14 @@ const actionGetCheckIns = (checkIns) => ({
 //     payload: checkIns
 // })
 
-const actionAddCheckIn = (checkIns) => ({
+const actionAddCheckIn = (checkIn) => ({
     type: ADD_CHECKIN,
-    payload: checkIns
+    payload: checkIn
 })
 
-const actionDeleteCheckIn = (checkIns) => ({
+const actionDeleteCheckIn = (checkIn) => ({
     type: DELETE_CHECKIN,
-    payload: checkIns
+    payload: checkIn
 })
 
 
@@ -82,10 +82,9 @@ export const thunkAddCheckIn = (sessionId) => async dispatch => {
     }
 }
 
-export const thunkDeleteCheckIn = (checkIn) => async dispatch => {
-    const res = await csrfFetch(`/api/sessions/${checkIn.sessionId}/checkIn`, {
-        method: 'DELETE',
-        body: JSON.stringify(checkIn)
+export const thunkDeleteCheckIn = (sessionId) => async dispatch => {
+    const res = await csrfFetch(`/api/sessions/${sessionId}/check-ins`, {
+        method: 'DELETE'
     })
     try {
         const jsonResponse = await res.json();
@@ -117,12 +116,12 @@ const checkInsReducer = (state = initialState, action) => {
         //     return newState;
         // }
         case ADD_CHECKIN: {
-            const newState = { ...state };
+            const newState = { ...state, sessionCheckIns: {...state.sessionCheckIns } };
             newState.sessionCheckIns = {...newState.sessionCheckIns, [action.payload.id]: action.payload }
             return newState;
         }
         case DELETE_CHECKIN: {
-            const newState = { ...state };
+            const newState = { ...state, sessionCheckIns: {...state.sessionCheckIns } };
             delete newState.sessionCheckIns[action.payload.id]
             return newState;
         }

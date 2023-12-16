@@ -4,6 +4,7 @@ import './styles.scss';
 function ProfileImage({player, size }) {
     const borderHeight = size ? size : 5;
     const imageHeight = borderHeight - .5;
+    const initialSize = borderHeight / 1.619;
     const hasImage = player?.profileImage !== null;
 
     return (
@@ -16,7 +17,7 @@ function ProfileImage({player, size }) {
         >
             {
                 !hasImage ?
-                <p className='initial'>{player?.name.charAt(0)}</p> :
+                <p className='initial'style={{fontSize: `${initialSize}rem`}}>{player?.name.charAt(0)}</p> :
                 <div
                     className='image'
                     style={{

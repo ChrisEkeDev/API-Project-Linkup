@@ -1,0 +1,28 @@
+@import url('../../../index.css');
+
+.loading {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner {
+    font-size: 2rem;
+    color: var(--main);
+    animation-duration: 1s;
+    animation-name: spin;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}

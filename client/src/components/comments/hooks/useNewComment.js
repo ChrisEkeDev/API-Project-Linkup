@@ -1,26 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useApp } from '../../../context/AppContext';
 import { thunkCreateComment } from '../../../store/comments';
 
-function useCreateComment() {
+function useNewComment() {
+    const { dispatch } = useApp();
     const session = useSelector(state => state.sessions.singleSession);
     const player = useSelector(state => state.auth.player);
     const [ creating, setCreating] = useState(false);
     const [ text, setText ] = useState('');
-    const dispatch = useDispatch();
-    const ref3 = useRef();
-
-    const handleCreating = () => {
-        setCreating(!creating)
-    }
+    const ref = useRef();
 
     const handleInput = (e) => {
         setText(e.target.value);
     }
 
     const handleClickOutside = (e) => {
-        if (ref3.current && !ref3.current.contains(e.target)) {
+        if (ref.current && !ref.current.contains(e.target)) {
             setCreating(false)
         }
     }
@@ -28,7 +24,7 @@ function useCreateComment() {
     const createComment = async (e) => {
         const newComment = {
             playerId: player.id,
-            courtId: session.Court.id,
+            courtId: session.courtId,
             sessionId: session.id,
             text,
             replyTo: null
@@ -52,10 +48,10 @@ function useCreateComment() {
         }
      }, [])
 
-     return { ref3, creating, setCreating, handleCreating, text, handleInput, createComment }
+     return { ref, creating, setCreating, text, handleInput, createComment }
 
     }
 
 
 
-export default useCreateComment
+export default useNewComment

@@ -17,7 +17,9 @@ function Input(props) {
         error,
         value,
         setValue,
-        disabled
+        disabled,
+        min,
+        max
     } = props;
     const { errorBorder } = globalStyles || '1px solid #a02828';
 
@@ -31,6 +33,8 @@ function Input(props) {
                 name={name}
                 defaultValue={value}
                 onChange={setValue}
+                min={type === 'number' ? min : null}
+                max={type === 'number' ? max : null}
                 type={type === 'password' ? passwordHidden ? 'password' : 'text' : type}
                 placeholder={placeholder}
                 style={error ? {outline: errorBorder} : null}

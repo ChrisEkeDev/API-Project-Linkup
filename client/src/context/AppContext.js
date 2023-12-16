@@ -1,13 +1,13 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import useSessions from "../hooks/useSessions";
 // import Loading from '../App/Loading';
 // import Alerts from '../App/Alerts';
 // import {v4 as uuidv4} from 'uuid';
 import { appOptions } from "../constants/constants";
 import useAuth from "../hooks/useAuth";
-import useSessions from "../hooks/useSessions";
-import useModal from "../hooks/useModal";
+
 
 const AppContext = createContext();
 
@@ -15,11 +15,8 @@ export const useApp = () => useContext(AppContext);
 
 function AppProvider({children}) {
     const { auth } = useAuth();
-    const { sessions } = useSessions();
-    const { isModalOpen, onOpenModal, onCloseModal } = useModal();
     const dispatch = useDispatch();
     // const [ alerts, setAlerts ] = useState([]);
-    const [ sortBy, setSortBy] = useState(appOptions.sortBy)
     // const [ locationServices, setLocationServices ] = useState(false);
     // const [ currentLocation, setCurrentLocation ] = useState({})
     // const [ map, setMap ] = useState({});
@@ -27,9 +24,9 @@ function AppProvider({children}) {
     const navigate = (route) => {
         history.push(route)
     }
-
-    const goBack = () => {
-      history.goBack();
+    const goBack = (route) => {
+      if (route) history.push(route)
+      else history.goBack();
     }
 
     // const getCurrentLocation = () => {
@@ -66,12 +63,6 @@ function AppProvider({children}) {
             navigate,
             dispatch,
             auth,
-            sessions,
-            isModalOpen,
-            onOpenModal,
-            onCloseModal,
-            sortBy,
-            setSortBy,
             goBack
           }}
           >

@@ -3,6 +3,7 @@ import { useApp } from '../../../context/AppContext';
 import ProfileImage from '../../../components/shared/profileImage';
 import { format, parseISO } from 'date-fns';
 import '../styles.scss';
+import { TbArrowRight } from 'react-icons/tb';
 
 function SessionItem({session}) {
   const { navigate } = useApp();
@@ -15,11 +16,6 @@ function SessionItem({session}) {
 
   return (
     <li onClick={() => navigate(`/sessions/${session.id}`)} className='session_item'>
-      <div className='details'>
-        <p>{session.name}</p>
-        <p className='time'>{dayOfWeek}, {displayDate} @ {displayTime}</p>
-        <small>20 Players checked in</small>
-      </div>
       <div className='creator'>
         <ProfileImage
           player={session.creator}
@@ -29,6 +25,16 @@ function SessionItem({session}) {
           <p>{session.creator.name}</p>
         </div>
       </div>
+      <div className='player_count'>
+        <h2 className='count'>{session.CheckIns.length}</h2>
+        <small>Players</small>
+      </div>
+      <div className='details'>
+        <p className='grey'>{session.name}</p>
+        <p className='gold'>{dayOfWeek}, {displayDate} @ {displayTime}</p>
+        <p>{session.Court.address}</p>
+      </div>
+      <TbArrowRight className='session_arrow'/>
     </li>
   )
 }

@@ -1,153 +1,155 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Back from '../../components/shared/button/Back';
+import { useParams } from 'react-router-dom';
+import { thunkGetSingleSession } from '../../store/sessions';
+import useUpdateSession from './hooks/useUpdateSession';
+import Input from '../../components/shared/inputs/textInput';
+import Button from '../../components/shared/button';
+import { TbCalendar, TbClock, TbGauge, TbMapPinCheck, TbMapPinQuestion, TbMapPin } from 'react-icons/tb';
+import { CgSpinner } from 'react-icons/cg';
 import { useSelector } from 'react-redux';
+import { useApp } from '../../context/AppContext';
+import LoadingData from '../../components/shared/loading';
 
 function UpdateSession({session}) {
-    // const dispatch = useDispatch();
-    // const { navigate, setLoading, handleAlerts } = useApp();
-    // const { updateSessionSuccess, updateSessionError } = sessionsAlerts;
-    // // console.log(session)
-    // const  [
-    //     sessionData,
-    //     errors,
-    //     handleSessionInput,
-    //     geocodeAddress,
-    //     status,
-    // ] = useEditSessionValidation(session.id);
-
-    // const updateSession = async (e) => {
-    //     setLoading(true);
-    //     e.preventDefault();
-    //     try {
-    //         const data = await dispatch(thunkUpdateSession(sessionData, session.id));
-    //         handleAlerts(updateSessionSuccess);
-    //         navigate(`/sessions/${data.data.id}`)
-    //     } catch (error) {
-    //         handleAlerts(updateSessionError);
-    //         console.error(error)
-    //     } finally {
-    //         setLoading(false)
-    //     }
-    // }
+    const  {
+        sessionData,
+        addressObject,
+        errors,
+        handleInput,
+        verifyAddress,
+        updateSession,
+        status
+    } = useUpdateSession(session);
 
   return (
         <main className='page new-session'>
             <header className='header'>
                 <Back/>
-                <div className='actions'>
-
-                </div>
             </header>
+            <form className='session_form'>
+                <header className='form_header'>
+                    <h2>Update Session</h2>
+                </header>
+                <Input
+                    label="Name"
+                    placeholder='Hoops at the Parks'
+                    value={sessionData?.name}
+                    setValue={handleInput}
+                    name='name'
+                    error={errors?.name}
+                    disabled={false}
+                />
+                <div className='form_input'>
+                    <Input
+                        label="Full Address"
+                        placeholder='123 Fake St, City, ST'
+                        value={sessionData?.address}
+                        setValue={handleInput}
+                        name='address'
+                        error={errors?.address}
+                        disabled={false}
+                    />
+                    <Button
+                        label={
+                            status === "loading" ? "Loading"
+                            : status === "success" ? "Address Verified"
+                            : "Verify Address"
+                        }
+                        styles={`input_button ${status !== "success" ? "secondary" : "primary"}`}
+                        icon={
+                            status === "loading" ? CgSpinner :
+                            status === "success" ? TbMapPinCheck  :
+                            TbMapPinQuestion
+                        }
+                        action={verifyAddress}
+                    />
+                </div>
+                {
+                    Object.keys(addressObject).length && status === "success" ?
+                    <div className='form_verification'>
+                    <TbMapPin className="icon"/>
+                    <div className='details'>
+                        <small>Verified Address</small>
+                        <p className='time'>{addressObject.address}</p>
+                    </div>
+                    </div> :
+                    null
+                }
+                <div className='form_flex'>
+                <Input
+                    label="Date"
+                    name="date"
+                    type="date"
+                    iconRight={<TbCalendar className='input_icon'/>}
+                    value={sessionData?.date}
+                    setValue={handleInput}
+                    error={errors?.date}
+                    disabled={false}
+                />
+                <Input
+                    label="Time"
+                    name="time"
+                    type="time"
+                    iconRight={<TbClock className='input_icon'/>}
+                    value={sessionData?.time}
+                    setValue={handleInput}
+                    error={errors?.time}
+                    disabled={false}
+                />
+                <Input
+                    label="Duration (hours)"
+                    name="duration"
+                    type="number"
+                    min={1}
+                    max={6}
+                    iconRight={<TbGauge className='input_icon'/>}
+                    value={sessionData?.duration}
+                    setValue={handleInput}
+                    error={errors?.duration}
+                    disabled={false}
+                />
+                </div>
+                <footer className='form_actions'>
+                    <Button
+                        label="Update Session"
+                        styles=""
+                        action={updateSession}
+                    />
+                </footer>
+            </form>
         </main>
-    // <section className='sessions__single_page--wrapper'>
-    //     <header className='sessions__single_page--header'>
-    //         <div className='sessions__single_page--header-back'>
-    //         <span onClick={() => navigate(`/sessions/${session.id}`)} className='sessions__single_page--back'>
-    //             <TbArrowLeft />
-    //         </span>
-    //         <span>Back to results</span>
-    //         </div>
-    //         <div>
-    //             {/* <Button
-    //               style='sessions__results_header--button'
-    //               type="secondary"
-    //               label="Cancel"
-    //             /> */}
-    //         </div>
-    //     </header>
-    //     <form className='sessions__single_page--contents'>
-    //         <header className='sessions__single_page--section'>
-    //             <h1>Edit Session</h1>
-    //             <p>Update your session</p>
-    //         </header>
-    //         <div className='sessions__single_page--form'>
-    //             <Input
-    //                 label="Name"
-    //                 placeholder='Hoops at the Parks'
-    //                 value={sessionData?.name}
-    //                 setValue={handleSessionInput}
-    //                 name='name'
-    //                 error={errors?.name}
-    //                 disabled={false}
-    //             />
-    //             <div className='sessions__single_page--input'>
-    //                 <Input
-    //                     label="Full Address"
-    //                     placeholder='123 Fake St, City, ST'
-    //                     value={sessionData?.address}
-    //                     setValue={handleSessionInput}
-    //                     name='address'
-    //                     error={errors?.address}
-    //                     disabled={true}
-    //                 />
-    //                 <Button
-    //                     label="Address Verified"
-    //                     type='secondary'
-    //                     style={`sessions__single_page--input_button ${status !== "success" ? "button--unverified" : null}`}
-    //                     icon={TbCheck}
-    //                     action={geocodeAddress}
-    //                     disabled={true}
-    //                 />
-    //             </div>
-    //             <div className='sessions__single_page--date_time'>
-    //                 <DateInput
-    //                     label="Date"
-    //                     name="date"
-    //                     value={sessionData?.date}
-    //                     setValue={handleSessionInput}
-    //                     error={errors?.date}
-    //                     disabled={false}
-    //                 />
-    //                 <TimeInput
-    //                     label="Time"
-    //                     name="time"
-    //                     value={sessionData?.time}
-    //                     setValue={handleSessionInput}
-    //                     error={errors?.time}
-    //                     disabled={false}
-    //                 />
-    //                 <DurationInput
-    //                     label="Duration (Hours)"
-    //                     name="duration"
-    //                     value={sessionData?.duration}
-    //                     setValue={handleSessionInput}
-    //                     error={errors?.duration}
-    //                     disabled={false}
-    //                 />
-    //             </div>
-    //             <div className='session_single_page--actions'>
-    //                 <Button
-    //                     type="primary"
-    //                     label="Update Session"
-    //                     style="session_single_page--button"
-    //                     disabled={Object.keys(errors).length}
-    //                     action={updateSession}
-    //                 />
-    //             </div>
-    //         </div>
-    //     </form>
-    // </section>
   )
 }
 
 
-function EditSessionWrapper() {
-    // const dispatch = useDispatch();
-    // const { id } = useParams();
+
+
+function UpdateSessionWrapper() {
+    const { id } = useParams();
+    const { dispatch } = useApp();
+    const [ loading, setLoading ] = useState(true);
     const session = useSelector(state => state.sessions.singleSession);
+    useEffect(() => {
+        const getSession = async () => {
+            try {
+                const res = await dispatch(thunkGetSingleSession(id));
+                if (res.status === 200 && res.status === 200 && session) {
+                    setLoading(false);
+                }
+            } catch(e) {
+                console.log(e)
+            }
+        }
+        getSession();
 
-    // useEffect(() => {
-    //     const loadSession = () => {
-    //         dispatch(thunkGetSingleSession(id))
-    //     }
-    //     loadSession()
-    // }, [])
+    }, [dispatch, id])
 
-    // if (!session) return <DataLoading />
+    if (loading) return <LoadingData/>
 
     return (
         <UpdateSession session={session}/>
     )
 }
 
-export default EditSessionWrapper
+export default UpdateSessionWrapper

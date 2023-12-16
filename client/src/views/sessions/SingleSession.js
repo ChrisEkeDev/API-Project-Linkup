@@ -1,62 +1,28 @@
 import Back from '../../components/shared/button/Back';
+import { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import useSession from './hooks/useSession';
 import Button from '../../components/shared/button';
 import Modal from '../../components/shared/modal';
-import SessionPlayer from './components/SessionPlayer';
 import Comments from '../../components/comments';
-import { TbBallBasketball, TbClock, TbMapPin } from 'react-icons/tb';
-import ProfileImage from '../../components/shared/profileImage';
-import { format, parseISO } from 'date-fns';
+import { useSelector } from 'react-redux';
+import { thunkGetSingleSession } from '../../store/sessions';
+import { useParams } from 'react-router-dom';
+import useModal from '../../hooks/useModal';
+import { thunkGetCheckIns } from '../../store/checkins';
+import SessionInformation from './components/SessionInformation';
+import SessionCheckIns from './components/SessionCheckIns';
+import LoadingData from '../../components/shared/loading';
 
 
-function SingleSession() {
-    const { session, checkIns } = useSession();
-    const { auth, navigate, isModalOpen, onOpenModal, onCloseModal } = useApp();
+function SingleSession({session}) {
+    const { deleteSession, checkIn, checkOut } = useSession(session);
+    const checkInsData = useSelector(state => state.checkIns.sessionCheckIns);
+    const checkIns = Object.values(checkInsData)
+    const { auth, navigate } = useApp();
+    const { isModalOpen, onOpenModal, onCloseModal } = useModal();
     const isCreator = auth?.id == session?.creatorId;
-
-
-
-
-    // const deleteSession = async () => {
-    //     setLoading(true)
-    //     try {
-    //         const response = await dispatch(thunkDeleteSession(session));
-    //         if (response.status === 200) {
-    //             handleAlerts(deleteSessionSuccess)
-    //             navigate("/")
-    //         } else {
-    //             throw new Error();
-    //         }
-    //     } catch(error) {
-    //         handleAlerts(deleteSessionError);
-    //         console.error(error)
-    //     } finally {
-    //         setLoading(false)
-    //     }
-
-    // }
-
-    // const checkIn = async () => {
-    //     setLoading(true);
-    //     try {
-    //         const response = await dispatch(thunkAddCheckIn(session.id));
-    //         if (response.status === 201) {
-    //             handleAlerts(checkInSuccess)
-    //             navigate("/")
-    //         } else {
-    //             throw new Error();
-    //         }
-    //     } catch (error) {
-    //         handleAlerts(checkInError);
-    //         console.error(error)
-    //     } finally {
-    //         setLoading(false)
-    //     }
-    // }
-
-
-    if (!session) return <div>Not Found</div>
+    const isCheckedIn = checkIns.filter(checkin => checkin.playerId === auth.id).length > 0;
 
     return (
         <main className='page single-session'>
@@ -80,73 +46,72 @@ function SingleSession() {
                     <>
                         <Button
                             styles=''
-                            label="Check In"
-                            // action={}
+                            label={isCheckedIn ? "Check Out" : "Check In"}
+                            action={isCheckedIn ? checkOut : checkIn}
                         />
                     </>
                 }
             </div>
         </header>
         <section className='section scroll'>
-            <div className='session_creator'>
-                <ProfileImage
-                    player={session.creator}
-                    size={6}
-                />
-                <div className='details'>
-                    <small>Created By</small>
-                    <p>{session.creator?.name}</p>
-                </div>
-            </div>
-            <div className='sessions_info'>
-                <div className='grid'>
-                    <TbBallBasketball className='icon'/>
-                    <div className='details'>
-                        <small>What</small>
-                        <p className='med'>{session.name}</p>
-                    </div>
-                </div>
-                <div className='grid'>
-                    <TbMapPin className='icon'/>
-                    <div className='details'>
-                        <small>Where</small>
-                        <p className='time'>{session.Court?.address}</p>
-                    </div>
-                </div>
-                <div className='grid'>
-                    <TbClock className='icon'/>
-                    <div className='details'>
-                        <small>When</small>
-                        <p className='time'>
-                            {/* {format(parseISO(session?.startDate), 'EEEE')},
-                            {format(parseISO(session?.startDate), 'P').slice(0, -5)} @
-                            {format(parseISO(session?.startDate), "p") } */}
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div className='session_players'>
-                <header className='sub_header'>
-                    <h2>Players</h2>
-                </header>
-                <ul className='checkIn_list'>
-                    {
-                        checkIns.map(checkIn => (
-                            <SessionPlayer checkIn={checkIn}/>
-                        ))
-                    }
-                </ul>
-            </div>
+            <SessionInformation session={session}/>
+            <SessionCheckIns checkIns={checkIns}/>
             <Comments/>
         </section>
         <Modal
             isModalOpen={isModalOpen}
             onCloseModal={onCloseModal}
         >
-                <div>1</div>
+            <h2>Are you sure you want to delete this session?</h2>
+            <div className='deleting_session'>
+                <SessionInformation session={session}/>
+                <SessionCheckIns checkIns={checkIns}/>
+            </div>
+            <div className='modal_actions'>
+                <Button
+                    label="Keep Session"
+                    styles=""
+                    action={onCloseModal}
+                />
+                <Button
+                    label="Delete Session"
+                    styles=""
+                    action={deleteSession}
+                />
+            </div>
         </Modal>
     </main>
     )
 }
 
-export default SingleSession
+
+function SingleSessionWrapper() {
+    const { id } = useParams();
+    const { dispatch } = useApp();
+    const [ loading, setLoading ] = useState(true);
+    const session = useSelector(state => state.sessions.singleSession);
+
+    useEffect(() => {
+        const getSession = async () => {
+            try {
+                const res = await dispatch(thunkGetSingleSession(id));
+                const res2 = await dispatch(thunkGetCheckIns(id))
+                if (res.status === 200 && res2.status === 200 && session) {
+                    setLoading(false);
+                }
+            } catch(e) {
+                console.log(e)
+            }
+        }
+        getSession();
+
+    }, [dispatch, id])
+
+    if (loading) return <LoadingData/>
+
+    return (
+        <SingleSession session={session}/>
+    )
+}
+
+export default SingleSessionWrapper
