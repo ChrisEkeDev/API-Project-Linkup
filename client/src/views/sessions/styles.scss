@@ -1,29 +1,33 @@
 @import url('../../index.css');
 
 ////////////////////////////////////////////////////////////////////
-
+.sessions,
+.single_session {
+    padding-top: 1rem;
+    padding-right: 1rem;
+}
 .session_list {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    flex: 1;
-    padding: 1rem 1rem 10rem 1rem;
+    padding-bottom: 10rem;
 }
 
 .session_item {
     padding: 1rem;
     cursor: pointer;
     position: relative;
-    display: grid;
-    grid-template-columns: 30% 15% auto;
-    gap: 1rem;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    border-radius: .5rem;
+    border-radius: 1rem;
+    width: 100%;
+    transition: background .3s ;
 
     &:hover {
-        background-color: var(--black-hover);
-        .session_arrow {
-            display: block;
+        background-color: var(--hover);
+        .accent {
+            color: var(--main)
         }
     }
 
@@ -48,25 +52,7 @@
         }
     }
 
-    .player_count {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        border-right: var(--border);
-        padding-right: 1rem;
-        height: 100%;
-        h2 {
-            font-size: 2rem;
-            color: var(--main)
-        }
 
-        small {
-            font-size: .8rem;
-            font-weight: 600;
-            color: var(--label);
-        }
-    }
 
     .session_arrow {
         position: absolute;
@@ -75,35 +61,78 @@
     }
 }
 
-
-
-.sessions_sorter {
-    padding: 0 .5rem;
-    border-radius: .5rem;
-    cursor: pointer;
-
-
-    &:hover {
-        outline: var(--border);
-        background-color: var(--black-hover);
+.player_count {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin-right: 1rem;
+    .count {
+        font-size: 2rem;
     }
-    .select {
-        background-color: var(--background);
-        height: 2.5rem;
-        padding-right: .5rem;
+
+    small {
+        font-size: .8rem;
+        font-weight: 600;
+        color: var(--label);
+    }
+}
+
+.sessions_search {
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+    padding: 2rem 1.5rem 0rem 1rem;
+    .search_input {
+        height: 3rem;
         border: none;
+        width: 100%;
+        padding: 0 1rem;
+        border-radius: 5rem;
+        box-shadow: var(--box-shadow);
+        background-color: var(--background);
         color: var(--white);
-        &:focus {
-            outline: transparent
+        &:focus, &:hover  {
+            background-color: var(--black-hover);
+            outline: transparent;
         }
     }
 }
 
+
+.sessions_sorter {
+    position: relative;
+    padding: 0 .5rem;
+    border-radius: .5rem;
+    cursor: pointer;
+
+    // &:hover {
+    //     outline: var(--border);
+    //     background-color: var(--black-hover);
+    // }
+    // .select {
+    //     background-color: var(--background);
+    //     height: 2.5rem;
+    //     padding-right: .5rem;
+    //     border: none;
+    //     color: var(--white);
+    //     &:focus {
+    //         outline: transparent
+    //     }
+    // }
+}
+
 .session_information {
-    display: grid;
-    grid-template-columns: 40% auto;
-    gap: 1rem;
-    border-bottom: var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 1rem 3rem 1rem;
+    .player_count {
+        .count {
+            color: var(--mains)
+        }
+    }
 }
 
 .session_creator {
@@ -115,26 +144,6 @@
     flex-shrink: 0;
 }
 
-.details {
-    small {
-        font-size: .8rem;
-        font-weight: 600;
-        color: var(--label);
-        white-space: nowrap;
-    }
-    p {
-        font-weight: 600;
-        font-size: 1rem;
-    }
-
-    .med {
-        font-size: 1.25rem;
-    }
-    .time {
-        font-size: 1.25rem;
-        color: var(--main)
-    }
-}
 
 .sessions_info {
     padding: 1rem;
@@ -159,11 +168,21 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    position: relative;
+    border-top: var(--border);
+    padding: 3rem 1rem;
+
+    .section_label {
+        position: absolute;
+        padding: .5rem;
+        background-color: var(--background);
+        left: .5rem;
+        top: -1.15rem
+    }
 }
 
 .checkIn_list{
     display: flex;
-    padding: 0 2rem 2rem 2rem;
     align-items: center;
     gap: 3rem;
 }
@@ -173,7 +192,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: .5rem;
 
     .name {
         font-weight: 600;

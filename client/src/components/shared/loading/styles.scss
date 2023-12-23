@@ -1,11 +1,16 @@
 @import url('../../../index.css');
 
 .loading {
-    height: 100%;
-    width: 100%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: var(--background);
+    position: absolute;
+    z-index: 10;
 }
 
 
@@ -21,7 +26,7 @@
 .spinner {
     font-size: 2rem;
     color: var(--main);
-    animation-duration: 1s;
+    animation-duration: .619s;
     animation-name: spin;
     animation-timing-function: linear;
     animation-iteration-count: infinite;

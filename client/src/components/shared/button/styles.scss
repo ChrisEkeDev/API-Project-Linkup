@@ -6,17 +6,14 @@
     font-size: 1rem;
     height: 2.5rem;
     font-weight: 600;
-    border-radius: .5rem;
+    border-radius: 1.5rem;
     border: none;
-    font-family: 'Outfit';
-    background-color: var(--background);
+    outline: none;
+    box-shadow: var(--box-shadow);
     color: var(--white);
-    outline: var(--border);
+    transition: all .1s ease;
     cursor: pointer;
 
-    &:hover {
-        background-color: var(--black-hover);
-    }
     &:disabled {
         pointer-events: none;
         opacity: .5;
@@ -45,27 +42,23 @@
 }
 
 
-.icon-button {
+.icon_button {
     padding: 0;
     height: 2.5rem;
     font-weight: 600;
     aspect-ratio: 1;
-    border-radius: .5rem;
+    border-radius: 2.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: var(--box-shadow);
     border: none;
-    background-color: var(--background);
+    background-color: white;
     cursor: pointer;
-    color: var(--white);
-
-    &:hover {
-        outline: var(--border);
-        background-color: var(--black-hover);
-    }
+    color: var(--text);
 
     .icon {
-        font-size: 1.25rem;
+        font-size: 1rem;
     }
 }
 
@@ -76,18 +69,55 @@
 
 
 .back--button {
-    padding: 0 1rem;
     border-radius: .5rem;
     display: flex;
     align-items: center;
-    gap: .5rem;
+    gap: .25rem;
     height: 2.5rem;
-    outline: var(--border);
+    color: var(--text);
+    border: none;
     cursor: pointer;
+    opacity: .75;
     .icon {
-        font-size: 1.25rem;
-    }
-    span {
         font-size: 1rem;
     }
+    span {
+        font-size: .8rem;
+    }
+    &:hover {
+        opacity: 1;
+    }
+}
+
+
+.primary {
+    background-color: var(--main);
+    color: white;
+}
+
+
+.secondary {
+    background-color: var(--background);
+    color: var(--main);
+}
+
+.tertiary {
+    background-color: var(--background);
+    color: var(--text);
+}
+
+.reply {
+    color: var(--reply)
+}
+
+.success {
+    color: var(--success)
+}
+
+.warning {
+    color: var(--error)
+}
+
+.cancel {
+    color: var(--border-color)
 }

@@ -1,25 +1,37 @@
-import React, { useState } from 'react';
-import MapError from './components/MapError';
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
-import Map from './components/Map';
-import './styles.scss';
 
-function MapWrapper() {
+import { APIProvider, Map } from '@vis.gl/react-google-maps';
+import useMap from './hooks/useInitializeMap';
+import { useSelector } from 'react-redux';
+import SessionMarker from './components/SessionMarker';
+import { useEffect } from 'react';
 
-  const render = (status) => {
-    switch(status) {
-        // case Status.LOADING: return <Loading/>; break;
-        case Status.FAILURE: return <MapError />; break;
-        case Status.SUCCESS: return <Map/>; break;
-    }
-  }
+function MapWrapper(props) {
+  const { center, sessions, focusSession  } = useMap()
+
+
+  useEffect(() => {
+
+  }, [])
+
+  if (!center) return <div></div>
 
   return (
-    <Wrapper
-      apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
-      libraries={["marker", "places"]}
-      render={render}
-    />
+    <APIProvider apiKey={process.env.REACT_APP_GOOGLE_API_KEY} libraries={['marker']}>
+      <Map
+        mapId={'fc1ef067cfa808f9'}
+        zoom={10}
+        center={center}
+        gestureHandling={'greedy'}
+        disableDefaultUI={true}
+      >
+        {
+          sessions.map(session => (
+            <SessionMarker {...{focusSession, session}} />
+          ))
+        }
+
+      </Map>
+    </APIProvider>
   )
 }
 

@@ -1,7 +1,8 @@
 import React from 'react'
-import Input from '../../shared/inputs/textInput'
+// import Input from '../../shared/inputs/textInput'
 import IconButton from '../../shared/button/IconButton'
-import { TbSearch } from 'react-icons/tb'
+import { TbSearchC } from 'react-icons/tb'
+import { IoSearchCircle } from "react-icons/io5";
 
 function NavSearch() {
   return (
@@ -10,11 +11,11 @@ function NavSearch() {
             className='search'
             placeholder="Search by name or address"
         />
-        <IconButton
-            icon={TbSearch}
+        {/* <IconButton
+            icon={IoSearchCircle}
             styles=""
             action={() => alert("Coming Soon")}
-        />
+        /> */}
     </div>
   )
 }

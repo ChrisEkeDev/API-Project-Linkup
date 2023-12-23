@@ -5,7 +5,7 @@ import { thunkCreateNewSession } from "../../../store/sessions";
 import { geocodeAddress } from "../../../helpers/geocodeAddress";
 
 function useNewSession() {
-    const { dispatch, navigate } = useApp();
+    const { dispatch, navigate, setLoading } = useApp();
     const [ addressQuery, setAddressQuery ] = useState("");
     const [ addressObject, setAddressObject ] = useState({});
     const [ status, setStatus ] = useState(null);
@@ -33,12 +33,15 @@ function useNewSession() {
     }
 
     const createSession = async (e) => {
+        setLoading(true)
         e.preventDefault();
         try {
             const data = await dispatch(thunkCreateNewSession(sessionData));
             navigate(`/sessions/${data.data.id}`)
         } catch (e) {
             console.error(e)
+        } finally {
+            setLoading(false)
         }
     }
 

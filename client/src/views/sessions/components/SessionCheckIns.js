@@ -4,9 +4,7 @@ import SessionPlayer from './SessionPlayer'
 function SessionCheckIns({checkIns}) {
   return (
     <div className='session_players'>
-        <header className='sub_header'>
-            <h2>Players ({checkIns.length})</h2>
-        </header>
+            <span className='section_label xs bold'>{checkIns.length} Players </span>
         <ul className='checkIn_list'>
             {
                 checkIns.map(checkIn => (

@@ -1,10 +1,12 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import useNewSession from './hooks/useNewSession';
 import Back from '../../components/shared/button/Back';
 import Input from '../../components/shared/inputs/textInput';
 import Button from '../../components/shared/button';
 import { TbCalendar, TbClock, TbGauge, TbMapPinCheck, TbMapPinQuestion, TbMapPin } from 'react-icons/tb';
 import { CgSpinner } from 'react-icons/cg';
+import { page_transitions } from '../../constants/animations';
 
 
 
@@ -19,8 +21,9 @@ function NewSession() {
     createSession
   } = useNewSession();
 
+
   return (
-    <main className='page new-session'>
+    <motion.main {...page_transitions} className='page new-session'>
         <header className='header'>
             <Back/>
         </header>
@@ -115,7 +118,7 @@ function NewSession() {
             />
           </footer>
         </form>
-    </main>
+    </motion.main>
   )
 }
 

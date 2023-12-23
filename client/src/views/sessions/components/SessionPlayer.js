@@ -10,7 +10,7 @@ function SessionPlayer({checkIn}) {
                 player={player}
                 size={4}
             />
-            <p className='name'>{player?.name}</p>
+            <p className='xs'>{player?.name}</p>
         </li>
     )
 }

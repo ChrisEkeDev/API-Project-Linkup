@@ -16,8 +16,8 @@ function Button(props) {
         onClick={action}
         className={`button ${type} ${styles} ${disabled ? 'button--disabled' : ''}`} disabled={disabled}>
           <span className={`button--contents ${!Icon && 'centered'}`}>
-            <span>{label}</span>
             { Icon && <Icon className='button--icon'/> }
+            <span>{label}</span>
           </span>
       </button>
     </div>

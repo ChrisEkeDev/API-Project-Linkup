@@ -1,7 +1,6 @@
 @import url('../../index.css');
 
 .nav {
-    border-bottom: var(--border);
     padding: 1rem;
     display: flex;
     align-items: center;
@@ -73,6 +72,7 @@
     .label {
         outline: var(--border);
         position: absolute;
+        z-index: 5;
         right: 0;
         white-space: nowrap;
         text-align: right;
@@ -107,14 +107,16 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+    padding: 2rem 1rem 0rem 1rem;
 
     .search {
-        height: 2.5rem;
-        outline: var(--border);
+        height: 3rem;
         border: none;
-        width: 400px;
+        width: 100%;
         padding: 0 1rem;
-        border-radius: .5rem;
+        border: none;
+        border-top: var(--border);
+        border-bottom: var(--border);
         background-color: var(--background);
         color: var(--white);
         &:focus, &:hover  {

@@ -12,7 +12,20 @@
 
 .map_container {
     height: 100%;
-    width: 60vw;
-    background: black;
+    width: 100%;
+    background-color: blue;
     position: relative;
+}
+
+.map_marker {
+    display: flex;
+    flex-direction: column;
+}
+
+.marker_icon {
+    height: 30px
+}
+
+.marker_text {
+    color: blue
 }

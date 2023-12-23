@@ -17,7 +17,13 @@ function ProfileImage({player, size }) {
         >
             {
                 !hasImage ?
-                <p className='initial'style={{fontSize: `${initialSize}rem`}}>{player?.name.charAt(0)}</p> :
+                    <div className='profile_circle' style={{
+                        height: `${imageHeight}rem`,
+                        borderRadius: `${imageHeight}rem`
+                    }}>
+                        <p className='initial'style={{fontSize: `${initialSize}rem`}}>{player?.name.charAt(0)}</p>
+                    </div>
+                 :
                 <div
                     className='image'
                     style={{

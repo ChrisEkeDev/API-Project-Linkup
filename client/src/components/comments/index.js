@@ -5,6 +5,7 @@ import Comment from './components/Comment';
 import Button from '../../components/shared/button';
 import './styles.scss';
 import NewComment from './components/NewComment';
+import { TbMessage2Question, TbMessagePlus } from 'react-icons/tb';
 
 function Comments() {
     const { comments  } = useComments();
@@ -18,10 +19,12 @@ function Comments() {
 
     return (
         <div className='session_comments'>
+            <h2 className='section_label xs bold'>{comments.length} Comments</h2>
             <header className='sub_header'>
-                    <h2>Comments ({comments.length})</h2>
+                    <div></div>
                     <Button
-                        styles=""
+                        styles="secondary new_comment_btn"
+                        icon={TbMessagePlus}
                         label="New Comment"
                         action={creating ? () => setCreating(false) : () => setCreating(true)}
                         disabled={creating}
@@ -41,7 +44,8 @@ function Comments() {
                     creating ?
                     null :
                     <div className='no_comments'>
-                        <p>No Comments Yet</p>
+                        <TbMessage2Question className='icon'/>
+                        <span className='xs bold'>No Comments Yet</span>
                     </div> :
                     comments.map(comment => (
                         <Comment comment={comment}/>

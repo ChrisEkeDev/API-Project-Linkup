@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
+import { useApp } from '../../../context/AppContext';
 import { useDispatch } from 'react-redux';
 import { thunkSignInPlayer } from '../../../store/auth';
 
 const useSignIn = () => {
     const dispatch = useDispatch();
+    const { setLoading } = useApp();
     const history = useHistory();
 
     const [ formData, setFormData ] = useState({
         email: "",
         password: "",
     });
+
     const [ errors, setErrors ] = useState({})
+
     const { email, password } = formData;
 
     const handleInput = (x) => {
@@ -24,7 +28,7 @@ const useSignIn = () => {
     }
 
     const onSignIn = async (e) => {
-        // setLoading(true);
+        setLoading(true);
         e.preventDefault();
         try {
             const response = await dispatch(thunkSignInPlayer(formData));
@@ -39,12 +43,12 @@ const useSignIn = () => {
             // handleAlerts(signInFailure);
             console.error(error)
         } finally {
-            // setLoading(false)
+            setLoading(false)
         }
     }
 
     const onSignInGuest = async (e) => {
-        // setLoading(true);
+        setLoading(true);
         e.preventDefault();
         try {
             const data = {email: 'pcartwirght@email.com', password: 'password1'};
@@ -59,7 +63,7 @@ const useSignIn = () => {
             // handleAlerts(signInFailure);
             console.error(error)
         } finally {
-            // setLoading(false)
+            setLoading(false)
         }
     }
 

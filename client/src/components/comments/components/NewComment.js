@@ -3,6 +3,8 @@ import { useApp } from '../../../context/AppContext';
 import ProfileImage from '../../shared/profileImage';
 import Button from '../../shared/button';
 import { format } from 'date-fns';
+import IconButton from '../../shared/button/IconButton';
+import { TbCheck, TbX } from 'react-icons/tb';
 
 function NewComment(props) {
     const { auth } = useApp();
@@ -25,8 +27,8 @@ function NewComment(props) {
             />
             <div className='comment_contents'>
                 <div className='comment_creator details'>
-                    <p>{auth.name}</p>
-                    <small>{formattedTime}</small>
+                    <p className="sm bold">{auth.name}</p>
+                    <small className='xs'>{formattedTime}</small>
                 </div>
                 <textarea
                     className='comment_text'
@@ -37,15 +39,17 @@ function NewComment(props) {
                 </textarea>
             </div>
             <div className='comment_actions'>
-                <Button
-                    label="Cancel"
-                    styles="small_button"
-                    action={() => setCreating(false)}
-                />
-                <Button
-                    label="Save"
-                    styles="small_button"
+                <IconButton
+                    name="Save"
+                    icon={TbCheck}
+                    styles="small_button success"
                     action={createComment}
+                />
+                <IconButton
+                    name="Cancel"
+                    icon={TbX}
+                    styles="small_button cancel"
+                    action={() => setCreating(false)}
                 />
             </div>
         </li>

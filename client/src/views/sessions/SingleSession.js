@@ -6,6 +6,7 @@ import Button from '../../components/shared/button';
 import Modal from '../../components/shared/modal';
 import Comments from '../../components/comments';
 import { useSelector } from 'react-redux';
+import { motion } from 'framer-motion';
 import { thunkGetSingleSession } from '../../store/sessions';
 import { useParams } from 'react-router-dom';
 import useModal from '../../hooks/useModal';
@@ -13,6 +14,9 @@ import { thunkGetCheckIns } from '../../store/checkins';
 import SessionInformation from './components/SessionInformation';
 import SessionCheckIns from './components/SessionCheckIns';
 import LoadingData from '../../components/shared/loading';
+import Scroll from '../../components/shared/scroll';
+import { TbEditCircle, TbUserCheck , TbTrashFilled, TbUserX  } from 'react-icons/tb'
+import { base_animations, base_variants, child_variants, page_transitions, parent_variants } from '../../constants/animations';
 
 
 function SingleSession({session}) {
@@ -25,39 +29,51 @@ function SingleSession({session}) {
     const isCheckedIn = checkIns.filter(checkin => checkin.playerId === auth.id).length > 0;
 
     return (
-        <main className='page single-session'>
-        <header className='header'>
-            <Back/>
-            <div className='actions'>
-                {
-                    isCreator ?
-                    <>
-                        <Button
-                            styles=''
-                            label="Edit Session"
-                            action={() => navigate(`/sessions/${session.id}/update`)}
-                        />
-                        <Button
-                            styles=''
-                            label="Delete Session"
-                            action={onOpenModal}
-                        />
-                    </> :
-                    <>
-                        <Button
-                            styles=''
-                            label={isCheckedIn ? "Check Out" : "Check In"}
-                            action={isCheckedIn ? checkOut : checkIn}
-                        />
-                    </>
-                }
-            </div>
-        </header>
-        <section className='section scroll'>
-            <SessionInformation session={session}/>
-            <SessionCheckIns checkIns={checkIns}/>
-            <Comments/>
-        </section>
+        <motion.main {...base_animations} className='page single_session'>
+            <motion.header variants={child_variants} className='header'>
+                <Back/>
+                <div className='actions'>
+                    {
+                        isCreator ?
+                        <>
+                            <Button
+                                styles='secondary'
+                                label="Edit Session"
+                                icon={TbEditCircle}
+                                action={() => navigate(`/sessions/${session.id}/update`)}
+                            />
+                            <Button
+                                styles='tertiary'
+                                icon={TbTrashFilled}
+                                label="Delete Session"
+                                action={onOpenModal}
+                            />
+                        </> :
+                        <>
+                            <Button
+                                styles='primary'
+                                icon={isCheckedIn ? TbUserX : TbUserCheck }
+                                label={isCheckedIn ? "Check Out" : "Check In"}
+                                action={isCheckedIn ? checkOut : checkIn}
+                            />
+                        </>
+                    }
+                </div>
+            </motion.header>
+            <Scroll>
+                <motion.section variants={parent_variants} {...base_animations} className='section scroll'>
+                    <motion.div variants={child_variants}>
+                        <SessionInformation session={session}/>
+                    </motion.div>
+                    <motion.div variants={child_variants}>
+                        <SessionCheckIns checkIns={checkIns}/>
+                    </motion.div>
+                    <motion.div variants={child_variants}>
+                        <Comments/>
+                    </motion.div>
+                </motion.section>
+            </Scroll>
+
         <Modal
             isModalOpen={isModalOpen}
             onCloseModal={onCloseModal}
@@ -80,7 +96,7 @@ function SingleSession({session}) {
                 />
             </div>
         </Modal>
-    </main>
+    </motion.main>
     )
 }
 

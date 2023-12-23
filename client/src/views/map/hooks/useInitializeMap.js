@@ -1,22 +1,32 @@
-import React, { useState, useEffect } from 'react'
-import { useApp } from '../../../context/AppContext';
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
 
-function useInitilizeMap() {
-    const [ map, setMap ] = useState({});
-    const { theme, currentLocation } = useApp();
+function useMap() {
+    const [ center, setCenter ] = useState(null);
+    const sessionData = useSelector(state => state.sessions.allSessions);
+    const sessions = Object.values(sessionData)
 
-    const initializeMap = (ref) => {
-        const mapOptions = {
-          // mapId: appThemes[theme].mapId,
-          center: currentLocation,
-          zoom: 15,
-          disableDefaultUI: true
-        };
-        const newMap = new window.google.maps.Map(ref.current, mapOptions);
-        setMap(newMap);
+    const focusSession = (session) => {
+      const center = {lat: session.Court.lat, lng: session.Court.lng}
+      setCenter(center)
     }
 
-  return [map, initializeMap]
+
+    const initMap = () => {
+      navigator.geolocation.getCurrentPosition(position => {
+        const { latitude, longitude } = position.coords;
+        const center =  { lat: latitude, lng: longitude };
+        setCenter(center)
+      })
+
+    }
+
+    useEffect(() => {
+      initMap()
+    }, [])
+
+
+  return { center, sessions, focusSession }
 }
 
-export default useInitilizeMap
+export default useMap

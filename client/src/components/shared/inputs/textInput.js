@@ -37,17 +37,17 @@ function Input(props) {
                 max={type === 'number' ? max : null}
                 type={type === 'password' ? passwordHidden ? 'password' : 'text' : type}
                 placeholder={placeholder}
-                style={error ? {outline: errorBorder} : null}
+                style={error ? {borderTop: errorBorder, borderBottom: errorBorder} : null}
                 disabled={disabled}
             />
             {label ? <span className='label'>{label}</span> : null}
-            {
+            {/* {
                 type === 'password' ?
                 passwordHidden ?
                     <TbEyeOff onClick={disabled ? null : () => setPasswordHidden(false)} className='icon'/> :
                     <TbEye onClick={disabled ? null : () => setPasswordHidden(true)} className='icon'/> :
                 null
-            }
+            } */}
 
             {error &&
                 <div className='error'>

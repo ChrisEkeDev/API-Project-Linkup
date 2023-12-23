@@ -1,18 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useApp } from '../../../context/AppContext';
 import { useDispatch } from 'react-redux';
 import { thunkSignUpPlayer } from '../../../store/auth';
 
 const useSignUp = () => {
     const dispatch = useDispatch();
+    const { setLoading } = useApp();
     const history = useHistory();
+
     const [ formData, setFormData ] = useState({
         name: "",
         email: "",
         password: "",
         confirmPassword: ""
     });
+
     const [ errors, setErrors ] = useState({})
+
     const { name, email, password, confirmPassword } = formData;
 
     const handleInput = (x) => {
@@ -25,6 +30,7 @@ const useSignUp = () => {
     }
 
     const onSignUp = async (e) => {
+        setLoading(true);
         e.preventDefault();
         try {
             const response = await dispatch(thunkSignUpPlayer(formData));
@@ -39,7 +45,7 @@ const useSignUp = () => {
             // handleAlerts(signUpFailure);
             console.error(e)
           } finally {
-            // setLoading(false);
+            setLoading(false);
           }
     }
 
@@ -52,13 +58,13 @@ const useSignUp = () => {
             errors.email = 'Email must be between 3 and 256 characters';
         }
         if (email && (!email.includes(".") || !email.includes("@"))) {
-        errors.email = 'Please enter a valid email address';
+            errors.email = 'Please enter a valid email address';
         }
         if (password && password.trim().length < 6) {
-        errors.password = 'Password must be at least 6 characters';
+            errors.password = 'Password must be at least 6 characters';
         }
         if ( password && password !== confirmPassword) {
-        errors.confirmPassword = 'Passwords must match';
+            errors.confirmPassword = 'Passwords must match';
         }
         setErrors(errors)
     }, [formData])

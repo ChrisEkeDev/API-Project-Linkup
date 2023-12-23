@@ -49,7 +49,7 @@ router.get('/', async (req, res) => {
             },
             {
                 model: Court,
-                attributes: ['address']
+                attributes: ['address', 'lat', 'lng']
             },
             {
                 model: CheckIn,

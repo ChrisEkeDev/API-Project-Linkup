@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { parseISO, format } from 'date-fns';
 import { useApp } from '../../../context/AppContext';
-import { TbArrowForward } from 'react-icons/tb';
+import { TbArrowForward, TbCheck, TbEdit, TbMessagePlus, TbTrashFilled, TbX } from 'react-icons/tb';
 import useComment from '../hooks/useComment';
 import Button from '../../shared/button';
 import ProfileImage from '../../shared/profileImage';
@@ -9,6 +9,7 @@ import useReplyComment from '../hooks/useReplyComment';
 import NewCommentReply from './NewCommentReply';
 import Modal from '../../shared/modal';
 import useModal from '../../../hooks/useModal'
+import IconButton from '../../shared/button/IconButton';
 
 function Comment({ comment }) {
   const { auth } = useApp();
@@ -54,8 +55,9 @@ function Comment({ comment }) {
     />
     <div className='comment_contents'>
       <div className='comment_creator details'>
-        <p>{comment.Player.name}</p>
-        <small>{formattedTime}</small>
+        <p className='sm bold'>{comment.Player.name}</p>
+        <span>&#8226;</span>
+        <small className='xs'>{formattedTime}</small>
       </div>
       <textarea
         className='comment_text'
@@ -69,9 +71,10 @@ function Comment({ comment }) {
     <div className='comment_actions'>
       {
         !isReply && !isCreator ?
-        <Button
-          label='Reply'
-          styles="small_button"
+        <IconButton
+          name="Reply"
+          icon={TbMessagePlus}
+          styles="small_button reply"
           action={() => setReplying(true)}
           /> :
           null
@@ -79,27 +82,31 @@ function Comment({ comment }) {
       {
         isCreator && updating ?
         <>
-          <Button
-            label="Cancel"
-            styles="small_button"
-            action={() => setUpdating(false)}
-          />
-          <Button
-            label="Save"
-            styles="small_button"
+          <IconButton
+            name="Save"
+            icon={TbCheck}
+            styles="small_button success"
             action={updateComment}
+          />
+          <IconButton
+            name="Cancel"
+            icon={TbX}
+            styles="small_button cancel"
+            action={() => setUpdating(false)}
           />
         </> :
         isCreator && !updating ?
         <>
-          <Button
-            label="Edit"
-            styles="small_button"
+          <IconButton
+            name="Edit"
+            icon={TbEdit}
+            styles="small_button reply"
             action={() => setUpdating(true)}
           />
-          <Button
-            label="Delete"
-            styles="small_button"
+          <IconButton
+            name="Delete"
+            icon={TbTrashFilled}
+            styles="small_button warning"
             action={onOpenModal}
           />
         </> :
@@ -131,9 +138,9 @@ function Comment({ comment }) {
             size={4}
           />
           <div className='comment_contents'>
-            <div className='comment_creator details'>
-              <p>{comment.Player.name}</p>
-              <small>{formattedTime}</small>
+            <div className='comment_creator'>
+              <p className='sm bold'>{comment.Player.name}</p>
+              <small className='xs'>{formattedTime}</small>
             </div>
             <textarea
               className='comment_text'

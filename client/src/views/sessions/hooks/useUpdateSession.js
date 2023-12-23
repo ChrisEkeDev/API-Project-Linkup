@@ -9,7 +9,7 @@ import { geocodeAddress } from "../../../helpers/geocodeAddress";
 
 
 const useUpdateSession = (session) => {
-    const { dispatch, navigate } = useApp();
+    const { dispatch, navigate, setLoading } = useApp();
     const [ addressQuery, setAddressQuery ] = useState(session?.address);
     const [ addressObject, setAddressObject ] = useState({});
     const [ status, setStatus] = useState(null)
@@ -24,8 +24,6 @@ const useUpdateSession = (session) => {
         // private: session.private
     });
 
-    // const time = subHours(startDate, offsetHours).toISOString().slice(0,19).replace('T', ',').split(',')[1];
-    // const duration = getHours(new Date(session?.endDate)) - getHours(new Date(session?.startDate));
 
     const verifyAddress = async (e) => {
         const addressObj = await geocodeAddress(e, addressQuery, setStatus);
@@ -42,12 +40,15 @@ const useUpdateSession = (session) => {
     }
 
     const updateSession = async (e) => {
+        setLoading(true)
         e.preventDefault();
         try {
             const data = await dispatch(thunkUpdateSession(sessionData, session.id));
             navigate(`/sessions/${data.data.id}`)
         } catch (e) {
             console.log(e)
+        } finally {
+            setLoading(false)
         }
     }
 

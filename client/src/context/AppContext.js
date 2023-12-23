@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import useLoading from "../hooks/useLoading";
+import LoadingData from "../components/shared/loading";
 import useSessions from "../hooks/useSessions";
 // import Loading from '../App/Loading';
 // import Alerts from '../App/Alerts';
@@ -16,10 +18,8 @@ export const useApp = () => useContext(AppContext);
 function AppProvider({children}) {
     const { auth } = useAuth();
     const dispatch = useDispatch();
+    const { loading, setLoading } = useLoading();
     // const [ alerts, setAlerts ] = useState([]);
-    // const [ locationServices, setLocationServices ] = useState(false);
-    // const [ currentLocation, setCurrentLocation ] = useState({})
-    // const [ map, setMap ] = useState({});
     const history = useHistory();
     const navigate = (route) => {
         history.push(route)
@@ -28,15 +28,6 @@ function AppProvider({children}) {
       if (route) history.push(route)
       else history.goBack();
     }
-
-    // const getCurrentLocation = () => {
-    //   navigator.geolocation.getCurrentPosition(position => {
-    //     const { latitude, longitude } = position.coords;
-    //     const center =  { lat: latitude, lng: longitude };
-    //     setCurrentLocation(center)
-    //   })
-    // }
-
   // const handleAlerts = (alert) => {
   //   let newState = [ ...alerts ];
   //   const id = uuidv4();
@@ -53,20 +44,17 @@ function AppProvider({children}) {
   //     setAlerts(newState)
   // }
 
-  // useEffect(() => {
-  //   getCurrentLocation();
-  // }, [])
-
     return (
         <AppContext.Provider
           value={{
             navigate,
             dispatch,
+            setLoading,
             auth,
             goBack
           }}
           >
-            {/* {loading ? <Loading/> : null} */}
+            {loading ? <LoadingData absolute={true}/> : null}
             {/* {
               Object.keys(alerts).length > 0
               ?

@@ -1,12 +1,17 @@
 import React from 'react'
-import { CgSpinner } from 'react-icons/cg'
+import { CgSpinner } from 'react-icons/cg';
+import { AnimatePresence, motion } from 'framer-motion';
+import { loading_transitions } from '../../../constants/animations'
 import './styles.scss'
 
-function LoadingData() {
+function LoadingData({absolute}) {
   return (
-    <div className='loading'>
-        <CgSpinner className='spinner'/>
-    </div>
+    <AnimatePresence>
+      <motion.div {...loading_transitions}
+        className={`loading ${absolute && 'absolute_loading'}`}>
+          <CgSpinner className='spinner'/>
+      </motion.div>
+    </AnimatePresence>
   )
 }
 
