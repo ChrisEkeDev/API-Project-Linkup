@@ -6,8 +6,7 @@ import { thunkSignInPlayer } from '../../../store/auth';
 
 const useSignIn = () => {
     const dispatch = useDispatch();
-    const { setLoading } = useApp();
-    const history = useHistory();
+    const { navigate, setLoading } = useApp();
 
     const [ formData, setFormData ] = useState({
         email: "",
@@ -34,7 +33,7 @@ const useSignIn = () => {
             const response = await dispatch(thunkSignInPlayer(formData));
             if (response.status === 200) {
                 // handleAlerts(signInSuccess);
-                history.push('/sessions')
+                navigate('/enable-location')
             } else {
                 handleErrors(response.errors)
                 throw new Error();
@@ -55,7 +54,7 @@ const useSignIn = () => {
             const response = await dispatch(thunkSignInPlayer(data));
             if (response.status === 200) {
                 // handleAlerts(signInSuccess);
-                history.push('/sessions')
+                navigate('/enable-location')
             } else {
                 throw new Error();
             }

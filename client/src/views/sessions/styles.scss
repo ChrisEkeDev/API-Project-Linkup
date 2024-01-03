@@ -2,7 +2,8 @@
 
 ////////////////////////////////////////////////////////////////////
 .sessions,
-.single_session {
+.single_session,
+.new_session {
     padding-top: 1rem;
     padding-right: 1rem;
 }
@@ -82,8 +83,14 @@
 .sessions_search {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 5rem;
-    padding: 2rem 1.5rem 0rem 1rem;
+    padding: 1rem 1.5rem 0rem 1rem;
+
+    .search_flex {
+        display: flex;
+        width: 70%;
+    }
     .search_input {
         height: 3rem;
         border: none;
@@ -103,24 +110,16 @@
 
 .sessions_sorter {
     position: relative;
-    padding: 0 .5rem;
+    padding: 0;
     border-radius: .5rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 
-    // &:hover {
-    //     outline: var(--border);
-    //     background-color: var(--black-hover);
-    // }
-    // .select {
-    //     background-color: var(--background);
-    //     height: 2.5rem;
-    //     padding-right: .5rem;
-    //     border: none;
-    //     color: var(--white);
-    //     &:focus {
-    //         outline: transparent
-    //     }
-    // }
+    .sort_label {
+        font-size: .8rem;
+    }
 }
 
 .session_information {
@@ -184,7 +183,7 @@
 .checkIn_list{
     display: flex;
     align-items: center;
-    gap: 3rem;
+    gap: 2rem;
 }
 
 .session_player {
@@ -206,8 +205,7 @@
         padding: 1rem;
     }
     .form_input {
-        display: grid;
-        grid-template-columns: auto auto;
+        display: flex;
         gap: 1rem;
 
         .input_button {
@@ -219,7 +217,7 @@
         position: absolute;
         right: 1rem;
         font-size: 1.25rem;
-        top: .5rem;
+        top: .75rem;
     }
     .form_flex {
         display: flex;
@@ -237,21 +235,30 @@
         }
     }
 
-    .form_actions {
-        padding: 3rem 0;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-    }
+
+}
+
+.form_actions {
+    padding: 3rem 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .deleting_session {
+    position: relative;
     background-color: var(--background);
-    padding: 1rem;
-    outline: var(--border);
+    width: 600px;
+    padding: 2rem;
+    box-shadow: var(--box-shadow);
     display: flex;
     flex-direction: column;
-    border-radius: .5rem;
+    border-radius: 1.5rem;
+
+    .modal_title {
+        padding-left: 1rem;
+        padding-right: 4rem;
+    }
 
     .session_creator {
         padding-right: 4rem;

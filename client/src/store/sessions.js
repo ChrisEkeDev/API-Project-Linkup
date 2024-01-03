@@ -2,7 +2,7 @@ import { csrfFetch } from './csrf';
 import Cookies from 'js-cookie';
 
 // TYPES
-const GET_ALL_SESSIONS = '/linkup/sessions/GET_ALL_SESSIONS';
+const SEARCH_SESSIONS = '/linkup/sessions/SEARCH_SESSIONS';
 const GET_CURRENT_SESSIONS = '/linkup/sessions/GET_CURRENT_SESSIONS';
 const GET_SINGLE_SESSION = '/linkup/sessions/GET_SINGLE_SESSION';
 const CREATE_SESSION = '/linkup/sessions/CREATE_SESSION';
@@ -12,8 +12,9 @@ const DELETE_SESSION = '/linkup/sessions/DELETE_SESSION';
 
 
 // ACTIONS
-const actionGetAllSessions = (sessions) => ({
-    type: GET_ALL_SESSIONS,
+
+const actionSearchSessions = (sessions) => ({
+    type: SEARCH_SESSIONS,
     payload: sessions
 })
 
@@ -42,19 +43,20 @@ const actionDeleteSession = (session) => ({
     payload: session
 })
 
+
+
 //THUNKS
 
-export const thunkGetAllSessions = () => async dispatch => {
-    const res = await csrfFetch('/api/sessions');
+export const thunkSearchSessions = (query, sortBy) => async dispatch => {
+    const res = await csrfFetch(`/api/sessions/search/?query=${query}&sortBy=${sortBy}`);
     try {
         const jsonResponse = await res.json();
-        await dispatch(actionGetAllSessions(jsonResponse.data))
+        await dispatch(actionSearchSessions(jsonResponse.data))
         return jsonResponse
     } catch(error) {
         console.error(error)
     }
 }
-
 // export const thunkGetCurrentSessions = () => async dispatch => {
 //     const res = await csrfFetch('/api/sessions/current');
 //     if (res.ok) {
@@ -120,20 +122,20 @@ export const thunkDeleteSession = (session) => async dispatch => {
 
 
 // REDUCER
-const initialState = { allSessions: {}, singleSession: {}, currentSessions: {}};
+const initialState = { allSessions: [], singleSession: {} };
 
 const sessionsReducer = (state = initialState, action) => {
     switch(action.type) {
-        case GET_ALL_SESSIONS: {
-            const newState = { ...state, allSessions: {} }
-            action.payload.forEach(session => newState.allSessions[session.id] = session);
+        case SEARCH_SESSIONS: {
+            const newState = { allSessions: [], singleSession: {} }
+            action.payload.forEach(session => newState.allSessions.push(session));
             return newState;
-        };
-        case GET_CURRENT_SESSIONS: {
-            const newState = { ...state, currentSessions: {} };
-           action.payload.forEach(session => newState.currentSessions[session.id] = session);
-            return newState;
-        };
+        }
+        // case GET_CURRENT_SESSIONS: {
+        //     const newState = { ...state, currentSessions: {} };
+        //    action.payload.forEach(session => newState.currentSessions[session.id] = session);
+        //     return newState;
+        // };
         case GET_SINGLE_SESSION: {
             const newState = { ...state, singleSession: {} };
             newState.singleSession = action.payload;

@@ -5,17 +5,21 @@ import ProfileImage from '../../../components/shared/profileImage';
 import { child_variants } from '../../../constants/animations';
 import { format, parseISO } from 'date-fns';
 import '../styles.scss';
-import { TbArrowRight } from 'react-icons/tb';
 
 function SessionItem({session}) {
-  const { navigate } = useApp();
+  const { navigate, setCurrentLocation } = useApp();
   const parsedDate = parseISO(session?.startDate);
-  const formattedTime = format(parsedDate, 'MM/dd @ H:mm a');
+  const formattedTime = format(parsedDate, 'MM/dd @ h:mm a');
 
   if (!session) return <li>loading</li>
 
+  const handleNavigate = () => {
+    setCurrentLocation({lat: session.Court.lat, lng: session.Court.lng})
+    navigate(`/sessions/${session.id}`)
+  }
+
   return (
-    <motion.li variants={child_variants} onClick={() => navigate(`/sessions/${session.id}`)} className='session_item'>
+    <motion.li variants={child_variants} onClick={handleNavigate} className='session_item'>
       <div className='float_left'>
         <ProfileImage
           player={session.creator}
@@ -28,7 +32,7 @@ function SessionItem({session}) {
         </div>
         </div>
       <div className='player_count'>
-        <h2 className='count accent'>{session.CheckIns.length}</h2>
+        <h2 className='count accent'>{session.checkInCount}</h2>
         <small>Players</small>
       </div>
     </motion.li>

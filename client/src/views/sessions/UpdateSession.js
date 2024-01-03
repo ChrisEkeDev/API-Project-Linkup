@@ -5,7 +5,7 @@ import { thunkGetSingleSession } from '../../store/sessions';
 import useUpdateSession from './hooks/useUpdateSession';
 import Input from '../../components/shared/inputs/textInput';
 import Button from '../../components/shared/button';
-import { TbCalendar, TbClock, TbGauge, TbMapPinCheck, TbMapPinQuestion, TbMapPin } from 'react-icons/tb';
+import { TbCalendar, TbClock, TbGauge, TbMapPinCheck, TbMapPinQuestion, TbMapPin, TbCalendarCheck } from 'react-icons/tb';
 import { CgSpinner } from 'react-icons/cg';
 import { useSelector } from 'react-redux';
 import { useApp } from '../../context/AppContext';
@@ -23,7 +23,7 @@ function UpdateSession({session}) {
     } = useUpdateSession(session);
 
   return (
-        <main className='page new-session'>
+        <main className='page new_session'>
             <header className='header'>
                 <Back/>
             </header>
@@ -113,7 +113,8 @@ function UpdateSession({session}) {
                 <footer className='form_actions'>
                     <Button
                         label="Update Session"
-                        styles=""
+                        styles="primary"
+                        icon={TbCalendarCheck}
                         action={updateSession}
                     />
                 </footer>

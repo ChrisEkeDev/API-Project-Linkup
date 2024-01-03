@@ -4,7 +4,7 @@
 .button {
     padding: 0 1rem;
     font-size: 1rem;
-    height: 2.5rem;
+    height: 3rem;
     font-weight: 600;
     border-radius: 1.5rem;
     border: none;
@@ -12,8 +12,13 @@
     box-shadow: var(--box-shadow);
     color: var(--white);
     transition: all .1s ease;
+    background-color: var(--background);
     cursor: pointer;
-
+    .button--contents {
+        span {
+            white-space: nowrap;
+        }
+    }
     &:disabled {
         pointer-events: none;
         opacity: .5;

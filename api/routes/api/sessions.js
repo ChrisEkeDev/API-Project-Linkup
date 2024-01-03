@@ -1,46 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const { CheckIn, Session, Player, Team, SessionImage, Membership, Court } = require('../../db/models');
-const { Op } = require('sequelize');
+const { Op, fn, col } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
 const { uploadImage, deleteImages } = require('../../utils/aws');
 const { geocodeAddress } = require('../../utils/googleServices');
 const { validateCreateSession, validateEditSession } = require('./validation/expressValidations')
 const { sessionNotFound, playerNotAuthorized } =require('./constants/responseMessages');
 
-// Get All Sessions with optional query filters
-router.get('/', async (req, res) => {
-    // let { page, size, query } = req.query;
 
-    // let where = {}
-    // const pagination = {}
-
-    // if (size) {
-    //     if (size >= 1 && size <= 30 ) {
-    //         pagination.limit = parseInt(size)
-    //     } else {
-    //         pagination.limit = 20
-    //     }
-    // }
-
-    // if (page) {
-    //     if ( page >= 1 && page <= 10 ) {
-    //         pagination.offset = parseInt(size) * (parseInt(page) - 1)
-    //     } else {
-    //         pagination.offset = parseInt(size) * (parseInt(1) - 1)
-    //     }
-    // }
-
-    // if ( query ) {
-    //     where = {
-    //         [Op.or]: [
-    //             { name: { [Op.like]:`%${query}%`  }}
-    //         ]
-    //     }
-    // }
-
-
+// Search Sessions Sorted by Relevance
+router.get('/search/*', async(req, res) => {
+    const { query, sortBy, sortDir } = req.query;
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+    const yesterdayISOString = yesterday.toISOString()
+    const lowerCaseQuery = query ? query.toLowerCase() : '';
     const sessions = await Session.findAll({
+        where: {
+            endDate: {
+                [Op.gte]: yesterdayISOString
+            }
+        },
         include: [
             {
                 model: Player,
@@ -53,21 +35,47 @@ router.get('/', async (req, res) => {
             },
             {
                 model: CheckIn,
-                include: {
-                    model: Player,
-                    as: 'player',
-                }
+                attributes: []
             }
+        ],
+        attributes: {
+            include: [
+                'id',
+                'name',
+                'startDate',
+                [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
+            ],
+            exclude: ['CheckIn', 'courtId', 'creatorId', 'endDate', 'updatedAt', 'createdAt', 'private']
+        },
+        group: ['Session.id'],
+        order: [
+            [sortBy ? sortBy : 'startDate', sortBy === 'startDate' ? 'ASC' : 'DESC']
         ]
     });
 
+function calculateRelevance(session) {
+        let relevance = 0;
+        if (query && session.name.toLowerCase().includes(lowerCaseQuery)) {
+            relevance++;
+        }
+        // if (article.title.toLowerCase().includes(lowerCaseQuery)) {
+        //     relevance++;
+        // }
+        // relevance += article.content.toLowerCase().split(lowerCaseQuery).length - 1;
+        // ... add more rules if needed ...
+        return relevance;
+    }
+
+  // Return the sorted objects
     return res.status(200).json({
         status: 200,
         message: "",
-        data: sessions,
+        data: sessions.sort((a, b) => calculateRelevance(b) - calculateRelevance(a)),
         errors: {}
     })
+
 })
+
 
 // Get all Sessions created by the current players
 router.get('/current', requireAuth, async (req, res) => {

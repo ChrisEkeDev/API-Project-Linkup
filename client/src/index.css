@@ -2,8 +2,8 @@
     --text: #606060;
     --background: #ffffff;
     --hover: #f2f2f2;
-    --main: #eb3700;
-    --main-hover: #8f2a13;
+    --main: black;
+    --main-hover: black;
     --reply: #1576a6;
     --success: #226e52;
     --warning: #dc9c26;
@@ -44,32 +44,6 @@
     height: 100%;
   }
 
-  .app_nav {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    left: 0;
-    width: 5rem;
-    position: fixed;
-    gap: 1rem;
-    padding: 2rem 1rem;
-    z-index: 100;
-  }
-
-  .app_link{
-    width: 3rem;
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
 
   .page {
     flex: 1;
@@ -200,6 +174,11 @@
     .node-inactive {
       background-color: var(--border-color);
     }
+  }
+
+  .active_link {
+    color: var(--main);
+    opacity: 1;
   }
 
 

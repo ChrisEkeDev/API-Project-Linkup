@@ -5,12 +5,12 @@ function SessionPlayer({checkIn}) {
     const { player } = checkIn;
 
     return (
-        <li className='session_player'>
+        <li title={player.name} className='session_player'>
             <ProfileImage
                 player={player}
                 size={4}
             />
-            <p className='xs'>{player?.name}</p>
+            {/* <p className='xs'>{player?.name}</p> */}
         </li>
     )
 }

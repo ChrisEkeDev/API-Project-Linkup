@@ -44,9 +44,9 @@ export const appThemes = {
 }
 
 export const sortValues = {
-    happeningSoon: 'Happening Soon',
-    mostPlayers: 'Most Players',
-    newest: "Newest"
+    startDate: 'Happening Soon',
+    checkInCount: 'Most Players',
+    createdAt: "Newest"
 }
 
 export const sortFunctions = {

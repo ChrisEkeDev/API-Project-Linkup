@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { motion } from 'framer-motion'
+import { base_animations, child_variants, comment_variants } from '../../../constants/animations';
 import { parseISO, format } from 'date-fns';
 import { useApp } from '../../../context/AppContext';
 import { TbArrowForward, TbCheck, TbEdit, TbMessagePlus, TbTrashFilled, TbX } from 'react-icons/tb';
@@ -42,7 +44,7 @@ function Comment({ comment }) {
 
   return (
   <>
-  <li
+  <motion.li variants={child_variants}
     ref={ref}
     className='comment'
     onMouseEnter={() => setShowActions(true)}
@@ -115,9 +117,9 @@ function Comment({ comment }) {
     </div> :
     null
   }
-  </li>
+  </motion.li>
 
-  <div ref={replyRef}>
+  <motion.div variants={comment_variants} {...base_animations} ref={replyRef}>
     <NewCommentReply {...{
         replying,
         setReplying,
@@ -125,7 +127,7 @@ function Comment({ comment }) {
         createReply
       }}
     />
-  </div>
+  </motion.div>
     <Modal
       isModalOpen={isModalOpen}
       onCloseModal={onCloseModal}

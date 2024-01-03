@@ -44,14 +44,14 @@ function SignIn() {
                 </section>
                 <footer className='auth_form--actions'>
                     <Button
-                        styles='auth_form--button'
+                        styles='auth_form--button primary'
                         type="button"
                         label='Sign in'
                         disabled={Object.values(errors).length}
                         action={onSignIn}
                     />
                     <Button
-                        styles='auth_form--button'
+                        styles='auth_form--button secondary'
                         type="button"
                         label='Sign in as guest'
                         action={onSignInGuest}

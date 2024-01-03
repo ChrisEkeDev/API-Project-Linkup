@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { thunkRestorePlayerSession } from "../store/auth";
+import { thunkRestorePlayerSession, thunkSignOutPlayer } from "../store/auth";
 
 
 const useAuth = () => {
@@ -9,6 +9,21 @@ const useAuth = () => {
     const history = useHistory();
     const auth = useSelector(state => state.auth.player)
     const [ isAuthenticated, setIsAuthenticated ] = useState(auth ? true : false);
+
+    const signOut = async () => {
+        try {
+            const res = await dispatch(thunkSignOutPlayer())
+            if (res.status === 201) {
+                // Handle Alerts
+                history.push('/sign-in')
+            } else {
+                throw new Error()
+            }
+        } catch(e) {
+            console.log(e)
+            // Handle Alerts
+        }
+    }
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -31,7 +46,7 @@ const useAuth = () => {
 
     }, [auth])
 
-    return { auth, isAuthenticated };
+    return { auth, signOut, isAuthenticated };
 }
 
 

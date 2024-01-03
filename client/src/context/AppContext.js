@@ -3,12 +3,11 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import useLoading from "../hooks/useLoading";
 import LoadingData from "../components/shared/loading";
-import useSessions from "../hooks/useSessions";
-// import Loading from '../App/Loading';
-// import Alerts from '../App/Alerts';
+import useLocationServices from "../hooks/useLocationServices";
 // import {v4 as uuidv4} from 'uuid';
 import { appOptions } from "../constants/constants";
 import useAuth from "../hooks/useAuth";
+import useAppClock from "../hooks/useAppClock";
 
 
 const AppContext = createContext();
@@ -16,7 +15,20 @@ const AppContext = createContext();
 export const useApp = () => useContext(AppContext);
 
 function AppProvider({children}) {
-    const { auth } = useAuth();
+    const [ theme, setTheme ] = useState('light');
+    const { currentTime } = useAppClock();
+    const {
+        currentLocation,
+        setCurrentLocation,
+        locationServices,
+        setLocationServices
+    } = useLocationServices();
+    const handleTheme = () => {
+      if (theme === 'light') setTheme('dark')
+      else setTheme('light')
+    }
+
+    const { auth, signOut } = useAuth();
     const dispatch = useDispatch();
     const { loading, setLoading } = useLoading();
     // const [ alerts, setAlerts ] = useState([]);
@@ -47,10 +59,18 @@ function AppProvider({children}) {
     return (
         <AppContext.Provider
           value={{
+            theme,
+            currentTime,
+            currentLocation,
+            setCurrentLocation,
+            locationServices,
+            handleTheme,
+            setLocationServices,
             navigate,
             dispatch,
             setLoading,
             auth,
+            signOut,
             goBack
           }}
           >

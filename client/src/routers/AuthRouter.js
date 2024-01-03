@@ -18,6 +18,11 @@ function AppRouter() {
         />
         <Route
             exact
+            path={ROUTES.LOCATION_SERVICES}
+            component={view.LocationServices}
+        />
+        <Route
+            exact
             path={ROUTES.HOME}
             component={view.Home}
         />

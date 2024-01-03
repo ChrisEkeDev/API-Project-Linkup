@@ -11,8 +11,6 @@ export const sortComments = (comments) => {
         }
     });
 
-    console.log(commentMap)
-
     for (const key in commentMap) {
         for (let c of commentMap[key]) {
             sortedComments.push(c)

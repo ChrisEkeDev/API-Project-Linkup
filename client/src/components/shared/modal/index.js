@@ -16,7 +16,7 @@ const Modal = (props) => {
             <div className="modal-overlay">
                 <div className="modal">
                     <IconButton
-                        styles='close'
+                        styles='modal_close'
                         icon={TbX}
                         action={onCloseModal}
                     />

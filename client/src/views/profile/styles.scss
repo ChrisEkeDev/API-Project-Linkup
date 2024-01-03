@@ -1,0 +1,15 @@
+.profile {
+    padding-top: 1rem;
+    padding-right: 2rem;
+}
+
+.profile_header {
+    padding: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h2 {
+        margin: 1rem 0;
+        padding: 1rem;
+    }
+}

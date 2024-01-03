@@ -1,3 +1,4 @@
 export const globalStyles = {
-    errorBorder: "1px solid #a02828"
+    errorBorder: "1px solid #b53a3a",
+    errorColor: "#b53a3a"
 }

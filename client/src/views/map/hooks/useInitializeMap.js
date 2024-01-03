@@ -1,32 +1,19 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
+import { useApp } from '../../../context/AppContext';
 
 function useMap() {
-    const [ center, setCenter ] = useState(null);
+    const { locationServices, currentLocation, setCurrentLocation } = useApp();
     const sessionData = useSelector(state => state.sessions.allSessions);
-    const sessions = Object.values(sessionData)
-
-    const focusSession = (session) => {
-      const center = {lat: session.Court.lat, lng: session.Court.lng}
-      setCenter(center)
-    }
+    const markers = Object.values(sessionData)
 
 
-    const initMap = () => {
-      navigator.geolocation.getCurrentPosition(position => {
-        const { latitude, longitude } = position.coords;
-        const center =  { lat: latitude, lng: longitude };
-        setCenter(center)
-      })
-
-    }
-
-    useEffect(() => {
-      initMap()
-    }, [])
+    // useEffect(() => {
+    //   initMap()
+    // }, [currentLocation])
 
 
-  return { center, sessions, focusSession }
+  return { markers }
 }
 
 export default useMap

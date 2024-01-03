@@ -64,7 +64,7 @@ function SignUp() {
         </section>
         <footer className='auth_form--actions'>
           <Button
-            styles='auth_form--button'
+            styles='auth_form--button primary'
             type='button'
             label='Sign up'
             disabled={Object.values(errors).length}

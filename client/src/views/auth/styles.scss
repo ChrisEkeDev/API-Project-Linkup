@@ -32,11 +32,27 @@
 
     .auth_form--button {
         width: 100%;
-        height: 2.5rem;
-        font-size: 1rem;
         font-weight: 600;
-        border-radius: .5rem;
-
     }
 
+}
+
+.location_services {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.location_container {
+    width: 30%;
+    h2 {
+        margin-bottom: 1rem;
+    }
+}
+
+.location_actions {
+    display: flex;
+    padding: 2rem 0;
+    justify-content: flex-end;
+    gap: 2rem;
 }

@@ -55,3 +55,14 @@ export const fadeIn = {
 export const fadeOut = {
     opacity: 0
 }
+
+export const comment_variants = {
+    visible: {
+        x: 0,
+        opacity: 1,
+    },
+    hidden: {
+        x: -100,
+        opacity: 0,
+    }
+}

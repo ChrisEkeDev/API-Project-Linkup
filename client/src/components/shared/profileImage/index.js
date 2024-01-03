@@ -15,7 +15,7 @@ function ProfileImage({player, size }) {
                 borderRadius: `${borderHeight}rem`
             }}
         >
-            {
+            {/* {
                 !hasImage ?
                     <div className='profile_circle' style={{
                         height: `${imageHeight}rem`,
@@ -33,7 +33,7 @@ function ProfileImage({player, size }) {
                     }}
                 />
 
-            }
+            } */}
         </div>
     )
 }

@@ -31,7 +31,7 @@ function useReplyComment(replyTo) {
     const createReply = async (e) => {
         const newComment = {
             playerId: player.id,
-            courtId: session.Court.id,
+            courtId: session.courtId,
             sessionId: session.id,
             text,
             replyTo

@@ -1,4 +1,5 @@
 import React, { useState} from 'react'
+import { motion } from 'framer-motion'
 import useComments from './hooks/useComments';
 import useNewComment from './hooks/useNewComment';
 import Comment from './components/Comment';
@@ -6,6 +7,7 @@ import Button from '../../components/shared/button';
 import './styles.scss';
 import NewComment from './components/NewComment';
 import { TbMessage2Question, TbMessagePlus } from 'react-icons/tb';
+import { parent_variants, comment_variants, base_animations } from '../../constants/animations';
 
 function Comments() {
     const { comments  } = useComments();
@@ -30,28 +32,31 @@ function Comments() {
                         disabled={creating}
                     />
             </header>
-            <ul className='comments_list'>
-                <div ref={ref}>
-                    <NewComment {...{
-                        creating,
-                        setCreating,
-                        handleInput,
-                        createComment
-                    }}/>
-                </div>
-                {
-                    comments.length === 0 ?
-                    creating ?
-                    null :
-                    <div className='no_comments'>
-                        <TbMessage2Question className='icon'/>
-                        <span className='xs bold'>No Comments Yet</span>
-                    </div> :
-                    comments.map(comment => (
-                        <Comment comment={comment}/>
-                    ))
-                }
-            </ul>
+            <motion.ul
+                variants={parent_variants}
+                {...base_animations}
+                className='comments_list'>
+                    <motion.div variants={comment_variants} {...base_animations} ref={ref}>
+                        <NewComment {...{
+                            creating,
+                            setCreating,
+                            handleInput,
+                            createComment
+                        }}/>
+                    </motion.div>
+                    {
+                        comments.length === 0 ?
+                        creating ?
+                        null :
+                        <motion.div className='no_comments'>
+                            <TbMessage2Question className='icon'/>
+                            <span className='xs bold'>No Comments Yet</span>
+                        </motion.div> :
+                        comments.map(comment => (
+                            <Comment comment={comment}/>
+                        ))
+                    }
+            </motion.ul>
         </div>
     )
 }

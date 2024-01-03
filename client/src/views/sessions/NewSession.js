@@ -4,7 +4,7 @@ import useNewSession from './hooks/useNewSession';
 import Back from '../../components/shared/button/Back';
 import Input from '../../components/shared/inputs/textInput';
 import Button from '../../components/shared/button';
-import { TbCalendar, TbClock, TbGauge, TbMapPinCheck, TbMapPinQuestion, TbMapPin } from 'react-icons/tb';
+import { TbCalendar, TbClock, TbGauge, TbMapPinCheck, TbMapPinQuestion, TbMapPin, TbCalendarPlus } from 'react-icons/tb';
 import { CgSpinner } from 'react-icons/cg';
 import { page_transitions } from '../../constants/animations';
 
@@ -23,7 +23,7 @@ function NewSession() {
 
 
   return (
-    <motion.main {...page_transitions} className='page new-session'>
+    <motion.main {...page_transitions} className='page new_session'>
         <header className='header'>
             <Back/>
         </header>
@@ -52,11 +52,15 @@ function NewSession() {
             />
             <Button
               label={
-                  status === "loading" ? "Loading"
-                  : status === "success" ? "Address Verified"
-                  : "Verify Address"
+                status === "loading" ? "Verifying..."
+                : status === "success" ? "Address Verified"
+                : "Verify Address"
               }
-              styles={`input_button ${status !== "success" ? "secondary" : "primary"}`}
+              styles={`input_button ${
+                status === "loading" ? "reply"
+                : status === "success" ? "success"
+                : "tertiary"
+              }`}
               icon={
                   status === "loading" ? CgSpinner :
                   status === "success" ? TbMapPinCheck  :
@@ -113,7 +117,8 @@ function NewSession() {
           <footer className='form_actions'>
             <Button
               label="Create Session"
-              styles=""
+              styles="primary"
+              icon={TbCalendarPlus}
               action={createSession}
             />
           </footer>

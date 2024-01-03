@@ -21,7 +21,7 @@ function Input(props) {
         min,
         max
     } = props;
-    const { errorBorder } = globalStyles || '1px solid #a02828';
+    const { errorBorder, errorColor } = globalStyles || '1px solid #a02828';
 
   return (
     <label
@@ -37,7 +37,7 @@ function Input(props) {
                 max={type === 'number' ? max : null}
                 type={type === 'password' ? passwordHidden ? 'password' : 'text' : type}
                 placeholder={placeholder}
-                style={error ? {borderTop: errorBorder, borderBottom: errorBorder} : null}
+                style={error ? {color: errorColor } : null}
                 disabled={disabled}
             />
             {label ? <span className='label'>{label}</span> : null}

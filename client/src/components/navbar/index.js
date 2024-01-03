@@ -1,15 +1,31 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom';
 import './styles.scss';
-import NavMenu from './components/NavMenu';
-import NavSearch from './components/NavSearch';
+import * as ROUTES from '../../constants/routes';
+import { TbSettings, TbSearch, TbUserCircle, TbLogout  } from 'react-icons/tb';
 
-function NavigationBar() {
+function NavBar() {
   return (
-    <nav className='nav'>
-        <NavSearch/>
-        <NavMenu/>
+    <nav>
+        <ul className='app_nav'>
+            <li title="Search Sessions" className='app_link'>
+                <NavLink to={ROUTES.SESSIONS} activeClassName="active_link">
+                    <TbSearch />
+                </NavLink>
+            </li>
+            <li title="Settings" className='app_link'>
+                <NavLink to={ROUTES.SETTINGS} activeClassName="active_link">
+                    <TbSettings />
+                </NavLink>
+            </li>
+            <li title="My Profile" className='app_link'>
+                <NavLink to={ROUTES.PROFILE} activeClassName="active_link">
+                    <TbUserCircle  />
+                </NavLink>
+            </li>
+        </ul>
     </nav>
   )
 }
 
-export default NavigationBar
+export default NavBar

@@ -19,13 +19,52 @@
 
 .map_marker {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    background-color: var(--background);
+    padding: .25rem;
+    border-radius: 1.5rem;
+    box-shadow: var(--box-shadow);
+    gap: 2rem;
+    transition: padding .3s ease;
+    z-index: 15;
+
+    &:hover {
+        padding: 1rem;
+
+        .marker_text,
+        .marker_count {
+            display: flex;
+        }
+    }
+}
+
+.active_marker {
+    padding: 1rem;
+    z-index: 20;
+
+        .marker_text,
+        .marker_count {
+            display: flex;
+        }
+}
+
+.marker_info {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
 }
 
 .marker_icon {
-    height: 30px
+    height: 30px;
 }
 
 .marker_text {
-    color: blue
+    display: flex;
+    flex-direction: column;
+    display: none;
+}
+
+.marker_count {
+    display: none;
 }

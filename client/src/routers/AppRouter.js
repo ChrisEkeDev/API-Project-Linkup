@@ -1,50 +1,41 @@
 import React from 'react'
-import { Switch, Route, NavLink } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import * as view from '../views';
-import { TbSettings, TbSearch, TbUserCircle  } from 'react-icons/tb';
+import NavBar from '../components/navbar';
+import { useApp } from '../context/AppContext';
+import Loading from '../components/shared/loading';
 
 function AppRouter() {
-  return (
-    <div className='app_router'>
-        <ul className='app_nav'>
-            <li className='app_link'>
-                <NavLink to="/sessions">
-                    <TbSearch />
-                </NavLink>
-            </li>
-            <li className='app_link'>
-                <NavLink to="/settings">
-                    <TbSettings />
-                </NavLink>
-            </li>
-            <li className='app_link'>
-                <NavLink to="/profile">
-                    <TbUserCircle  />
-                </NavLink>
-            </li>
-        </ul>
-        <Switch>
-            <Route
-                exact
-                path={ROUTES.SESSIONS_ROUTER}
-                component={view.SessionsRouter}
-            />
-            {/* <Route
-                exact
-                path={ROUTES.SIGN_UP}
-                component={view.SignUp}
-            /> */}
-            {/* <Route
-                path={ROUTES.HOME}
-                component={view.Home}
-            />
-            <Route
-                component={view.PageNotFound}
-            /> */}
-        </Switch>
-    </div>
-  )
+    const { auth } = useApp();
+
+    if (!auth) return <Loading/>
+
+    return (
+        <div className='app_router'>
+            <NavBar />
+            <Switch>
+                <Route
+                    exact
+                    path={ROUTES.SESSIONS_ROUTER}
+                    component={view.SessionsRouter}
+                />
+                <Route
+                    exact
+                    path={ROUTES.SETTINGS}
+                    component={view.Settings}
+                />
+                <Route
+                    exact
+                    path={ROUTES.PROFILE_ROUTER}
+                    component={view.ProfileRouter}
+                />
+                {/* <Route
+                    component={view.PageNotFound}
+                /> */}
+            </Switch>
+        </div>
+    )
 }
 
 export default AppRouter

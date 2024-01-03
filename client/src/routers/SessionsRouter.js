@@ -4,13 +4,11 @@ import { AnimatePresence } from 'framer-motion'
 import { Switch, Route } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import * as view from '../views';
-import SessionSearch from '../views/sessions/components/SessionSearch';
 
 function SessionsRouter() {
     const location = useLocation()
     return (
         <div className='router_container'>
-            {/* <SessionSearch/> */}
             <AnimatePresence mode='wait'>
                 <Switch location={location} key={location.pathname}>
                     <Route

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { thunkUpdateComment } from '../../../store/comments';
 
 function useEditComment(data) {
-    const [text, setText] = useState(data?.text || undefined);
+    const [text, setText] = useState(data?.text || '');
     const [editing, setEditing] = useState(false);
     const ref1 = useRef();
     const dispatch = useDispatch();

@@ -28,6 +28,7 @@ const SessionsSorter = ({sortBy, setSortBy}) => {
 
     return (
         <div className='sessions_sorter'>
+            <span className="sort_label">{sortValues[sortBy]}</span>
             <IconButton
                 icon={TbSortAscending}
                 action={() => setMenu(!menu)}

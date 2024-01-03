@@ -1,0 +1,35 @@
+@import url('../../index.css');
+
+
+.settings {
+    padding-top: 1rem;
+    padding-right: 1rem;
+}
+
+.settings_form {
+    padding: 1rem;
+    h2 {
+        margin: 1rem 0;
+        padding: 1rem;
+    }
+}
+
+.settings_toggle {
+    cursor: pointer;
+    height: 3rem;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 1.5rem;
+    transition: background .2s ease;
+    margin-bottom: 1rem;
+
+    &:hover {
+        background-color: var(--hover);
+    }
+
+    .toggle_icon {
+        font-size: 1.25rem;
+    }
+}

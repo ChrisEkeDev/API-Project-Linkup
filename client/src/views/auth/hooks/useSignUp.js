@@ -6,8 +6,7 @@ import { thunkSignUpPlayer } from '../../../store/auth';
 
 const useSignUp = () => {
     const dispatch = useDispatch();
-    const { setLoading } = useApp();
-    const history = useHistory();
+    const { navigate, setLoading } = useApp();
 
     const [ formData, setFormData ] = useState({
         name: "",
@@ -36,7 +35,7 @@ const useSignUp = () => {
             const response = await dispatch(thunkSignUpPlayer(formData));
             if (response.status === 201) {
                 // handleAlerts(signUpSuccess);
-                history.push('/sessions')
+                navigate('/enable-location')
             } else {
                 handleErrors(response.errors)
                 throw new Error();

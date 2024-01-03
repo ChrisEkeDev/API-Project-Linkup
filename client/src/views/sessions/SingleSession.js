@@ -15,15 +15,17 @@ import SessionInformation from './components/SessionInformation';
 import SessionCheckIns from './components/SessionCheckIns';
 import LoadingData from '../../components/shared/loading';
 import Scroll from '../../components/shared/scroll';
-import { TbEditCircle, TbUserCheck , TbTrashFilled, TbUserX  } from 'react-icons/tb'
+import { TbEditCircle, TbUserCheck , TbTrashFilled, TbUserX, TbX  } from 'react-icons/tb'
 import { base_animations, base_variants, child_variants, page_transitions, parent_variants } from '../../constants/animations';
+import { format } from 'date-fns';
+import CountDown from '../../components/countdown';
 
 
 function SingleSession({session}) {
     const { deleteSession, checkIn, checkOut } = useSession(session);
     const checkInsData = useSelector(state => state.checkIns.sessionCheckIns);
     const checkIns = Object.values(checkInsData)
-    const { auth, navigate } = useApp();
+    const { auth, navigate, currentTime } = useApp();
     const { isModalOpen, onOpenModal, onCloseModal } = useModal();
     const isCreator = auth?.id == session?.creatorId;
     const isCheckedIn = checkIns.filter(checkin => checkin.playerId === auth.id).length > 0;
@@ -33,6 +35,7 @@ function SingleSession({session}) {
             <motion.header variants={child_variants} className='header'>
                 <Back/>
                 <div className='actions'>
+                    <CountDown endTime={session.startDate} expires={session.endDate} />
                     {
                         isCreator ?
                         <>
@@ -78,22 +81,23 @@ function SingleSession({session}) {
             isModalOpen={isModalOpen}
             onCloseModal={onCloseModal}
         >
-            <h2>Are you sure you want to delete this session?</h2>
             <div className='deleting_session'>
-                <SessionInformation session={session}/>
-                <SessionCheckIns checkIns={checkIns}/>
-            </div>
-            <div className='modal_actions'>
-                <Button
-                    label="Keep Session"
-                    styles=""
-                    action={onCloseModal}
-                />
-                <Button
-                    label="Delete Session"
-                    styles=""
-                    action={deleteSession}
-                />
+                <h2 className='md modal_title'>Are you sure you want to delete this session?</h2>
+                <SessionInformation session={session} />
+                <div className='modal_actions'>
+                    <Button
+                        label="Keep Session"
+                        styles="tertiary"
+                        icon={TbX}
+                        action={onCloseModal}
+                    />
+                    <Button
+                        label="Delete Session"
+                        styles="warning"
+                        icon={TbTrashFilled}
+                        action={deleteSession}
+                    />
+                </div>
             </div>
         </Modal>
     </motion.main>
