@@ -5,8 +5,7 @@ import { thunkGetSingleSession } from '../../store/sessions';
 import useUpdateSession from './hooks/useUpdateSession';
 import Input from '../../components/shared/inputs/textInput';
 import Button from '../../components/shared/button';
-import { TbCalendar, TbClock, TbGauge, TbMapPinCheck, TbMapPinQuestion, TbMapPin, TbCalendarCheck } from 'react-icons/tb';
-import { CgSpinner } from 'react-icons/cg';
+import { TbCalendar, TbClock, TbGauge, TbMapPin, TbCalendarCheck } from 'react-icons/tb';
 import { useSelector } from 'react-redux';
 import { useApp } from '../../context/AppContext';
 import LoadingData from '../../components/shared/loading';
@@ -14,18 +13,15 @@ import LoadingData from '../../components/shared/loading';
 function UpdateSession({session}) {
     const  {
         sessionData,
-        addressObject,
         errors,
         handleInput,
-        verifyAddress,
         updateSession,
-        status
     } = useUpdateSession(session);
 
   return (
         <main className='page new_session'>
             <header className='header'>
-                <Back/>
+                <Back route={`/sessions/${session.id}`}/>
             </header>
             <form className='session_form'>
                 <header className='form_header'>
@@ -40,42 +36,13 @@ function UpdateSession({session}) {
                     error={errors?.name}
                     disabled={false}
                 />
-                <div className='form_input'>
-                    <Input
-                        label="Full Address"
-                        placeholder='123 Fake St, City, ST'
-                        value={sessionData?.address}
-                        setValue={handleInput}
-                        name='address'
-                        error={errors?.address}
-                        disabled={false}
-                    />
-                    <Button
-                        label={
-                            status === "loading" ? "Loading"
-                            : status === "success" ? "Address Verified"
-                            : "Verify Address"
-                        }
-                        styles={`input_button ${status !== "success" ? "secondary" : "primary"}`}
-                        icon={
-                            status === "loading" ? CgSpinner :
-                            status === "success" ? TbMapPinCheck  :
-                            TbMapPinQuestion
-                        }
-                        action={verifyAddress}
-                    />
-                </div>
-                {
-                    Object.keys(addressObject).length && status === "success" ?
-                    <div className='form_verification'>
+                <div className='form_verification'>
                     <TbMapPin className="icon"/>
                     <div className='details'>
-                        <small>Verified Address</small>
-                        <p className='time'>{addressObject.address}</p>
+                        <small>Address</small>
+                        <p className='time'>{session.Court.address}</p>
                     </div>
-                    </div> :
-                    null
-                }
+                </div>
                 <div className='form_flex'>
                 <Input
                     label="Date"

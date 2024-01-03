@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { CheckIn, Session, Player, Team, SessionImage, Membership, Court } = require('../../db/models');
+const { CheckIn, Session, Player, Comment, SessionImage, Membership, Court } = require('../../db/models');
 const { Op, fn, col } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
 const { uploadImage, deleteImages } = require('../../utils/aws');
@@ -18,11 +18,18 @@ router.get('/search/*', async(req, res) => {
     const yesterdayISOString = yesterday.toISOString()
     const lowerCaseQuery = query ? query.toLowerCase() : '';
     const sessions = await Session.findAll({
-        where: {
-            endDate: {
-                [Op.gte]: yesterdayISOString
-            }
+        attributes: {
+            include: [
+                'id',
+                'name',
+                'startDate',
+                'endDate',
+                'creatorId',
+                [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
+            ],
+            exclude: ['CheckIn', 'courtId','updatedAt', 'createdAt', 'private']
         },
+        group: ['Session.id'],
         include: [
             {
                 model: Player,
@@ -31,38 +38,38 @@ router.get('/search/*', async(req, res) => {
             },
             {
                 model: Court,
-                attributes: ['address', 'lat', 'lng']
+                attributes: ['id', 'address', 'lat', 'lng']
             },
             {
                 model: CheckIn,
                 attributes: []
             }
         ],
-        attributes: {
-            include: [
-                'id',
-                'name',
-                'startDate',
-                [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
-            ],
-            exclude: ['CheckIn', 'courtId', 'creatorId', 'endDate', 'updatedAt', 'createdAt', 'private']
+        where: {
+            endDate: {
+                [Op.gte]: yesterdayISOString
+            }
         },
-        group: ['Session.id'],
         order: [
             [sortBy ? sortBy : 'startDate', sortBy === 'startDate' ? 'ASC' : 'DESC']
         ]
     });
 
-function calculateRelevance(session) {
+    function calculateRelevance(session) {
         let relevance = 0;
-        if (query && session.name.toLowerCase().includes(lowerCaseQuery)) {
-            relevance++;
+        if (query) {
+            lowerCaseQuery.split(' ').forEach(word => {
+                if (session.name.toLowerCase().includes(word)) {
+                    relevance++;
+                }
+                if (session.Court.address.toLowerCase().includes(word)) {
+                    relevance++;
+                }
+                if (session.creator.name.toLowerCase().includes(word)) {
+                    relevance++;
+                }
+            })
         }
-        // if (article.title.toLowerCase().includes(lowerCaseQuery)) {
-        //     relevance++;
-        // }
-        // relevance += article.content.toLowerCase().split(lowerCaseQuery).length - 1;
-        // ... add more rules if needed ...
         return relevance;
     }
 
@@ -101,6 +108,18 @@ router.get('/current', requireAuth, async (req, res) => {
 router.get('/:sessionId', async (req, res) => {
     const { sessionId } = req.params;
     const session = await Session.findByPk(sessionId, {
+        attributes: {
+            include: [
+                'id',
+                'name',
+                'startDate',
+                'endDate',
+                'creatorId',
+                [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
+            ],
+            exclude: ['CheckIn', 'courtId','updatedAt', 'createdAt', 'private']
+        },
+        group: ['Session.id'],
         include: [
             {
                 model: Player,
@@ -109,7 +128,7 @@ router.get('/:sessionId', async (req, res) => {
             },
             {
                 model: Court,
-                attributes: ['address']
+                attributes: ['id', 'address', 'lat', 'lng']
             },
             {
                 model: CheckIn,
@@ -187,6 +206,18 @@ router.post('/', requireAuth, uploadImage, validateCreateSession, async (req, re
     }
 
     const newSession = await Session.findByPk(session.id, {
+        attributes: {
+            include: [
+                'id',
+                'name',
+                'startDate',
+                'endDate',
+                'creatorId',
+                [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
+            ],
+            exclude: ['CheckIn', 'courtId','updatedAt', 'createdAt', 'private']
+        },
+        group: ['Session.id'],
         include: [
             {
                 model: Player,
@@ -195,14 +226,11 @@ router.post('/', requireAuth, uploadImage, validateCreateSession, async (req, re
             },
             {
                 model: Court,
-                attributes: ['address']
+                attributes: ['id', 'address', 'lat', 'lng']
             },
             {
                 model: CheckIn,
-                include: {
-                    model: Player,
-                    as: 'player',
-                }
+                attributes: []
             }
         ]
     });
@@ -235,7 +263,7 @@ router.put('/:sessionId', requireAuth, validateEditSession, async (req, res) => 
     const { sessionId } = req.params;
     const playerId = req.player.id;
     const { name, startDate, endDate } = req.body;
-    let session = await Session.findByPk(sessionId);
+    let session = await Session.scope(null).findByPk(sessionId);
 
     if (!session) {
         return res.status(404).json(sessionNotFound)
@@ -255,10 +283,40 @@ router.put('/:sessionId', requireAuth, validateEditSession, async (req, res) => 
 
     await session.save();
 
+    const updatedSession = await Session.findByPk(session.id, {
+        attributes: {
+            include: [
+                'id',
+                'name',
+                'startDate',
+                'endDate',
+                'creatorId',
+                [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
+            ],
+            exclude: ['CheckIn', 'courtId', 'updatedAt', 'createdAt', 'private']
+        },
+        group: ['Session.id'],
+        include: [
+            {
+                model: Player,
+                as: "creator",
+                attributes: ['name', 'profileImage']
+            },
+            {
+                model: Court,
+                attributes: ['id', 'address', 'lat', 'lng']
+            },
+            {
+                model: CheckIn,
+                attributes: []
+            }
+        ]
+    });
+
     return res.status(200).json({
         status: 200,
         message: "",
-        data: session,
+        data: updatedSession,
         errors: {}
     })
 

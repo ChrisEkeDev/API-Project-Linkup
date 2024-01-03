@@ -43,6 +43,7 @@
     background-color: var(--black-hover);
     pointer-events: none;
     padding: 1rem;
+    margin: 1rem 0;
 }
 
 .new-comment {
@@ -103,3 +104,14 @@
         font-size: 2rem;
     }
 }
+
+// .modal_container {
+//     position: relative;
+//     background-color: var(--background);
+//     width: 600px;
+//     padding: 2rem;
+//     box-shadow: var(--box-shadow);
+//     display: flex;
+//     flex-direction: column;
+//     border-radius: 1.5rem;
+// }

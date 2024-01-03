@@ -26,9 +26,10 @@ function Profile() {
 
 
     return (
-        <motion.main {...page_transitions} className='page profile'>
-                <header className='profile_header'>
-                    <h2>{auth.name}'s Profile</h2>
+        <motion.main {...page_transitions} className='page page_w_title'>
+            <div className='page_container'>
+                <header className='page_header'>
+                    <h2>Dashboard</h2>
                     <Button
                         label="SignOut"
                         styles="primary"
@@ -36,15 +37,26 @@ function Profile() {
                         action={handleSignOut}
                     />
                 </header>
+                <Scroll>
+                        <div className='profile_user_info float_left'>
+                            <ProfileImage
+                                size={5}
+                            />
+                            <div>
+                                <p className='sm bold'>{auth.name}</p>
+                                <p className='xs'>Member Since {}</p>
+                            </div>
+                        </div>
+                        <div className='profile_actions'>
+                            <Button
+                                label="Delete profile"
+                                styles="warning"
+                                icon={TbTrashFilled}
+                            />
+                        </div>
+                </Scroll>
 
-                {/* <ProfileImage size={7}/>
-                <div className='profile_actions'>
-                    <Button
-                        label="Delete profile"
-                        styles="warning"
-                        icon={TbTrashFilled}
-                    />
-                </div> */}
+            </div>
         </motion.main>
     )
 }

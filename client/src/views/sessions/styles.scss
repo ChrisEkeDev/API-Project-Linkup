@@ -119,6 +119,8 @@
 
     .sort_label {
         font-size: .8rem;
+        text-align: right;
+        white-space: nowrap;
     }
 }
 
@@ -245,7 +247,7 @@
     align-items: center;
 }
 
-.deleting_session {
+.modal_container {
     position: relative;
     background-color: var(--background);
     width: 600px;

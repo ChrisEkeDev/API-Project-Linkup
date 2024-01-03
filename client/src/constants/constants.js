@@ -49,6 +49,11 @@ export const sortValues = {
     createdAt: "Newest"
 }
 
+export const viewValues = {
+    list: 'List View',
+    calendar: 'Calendar View'
+}
+
 export const sortFunctions = {
     happeningSoon: (a, b) => {
         return new Date(a?.startDate) - new Date(b?.startDate);

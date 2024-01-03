@@ -1,7 +1,6 @@
 'use strict';
-const {
-  Model, Validator
-} = require('sequelize');
+const { Model, Validator, Op, fn, col } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Session extends Model {
 

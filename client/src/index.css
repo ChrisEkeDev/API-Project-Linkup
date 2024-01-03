@@ -54,6 +54,30 @@
     position: relative;
   }
 
+  .page_w_title {
+    padding-top: 1rem;
+    padding-right: 1rem;
+  }
+
+  .page_container {
+    padding: 1rem;
+
+  }
+
+  .page_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 3rem;
+    padding-right: 1.5rem;
+  }
+
+  .flex_spaced {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .router_container {
     width: 100%;
     /* padding: 1rem 0 */

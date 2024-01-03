@@ -10,13 +10,9 @@ import { geocodeAddress } from "../../../helpers/geocodeAddress";
 
 const useUpdateSession = (session) => {
     const { dispatch, navigate, setLoading } = useApp();
-    const [ addressQuery, setAddressQuery ] = useState(session?.address);
-    const [ addressObject, setAddressObject ] = useState({});
-    const [ status, setStatus] = useState(null)
     const [ errors, setErrors ] = useState({});
     const [ sessionData, setSessionData ] = useState({
         name: session?.name ,
-        address: session?.Court?.address,
         startDate: session.startDate,
         date: convertDateToUI(session.startDate),
         time: convertTimeToUI(session.startDate),
@@ -24,19 +20,9 @@ const useUpdateSession = (session) => {
         // private: session.private
     });
 
-
-    const verifyAddress = async (e) => {
-        const addressObj = await geocodeAddress(e, addressQuery, setStatus);
-        setAddressObject(addressObj);
-    }
-
-
     // Handles the input of the Session Form
     const handleInput = (x) => {
         setSessionData((prev) => ({ ...prev, [x.target.id]: x.target.value }));
-        if (x.target.id === "address") {
-            setAddressQuery(x.target.value)
-        }
     }
 
     const updateSession = async (e) => {
@@ -56,7 +42,7 @@ const useUpdateSession = (session) => {
     // Session form input validation error handler
     useEffect(() => {
         const errors = {};
-        const { name, startDate, duration, address, endDate } = sessionData;
+        const { name, startDate, duration } = sessionData;
         if (name && name.trim().length < 3) {
             errors.name = "Please enter a name for your session."
         }
@@ -70,14 +56,7 @@ const useUpdateSession = (session) => {
             errors.duration = "Enter a duration"
         }
         setErrors(errors)
-    }, [sessionData.name, status,sessionData.endDate, sessionData.startDate, sessionData.endDate, sessionData.address ])
-
-
-    // Resets the address verification if the address changes
-    useEffect(() => {
-        setStatus(null);
-        setAddressObject({})
-    }, [addressQuery])
+    }, [sessionData.name, sessionData.endDate, sessionData.startDate, sessionData.endDate  ])
 
 
     // Convert and store the date if the date or time keys change on the sesssion data
@@ -94,12 +73,9 @@ const useUpdateSession = (session) => {
 
     return {
         sessionData,
-        addressObject,
         errors,
         handleInput,
-        verifyAddress,
         updateSession,
-        status
     };
 }
 

@@ -9,7 +9,7 @@ const useSession = (session) => {
         try {
             const res = await dispatch(thunkDeleteSession(session));
             if (res.status === 200) {
-                navigate("/")
+                navigate("/sessions")
             } else {
                 throw new Error();
             }

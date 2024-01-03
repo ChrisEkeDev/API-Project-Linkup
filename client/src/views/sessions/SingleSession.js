@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import { thunkGetSingleSession } from '../../store/sessions';
 import { useParams } from 'react-router-dom';
 import useModal from '../../hooks/useModal';
-import { thunkGetCheckIns } from '../../store/checkins';
+import { thunkGetSessionCheckIns } from '../../store/checkins';
 import SessionInformation from './components/SessionInformation';
 import SessionCheckIns from './components/SessionCheckIns';
 import LoadingData from '../../components/shared/loading';
@@ -33,7 +33,7 @@ function SingleSession({session}) {
     return (
         <motion.main {...base_animations} className='page single_session'>
             <motion.header variants={child_variants} className='header'>
-                <Back/>
+                <Back route={`/sessions`}/>
                 <div className='actions'>
                     <CountDown endTime={session.startDate} expires={session.endDate} />
                     {
@@ -81,7 +81,7 @@ function SingleSession({session}) {
             isModalOpen={isModalOpen}
             onCloseModal={onCloseModal}
         >
-            <div className='deleting_session'>
+            <div className='modal_container'>
                 <h2 className='md modal_title'>Are you sure you want to delete this session?</h2>
                 <SessionInformation session={session} />
                 <div className='modal_actions'>
@@ -112,18 +112,18 @@ function SingleSessionWrapper() {
     const session = useSelector(state => state.sessions.singleSession);
 
     useEffect(() => {
-        const getSession = async () => {
+        const loadSession = async () => {
             try {
-                const res = await dispatch(thunkGetSingleSession(id));
-                const res2 = await dispatch(thunkGetCheckIns(id))
-                if (res.status === 200 && res2.status === 200 && session) {
+                const sessionData = await dispatch(thunkGetSingleSession(id));
+                const checkInData = await dispatch(thunkGetSessionCheckIns(id))
+                if (sessionData.status === 200 && checkInData.status === 200 && session) {
                     setLoading(false);
                 }
             } catch(e) {
                 console.log(e)
             }
         }
-        getSession();
+        loadSession();
 
     }, [dispatch, id])
 

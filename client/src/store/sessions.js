@@ -127,7 +127,7 @@ const initialState = { allSessions: [], singleSession: {} };
 const sessionsReducer = (state = initialState, action) => {
     switch(action.type) {
         case SEARCH_SESSIONS: {
-            const newState = { allSessions: [], singleSession: {} }
+            const newState = { ...state, allSessions: [] }
             action.payload.forEach(session => newState.allSessions.push(session));
             return newState;
         }
@@ -143,8 +143,8 @@ const sessionsReducer = (state = initialState, action) => {
         };
         case CREATE_SESSION:
         case UPDATE_SESSION: {
-            const newState = { ...state };
-            newState.allSessions = { ...newState.allSessions, [action.payload.id]: action.payload };
+            const newState = { ...state, singleSession: {} };
+            newState.singleSession = action.payload;
             return newState;
         };
         case DELETE_SESSION: {

@@ -1,0 +1,171 @@
+@import url('../../index.css');
+
+.calendar_wrapper {
+    width: 100%;
+    transition: all .2s;
+}
+
+.month_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 700;
+    padding: 1rem 0;
+
+    .header_icon {
+        cursor: pointer;
+        &:hover {
+          opacity: .5;
+        }
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: uppercase;
+    }
+}
+
+.weekdays_container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1rem;
+    padding: 0;
+}
+
+.weekday_container {
+    text-align: center;
+    font-size: .8rem;
+    padding: 1rem 0px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+.days_container {
+    display: grid;
+    gap: 1rem;
+}
+
+.day_container {
+    background-blend-mode: multiply;
+    cursor: pointer;
+    flex-grow: 1;
+    flex-basis: 0;
+    max-width: 100%;
+    aspect-ratio: 1.25;
+    position: relative;
+    border-radius: 1rem;
+    color: black;
+    display: flex;
+    padding: 1rem;
+    gap: 5px;
+    flex-wrap: wrap;
+    transition: all .2s;
+    &:hover {
+      background-color: var(--hover);
+    }
+    &:last-of-type {
+      border: none;
+    }
+
+    .number {
+      position: absolute;
+      font-size: 1rem;
+      left: 1rem;
+      bottom: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+  }
+
+.day_selected {
+    background-color: var(--border-color);
+    font-weight: 700;
+    transition: all .2s;
+    .number {
+      color: var(--text);
+      transition: all .2s;
+    }
+}
+
+.current {
+    background-color: var(--main);
+    &:hover {
+        background-color: var(--main);
+    }
+    .number {
+      color: var(--background);
+    }
+  }
+
+.off_month {
+    &:hover {
+        background-color: var(--background);
+    }
+    .number {
+        color: var(--border-color);
+      }
+}
+
+.row_grid {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    &:last-of-type {
+        border: none;
+    }
+}
+
+.checkin_calendar_item {
+    position: relative;
+    display: flex;
+
+    .calendar_item_node {
+        height: 1rem;
+        aspect-ratio: 1;
+        border-radius: 1rem;
+        background-color: var(--main);
+
+    }
+    &:hover {
+        .calendar_item_menu {
+            display: flex;
+
+        }
+    }
+}
+
+.calendar_item_menu {
+    position: absolute;
+    display: none;
+    background-color: var(--background);
+    padding: .5rem;
+    flex-direction: column;
+    left: 2rem;
+    box-shadow: var(--box-shadow);
+    border-radius: 1rem;
+    z-index: 10;
+    .float_left {
+        gap: .25rem;
+    }
+    p {
+        white-space: nowrap;
+    }
+}
+
+.check_ins_list {
+    padding: 1rem 0;
+}
+.check_in_list_item {
+    padding: 1rem 0;
+
+}
+
+.selected_check_in {
+    margin: 3rem 0 10rem 0;
+}

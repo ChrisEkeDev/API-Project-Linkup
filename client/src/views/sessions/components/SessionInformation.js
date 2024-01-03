@@ -4,7 +4,7 @@ import { format, parseISO } from 'date-fns';
 
 function SessionInformation({session}) {
     const parsedDate = parseISO(session?.startDate);
-    const formattedTime = format(parsedDate, 'MM/dd @ H:mm a');
+    const formattedTime = format(parsedDate, 'MM/dd @ h:mm a');
   return (
     <div className='session_information'>
         <div className='float_left'>

@@ -1,17 +1,15 @@
 import { useState, useRef, useEffect } from 'react'
 import IconButton from '../../../components/shared/button/IconButton';
 import { TbSortAscending } from "react-icons/tb";
-import { sortValues } from "../../../constants/constants";
+import { viewValues } from "../../../constants/constants";
 import '../styles.scss';
 
-
-
-const SessionsSorter = ({sortBy, setSortBy}) => {
+function CheckInView({view, setView}) {
     const [ menu, setMenu ]= useState(false)
     const ref = useRef(null)
 
-    const handleSort = (sort) => {
-        setSortBy(sort);
+    const handleView = (view) => {
+        setView(view);
         setMenu(false)
     }
 
@@ -26,9 +24,9 @@ const SessionsSorter = ({sortBy, setSortBy}) => {
         return () => document.removeEventListener('click', handleOutsideClick, true)
     }, [])
 
-    return (
-        <div className='sessions_sorter'>
-            <span className="sort_label">{sortValues[sortBy]}</span>
+  return (
+    <div className='sessions_sorter'>
+            <span className="sort_label">{viewValues[view]}</span>
             <IconButton
                 icon={TbSortAscending}
                 action={() => setMenu(!menu)}
@@ -36,16 +34,16 @@ const SessionsSorter = ({sortBy, setSortBy}) => {
             {
                 menu &&
                 <div ref={ref} className="options_modal">
-                    {Object.keys(sortValues).map(option => (
-                        <div onClick={() => handleSort(option)} className='modal_option' defaultValue={option}>
-                            <div className={`option_node node-${option === sortBy ? 'active' : 'inactive'}`}/>
-                            <span className='option_label xs'>{sortValues[option]}</span>
+                    {Object.keys(viewValues).map(option => (
+                        <div onClick={() => handleView(option)} className='modal_option' defaultValue={option}>
+                            <div className={`option_node node-${option === view ? 'active' : 'inactive'}`}/>
+                            <span className='option_label xs'>{viewValues[option]}</span>
                         </div>
                     ))}
                 </div>
             }
-        </div>
-    )
+    </div>
+  )
 }
 
-export default SessionsSorter;
+export default CheckInView

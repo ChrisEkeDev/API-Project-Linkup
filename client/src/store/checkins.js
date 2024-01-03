@@ -1,28 +1,20 @@
 import { csrfFetch } from './csrf';
 
 // TYPES
-// const GET_SESSION_ATTENDEES = '/linkup/checkIns/GET_SESSION_ATTENDEES';
-const GET_CHECKINS = '/linkup/checkIns/GET_CHECKINS';
-// const GET_MY_CHECKINS = '/linkup/checkIns/GET_MY_CHECKINS';
+const GET_SESSION_CHECKINS = '/linkup/checkIns/GET_SESSION_CHECKINS';
+const GET_PLAYER_CHECKINS = '/linkup/checkIns/GET_PLAYER_CHECKINS';
 const ADD_CHECKIN = '/linkup/checkIns/ADD_CHECKIN';
-// const UPDATE_CHECKIN = '/linkup/checkIns/UPDATE_CHECKIN';
 const DELETE_CHECKIN = '/linkup/checkIns/DELETE_CHECKIN';
 
-// // ACTIONS
-// const actionGetSessionAttendees = (attendees) => ({
-//     type: GET_SESSION_ATTENDEES,
-//     payload: attendees
-// })
-
-const actionGetCheckIns = (checkIns) => ({
-    type: GET_CHECKINS,
+const actionGetSessionCheckIns = (checkIns) => ({
+    type: GET_SESSION_CHECKINS,
     payload: checkIns
 })
 
-// const actionGetMyCheckIns = (checkIns) => ({
-//     type: GET_MY_CHECKINS,
-//     payload: checkIns
-// })
+const actionGetPlayerCheckIns = (checkIns) => ({
+    type: GET_PLAYER_CHECKINS,
+    payload: checkIns
+})
 
 const actionAddCheckIn = (checkIn) => ({
     type: ADD_CHECKIN,
@@ -34,40 +26,28 @@ const actionDeleteCheckIn = (checkIn) => ({
     payload: checkIn
 })
 
-
-// THUNKS
-// export const thunkGetSessionAttendees = (sessionId) => async dispatch => {
-//     const res = await csrfFetch(`/api/sessions/${sessionId}/attendees`);
-//     if (res.ok) {
-//         const data = await res.json();
-//         dispatch(actionGetSessionAttendees(data.Attendees))
-//     } else {
-//         const errors = await res.json();
-//         return errors
-//     }
-// }
-
-export const thunkGetCheckIns = (sessionId) => async dispatch => {
+export const thunkGetSessionCheckIns = (sessionId) => async dispatch => {
     const res = await csrfFetch(`/api/sessions/${sessionId}/check-ins`)
     try {
         const jsonResponse = await res.json();
-        dispatch(actionGetCheckIns(jsonResponse.data))
+        dispatch(actionGetSessionCheckIns(jsonResponse.data))
         return jsonResponse;
     } catch(error) {
         console.error(error)
     }
 }
 
-// export const thunkGetMyCheckIns = () => async dispatch => {
-//     const res = await csrfFetch('/api/checkIns');
-//     if (res.ok) {
-//         const data = await res.json();
-//         dispatch(actionGetMyCheckIns(data.CheckIns))
-//     } else {
-//         const errors = await res.json();
-//         return errors
-//     }
-// }
+export const thunkGetPlayerCheckIns = () => async dispatch => {
+    const res = await csrfFetch('/api/check-ins');
+    try {
+        const jsonResponse = await res.json();
+        dispatch(actionGetPlayerCheckIns(jsonResponse.data))
+        return jsonResponse;
+    } catch(error) {
+        console.error(error)
+    }
+
+}
 
 export const thunkAddCheckIn = (sessionId) => async dispatch => {
     const res = await csrfFetch(`/api/sessions/${sessionId}/check-ins`, {
@@ -97,24 +77,19 @@ export const thunkDeleteCheckIn = (sessionId) => async dispatch => {
 
 // REDUCER
 
-const initialState = { sessionCheckIns: {} }
+const initialState = { sessionCheckIns: {}, playerCheckIns: {} }
 const checkInsReducer = (state = initialState, action) => {
     switch(action.type) {
-        // case GET_SESSION_ATTENDEES: {
-        //     const newState = { myCheckIns: {...state.myCheckIns}, sessionCheckIns: {...state.sessionCheckIns}, sessionAttendees: {} };
-        //     action.payload.forEach(attendee => newState.sessionAttendees[attendee.id] = attendee)
-        //     return newState;
-        // }
-        case GET_CHECKINS: {
+        case GET_SESSION_CHECKINS: {
             const newState = { ...state, sessionCheckIns: {} };
             action.payload.forEach(checkIn => newState.sessionCheckIns[checkIn.id] = checkIn)
             return newState;
         }
-        // case GET_MY_CHECKINS: {
-        //     const newState = { myCheckIns: {}, sessionCheckIns: {...state.sessionCheckIns}, sessionAttendees:{...state.sessionAttendees}};
-        //     action.payload.forEach(checkIn => newState.myCheckIns[checkIn.id] = checkIn)
-        //     return newState;
-        // }
+        case GET_PLAYER_CHECKINS: {
+            const newState = { ...state, playerCheckIns: {} };
+            action.payload.forEach(checkIn => newState.playerCheckIns[checkIn.id] = checkIn)
+            return newState;
+        }
         case ADD_CHECKIN: {
             const newState = { ...state, sessionCheckIns: {...state.sessionCheckIns } };
             newState.sessionCheckIns = {...newState.sessionCheckIns, [action.payload.id]: action.payload }

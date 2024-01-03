@@ -22,6 +22,11 @@ function AppRouter() {
                 />
                 <Route
                     exact
+                    path={ROUTES.CHECKINS}
+                    component={view.CheckIns}
+                />
+                <Route
+                    exact
                     path={ROUTES.SETTINGS}
                     component={view.Settings}
                 />

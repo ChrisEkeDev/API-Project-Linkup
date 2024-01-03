@@ -132,7 +132,8 @@ function Comment({ comment }) {
       isModalOpen={isModalOpen}
       onCloseModal={onCloseModal}
     >
-        <h2>Are you sure you want to delete this comment?</h2>
+      <div className='modal_container'>
+        <h2 className='md modal_title'>Are you sure you want to delete this comment?</h2>
         <div className='comment deleting_comment'>
         { isReply && <TbArrowForward className='reply_icon' /> }
           <ProfileImage
@@ -156,15 +157,18 @@ function Comment({ comment }) {
         <div className='modal_actions'>
           <Button
             label="Keep Comment"
-            styles=""
+            styles="tertiary"
+            icon={TbX}
             action={onCloseModal}
           />
           <Button
             label="Delete Comment"
-            styles=""
+            styles="warning"
+            icon={TbTrashFilled}
             action={() => deleteComment(comment, onCloseModal)}
           />
         </div>
+      </div>
     </Modal>
     </>
   )

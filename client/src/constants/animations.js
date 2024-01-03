@@ -23,6 +23,17 @@ export const base_variants = {
     }
 }
 
+export const checkin_variants = {
+    visible: {
+        opacity: 1,
+        y: 0
+    },
+    hidden: {
+        opacity: 0,
+        y: 20
+    }
+}
+
 export const base_animations = {
     initial: "hidden",
     animate: "visible",
