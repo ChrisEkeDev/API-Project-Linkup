@@ -17,21 +17,18 @@ function CheckIns({checkInsData}) {
 
     return (
         <motion.main {...page_transitions} className='page page_w_title'>
-            <div className='page_container'>
-                <header className='page_header'>
-                    <h2>Check Ins</h2>
-                    <CheckInView {...{view, setView}} />
-                </header>
-                <Scroll>
-                    <AnimatePresence>
-                        {
-                            view === 'list' ?
-                            <CheckInList checkIns={checkIns} /> :
-                            <CheckInCalendar checkIns={checkIns} />
-                        }
-                    </AnimatePresence>
-                </Scroll>
-            </div>
+            <header className='page_header float_right'>
+                <CheckInView {...{view, setView}} />
+            </header>
+            <Scroll>
+                <AnimatePresence>
+                    {
+                        view === 'list' ?
+                        <CheckInList checkIns={checkIns} /> :
+                        <CheckInCalendar checkIns={checkIns} />
+                    }
+                </AnimatePresence>
+            </Scroll>
         </motion.main>
     )
 }

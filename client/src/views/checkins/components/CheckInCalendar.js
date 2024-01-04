@@ -6,7 +6,8 @@ import { format, addMonths, subMonths,addDays, startOfWeek,
 import { AnimatePresence, motion } from 'framer-motion';
 import Button from '../../../components/shared/button';
 import CheckInCalendarItem from './CheckInCalendarItem';
-import { TbChevronRight, TbChevronLeft, TbLogout } from 'react-icons/tb';
+import CheckInList from './CheckInList';
+import { TbChevronRight, TbChevronLeft, TbLogout, Tb123, TbCalendarQuestion } from 'react-icons/tb';
 import IconButton from '../../../components/shared/button/IconButton';
 import '../styles.scss';
 
@@ -110,6 +111,8 @@ function CheckInCalendar({checkIns}) {
             setMonth(subMonths(month, 1))
     };
 
+    const filteredCheckIns = checkIns.filter(checkIn => isSameDay(parseISO(checkIn.session.startDate), day))
+
     return (
         <motion.div className='check_ins_calendar'>
             <div className="calendar_wrapper">
@@ -133,19 +136,12 @@ function CheckInCalendar({checkIns}) {
             </div>
             <AnimatePresence>
                 {
-                    selectedCheckIn &&
-                    <div className="check_in_list_item flex_spaced selected_check_in">
-                        <div>
-                            <p className='xs'>{selectedCheckIn.session.name}</p>
-                            <p className='sm bold'>{selectedCheckIn.session.Court.address}</p>
-                            <p className='md bold'>{selectedCheckIn.session.startDate}</p>
-                        </div>
-                        <Button
-                            label="Check Out"
-                            icon={TbLogout}
-                            styles="primary"
-                        />
-                    </div>
+                    filteredCheckIns .length > 0 ?
+                    <CheckInList checkIns={filteredCheckIns}/> :
+                    <motion.div className='no_check_ins'>
+                        <TbCalendarQuestion className='icon'/>
+                        <span className='xs bold'>No Check Ins Today</span>
+                    </motion.div>
                 }
             </AnimatePresence>
 

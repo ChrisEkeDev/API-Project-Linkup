@@ -27,7 +27,6 @@ function Profile() {
 
     return (
         <motion.main {...page_transitions} className='page page_w_title'>
-            <div className='page_container'>
                 <header className='page_header'>
                     <h2>Dashboard</h2>
                     <Button
@@ -55,8 +54,6 @@ function Profile() {
                             />
                         </div>
                 </Scroll>
-
-            </div>
         </motion.main>
     )
 }

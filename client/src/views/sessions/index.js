@@ -27,7 +27,7 @@ function Sessions() {
 
   return (
       <motion.main className='page sessions'>
-        <div className='sessions_search'>
+        <div className='page_header'>
           <div className='float_right search_flex'>
             <input
                 value={query}
@@ -45,19 +45,18 @@ function Sessions() {
               <SessionsSorter sortBy={sortBy} setSortBy={handleSort} />
           </div>
         </div>
-        <header className='header'>
-            <h2>{sessions.length} Sessions</h2>
-            <div className='actions'>
-              <Button
-                label='New Session'
-                styles="secondary new_session-button"
-                action={() => navigate(ROUTE.NEW_SESSION)}
-                icon={TbPlus}
-              />
-            </div>
-        </header>
+
         <Scroll>
-          <section className='section'>
+          <section className='section sessions_list'>
+          <span className='section_label xs bold'>{sessions.length} Sessions</span>
+            <header className='sub_header float_right'>
+                <Button
+                  label='New Session'
+                  styles="secondary new_session-button"
+                  action={() => navigate(ROUTE.NEW_SESSION)}
+                  icon={TbPlus}
+                />
+          </header>
             <motion.ul
               variants={parent_variants}
               {...base_animations}

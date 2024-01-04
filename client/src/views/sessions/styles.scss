@@ -85,25 +85,27 @@
     align-items: center;
     justify-content: space-between;
     gap: 5rem;
-    padding: 1rem 1.5rem 0rem 1rem;
+    padding: 1rem 1.5rem 1rem 1rem;
 
-    .search_flex {
-        display: flex;
-        width: 70%;
-    }
-    .search_input {
-        height: 3rem;
-        border: none;
-        width: 100%;
-        padding: 0 1rem;
-        border-radius: 5rem;
-        box-shadow: var(--box-shadow);
-        background-color: var(--background);
-        color: var(--white);
-        &:focus, &:hover  {
-            background-color: var(--black-hover);
-            outline: transparent;
-        }
+}
+
+
+.search_flex {
+    display: flex;
+    width: 70%;
+}
+.search_input {
+    height: 3rem;
+    border: none;
+    width: 100%;
+    padding: 0 1rem;
+    border-radius: 5rem;
+    box-shadow: var(--box-shadow);
+    background-color: var(--background);
+    color: var(--white);
+    &:focus, &:hover  {
+        background-color: var(--black-hover);
+        outline: transparent;
     }
 }
 
@@ -122,6 +124,11 @@
         text-align: right;
         white-space: nowrap;
     }
+}
+
+.sessions_list {
+    position: relative;
+    border-top: var(--border);
 }
 
 .session_information {
@@ -173,13 +180,15 @@
     border-top: var(--border);
     padding: 3rem 1rem;
 
-    .section_label {
-        position: absolute;
-        padding: .5rem;
-        background-color: var(--background);
-        left: .5rem;
-        top: -1.15rem
-    }
+
+}
+
+.section_label {
+    position: absolute;
+    padding: .5rem;
+    background-color: var(--background);
+    left: .5rem;
+    top: -1.15rem;
 }
 
 .checkIn_list{

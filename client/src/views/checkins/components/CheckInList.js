@@ -4,7 +4,8 @@ import CheckInListItem from './CheckInListItem'
 
 function CheckInList({checkIns}) {
   return (
-    <motion.section>
+    <motion.section className='check_ins_list_wrapper'>
+        <span className='section_label xs bold'>{checkIns.length} Check Ins</span>
         <ul className='check_ins_list'>
             <AnimatePresence>
                 {

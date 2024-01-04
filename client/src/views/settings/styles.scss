@@ -7,17 +7,22 @@
 
 .settings_toggle {
     cursor: pointer;
-    height: 3rem;
-    padding: 0 1rem;
+    padding: 2rem 0rem 2rem 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-radius: 1.5rem;
     transition: background .2s ease;
     margin-bottom: 1rem;
+    position: relative;
+    border-top: var(--border);
+    .md {
+        opacity: .5;
+    }
 
     &:hover {
-        background-color: var(--hover);
+        .md {
+            opacity: 1;
+        }
     }
 
     .toggle_icon {

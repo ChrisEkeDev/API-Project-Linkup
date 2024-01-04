@@ -11,17 +11,14 @@ function Settings() {
 
     return (
         <motion.main {...page_transitions} className='page page_w_title'>
-            <div className='page_container'>
-                <header className='page_header settings_header'>
-                    <h2>Settings</h2>
-                </header>
                 <Scroll>
                     <div onClick={handleTheme} className='settings_toggle'>
-                        <span className='bold'>{
+                        <span className='section_label xs bold'>Choose Theme</span>
+                        <p className='bold sm'>{
                             theme === 'light' ?
                             'Light Theme' :
                             'Dark Theme'}
-                        </span>
+                        </p>
                         {
                             theme === 'light' ?
                             <TbSun  className='toggle_icon' /> :
@@ -33,11 +30,12 @@ function Settings() {
                         () => setLocationServices(false) :
                         () => setLocationServices(true)
                         } className='settings_toggle'>
-                        <span className='bold'>{
+                        <span className='section_label xs bold'>Location Services</span>
+                        <p className='bold sm'>{
                             locationServices ?
-                            'Location Serivces On' :
-                            'Location Serivces Off'}
-                        </span>
+                            'On' :
+                            'Off'}
+                        </p>
                         {
                             locationServices ?
                             <TbMapPin className='toggle_icon'/> :
@@ -45,7 +43,6 @@ function Settings() {
                         }
                     </div>
                 </Scroll>
-            </div>
         </motion.main>
     )
 }
