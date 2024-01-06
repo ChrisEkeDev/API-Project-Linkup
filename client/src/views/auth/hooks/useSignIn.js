@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom';
 import { useApp } from '../../../context/AppContext';
 import { useDispatch } from 'react-redux';
+import { signInAlerts } from '../../../constants/alerts';
 import { thunkSignInPlayer } from '../../../store/auth';
 
 const useSignIn = () => {
     const dispatch = useDispatch();
-    const { navigate, setLoading } = useApp();
-
+    const { navigate, setLoading, handleAlerts } = useApp();
+    const { signInSuccess, signInFailure } = signInAlerts;
     const [ formData, setFormData ] = useState({
         email: "",
         password: "",
@@ -32,14 +32,15 @@ const useSignIn = () => {
         try {
             const response = await dispatch(thunkSignInPlayer(formData));
             if (response.status === 200) {
-                // handleAlerts(signInSuccess);
-                navigate('/enable-location')
+                handleAlerts(signInSuccess);
+                navigate('/enable-location');
             } else {
                 handleErrors(response.errors)
                 throw new Error();
             }
+
         } catch (error) {
-            // handleAlerts(signInFailure);
+            handleAlerts(signInFailure);
             console.error(error)
         } finally {
             setLoading(false)
@@ -53,13 +54,13 @@ const useSignIn = () => {
             const data = {email: 'pcartwirght@email.com', password: 'password1'};
             const response = await dispatch(thunkSignInPlayer(data));
             if (response.status === 200) {
-                // handleAlerts(signInSuccess);
+                handleAlerts(signInSuccess);
                 navigate('/enable-location')
             } else {
                 throw new Error();
             }
         } catch (error) {
-            // handleAlerts(signInFailure);
+            handleAlerts(signInFailure);
             console.error(error)
         } finally {
             setLoading(false)

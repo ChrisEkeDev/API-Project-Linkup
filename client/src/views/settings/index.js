@@ -11,9 +11,13 @@ function Settings() {
 
     return (
         <motion.main {...page_transitions} className='page page_w_title'>
+                <header className='page_header'>
+                        <h2>Settings</h2>
+                </header>
                 <Scroll>
+
                     <div onClick={handleTheme} className='settings_toggle'>
-                        <span className='section_label xs bold'>Choose Theme</span>
+                        <span className='section_label xs bold'>Theme</span>
                         <p className='bold sm'>{
                             theme === 'light' ?
                             'Light Theme' :
@@ -30,11 +34,11 @@ function Settings() {
                         () => setLocationServices(false) :
                         () => setLocationServices(true)
                         } className='settings_toggle'>
-                        <span className='section_label xs bold'>Location Services</span>
+                        <span className='section_label xs bold'>Location</span>
                         <p className='bold sm'>{
                             locationServices ?
-                            'On' :
-                            'Off'}
+                            'Location On' :
+                            'Location Off'}
                         </p>
                         {
                             locationServices ?

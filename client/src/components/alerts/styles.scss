@@ -1,0 +1,28 @@
+@import url('../../index.css');
+
+.alerts {
+    position: absolute;
+    z-index: 50;
+    display: flex;
+    gap: 1rem;
+    left: 50%;
+    bottom: 2rem;
+    transform: translateX(-50%);
+
+    flex-direction: column-reverse;
+
+}
+
+.alert_item {
+    padding: .5rem 1rem .5rem .5rem;
+    display: flex;
+    background-color: var(--background);
+    box-shadow: var(--box-shadow);
+    border-radius: 1rem;
+    align-items: center;
+    gap: .5rem;
+
+    .icon {
+        font-size: 1.25rem;
+    }
+}

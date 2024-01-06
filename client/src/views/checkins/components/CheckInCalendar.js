@@ -10,6 +10,7 @@ import CheckInList from './CheckInList';
 import { TbChevronRight, TbChevronLeft, TbLogout, Tb123, TbCalendarQuestion } from 'react-icons/tb';
 import IconButton from '../../../components/shared/button/IconButton';
 import '../styles.scss';
+import Scroll from '../../../components/shared/scroll';
 
 function CheckInCalendar({checkIns}) {
     const [selectedCheckIn, setSelectedCheckIn] = useState(null)
@@ -114,8 +115,8 @@ function CheckInCalendar({checkIns}) {
     const filteredCheckIns = checkIns.filter(checkIn => isSameDay(parseISO(checkIn.session.startDate), day))
 
     return (
-        <motion.div className='check_ins_calendar'>
-            <div className="calendar_wrapper">
+        <>
+            <motion.div className="calendar_wrapper">
                 <div className="month_header">
                     <IconButton
                         styles='header_icon'
@@ -133,19 +134,21 @@ function CheckInCalendar({checkIns}) {
                 </div>
                 <div className='weekdays_container'>{weekDays}</div>
                 <div className="days_container">{weekRows}</div>
-            </div>
-            <AnimatePresence>
-                {
-                    filteredCheckIns .length > 0 ?
-                    <CheckInList checkIns={filteredCheckIns}/> :
-                    <motion.div className='no_check_ins'>
-                        <TbCalendarQuestion className='icon'/>
-                        <span className='xs bold'>No Check Ins Today</span>
-                    </motion.div>
-                }
-            </AnimatePresence>
+            </motion.div>
+            <Scroll>
+                <AnimatePresence>
+                    {
+                        filteredCheckIns .length > 0 ?
+                        <CheckInList checkIns={filteredCheckIns}/> :
+                        <motion.div className='no_check_ins'>
+                            <TbCalendarQuestion className='icon'/>
+                            <span className='xs bold'>No Check Ins Today</span>
+                        </motion.div>
+                    }
+                </AnimatePresence>
+            </Scroll>
 
-        </motion.div>
+        </>
     )
 }
 

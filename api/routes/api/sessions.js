@@ -421,6 +421,15 @@ router.post('/:sessionId/check-ins', requireAuth, async (req, res) => {
         return res.status(404).json(sessionNotFound)
     }
 
+    if (new Date(session.endDate) < new Date()) {
+        return res.status(403).json({
+            status: 403,
+            message: "This session has expired.",
+            data: null,
+            errors: {}
+        })
+    }
+
     const existingCheckIn = await CheckIn.findOne({
         where: { sessionId, playerId }
     })
@@ -431,9 +440,7 @@ router.post('/:sessionId/check-ins', requireAuth, async (req, res) => {
             message: "You have already checked in to this session.",
             data: null,
             errors: {}
-
         })
-
     }
 
     const checkIn = await CheckIn.create({
@@ -452,7 +459,6 @@ router.post('/:sessionId/check-ins', requireAuth, async (req, res) => {
         message: "You have checked in to this session.",
         data: newCheckIn,
         errors: {}
-
     })
 })
 
@@ -469,6 +475,15 @@ router.delete('/:sessionId/check-ins', requireAuth, async (req, res) => {
 
     if (!session) {
         return res.status(404).json(sessionNotFound)
+    }
+
+    if (new Date(session.endDate) < new Date()) {
+        return res.status(403).json({
+            status: 403,
+            message: "This session has expired.",
+            data: null,
+            errors: {}
+        })
     }
 
     const existingCheckIn = await CheckIn.findOne({

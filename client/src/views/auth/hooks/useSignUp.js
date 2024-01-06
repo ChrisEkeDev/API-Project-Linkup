@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { signUpAlerts } from '../../../constants/alerts'
 import { useApp } from '../../../context/AppContext';
 import { useDispatch } from 'react-redux';
 import { thunkSignUpPlayer } from '../../../store/auth';
 
 const useSignUp = () => {
     const dispatch = useDispatch();
-    const { navigate, setLoading } = useApp();
-
+    const { navigate, setLoading, handleAlerts } = useApp();
+    const { signUpSuccess, signUpFailure } = signUpAlerts;
     const [ formData, setFormData ] = useState({
         name: "",
         email: "",
@@ -34,14 +34,14 @@ const useSignUp = () => {
         try {
             const response = await dispatch(thunkSignUpPlayer(formData));
             if (response.status === 201) {
-                // handleAlerts(signUpSuccess);
+                handleAlerts(signUpSuccess);
                 navigate('/enable-location')
             } else {
                 handleErrors(response.errors)
                 throw new Error();
             }
         } catch (e) {
-            // handleAlerts(signUpFailure);
+            handleAlerts(signUpFailure);
             console.error(e)
           } finally {
             setLoading(false);

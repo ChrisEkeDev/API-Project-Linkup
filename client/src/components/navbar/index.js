@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom';
 import './styles.scss';
 import * as ROUTES from '../../constants/routes';
-import { TbSettings, TbSearch, TbPlayBasketball  } from 'react-icons/tb';
+import { TbSettings, TbSearch, TbPlayBasketball, TbCalendar  } from 'react-icons/tb';
 import ProfileImage from '../shared/profileImage';
 import { useApp } from '../../context/AppContext';
 
@@ -18,7 +18,7 @@ function NavBar() {
             </li>
             <li title="Check Ins" className='app_link'>
                 <NavLink to={ROUTES.CHECKINS} activeClassName="active_link">
-                    <TbPlayBasketball className='nav_icon' />
+                    <TbCalendar className='nav_icon' />
                 </NavLink>
             </li>
             <li title="Settings" className='app_link'>
