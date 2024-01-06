@@ -34,10 +34,9 @@ const useAuth = () => {
                 const res = await dispatch(thunkRestorePlayerSession())
                 if (res.status === 200) {
                     setIsAuthenticated(true)
-                    // handleAlerts(sessionRestored);
+                    history.push('/sessions')
                 } else {
                     setIsAuthenticated(false)
-                    // handleAlerts(noSessionFound);
                     history.push('/sign-in')
                 }
             } catch(e) {

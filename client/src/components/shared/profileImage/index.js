@@ -3,7 +3,7 @@ import './styles.scss';
 
 function ProfileImage({player, size }) {
     const borderHeight = size ? size : 5;
-    const imageHeight = borderHeight - .5;
+    const imageHeight = size ? size : 5;
     const initialSize = borderHeight / 1.619;
     const hasImage = player?.profileImage !== null;
 
@@ -15,7 +15,7 @@ function ProfileImage({player, size }) {
                 borderRadius: `${borderHeight}rem`
             }}
         >
-            {/* {
+            {
                 !hasImage ?
                     <div className='profile_circle' style={{
                         height: `${imageHeight}rem`,
@@ -33,7 +33,7 @@ function ProfileImage({player, size }) {
                     }}
                 />
 
-            } */}
+            }
         </div>
     )
 }

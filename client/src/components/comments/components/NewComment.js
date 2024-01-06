@@ -2,10 +2,9 @@ import React from 'react'
 import { AnimatePresence, motion } from 'framer-motion';
 import { useApp } from '../../../context/AppContext';
 import ProfileImage from '../../shared/profileImage';
-import Button from '../../shared/button';
 import { format } from 'date-fns';
 import IconButton from '../../shared/button/IconButton';
-import { TbCheck, TbX } from 'react-icons/tb';
+import { PiCheckBold, PiXBold } from 'react-icons/pi';
 import { comment_variants, base_animations } from '../../../constants/animations';
 
 function NewComment(props) {
@@ -44,13 +43,13 @@ function NewComment(props) {
                     <div className='comment_actions'>
                         <IconButton
                             name="Save"
-                            icon={TbCheck}
+                            icon={PiCheckBold}
                             styles="small_button success"
                             action={createComment}
                         />
                         <IconButton
                             name="Cancel"
-                            icon={TbX}
+                            icon={PiXBold}
                             styles="small_button cancel"
                             action={() => setCreating(false)}
                         />

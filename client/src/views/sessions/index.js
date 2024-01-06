@@ -11,7 +11,7 @@ import { useApp } from '../../context/AppContext';
 import useSearch from './hooks/useSearch';
 import Scroll from '../../components/shared/scroll';
 import { parent_variants, base_animations } from '../../constants/animations';
-import { TbPlus, TbSearch } from 'react-icons/tb';
+import { PiPlusBold, PiMagnifyingGlassBold } from 'react-icons/pi';
 
 
 function Sessions() {
@@ -36,7 +36,7 @@ function Sessions() {
                 placeholder="Search by name or address"
             />
             <IconButton
-              icon={TbSearch}
+              icon={PiMagnifyingGlassBold}
               styles="primary"
               action={searchSessions}
             />
@@ -54,7 +54,7 @@ function Sessions() {
                   label='New Session'
                   styles="secondary new_session-button"
                   action={() => navigate(ROUTE.NEW_SESSION)}
-                  icon={TbPlus}
+                  icon={PiPlusBold}
                 />
           </header>
             <motion.ul

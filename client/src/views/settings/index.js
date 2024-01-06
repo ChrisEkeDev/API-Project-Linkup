@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import './styles.scss';
 import { useApp } from '../../context/AppContext';
 import { page_transitions } from '../../constants/animations';
-import { TbMapPin, TbMapPinOff, TbMoon, TbSun } from 'react-icons/tb';
+import { PiMapPinBold , PiMoonStarsBold, PiSunHorizonBold  } from 'react-icons/pi';
 import Scroll from '../../components/shared/scroll';
 
 function Settings() {
@@ -25,8 +25,8 @@ function Settings() {
                         </p>
                         {
                             theme === 'light' ?
-                            <TbSun  className='toggle_icon' /> :
-                            <TbMoon  className='toggle_icon' />
+                            <PiSunHorizonBold   className='toggle_icon' /> :
+                            <PiMoonStarsBold  className='toggle_icon' />
                         }
                     </div>
                     <div onClick={
@@ -40,11 +40,7 @@ function Settings() {
                             'Location On' :
                             'Location Off'}
                         </p>
-                        {
-                            locationServices ?
-                            <TbMapPin className='toggle_icon'/> :
-                            <TbMapPinOff className='toggle_icon' />
-                        }
+                        <PiMapPinBold  className='toggle_icon' style={locationServices ? {opacity: 1} : {opacity: .5}}/>
                     </div>
                 </Scroll>
         </motion.main>

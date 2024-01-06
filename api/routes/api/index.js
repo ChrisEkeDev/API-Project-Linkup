@@ -6,7 +6,7 @@ const sessionsRouter = require('./sessions.js');
 const sessionImageRouter = require('./sessionImages.js');
 const membershipRouter = require('./memberships.js');
 const checkInRouter = require('./checkIn.js');
-const searchRouter = require('./search.js');
+const placesRouter = require('./places.js');
 const commentRouter = require('./comments.js')
 const likeRouter = require('./likes.js')
 
@@ -31,7 +31,7 @@ router.use('/memberships', membershipRouter);
 
 router.use('/check-ins', checkInRouter);
 
-router.use('/search', searchRouter);
+router.use('/places', placesRouter);
 
 router.use('/comments', commentRouter);
 

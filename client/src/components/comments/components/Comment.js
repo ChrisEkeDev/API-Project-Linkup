@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { base_animations, child_variants, comment_variants } from '../../../constants/animations';
 import { parseISO, format } from 'date-fns';
 import { useApp } from '../../../context/AppContext';
-import { TbArrowForward, TbCheck, TbEdit, TbMessagePlus, TbTrashFilled, TbX } from 'react-icons/tb';
+import { PiArrowBendDownRightBold , PiCheckBold, PiPencilLineBold, PiChatCircleTextBold, PiTrashBold, PiXBold } from 'react-icons/pi';
 import useComment from '../hooks/useComment';
 import Button from '../../shared/button';
 import ProfileImage from '../../shared/profileImage';
@@ -50,7 +50,7 @@ function Comment({ comment }) {
     onMouseEnter={() => setShowActions(true)}
     onMouseLeave={() => setShowActions(false)}
   >
-    { isReply && <TbArrowForward className='reply_icon' /> }
+    { isReply && <PiArrowBendDownRightBold className='reply_icon' /> }
     <ProfileImage
       player={comment?.Player}
       size={4}
@@ -75,7 +75,7 @@ function Comment({ comment }) {
         !isReply && !isCreator ?
         <IconButton
           name="Reply"
-          icon={TbMessagePlus}
+          icon={PiChatCircleTextBold}
           styles="small_button reply"
           action={() => setReplying(true)}
           /> :
@@ -86,13 +86,13 @@ function Comment({ comment }) {
         <>
           <IconButton
             name="Save"
-            icon={TbCheck}
+            icon={PiCheckBold}
             styles="small_button success"
             action={updateComment}
           />
           <IconButton
             name="Cancel"
-            icon={TbX}
+            icon={PiXBold}
             styles="small_button cancel"
             action={() => setUpdating(false)}
           />
@@ -101,13 +101,13 @@ function Comment({ comment }) {
         <>
           <IconButton
             name="Edit"
-            icon={TbEdit}
+            icon={PiPencilLineBold}
             styles="small_button reply"
             action={() => setUpdating(true)}
           />
           <IconButton
             name="Delete"
-            icon={TbTrashFilled}
+            icon={PiTrashBold}
             styles="small_button warning"
             action={onOpenModal}
           />
@@ -135,7 +135,7 @@ function Comment({ comment }) {
       <div className='modal_container'>
         <h2 className='md modal_title'>Are you sure you want to delete this comment?</h2>
         <div className='comment deleting_comment'>
-        { isReply && <TbArrowForward className='reply_icon' /> }
+        { isReply && <PiArrowBendDownRightBold className='reply_icon' /> }
           <ProfileImage
             player={comment?.Player}
             size={4}
@@ -158,13 +158,13 @@ function Comment({ comment }) {
           <Button
             label="Keep Comment"
             styles="tertiary"
-            icon={TbX}
+            icon={PiXBold}
             action={onCloseModal}
           />
           <Button
             label="Delete Comment"
             styles="warning"
-            icon={TbTrashFilled}
+            icon={PiTrashBold}
             action={() => deleteComment(comment, onCloseModal)}
           />
         </div>

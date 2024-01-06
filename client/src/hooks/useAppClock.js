@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react'
 function useAppClock() {
     const [ currentTime, setCurrentTime ] = useState(new Date())
 
-    useEffect(() => {
-        const timerId = setInterval(() => {
-          setCurrentTime(new Date());
-        }, 1000);
+    // useEffect(() => {
+    //     const timerId = setInterval(() => {
+    //       setCurrentTime(new Date());
+    //     }, 1000);
 
-        return () => {
-          clearInterval(timerId);
-        };
-    }, []);
+    //     return () => {
+    //       clearInterval(timerId);
+    //     };
+    // }, []);
 
 
     return { currentTime }

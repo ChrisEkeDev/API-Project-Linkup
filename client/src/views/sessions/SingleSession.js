@@ -15,9 +15,8 @@ import SessionInformation from './components/SessionInformation';
 import SessionCheckIns from './components/SessionCheckIns';
 import LoadingData from '../../components/shared/loading';
 import Scroll from '../../components/shared/scroll';
-import { TbEditCircle, TbUserCheck , TbTrashFilled, TbUserX, TbX  } from 'react-icons/tb'
-import { base_animations, base_variants, child_variants, page_transitions, parent_variants } from '../../constants/animations';
-import { format } from 'date-fns';
+import { PiXBold, PiUserPlusBold , PiUserMinusBold, PiPencilSimpleLineBold, PiTrashBold  } from 'react-icons/pi'
+import { base_animations, child_variants, parent_variants } from '../../constants/animations';
 import CountDown from '../../components/countdown';
 
 
@@ -42,12 +41,12 @@ function SingleSession({session}) {
                             <Button
                                 styles='secondary'
                                 label="Edit Session"
-                                icon={TbEditCircle}
+                                icon={PiPencilSimpleLineBold}
                                 action={() => navigate(`/sessions/${session.id}/update`)}
                             />
                             <Button
                                 styles='tertiary'
-                                icon={TbTrashFilled}
+                                icon={PiTrashBold}
                                 label="Delete Session"
                                 action={onOpenModal}
                             />
@@ -55,7 +54,7 @@ function SingleSession({session}) {
                         <>
                             <Button
                                 styles='primary'
-                                icon={isCheckedIn ? TbUserX : TbUserCheck }
+                                icon={isCheckedIn ? PiUserMinusBold : PiUserPlusBold  }
                                 label={isCheckedIn ? "Check Out" : "Check In"}
                                 action={isCheckedIn ? checkOut : checkIn}
                             />
@@ -88,13 +87,13 @@ function SingleSession({session}) {
                     <Button
                         label="Keep Session"
                         styles="tertiary"
-                        icon={TbX}
+                        icon={PiXBold}
                         action={onCloseModal}
                     />
                     <Button
                         label="Delete Session"
                         styles="warning"
-                        icon={TbTrashFilled}
+                        icon={PiTrashBold}
                         action={deleteSession}
                     />
                 </div>

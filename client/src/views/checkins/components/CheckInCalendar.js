@@ -4,16 +4,14 @@ import { format, addMonths, subMonths,addDays, startOfWeek,
     getMonth, getTime, parseISO
 } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
-import Button from '../../../components/shared/button';
 import CheckInCalendarItem from './CheckInCalendarItem';
 import CheckInList from './CheckInList';
-import { TbChevronRight, TbChevronLeft, TbLogout, Tb123, TbCalendarQuestion } from 'react-icons/tb';
+import { PiCaretRightBold , PiCaretLeftBold , PiCalendarBold } from 'react-icons/pi';
 import IconButton from '../../../components/shared/button/IconButton';
 import '../styles.scss';
 import Scroll from '../../../components/shared/scroll';
 
 function CheckInCalendar({checkIns}) {
-    const [selectedCheckIn, setSelectedCheckIn] = useState(null)
     const [ day, setDay ] = useState(new Date())
     const [ month, setMonth ] = useState(startOfMonth(day))
     const monthDateFormat = "MMMM yyyy";
@@ -72,7 +70,6 @@ function CheckInCalendar({checkIns}) {
                     <CheckInCalendarItem
                         key={checkIn.id}
                         checkIn={checkIn}
-                        setSelectedCheckIn={setSelectedCheckIn}
                     />
                 ))}
                 <span className="number">
@@ -120,7 +117,7 @@ function CheckInCalendar({checkIns}) {
                 <div className="month_header">
                     <IconButton
                         styles='header_icon'
-                        icon={TbChevronLeft}
+                        icon={PiCaretLeftBold}
                         action={prevMonth}
                     />
                     <h1>
@@ -128,7 +125,7 @@ function CheckInCalendar({checkIns}) {
                     </h1>
                     <IconButton
                         styles='header_icon'
-                        icon={TbChevronRight}
+                        icon={PiCaretRightBold}
                         action={nextMonth}
                     />
                 </div>
@@ -141,7 +138,7 @@ function CheckInCalendar({checkIns}) {
                         filteredCheckIns .length > 0 ?
                         <CheckInList checkIns={filteredCheckIns}/> :
                         <motion.div className='no_check_ins'>
-                            <TbCalendarQuestion className='icon'/>
+                            <PiCalendarBold className='icon'/>
                             <span className='xs bold'>No Check Ins Today</span>
                         </motion.div>
                     }

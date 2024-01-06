@@ -20,8 +20,6 @@
   }
 
   .app_link {
-    width: 3rem;
-    aspect-ratio: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -33,4 +31,11 @@
       align-items: center;
       justify-content: center;
     }
+  }
+  .nav_link {
+    width: 3rem;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }

@@ -49,10 +49,10 @@
 
 .icon_button {
     padding: 0;
-    height: 2.5rem;
+    height: 3rem;
     font-weight: 600;
     aspect-ratio: 1;
-    border-radius: 2.5rem;
+    border-radius: 3rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,7 +63,7 @@
     color: var(--text);
 
     .icon {
-        font-size: 1rem;
+        font-size: 1.25rem;
     }
 }
 

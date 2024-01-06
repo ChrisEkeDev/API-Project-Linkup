@@ -1,14 +1,4 @@
 import { csrfFetch } from "./csrf";
-import Cookies from 'js-cookie';
-
-function isJSON(res) {
-  try {
-    JSON.parse(res);
-    return true;
-  } catch (err) {
-    return false;
-  }
-}
 
 // TYPES
 

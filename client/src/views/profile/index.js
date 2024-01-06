@@ -8,7 +8,7 @@ import LoadingData from '../../components/shared/loading';
 import Scroll from '../../components/shared/scroll';
 import ProfileImage from '../../components/shared/profileImage';
 import Button from '../../components/shared/button';
-import { TbLogout, TbTrashFilled } from 'react-icons/tb';
+import { PiSignOutBold, PiTrashBold  } from 'react-icons/pi';
 
 function Profile() {
     const { auth, signOut, setLoading } = useApp();
@@ -32,13 +32,14 @@ function Profile() {
                     <Button
                         label="SignOut"
                         styles="primary"
-                        icon={TbLogout}
+                        icon={PiSignOutBold}
                         action={handleSignOut}
                     />
                 </header>
                 <Scroll>
                         <div className='profile_user_info float_left'>
                             <ProfileImage
+                                player={auth}
                                 size={5}
                             />
                             <div>
@@ -50,7 +51,7 @@ function Profile() {
                             <Button
                                 label="Delete profile"
                                 styles="warning"
-                                icon={TbTrashFilled}
+                                icon={PiTrashBold }
                             />
                         </div>
                 </Scroll>

@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { useApp } from "../../../context/AppContext";
+import { sessionsAlerts } from '../../../constants/alerts'
 import { getEndDate, getDateObject } from "../../../helpers/dateHelpers";
 import { thunkCreateNewSession } from "../../../store/sessions";
-import { geocodeAddress } from "../../../helpers/geocodeAddress";
 
 function useNewSession() {
-    const { dispatch, navigate, setLoading } = useApp();
-    const [ addressQuery, setAddressQuery ] = useState("");
-    const [ addressObject, setAddressObject ] = useState({});
-    const [ status, setStatus ] = useState(null);
+    const { dispatch, navigate, setLoading, handleAlerts } = useApp();
+    const { createSessionSuccess,createSessionError  } = sessionsAlerts;
+    const [ query, setQuery ] = useState("");
+    const [ queryResults, setQueryResults ] = useState([]);
+    const [ addressObject, setAddressObject ] = useState(null);
+    const [ addressConfirmed, setAddressConfirmed ] = useState(false);
+    const [ status, setStatus ] = useState(null)
     const [ sessionData, setSessionData ] = useState({
         name: '',
         startDate: '',
@@ -19,16 +23,26 @@ function useNewSession() {
     });
     const [ errors, setErrors ] = useState({});
 
-    const verifyAddress = async (e) => {
-        const addressObj = await geocodeAddress(e, addressQuery, setStatus);
-        setAddressObject(addressObj);
+    const getPlaces = async (e) => {
+        e.preventDefault()
+        setStatus("loading");
+        setAddressConfirmed(false);
+        try {
+            const response = await axios.post(`/api/places`, { query });
+            setQueryResults(response.data.data)
+            setStatus("success")
+        } catch(e) {
+            setStatus("fail")
+            console.log(e)
+        }
+
     }
 
     // Handles the input of the Session Form
     const handleInput = (x) => {
         setSessionData((prev) => ({ ...prev, [x.target.id]: x.target.value }));
         if (x.target.id === "address") {
-            setAddressQuery(x.target.value)
+            setQuery(x.target.value)
         }
     }
 
@@ -36,13 +50,30 @@ function useNewSession() {
         setLoading(true)
         e.preventDefault();
         try {
-            const data = await dispatch(thunkCreateNewSession(sessionData));
+            const session = { ...sessionData }
+            session.address = addressObject;
+            console.log(session)
+            const data = await dispatch(thunkCreateNewSession(session));
+            handleAlerts(createSessionSuccess)
             navigate(`/sessions/${data.data.id}`)
         } catch (e) {
+            handleAlerts(createSessionError)
             console.error(e)
         } finally {
             setLoading(false)
         }
+    }
+
+    const handleAddressObject = (rawData) => {
+        const addressObject = {
+            id: rawData.place_id,
+            name: rawData.name,
+            address: rawData.formatted_address,
+            lat: rawData.geometry.location.lat,
+            lng: rawData.geometry.location.lng,
+        }
+        setAddressObject(addressObject);
+        setAddressConfirmed(true)
     }
 
 
@@ -53,7 +84,7 @@ function useNewSession() {
         if (name && name.trim().length < 3) {
             errors.name = "Please enter a name for your session."
         }
-        if (status !== "success") {
+        if (!addressObject) {
             errors.address ="Please verify your address."
         }
 
@@ -66,14 +97,15 @@ function useNewSession() {
             errors.duration = "Enter a duration"
         }
         setErrors(errors)
-    }, [sessionData.name, status, sessionData.endDate, sessionData.startDate, sessionData.endDate, sessionData.address ])
+    }, [sessionData.name, addressConfirmed, sessionData.endDate, sessionData.startDate, sessionData.endDate, sessionData.address ])
 
 
     // Resets the address verification if the address changes
     useEffect(() => {
-        setStatus(null);
-        setAddressObject({})
-    }, [addressQuery])
+        setAddressConfirmed(false);
+        setQueryResults([])
+        setStatus(null)
+    }, [query])
 
 
     // Convert and store the date if the date or time keys change on the sesssion data
@@ -90,10 +122,13 @@ function useNewSession() {
     return {
         sessionData,
         addressObject,
+        handleAddressObject,
+        addressConfirmed,
+        status,
+        queryResults,
         errors,
         handleInput,
-        status,
-        verifyAddress,
+        getPlaces,
         createSession,
     };
 }

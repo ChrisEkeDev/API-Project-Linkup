@@ -161,24 +161,20 @@ router.post('/', requireAuth, uploadImage, validateCreateSession, async (req, re
     const { name, address, private, startDate, endDate } = req.body;
     const image = req.file;
     const playerId = req.player.id;
-    const data = await geocodeAddress(address);
-    const addressData = data.results[0].formatted_address;
-    const latData = data.results[0].geometry.location.lat;
-    const lngData = data.results[0].geometry.location.lng;
-    const placeId = data.results[0].place_id;
 
     const existingCourt = await Court.findOne({
-        where: { placeId }
+        where: { placeId: address.id }
     })
 
-    let newCourt
+    let newCourt;
 
     if (!existingCourt) {
         newCourt = await Court.create({
-            placeId,
-            address: addressData,
-            lat: latData,
-            lng: lngData
+            placeId: address.id,
+            name: address.name,
+            address: address.address,
+            lat: address.lat,
+            lng: address.lng
         })
     }
 
@@ -188,10 +184,7 @@ router.post('/', requireAuth, uploadImage, validateCreateSession, async (req, re
         courtId: existingCourt ? existingCourt.id : newCourt.id,
         private,
         startDate,
-        endDate,
-        address: addressData,
-        lat: latData,
-        lng: lngData
+        endDate
     })
 
     await CheckIn.create({

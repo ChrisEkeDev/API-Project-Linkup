@@ -210,7 +210,7 @@
 }
 
 .session_form {
-    padding: 1rem;
+   // padding: 1rem;
     h2 {
         margin: 1rem 0;
         padding: 1rem;
@@ -229,6 +229,7 @@
         right: 1rem;
         font-size: 1.25rem;
         top: .75rem;
+        pointer-events: none;
     }
     .form_flex {
         display: flex;
@@ -236,13 +237,15 @@
     }
 
     .form_verification {
-        padding: 1rem 1rem 2rem 1rem;
+        padding: 1rem;
         display: flex;
         align-items: center;
         gap: 1rem;
+        border-radius: 1.5rem;
+        margin-bottom: 1rem;
 
         .icon {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
         }
     }
 
@@ -273,6 +276,54 @@
 
     .session_creator {
         padding-right: 4rem;
+    }
+}
+
+.results_container {
+    position: relative;
+}
+
+.results_list {
+    // box-shadow: var(--box-shadow);
+    padding: 0rem 1rem 2rem 0;
+    border-radius: 1.5rem;
+    max-height: 300px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+}
+
+.fade_overlay {
+    position: absolute;
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 0) 5%,
+        rgba(255, 255, 255, 0) 85%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+
+}
+
+.result_item {
+    display: flex;
+    align-items: center;
+    padding: .5rem 1rem;
+    gap: .5rem;
+    border-radius: 1rem;
+    transition: background .2s;
+    cursor: pointer;
+
+    .icon {
+        font-size: .5rem;
+    }
+
+    &:hover {
+        background-color: var(--hover);
     }
 }
 ///////////////////////////////////////////////////////////////

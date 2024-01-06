@@ -2,9 +2,8 @@ import React from 'react'
 import ProfileImage from '../../shared/profileImage';
 import { AnimatePresence, motion } from 'framer-motion';
 import { comment_variants, base_animations } from '../../../constants/animations';
-import Button from '../../shared/button';
+import { PiArrowBendDownRightBold , PiCheckBold, PiXBold } from 'react-icons/pi';
 import { format } from 'date-fns';
-import { TbArrowForward, TbCheck, TbX } from 'react-icons/tb';
 import { useApp } from '../../../context/AppContext';
 import IconButton from '../../shared/button/IconButton';
 
@@ -23,7 +22,7 @@ function NewCommentReply(props) {
             {
                 replying &&
                 <motion.li variants={comment_variants} {...base_animations} className='comment'>
-                    <TbArrowForward className='reply_icon' />
+                    <PiArrowBendDownRightBold className='reply_icon' />
                     <ProfileImage
                         player={auth}
                         size={4}
@@ -43,13 +42,13 @@ function NewCommentReply(props) {
                     <div className='comment_actions'>
                         <IconButton
                             name="Save"
-                            icon={TbCheck}
+                            icon={PiCheckBold}
                             styles="small_button success"
                             action={createReply}
                         />
                         <IconButton
                             name="Cancel"
-                            icon={TbX}
+                            icon={PiXBold}
                             styles="small_button cancel"
                             action={() => setReplying(false)}
                         />

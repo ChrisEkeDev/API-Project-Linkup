@@ -39,8 +39,8 @@ function UpdateSession({session}) {
                 <div className='form_verification'>
                     <TbMapPin className="icon"/>
                     <div className='details'>
-                        <small>Address</small>
-                        <p className='time'>{session.Court.address}</p>
+                        <p className='xs bold'>Address</p>
+                        <p className='sm'>{session.Court.address}</p>
                     </div>
                 </div>
                 <div className='form_flex'>

@@ -1,12 +1,15 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import useNewSession from './hooks/useNewSession';
 import Back from '../../components/shared/button/Back';
 import Input from '../../components/shared/inputs/textInput';
 import Button from '../../components/shared/button';
-import { TbCalendar, TbClock, TbGauge, TbMapPinCheck, TbMapPinQuestion, TbMapPin, TbCalendarPlus } from 'react-icons/tb';
+import Scroll from '../../components/shared/scroll'
+import { PiCheckCircleBold, PiWarningBold, PiMagnifyingGlassBold, PiMapPinBold, PiCalendarBold, PiClockBold, PiCalendarPlusBold, PiCaretUpDownBold   } from 'react-icons/pi';
 import { CgSpinner } from 'react-icons/cg';
 import { page_transitions } from '../../constants/animations';
+import SessionPlaceResults from './components/SessionPlaceResults';
+
 
 
 
@@ -14,10 +17,13 @@ function NewSession() {
   const {
     sessionData,
     addressObject,
+    handleAddressObject,
+    addressConfirmed,
+    queryResults,
     errors,
-    handleInput,
     status,
-    verifyAddress,
+    handleInput,
+    getPlaces,
     createSession
   } = useNewSession();
 
@@ -27,13 +33,14 @@ function NewSession() {
         <header className='header'>
         <Back route={`/sessions`}/>
         </header>
+        <Scroll>
         <form className='session_form'>
           <header className='form_header'>
             <h2>Create New Session</h2>
           </header>
           <Input
-            label="Name"
-            placeholder='Hoops at the Parks'
+            label="What will you call your session"
+            placeholder='5 on 5 or Mini Tournament'
             value={sessionData?.name}
             setValue={handleInput}
             name='name'
@@ -42,8 +49,8 @@ function NewSession() {
           />
           <div className='form_input'>
             <Input
-              label="Full Address"
-              placeholder='123 Fake St, City, ST'
+              label="Where will your session be?"
+              placeholder='Gyms in Seattle or 123 Fake St, City, ST'
               value={sessionData?.address}
               setValue={handleInput}
               name='address'
@@ -52,30 +59,34 @@ function NewSession() {
             />
             <Button
               label={
-                status === "loading" ? "Verifying..."
-                : status === "success" ? "Address Verified"
-                : "Verify Address"
+                status === "loading" ? "Searching..."
+                : status === "success" ? "Success"
+                : status === 'fail' ? 'Try Again'
+                : "Search"
               }
               styles={`input_button ${
                 status === "loading" ? "reply"
-                : status === "success" ? "success"
+                : status === "success" ? "tertiary"
+                : status === 'fail' ? 'warning'
                 : "tertiary"
               }`}
               icon={
-                  status === "loading" ? CgSpinner :
-                  status === "success" ? TbMapPinCheck  :
-                  TbMapPinQuestion
+                  status === "loading" ? CgSpinner
+                  : status === "success" ? PiCheckCircleBold
+                  : status === "fail" ? PiWarningBold
+                  : PiMagnifyingGlassBold
               }
-              action={verifyAddress}
+              action={getPlaces}
             />
           </div>
+          <SessionPlaceResults {...{queryResults, addressConfirmed, handleAddressObject}} />
           {
-            Object.keys(addressObject).length && status === "success" ?
+            addressObject ?
             <div className='form_verification'>
-              <TbMapPin className="icon"/>
+              <PiMapPinBold className="icon"/>
               <div className='details'>
-                <small>Verified Address</small>
-                <p className='time'>{addressObject.address}</p>
+                <p className='xs bold'>Verified Address</p>
+                <p className='sm'>{addressObject.address}</p>
               </div>
             </div> :
             null
@@ -85,7 +96,7 @@ function NewSession() {
               label="Date"
               name="date"
               type="date"
-              iconRight={<TbCalendar className='input_icon'/>}
+              iconRight={<PiCalendarBold className='input_icon'/>}
               value={sessionData?.date}
               setValue={handleInput}
               error={errors?.date}
@@ -95,7 +106,7 @@ function NewSession() {
               label="Time"
               name="time"
               type="time"
-              iconRight={<TbClock className='input_icon'/>}
+              iconRight={<PiClockBold className='input_icon'/>}
               value={sessionData?.time}
               setValue={handleInput}
               error={errors?.time}
@@ -107,7 +118,7 @@ function NewSession() {
               type="number"
               min={1}
               max={6}
-              iconRight={<TbGauge className='input_icon'/>}
+              iconRight={<PiCaretUpDownBold className='input_icon'/>}
               value={sessionData?.duration}
               setValue={handleInput}
               error={errors?.duration}
@@ -118,11 +129,13 @@ function NewSession() {
             <Button
               label="Create Session"
               styles="primary"
-              icon={TbCalendarPlus}
+              icon={PiCalendarPlusBold}
               action={createSession}
+              disabled={Object.keys(errors).length > 0}
             />
           </footer>
         </form>
+        </Scroll>
     </motion.main>
   )
 }

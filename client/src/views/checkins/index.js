@@ -6,13 +6,10 @@ import CheckInCalendar from './components/CheckInCalendar';
 import './styles.scss';
 import { page_transitions } from '../../constants/animations';
 import { useApp } from '../../context/AppContext';
-import Scroll from '../../components/shared/scroll';
-import CheckInView from './components/CheckInView';
 import { useSelector } from 'react-redux';
 import { thunkGetPlayerCheckIns } from '../../store/checkins';
 
 function CheckIns({checkInsData}) {
-    const [view, setView] = useState('list');
     const checkIns = Object.values(checkInsData)
 
     return (
