@@ -27,11 +27,6 @@ function AppRouter() {
                 />
                 <Route
                     exact
-                    path={ROUTES.SETTINGS}
-                    component={view.Settings}
-                />
-                <Route
-                    exact
                     path={ROUTES.PROFILE_ROUTER}
                     component={view.ProfileRouter}
                 />

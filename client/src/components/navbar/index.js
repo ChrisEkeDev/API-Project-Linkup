@@ -21,11 +21,6 @@ function NavBar() {
                         <PiCalendarBold className='nav_icon' />
                     </NavLink>
                 </li>
-                <li title="Settings" className='app_link'>
-                    <NavLink to={ROUTES.SETTINGS} className="nav_link" activeClassName="active_link">
-                        <PiGearBold className='nav_icon' />
-                    </NavLink>
-                </li>
                 <li title="My Profile" className='app_link'>
                     <NavLink to={ROUTES.PROFILE} className="nav_link" activeClassName="active_link">
                         <PiUserCircleBold className='nav_icon' />

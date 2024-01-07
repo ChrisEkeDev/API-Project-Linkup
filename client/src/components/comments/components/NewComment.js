@@ -5,7 +5,7 @@ import ProfileImage from '../../shared/profileImage';
 import { format } from 'date-fns';
 import IconButton from '../../shared/button/IconButton';
 import { PiCheckBold, PiXBold } from 'react-icons/pi';
-import { comment_variants, base_animations } from '../../../constants/animations';
+import { slide_variants, base_animations } from '../../../constants/animations';
 
 function NewComment(props) {
     const { auth } = useApp();
@@ -22,7 +22,7 @@ function NewComment(props) {
         <AnimatePresence>
             {
                 creating &&
-                <motion.li variants={comment_variants} {...base_animations} className='comment new-comment'>
+                <motion.li variants={slide_variants} {...base_animations} className='comment new-comment'>
                     <ProfileImage
                         player={auth}
                         size={4}

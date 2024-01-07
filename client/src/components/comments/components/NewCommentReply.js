@@ -1,7 +1,7 @@
 import React from 'react'
 import ProfileImage from '../../shared/profileImage';
 import { AnimatePresence, motion } from 'framer-motion';
-import { comment_variants, base_animations } from '../../../constants/animations';
+import { slide_variants, base_animations } from '../../../constants/animations';
 import { PiArrowBendDownRightBold , PiCheckBold, PiXBold } from 'react-icons/pi';
 import { format } from 'date-fns';
 import { useApp } from '../../../context/AppContext';
@@ -21,7 +21,7 @@ function NewCommentReply(props) {
         <AnimatePresence>
             {
                 replying &&
-                <motion.li variants={comment_variants} {...base_animations} className='comment'>
+                <motion.li variants={slide_variants} {...base_animations} className='comment'>
                     <PiArrowBendDownRightBold className='reply_icon' />
                     <ProfileImage
                         player={auth}

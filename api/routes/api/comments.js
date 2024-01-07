@@ -38,9 +38,9 @@ router.get('/courts/:courtId', async (req, res) => {
 
     return res.status(200).json({
         status: 200,
-        message: "",
+        message: null,
         data: comments,
-        errors: {}
+        error: null
     })
 })
 
@@ -68,9 +68,9 @@ router.get('/sessions/:sessionId', async (req, res) => {
 
     return res.status(200).json({
         status: 200,
-        message: "",
+        message: null,
         data: comments,
-        errors: {}
+        error: null
     })
 })
 
@@ -119,9 +119,9 @@ router.post('/', requireAuth, validateCreateComment, async (req, res) => {
 
     return res.status(201).json({
         status: 201,
-        message: "",
+        message: "Comment created successfully.",
         data: newComment,
-        errors: {}
+        error: null
     })
 })
 
@@ -160,9 +160,9 @@ router.put('/:commentId', requireAuth, validateCreateComment, async(req, res) =>
 
     return res.status(200).json({
         status: 200,
-        message: "",
+        message: "Comment updated successfully",
         data: updatedComment,
-        errors: {}
+        error: null
     })
 })
 
@@ -199,9 +199,9 @@ router.delete('/:commentId', requireAuth, async(req, res) => {
 
     return res.status(200).json({
         status: 200,
-        message: "",
+        message: null,
         data: comment,
-        errors: {}
+        error: null
     })
 })
 

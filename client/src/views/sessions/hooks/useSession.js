@@ -3,15 +3,16 @@ import { thunkDeleteSession } from "../../../store/sessions";
 import { thunkAddCheckIn, thunkDeleteCheckIn } from "../../../store/checkins"
 
 const useSession = (session) => {
-    const { dispatch, navigate } = useApp();
+    const { dispatch, navigate, handleAlerts } = useApp();
 
     const deleteSession = async () => {
         try {
             const res = await dispatch(thunkDeleteSession(session));
-            if (res.status === 200) {
-                navigate("/sessions")
-            } else {
+            handleAlerts(res)
+            if ( res.status >= 400) {
                 throw new Error();
+            } else {
+                navigate("/sessions")
             }
         } catch(e) {
             console.log(e)
@@ -22,9 +23,8 @@ const useSession = (session) => {
     const checkIn = async () => {
         try {
             const res = await dispatch(thunkAddCheckIn(session.id));
-            if (res.status === 201 || res.status === 200) {
-                console.log(res)
-            } else {
+            handleAlerts(res)
+            if ( res.status >= 400) {
                 throw new Error();
             }
         } catch (e) {
@@ -35,9 +35,8 @@ const useSession = (session) => {
     const checkOut = async () => {
         try {
             const res = await dispatch(thunkDeleteCheckIn(session.id));
-            if (res.status === 200) {
-                console.log(res)
-            } else {
+            handleAlerts(res)
+            if ( res.status >= 400) {
                 throw new Error();
             }
         } catch (e) {

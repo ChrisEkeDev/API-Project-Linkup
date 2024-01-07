@@ -1,13 +1,13 @@
 import { useEffect, useState, useRef } from "react";
 import { useApp } from "../../../context/AppContext";
-import { useSelector } from 'react-redux';
+import { commentsAlerts } from "../../../constants/alerts";
 import { thunkDeleteComment, thunkUpdateComment } from "../../../store/comments";
 
 const useComment = (comment) => {
-    const { auth, dispatch } = useApp();
-    const session = useSelector(state => state.sessions.singleSession);
+    const { dispatch, handleAlerts } = useApp();
     const [ value, setValue ] = useState(comment.text);
     const [ updating, setUpdating ] = useState(false);
+    const { commentUpdateSuccess, commentUpdateFail } = commentsAlerts;
     const ref = useRef(null);
 
     const onValueChange = (e) => {
@@ -22,11 +22,10 @@ const useComment = (comment) => {
 
     const updateComment = async () => {
         try {
-            const response = await dispatch(thunkUpdateComment({value}, comment?.id ));
-            if (response.status === 200) {
-                setUpdating(false)
-            } else {
-                throw new Error()
+            const response = await dispatch(thunkUpdateComment({text: value}, comment?.id ));
+            handleAlerts(response)
+            if (response.status >= 400) {
+                throw new Error(response.error)
             }
         } catch(error) {
             console.log(error)

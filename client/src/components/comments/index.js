@@ -7,7 +7,7 @@ import Button from '../../components/shared/button';
 import './styles.scss';
 import NewComment from './components/NewComment';
 import { PiChatCircleTextBold, PiChatsCircleBold } from 'react-icons/pi';
-import { parent_variants, comment_variants, base_animations } from '../../constants/animations';
+import { parent_variants, slide_variants, base_animations } from '../../constants/animations';
 
 function Comments() {
     const { comments  } = useComments();
@@ -36,7 +36,7 @@ function Comments() {
                 variants={parent_variants}
                 {...base_animations}
                 className='comments_list'>
-                    <motion.div variants={comment_variants} {...base_animations} ref={ref}>
+                    <motion.div variants={slide_variants} {...base_animations} ref={ref}>
                         <NewComment {...{
                             creating,
                             setCreating,

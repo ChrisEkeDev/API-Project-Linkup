@@ -37,16 +37,16 @@ export const signOutAlerts = {
     }
 }
 
-export const sessionAlerts = {
-    sessionRestored: {
+export const authAlerts = {
+    authRestored: {
         status: 'success',
-        title: 'Session restored',
-        message: 'We have successfully restored your session from last time.'
+        title: 'Success',
+        message: 'You\'ve been logged in.'
     },
-    noSessionFound: {
+    authNotFound: {
         status: 'warning',
-        title: 'No session found.',
-        message: 'We couldn\'t find a session for you from last time.'
+        title: 'Error.',
+        message: 'Please log in to continue.'
     }
 }
 
@@ -106,5 +106,61 @@ export const sessionsAlerts = {
         title: "Error",
         message: "We couldn\'t check you in successfully."
     }
+}
 
+export const commentsAlerts = {
+    commentCreateSuccess: {
+        status: 'success',
+        title: 'Success',
+        message: 'Comment created successfully'
+    },
+    commentCreateFail: {
+        status: 'fail',
+        title: 'Error',
+        message: 'There was an issue creating your comment.'
+    },
+    commentUpdateSuccess: {
+        status: 'success',
+        title: 'Success',
+        message: 'Comment updated successfully'
+    },
+    commentUpdateFail: {
+        status: 'fail',
+        title: 'Error',
+        message: 'There was an issue updating your comment.'
+    },
+    commentDeleteSuccess: {
+        status: 'success',
+        title: 'Success',
+        message: 'Comment deleted successfully'
+    },
+    commentDeleteFail: {
+        status: 'fail',
+        title: 'Error',
+        message: 'There was an issue deleting your comment.'
+    },
+}
+
+
+export const checkInAlerts = {
+    checkInSuccess: {
+        status: 'success',
+        title: 'Success',
+        message: 'Check in successful.'
+    },
+    checkInError: {
+        status: 'fail',
+        title: 'Error',
+        message: 'There was a problem checking you in.'
+    },
+    checkOutSuccess: {
+        status: 'success',
+        title: 'Success',
+        message: 'Check out successful.'
+    },
+    checkOutError: {
+        status: 'fail',
+        title: 'Error',
+        message: 'There was a problem checking you out.'
+    }
 }

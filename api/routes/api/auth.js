@@ -12,9 +12,9 @@ router.get('/', (req, res) => {
     if (!player) {
         return res.status(404).json({
             status: 404,
-            message: "No session found",
+            message: "Please sign in to continue.",
             data: null,
-            errors: {}
+            error: null
         })
     }
 
@@ -28,9 +28,9 @@ router.get('/', (req, res) => {
 
     return res.status(200).json({
             status: 200,
-            message: "Session restored",
+            message: "You've been signed in successfully.",
             data: playerPublic,
-            errors: {}
+            error: null
         })
 
 })
@@ -48,9 +48,7 @@ router.post('/', validateLogin, async (req, res, next) => {
             status: 401,
             message: "Invalid credentials",
             data: null,
-            errors: {
-                message: "There was a problem with your credentials."
-            }
+            error: "Check your email address or password."
         })
     }
 
@@ -66,9 +64,9 @@ router.post('/', validateLogin, async (req, res, next) => {
 
     return res.status(200).json({
         status: 200,
-        message: "Sign in successful",
+        message: "You've been signed in successfully",
         data: playerPublic,
-        errors: {}
+        error: null
     })
 })
 
@@ -77,9 +75,9 @@ router.delete('/', (_req, res) => {
     res.clearCookie('token');
     return res.status(201).json({
         status: 201,
-        message: 'Sign out successful',
+        message: 'You\'ve been signed out successfully',
         data: null,
-        errors: {}
+        error: null
     })
 })
 

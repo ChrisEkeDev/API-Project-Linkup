@@ -1,21 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useApp } from '../../../context/AppContext';
 import { useDispatch } from 'react-redux';
-import { signInAlerts } from '../../../constants/alerts';
 import { thunkSignInPlayer } from '../../../store/auth';
 
 const useSignIn = () => {
     const dispatch = useDispatch();
     const { navigate, setLoading, handleAlerts } = useApp();
-    const { signInSuccess, signInFailure } = signInAlerts;
     const [ formData, setFormData ] = useState({
         email: "",
         password: "",
     });
 
     const [ errors, setErrors ] = useState({})
-
-    const { email, password } = formData;
 
     const handleInput = (x) => {
         setFormData((prev) => ({ ...prev, [x.target.id]: x.target.value }));
@@ -30,18 +26,15 @@ const useSignIn = () => {
         setLoading(true);
         e.preventDefault();
         try {
-            const response = await dispatch(thunkSignInPlayer(formData));
-            if (response.status === 200) {
-                handleAlerts(signInSuccess);
-                navigate('/enable-location');
-            } else {
-                handleErrors(response.errors)
+            const res = await dispatch(thunkSignInPlayer(formData));
+            handleAlerts(res)
+            if (res.status >= 400) {
                 throw new Error();
+            } else {
+                navigate('/enable-location');
             }
-
         } catch (error) {
-            handleAlerts(signInFailure);
-            console.error(error)
+            console.log(error)
         } finally {
             setLoading(false)
         }
@@ -52,16 +45,15 @@ const useSignIn = () => {
         e.preventDefault();
         try {
             const data = {email: 'pcartwirght@email.com', password: 'password1'};
-            const response = await dispatch(thunkSignInPlayer(data));
-            if (response.status === 200) {
-                handleAlerts(signInSuccess);
-                navigate('/enable-location')
-            } else {
+            const res = await dispatch(thunkSignInPlayer(data));
+            handleAlerts(res);
+            if ( res.status >= 400 ) {
                 throw new Error();
+            } else {
+                navigate('/enable-location')
             }
         } catch (error) {
-            handleAlerts(signInFailure);
-            console.error(error)
+            console.log(error)
         } finally {
             setLoading(false)
         }
@@ -69,6 +61,7 @@ const useSignIn = () => {
 
     useEffect(() => {
         const errors = {};
+        const { email, password } = formData;
         if (email && (email.trim().length < 3 || email.trim().length > 256)) {
             errors.email = 'Email must be between 3 and 256 characters';
         }

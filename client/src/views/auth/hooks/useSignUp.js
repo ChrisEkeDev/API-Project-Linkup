@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { signUpAlerts } from '../../../constants/alerts'
 import { useApp } from '../../../context/AppContext';
 import { useDispatch } from 'react-redux';
 import { thunkSignUpPlayer } from '../../../store/auth';
@@ -7,7 +6,6 @@ import { thunkSignUpPlayer } from '../../../store/auth';
 const useSignUp = () => {
     const dispatch = useDispatch();
     const { navigate, setLoading, handleAlerts } = useApp();
-    const { signUpSuccess, signUpFailure } = signUpAlerts;
     const [ formData, setFormData ] = useState({
         name: "",
         email: "",
@@ -32,20 +30,18 @@ const useSignUp = () => {
         setLoading(true);
         e.preventDefault();
         try {
-            const response = await dispatch(thunkSignUpPlayer(formData));
-            if (response.status === 201) {
-                handleAlerts(signUpSuccess);
-                navigate('/enable-location')
-            } else {
-                handleErrors(response.errors)
+            const res = await dispatch(thunkSignUpPlayer(formData));
+            handleAlerts(res)
+            if (res.status >= 400) {
                 throw new Error();
+            } else {
+                navigate('/enable-location')
             }
         } catch (e) {
-            handleAlerts(signUpFailure);
             console.error(e)
-          } finally {
+        } finally {
             setLoading(false);
-          }
+        }
     }
 
     useEffect(() => {

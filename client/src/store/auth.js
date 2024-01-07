@@ -50,7 +50,7 @@ export const thunkSignOutPlayer = () => async dispatch => {
     }
 }
 
-export const thunkRestorePlayerSession = () => async dispatch => {
+export const thunkRestoreAuth = () => async dispatch => {
     const res = await csrfFetch('/api/auth');
     try {
         const jsonResponse = await res.json();

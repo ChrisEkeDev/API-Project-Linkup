@@ -6,10 +6,11 @@ function useAlerts() {
 
     const handleAlerts = (res) => {
         let newState = [ ...alerts ];
+        let id = uuidv4();
         const alert = {
-            id: uuidv4(),
+            id,
             status: res.status,
-            message: res.message
+            message: res.status >= 400 ? res.error : res.message
         }
         if (alerts.length === 5) {
             newState.shift();
@@ -18,9 +19,9 @@ function useAlerts() {
         setAlerts(newState);
     }
 
-    const removeAlerts = (id) => {
+    const removeAlerts = (alert) => {
         let newState = [...alerts];
-        newState = newState.filter(alert => alert.id !== id);
+        newState = newState.filter(a => a.id !== alert.id);
         setAlerts(newState)
     }
 

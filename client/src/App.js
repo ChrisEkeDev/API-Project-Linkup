@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
 import { thunkSearchSessions } from './store/sessions';
-import { useDispatch } from 'react-redux';
-import useAuth from './hooks/useAuth';
+import { useApp } from './context/AppContext';
+
 import AuthRouter from './routers/AuthRouter';
 
 function App() {
-  const { isAuthenticated } = useAuth();
-  const dispatch = useDispatch();
+  const { dispatch } = useApp()
 
   useEffect(() => {
     const getSessions = async () => {
         try {
-            const res = await dispatch(thunkSearchSessions());
+            await dispatch(thunkSearchSessions());
         } catch(e) {
             console.log(e)
         }

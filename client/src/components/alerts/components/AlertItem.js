@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { slide_small_variants, base_animations } from '../../../constants/animations'
 import '../styles.scss';
 import { TbAlertCircleFilled, TbCircleCheckFilled } from 'react-icons/tb'
 
@@ -6,13 +8,14 @@ function AlertItem(props) {
     const { removeAlerts, alert } = props;
 
     // useEffect(() => {
-    //     setTimeout(() => removeAlerts(alert.id), 5000)
-    // }, [alert, removeAlerts]);
+    //     setTimeout(() => removeAlerts(alert), 5000)
+    // }, [alert]);
 
     return (
-        <div
+        <motion.div
+            variants={slide_small_variants} {...base_animations}
             className='alert_item'
-            onClick={() => removeAlerts(alert.id)}
+            onClick={() => removeAlerts(alert)}
         >
             {
                 alert.status === "fail" ?
@@ -20,7 +23,7 @@ function AlertItem(props) {
                 <TbCircleCheckFilled className='icon'/>
             }
             <span className='sm bold'>{alert.message}</span>
-        </div>
+        </motion.div>
     )
 }
 

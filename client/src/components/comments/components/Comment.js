@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { base_animations, child_variants, comment_variants } from '../../../constants/animations';
+import { base_animations, slide_variants, child_variants } from '../../../constants/animations';
 import { parseISO, format } from 'date-fns';
 import { useApp } from '../../../context/AppContext';
 import { PiArrowBendDownRightBold , PiCheckBold, PiPencilLineBold, PiChatCircleTextBold, PiTrashBold, PiXBold } from 'react-icons/pi';
@@ -119,7 +119,7 @@ function Comment({ comment }) {
   }
   </motion.li>
 
-  <motion.div variants={comment_variants} {...base_animations} ref={replyRef}>
+  <motion.div variants={slide_variants} {...base_animations} ref={replyRef}>
     <NewCommentReply {...{
         replying,
         setReplying,

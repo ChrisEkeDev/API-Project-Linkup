@@ -24,7 +24,7 @@ function SingleSession({session}) {
     const { deleteSession, checkIn, checkOut } = useSession(session);
     const checkInsData = useSelector(state => state.checkIns.sessionCheckIns);
     const checkIns = Object.values(checkInsData)
-    const { auth, navigate, currentTime } = useApp();
+    const { auth, navigate } = useApp();
     const { isModalOpen, onOpenModal, onCloseModal } = useModal();
     const isCreator = auth?.id == session?.creatorId;
     const isCheckedIn = checkIns.filter(checkin => checkin.playerId === auth.id).length > 0;
