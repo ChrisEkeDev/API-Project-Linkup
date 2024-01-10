@@ -24,11 +24,11 @@ function MapWrapper(props) {
         gestureHandling={'greedy'}
         disableDefaultUI={true}
       >
-        {
+        {/* {
           markers.map(marker => (
             <SessionMarker {...{setCurrentLocation, marker}} />
           ))
-        }
+        } */}
 
       </Map>
     </APIProvider>

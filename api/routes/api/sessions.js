@@ -10,7 +10,7 @@ const { sessionNotFound, playerNotAuthorized } =require('./constants/responseMes
 
 // Search Sessions Sorted by Relevance
 router.get('/search/*', async(req, res) => {
-    const { query, sortBy, sortDir } = req.query;
+    const { query, sortBy } = req.query;
     const today = new Date();
     const yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
@@ -75,9 +75,9 @@ router.get('/search/*', async(req, res) => {
   // Return the sorted objects
     return res.status(200).json({
         status: 200,
-        message: "",
+        message: null,
         data: sessions.sort((a, b) => calculateRelevance(b) - calculateRelevance(a)),
-        errors: {}
+        error: null
     })
 
 })
@@ -88,14 +88,47 @@ router.get('/current', requireAuth, async (req, res) => {
     const playerId = req.player.id;
 
     const sessions = await Session.findAll({
-        where: { creatorId: playerId }
-    })
+        where: {
+            [Op.or]: [
+                { creatorId: playerId },
+                { '$CheckIns.playerId$': playerId}
+            ]
+        },
+        attributes: {
+            include: [
+                'id',
+                'name',
+                'startDate',
+                'endDate',
+                'creatorId',
+                [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
+            ],
+            exclude: ['CheckIn', 'courtId','updatedAt', 'createdAt', 'private']
+        },
+        group: ['Session.id'],
+        include: [
+            {
+                model: Player,
+                as: "creator",
+                attributes: ['name', 'profileImage']
+            },
+            {
+                model: Court,
+                attributes: ['id', 'address', 'lat', 'lng']
+            },
+            {
+                model: CheckIn,
+                attributes: []
+            }
+        ]
+    });
+
 
     return res.status(200).json({
         status: 200,
-        message: "",
+        message: null,
         data: sessions,
-        errors: {}
+        error: null
     })
 })
 
@@ -145,9 +178,9 @@ router.get('/:sessionId', async (req, res) => {
 
     return res.status(200).json({
         status: 200,
-        message: "",
+        message: null,
         data: session,
-        errors: {}
+        error: null
     })
 })
 
@@ -230,17 +263,10 @@ router.post('/', requireAuth, uploadMedia, validateCreateSession, async (req, re
 
     return res.status(201).json({
         status: 201,
-        message: "",
+        message: null,
         data: newSession,
-        errors: {}
+        error: null
     })
-
-    // return res.status(201).json({
-    //     status: 201,
-    //     message: "",
-    //     data: data,
-    //     errors: {}
-    // })
 
 })
 
@@ -307,9 +333,9 @@ router.put('/:sessionId', requireAuth, validateEditSession, async (req, res) => 
 
     return res.status(200).json({
         status: 200,
-        message: "",
+        message: null,
         data: updatedSession,
-        errors: {}
+        error: null
     })
 
 })
@@ -340,31 +366,31 @@ router.delete('/:sessionId', requireAuth, async (req, res) => {
 
     return res.status(200).json({
         status: 200,
-        message: "",
+        message: null,
         data: session,
-        errors: {}
+        error: null
     })
 })
 
-/////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////
 
-// Delete "outdated" sessions
+// // Delete "outdated" sessions
 
-/////////////////////
-router.delete("/", async (req, res) => {
-    const sessions = await Session.findAll();
-    const today = new Date();
-    const dateLimit = today.setDate(today.getDate() - 3)
-    const oldSessions = sessions.filter((session) => new Date(session.endDate) < new Date(dateLimit));
-    oldSessions.forEach(session => session.destroy());
-    return res.status(200).json({
-        status: 200,
-        message: "Sessions older than 3 days have been deleted",
-        data: null,
-        errors: {}
-    })
+// /////////////////////
+// router.delete("/", async (req, res) => {
+//     const sessions = await Session.findAll();
+//     const today = new Date();
+//     const dateLimit = today.setDate(today.getDate() - 3)
+//     const oldSessions = sessions.filter((session) => new Date(session.endDate) < new Date(dateLimit));
+//     oldSessions.forEach(session => session.destroy());
+//     return res.status(200).json({
+//         status: 200,
+//         message: "Sessions older than 3 days have been deleted",
+//         data: null,
+//         error: null
+//     })
 
-})
+// })
 
 
 //////////////////////////////////////////////////////////
@@ -390,9 +416,9 @@ router.get('/:sessionId/check-ins', async (req, res) => {
 
     return res.status(200).json({
         status: 200,
-        message: "",
+        message: null,
         data: checkIns,
-        errors: {}
+        error: null
     })
 
 
@@ -418,7 +444,7 @@ router.post('/:sessionId/check-ins', requireAuth, async (req, res) => {
             status: 403,
             message: "This session has expired.",
             data: null,
-            errors: {}
+            error: null
         })
     }
 
@@ -431,7 +457,7 @@ router.post('/:sessionId/check-ins', requireAuth, async (req, res) => {
             status: 403,
             message: "You have already checked in to this session.",
             data: null,
-            errors: {}
+            error: null
         })
     }
 
@@ -450,7 +476,7 @@ router.post('/:sessionId/check-ins', requireAuth, async (req, res) => {
         status: 201,
         message: "You have checked in to this session.",
         data: newCheckIn,
-        errors: {}
+        error: null
     })
 })
 
@@ -474,7 +500,7 @@ router.delete('/:sessionId/check-ins', requireAuth, async (req, res) => {
             status: 403,
             message: "This session has expired.",
             data: null,
-            errors: {}
+            error: null
         })
     }
 
@@ -487,7 +513,7 @@ router.delete('/:sessionId/check-ins', requireAuth, async (req, res) => {
             status: 404,
             message: "You haven't checked in to this session yet.",
             data: null,
-            errors: {}
+            error: null
 
         })
 
@@ -498,7 +524,7 @@ router.delete('/:sessionId/check-ins', requireAuth, async (req, res) => {
         status: 200,
         message: "You have checked out of this session.",
         data: existingCheckIn,
-        errors: {}
+        error: null
 
     })
 })

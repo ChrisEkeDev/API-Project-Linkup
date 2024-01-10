@@ -30,7 +30,7 @@ function SessionItem({session}) {
           <p className='sm bold'></p>
           <p className='md bold accent'>{formattedTime}</p>
         </div>
-        </div>
+      </div>
       <div className='player_count'>
         <h2 className='count accent'>{session.checkInCount}</h2>
         <small>Players</small>

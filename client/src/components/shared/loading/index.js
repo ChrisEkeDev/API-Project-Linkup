@@ -4,11 +4,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { loading_transitions } from '../../../constants/animations'
 import './styles.scss'
 
-function LoadingData({absolute}) {
+function LoadingData() {
   return (
     <AnimatePresence>
       <motion.div {...loading_transitions}
-        className={`loading ${absolute && 'absolute_loading'}`}>
+        className='loading'>
           <CgSpinner className='spinner'/>
       </motion.div>
     </AnimatePresence>

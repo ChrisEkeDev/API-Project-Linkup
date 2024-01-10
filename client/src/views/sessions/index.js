@@ -8,45 +8,40 @@ import SessionsSorter from './components/SessionSorter';
 import Button from '../../components/shared/button';
 import IconButton from '../../components/shared/button/IconButton';
 import { useApp } from '../../context/AppContext';
-import useSearch from './hooks/useSearch';
+import useSessionSearch from './hooks/useSessionSearch';
 import Scroll from '../../components/shared/scroll';
-import { parent_variants, base_animations } from '../../constants/animations';
+import { page_transitions } from '../../constants/animations';
 import { PiPlusBold, PiMagnifyingGlassBold } from 'react-icons/pi';
 
 
 function Sessions() {
-  const sessions = useSelector(state => state.sessions.allSessions);
+  const sessions = useSelector(state => state.sessions.mySessions);
   const { navigate } = useApp();
-  const {
-    query,
-    sortBy,
-    handleSort,
-    handleInput,
-    searchSessions
-  } = useSearch()
 
   return (
-      <motion.main className='page sessions'>
-        <div className='page_header'>
-          <div className='float_right search_flex'>
-            <input
-                value={query}
-                onChange={handleInput}
-                className='search_input'
-                placeholder="Search by name or address"
+      <motion.main {...page_transitions} className='page sessions' >
+          <header className='page_header'>
+            <h2>My Sessions</h2>
+            <Button
+                label="Create New Session"
+                styles="primary"
+                icon={PiPlusBold}
+                action={() => navigate('/sessions/new')}
             />
-            <IconButton
-              icon={PiMagnifyingGlassBold}
-              styles="primary"
-              action={searchSessions}
-            />
-          </div>
-          <div className='float_right'>
-              <SessionsSorter sortBy={sortBy} setSortBy={handleSort} />
-          </div>
-        </div>
-
-        <Scroll>
+          </header>
+          <Scroll>
+            <section className='list_items'>
+              <span className='section_label xs bold'>{sessions.length} Session{sessions.length === 1 ? null : 's'}</span>
+              <ul>
+                {
+                  sessions.map(session => (
+                    <SessionItem session={session}/>
+                  ))
+                }
+              </ul>
+            </section>
+          </Scroll>
+        {/* <Scroll>
           <section className='section sessions_list'>
           <span className='section_label xs bold'>{sessions.length} Sessions</span>
             <header className='sub_header float_right'>
@@ -66,7 +61,7 @@ function Sessions() {
                 ))}
             </motion.ul>
           </section>
-        </Scroll>
+        </Scroll> */}
       </motion.main>
   )
 }

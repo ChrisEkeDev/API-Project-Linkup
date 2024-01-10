@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useApp } from '../../../context/AppContext'
-import { thunkSearchSessions, thunkGetAllSessions } from '../../../store/sessions'
+import { thunkSearchSessions } from '../../../store/sessions'
+import { thunkSearchTeams } from '../../../store/teams'
 
 const useSearch = () => {
     const { dispatch } = useApp();
@@ -16,9 +16,10 @@ const useSearch = () => {
         setQuery(x.target.value)
     }
 
-    const searchSessions = async () => {
+    const search = async () => {
       try {
         await dispatch(thunkSearchSessions(query, sortBy))
+        await dispatch(thunkSearchTeams(query, sortBy))
       } catch(e) {
         console.log(e)
       }
@@ -27,10 +28,10 @@ const useSearch = () => {
 
 
     useEffect(() => {
-      searchSessions()
+      search()
     }, [sortBy])
 
-    return { sortBy, handleSort, handleInput, searchSessions }
+    return { sortBy, handleSort, handleInput, search }
 }
 
 export default useSearch

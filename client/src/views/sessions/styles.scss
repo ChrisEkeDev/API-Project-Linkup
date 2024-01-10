@@ -1,9 +1,7 @@
 @import url('../../index.css');
 
 ////////////////////////////////////////////////////////////////////
-.sessions,
-.single_session,
-.new_session {
+.sessions {
     padding-top: 1rem;
     padding-right: 1rem;
 }
@@ -92,7 +90,7 @@
 
 .search_flex {
     display: flex;
-    width: 70%;
+    width: 100%;
 }
 .search_input {
     height: 3rem;
@@ -110,7 +108,7 @@
 }
 
 
-.sessions_sorter {
+.sorter {
     position: relative;
     padding: 0;
     border-radius: .5rem;
@@ -119,16 +117,17 @@
     align-items: center;
     gap: 1rem;
 
-    .sort_label {
+    .sorter_label {
         font-size: .8rem;
         text-align: right;
         white-space: nowrap;
     }
 }
 
-.sessions_list {
+.results {
     position: relative;
     border-top: var(--border);
+    padding-top: 1rem;
 }
 
 .session_information {

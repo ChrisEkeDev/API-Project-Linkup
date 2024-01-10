@@ -17,13 +17,23 @@ function AppRouter() {
             <Switch>
                 <Route
                     exact
-                    path={ROUTES.SESSIONS_ROUTER}
-                    component={view.SessionsRouter}
+                    path={ROUTES.SEARCH}
+                    component={view.Search}
                 />
                 <Route
                     exact
                     path={ROUTES.CHECKINS}
                     component={view.CheckIns}
+                />
+                <Route
+                    exact
+                    path={ROUTES.SESSIONS_ROUTER}
+                    component={view.SessionsRouter}
+                />
+                <Route
+                    exact
+                    path={ROUTES.TEAMS_ROUTER}
+                    component={view.TeamsRouter}
                 />
                 <Route
                     exact

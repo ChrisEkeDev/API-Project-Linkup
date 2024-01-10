@@ -1,167 +1,166 @@
 import { csrfFetch } from './csrf';
-import Cookies from 'js-cookie';
 
 // TYPES
-const GET_ALL_GROUPS = '/linkup/groups/GET_ALL_GROUPS';
-const GET_CURRENT_GROUPS = '/linkup/groups/GET_CURRENT_GROUPS';
-const GET_SINGLE_GROUP = '/linkup/groups/GET_SINGLE_GROUP';
-const CREATE_GROUP = '/linkup/groups/CREATE_GROUP';
-const UPDATE_GROUP = '/linkup/groups/UPDATE_GROUP';
-const DELETE_GROUP = '/linkup/groups/DELETE_GROUP';
+const SEARCH_TEAMS = '/linkup/teams/SEARCH_TEAMS';
+const GET_MY_TEAMS = '/linkup/teams/GET_MY_TEAMS';
+// const GET_SINGLE_TEAM = '/linkup/teams/GET_SINGLE_TEAM';
+// const CREATE_TEAM = '/linkup/teams/CREATE_TEAM';
+// const UPDATE_TEAM = '/linkup/teams/UPDATE_TEAM';
+// const DELETE_TEAM = '/linkup/teams/DELETE_TEAM';
 
 
 
 // ACTIONS
-const actionGetAllGroups = (groups) => ({
-    type: GET_ALL_GROUPS,
-    payload: groups
+const actionSearchTeams = (teams) => ({
+    type: SEARCH_TEAMS,
+    payload: teams
 })
 
-const actionGetCurrentGroups = (groups) => ({
-    type: GET_CURRENT_GROUPS,
-    payload: groups
+const actionGetMyTeams = (teams) => ({
+    type: GET_MY_TEAMS,
+    payload: teams
 })
 
-const actionGetSingleGroup = (group) => ({
-    type: GET_SINGLE_GROUP,
-    payload: group
-})
+// const actionGetSingleTeam = (team) => ({
+//     type: GET_SINGLE_TEAM,
+//     payload: team
+// })
 
-const actionCreateGroup = (group) => ({
-    type: CREATE_GROUP,
-    payload: group
-})
+// const actionCreateTeam = (team) => ({
+//     type: CREATE_TEAM,
+//     payload: team
+// })
 
-const actionUpdateGroup = (group) => ({
-    type: UPDATE_GROUP,
-    payload: group
-})
+// const actionUpdateTeam = (team) => ({
+//     type: UPDATE_TEAM,
+//     payload: team
+// })
 
-const actionDeleteGroup = (group) => ({
-    type: DELETE_GROUP,
-    payload: group
-})
+// const actionDeleteTeam = (team) => ({
+//     type: DELETE_TEAM,
+//     payload: team
+// })
 
 
 //THUNKS
 
-export const thunkGetAllGroups = () => async dispatch => {
-    const res = await csrfFetch('/api/groups');
-    if (res.ok) {
-        const data = await res.json();
-        dispatch(actionGetAllGroups(data.Groups))
-    } else {
-        const errors = await res.json();
-        return errors;
+export const thunkSearchTeams = (query, sortBy) => async dispatch => {
+    const res = await csrfFetch(`/api/teams/search/?query=${query}&sortBy=${sortBy}`);
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionSearchTeams(jsonResponse.data))
+        return jsonResponse
+    } catch(error) {
+        console.error(error)
     }
 }
 
-export const thunkGetCurrentGroups = () => async dispatch => {
-    const res = await csrfFetch('/api/groups/current');
-    if (res.ok) {
-        const data = await res.json();
-        dispatch(actionGetCurrentGroups(data.Groups))
-    } else {
-        const errors = await res.json();
-        return errors;
+export const thunkGetMyTeams = () => async dispatch => {
+    const res = await csrfFetch('/api/teams/current');
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionGetMyTeams(jsonResponse.data))
+        return jsonResponse
+    } catch(error) {
+        console.error(error)
     }
 }
 
-export const thunkGetSingleGroup = (groupId) => async dispatch => {
-    const res = await csrfFetch(`/api/groups/${groupId}`);
-    if (res.ok) {
-        const group = await res.json();
-        dispatch(actionGetSingleGroup(group))
-    } else {
-        const errors = await res.json();
-        return errors;
-    }
-}
+// export const thunkGetSingleTeam = (teamId) => async dispatch => {
+//     const res = await csrfFetch(`/api/teams/${teamId}`);
+//     if (res.ok) {
+//         const team = await res.json();
+//         dispatch(actionGetSingleTeam(team))
+//     } else {
+//         const errors = await res.json();
+//         return errors;
+//     }
+// }
 
-export const thunkCreateGroup = (group, imageData) => async dispatch => {
-    const res = await csrfFetch('/api/groups', {
-        method: 'POST',
-        body: JSON.stringify(group)
-    });
+// export const thunkCreateTeam = (team, imageData) => async dispatch => {
+//     const res = await csrfFetch('/api/teams', {
+//         method: 'POST',
+//         body: JSON.stringify(team)
+//     });
 
-    if (res.ok) {
-        const newGroup = await res.json();
-        dispatch(actionCreateGroup(newGroup))
-        if (imageData) {
-            await fetch(`/api/groups/${newGroup.id}/images`, {
-                method: 'POST',
-                headers: {"XSRF-TOKEN": Cookies.get('XSRF-TOKEN')},
-                body: imageData
-            })
-        }
-        return newGroup;
-    } else {
-        const errors = await res.json();
-        return errors;
-    }
-}
+//     if (res.ok) {
+//         const newTeam = await res.json();
+//         dispatch(actionCreateTeam(newTeam))
+//         if (imageData) {
+//             await fetch(`/api/teams/${newTeam.id}/images`, {
+//                 method: 'POST',
+//                 headers: {"XSRF-TOKEN": Cookies.get('XSRF-TOKEN')},
+//                 body: imageData
+//             })
+//         }
+//         return newTeam;
+//     } else {
+//         const errors = await res.json();
+//         return errors;
+//     }
+// }
 
-export const thunkUpdateGroup = (group) => async dispatch => {
-    const res = await csrfFetch(`/api/groups/${group.id}`, {
-        method: 'PUT',
-        body: JSON.stringify(group)
-    });
-    if (res.ok) {
-        const updatedGroup = await res.json();
-        dispatch(actionUpdateGroup(updatedGroup))
-        return updatedGroup
-    } else {
-        const errors = await res.json();
-        return errors;
-    }
-}
+// export const thunkUpdateTeam = (team) => async dispatch => {
+//     const res = await csrfFetch(`/api/teams/${team.id}`, {
+//         method: 'PUT',
+//         body: JSON.stringify(team)
+//     });
+//     if (res.ok) {
+//         const updatedTeam = await res.json();
+//         dispatch(actionUpdateTeam(updatedTeam))
+//         return updatedTeam
+//     } else {
+//         const errors = await res.json();
+//         return errors;
+//     }
+// }
 
-export const thunkDeleteGroup = (group) => async dispatch => {
-    const res = await csrfFetch(`/api/groups/${group.id}`, {
-        method: 'DELETE'
-    })
-    if (res.ok) {
-        const message = await res.json();
-        dispatch(actionDeleteGroup(group))
-        return message
-    } else {
-        const errors = await res.json();
-        return errors;
-    }
-}
+// export const thunkDeleteTeam = (team) => async dispatch => {
+//     const res = await csrfFetch(`/api/teams/${team.id}`, {
+//         method: 'DELETE'
+//     })
+//     if (res.ok) {
+//         const message = await res.json();
+//         dispatch(actionDeleteTeam(team))
+//         return message
+//     } else {
+//         const errors = await res.json();
+//         return errors;
+//     }
+// }
 
 
 // REDUCER
-const initialState = { allGroups: {}, singleGroup: {}, currentGroups: {}};
+const initialState = { allTeams: [], singleTeam: {}, myTeams: []};
 
 const teamsReducer = (state = initialState, action) => {
     switch(action.type) {
-        case GET_ALL_GROUPS: {
-            const newState = { ...state, allGroups: {} }
-            action.payload.forEach(group => newState.allGroups[group.id] = group);
+        case SEARCH_TEAMS: {
+            const newState = { ...state, allTeams: [] }
+            action.payload.forEach(team => newState.allTeams.push(team));
             return newState;
         };
-        case GET_CURRENT_GROUPS: {
-            const newState = { ...state, currentGroups: {} };
-           action.payload.forEach(group => newState.currentGroups[group.id] = group);
+        case GET_MY_TEAMS: {
+            const newState = { ...state, currentTeams: {} };
+            action.payload.forEach(team => newState.myTeams.push(team));
             return newState;
         };
-        case GET_SINGLE_GROUP: {
-            const newState = { ...state, singleGroup: {} };
-            newState.singleGroup = action.payload;
-            return newState
-        };
-        case CREATE_GROUP:
-        case UPDATE_GROUP: {
-            const newState = { ...state };
-            newState.allGroups = { ...newState.allGroups, [action.payload.id]: action.payload };
-            return newState;
-        };
-        case DELETE_GROUP: {
-            const newState = { ...state };
-            delete newState.allGroups[action.payload.id];
-            return newState;
-        };
+        // case GET_SINGLE_TEAM: {
+        //     const newState = { ...state, singleTeam: {} };
+        //     newState.singleTeam = action.payload;
+        //     return newState
+        // };
+        // case CREATE_TEAM:
+        // case UPDATE_TEAM: {
+        //     const newState = { ...state };
+        //     newState.allTeams = { ...newState.allTeams, [action.payload.id]: action.payload };
+        //     return newState;
+        // };
+        // case DELETE_TEAM: {
+        //     const newState = { ...state };
+        //     delete newState.allTeams[action.payload.id];
+        //     return newState;
+        // };
         default:
             return state;
     }

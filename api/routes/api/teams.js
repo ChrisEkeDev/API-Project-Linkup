@@ -10,8 +10,74 @@ const { teamNotFound, playerNotAuthorized, membershipNotFound, membershipAlready
 
 
 // Get all teams
-router.get('/', async (req, res) => {
+router.get('/search/*', async (req, res) => {
+    const { query, sortBy } = req.query;
+    const lowerCaseQuery = query ? query.toLowerCase() : '';
     let teams = await Team.findAll({
+        attributes: {
+            include: [[fn('COUNT', col('Memberships.id')), 'members']],
+            exclude: ['updatedAt']
+        },
+        group: ['Team.id'],
+        include: [
+            {
+                model: Membership,
+                attributes: ['status']
+            },
+            {
+                as: "captain",
+                model: Player,
+                attributes: ['name', 'profileImage']
+            },
+        ],
+        order: [
+            [sortBy ? sortBy : 'startDate', sortBy === 'startDate' ? 'ASC' : 'DESC']
+        ]
+    })
+
+    for (let team of teams) {
+        let members = await Player.findAll({
+            include: [{
+                model: Team,
+                where: { id: team.id },
+                through: { model: Membership, attributes: [] },
+                attributes: []
+            }],
+            attributes: ['name', 'profileImage', 'createdAt'],
+            limit: 5,
+            order: [['createdAt', 'DESC']]
+        });
+        team.dataValues.memberPreview = members;
+    }
+
+    function calculateRelevance(team) {
+        let relevance = 0;
+        if (query) {
+            lowerCaseQuery.split(' ').forEach(word => {
+                if (team.name.toLowerCase().includes(word)) {
+                    relevance++;
+                }
+            })
+        }
+        return relevance;
+    }
+
+    return res.status(200).json({
+        status: 200,
+        message: null,
+        data: teams.sort((a, b) => calculateRelevance(b) - calculateRelevance(a)),
+        error: null
+    })
+})
+
+
+
+// Get all teams created by the current player
+router.get('/current', requireAuth, async (req, res) => {
+    const playerId = req.player.id;
+
+    let teams = await Team.findAll({
+        where: { captainId: playerId },
         attributes: {
             include: [[fn('COUNT', col('Memberships.id')), 'members']],
             exclude: ['updatedAt']
@@ -44,40 +110,6 @@ router.get('/', async (req, res) => {
         });
         team.dataValues.memberPreview = members;
     }
-
-    return res.status(200).json({
-        status: 200,
-        message: null,
-        data: teams,
-        error: null
-    })
-})
-
-
-
-// Get all teams created by the current player
-router.get('/current', requireAuth, async (req, res) => {
-    const playerId = req.player.id;
-
-    let teams = await Team.findAll({
-        where: { captainId: playerId },
-        attributes: {
-            include: [[fn('COUNT', col('Memberships.id')), 'members']],
-            exclude: ['updatedAt']
-        },
-        group: ['Team.id'],
-        include: [
-            {
-                model: Membership,
-                attributes: ['status']
-            },
-            {
-                as: "captain",
-                model: Player,
-                attributes: ['name', 'profileImage']
-            },
-        ]
-    })
 
     return res.status(200).json({
         status: 200,

@@ -64,7 +64,7 @@ function AppProvider({children}) {
             if (res.status >= 400) {
               navigate('/sign-in')
             } else {
-              navigate('/sessions')
+              navigate('/search')
             }
         } catch(e) {
             console.log(e)

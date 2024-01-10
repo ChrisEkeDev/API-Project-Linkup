@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom';
 import './styles.scss';
 import * as ROUTES from '../../constants/routes';
-import { PiGearBold, PiCalendarBold, PiMagnifyingGlassBold, PiUserCircleBold } from 'react-icons/pi';
+import { PiGearBold, PiCalendarBold, PiMagnifyingGlassBold, PiUserCircleBold, PiUsersBold, PiBasketballBold } from 'react-icons/pi';
 import ProfileImage from '../shared/profileImage';
 import { useApp } from '../../context/AppContext';
 
@@ -11,14 +11,24 @@ function NavBar() {
     return (
         <nav>
             <ul className='app_nav'>
-                <li title="Search Sessions" className='app_link'>
-                    <NavLink to={ROUTES.SESSIONS} className="nav_link" activeClassName="active_link">
+                <li title="Search" className='app_link'>
+                    <NavLink to={ROUTES.SEARCH} className="nav_link" activeClassName="active_link">
                         <PiMagnifyingGlassBold className='nav_icon'/>
                     </NavLink>
                 </li>
                 <li title="Check Ins" className='app_link'>
                     <NavLink to={ROUTES.CHECKINS} className="nav_link" activeClassName="active_link">
                         <PiCalendarBold className='nav_icon' />
+                    </NavLink>
+                </li>
+                <li title="My Sessions" className='app_link'>
+                    <NavLink to={ROUTES.SESSIONS} className="nav_link" activeClassName="active_link">
+                        <PiBasketballBold className='nav_icon' />
+                    </NavLink>
+                </li>
+                <li title="My Teams" className='app_link'>
+                    <NavLink to={ROUTES.TEAMS} className="nav_link" activeClassName="active_link">
+                        <PiUsersBold className='nav_icon' />
                     </NavLink>
                 </li>
                 <li title="My Profile" className='app_link'>

@@ -5,15 +5,15 @@ import { Switch, Route } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import { useApp } from '../context/AppContext';
 import * as view from '../views';
-import { thunkGetMySessions } from '../store/sessions';
+import { thunkGetMyTeams } from '../store/teams';
 
-function SessionsRouter() {
-    const location = useLocation()
+function TeamsRouter() {
+    const location = useLocation();
     const { dispatch } = useApp();
 
     useEffect(() => {
         try {
-            dispatch(thunkGetMySessions())
+            dispatch(thunkGetMyTeams())
         } catch(e) {
             console.error(e)
         }
@@ -25,23 +25,23 @@ function SessionsRouter() {
                 <Switch location={location} key={location.pathname}>
                     <Route
                         exact
-                        path={ROUTES.SESSIONS}
-                        component={view.Sessions}
+                        path={ROUTES.TEAMS}
+                        component={view.Teams}
                     />
                     {/* <Route
                         exact
-                        path={ROUTES.NEW_SESSION}
-                        component={view.NewSession}
+                        path={ROUTES.SINGLE_TEAM}
+                        component={view.SingleTeam}
                     />
                     <Route
                         exact
-                        path={ROUTES.UPDATE_SESSION}
-                        component={view.UpdateSession}
+                        path={ROUTES.CREATE_TEAM}
+                        component={view.NewTeam}
                     />
                     <Route
                         exact
-                        path={ROUTES.SINGLE_SESSION}
-                        component={view.SingleSession}
+                        path={ROUTES.UPDATE_TEAM}
+                        component={view.UpdateTeam}
                     /> */}
                 </Switch>
             </AnimatePresence>
@@ -49,4 +49,4 @@ function SessionsRouter() {
     )
 }
 
-export default SessionsRouter
+export default TeamsRouter

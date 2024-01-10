@@ -25,9 +25,9 @@ router.get('/', requireAuth,  async (req, res) => {
 
     return res.status(200).json({
         status: 200,
-        message: "",
+        message: null,
         data: checkins,
-        errors: {}
+        error: null
     })
 })
 

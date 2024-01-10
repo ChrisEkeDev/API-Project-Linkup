@@ -157,6 +157,12 @@
     padding: 0;
   }
 
+  .list_items {
+    position: relative;
+    padding-top: 1rem;
+    border-top: var(--border);
+  }
+
   .options_modal {
     right: 0rem;
     top: calc(100% + 1rem);

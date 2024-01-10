@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 // TYPES
 const SEARCH_SESSIONS = '/linkup/sessions/SEARCH_SESSIONS';
-const GET_CURRENT_SESSIONS = '/linkup/sessions/GET_CURRENT_SESSIONS';
+const GET_MY_SESSIONS = '/linkup/sessions/GET_MY_SESSIONS';
 const GET_SINGLE_SESSION = '/linkup/sessions/GET_SINGLE_SESSION';
 const CREATE_SESSION = '/linkup/sessions/CREATE_SESSION';
 const UPDATE_SESSION = '/linkup/sessions/UPDATE_SESSION';
@@ -18,10 +18,10 @@ const actionSearchSessions = (sessions) => ({
     payload: sessions
 })
 
-// const actionGetCurrentSessions = (sessions) => ({
-//     type: GET_CURRENT_SESSIONS,
-//     payload: sessions
-// })
+const actionGetMySessions = (sessions) => ({
+    type: GET_MY_SESSIONS,
+    payload: sessions
+})
 
 const actionGetSingleSession = (session) => ({
     type: GET_SINGLE_SESSION,
@@ -57,16 +57,16 @@ export const thunkSearchSessions = (query, sortBy) => async dispatch => {
         console.error(error)
     }
 }
-// export const thunkGetCurrentSessions = () => async dispatch => {
-//     const res = await csrfFetch('/api/sessions/current');
-//     if (res.ok) {
-//         const data = await res.json();
-//         dispatch(actionGetCurrentSessions(data.Sessions))
-//     } else {
-//         const errors = await res.json();
-//         return errors;
-//     }
-// }
+export const thunkGetMySessions = () => async dispatch => {
+    const res = await csrfFetch('/api/sessions/current');
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionGetMySessions(jsonResponse.data));
+        return jsonResponse;
+    } catch(error) {
+        console.error(error)
+    }
+}
 
 export const thunkGetSingleSession = (sessionId) => async dispatch => {
     const res = await csrfFetch(`/api/sessions/${sessionId}`);
@@ -122,7 +122,7 @@ export const thunkDeleteSession = (session) => async dispatch => {
 
 
 // REDUCER
-const initialState = { allSessions: [], singleSession: {} };
+const initialState = { allSessions: [], singleSession: {}, mySessions: []};
 
 const sessionsReducer = (state = initialState, action) => {
     switch(action.type) {
@@ -131,11 +131,11 @@ const sessionsReducer = (state = initialState, action) => {
             action.payload.forEach(session => newState.allSessions.push(session));
             return newState;
         }
-        // case GET_CURRENT_SESSIONS: {
-        //     const newState = { ...state, currentSessions: {} };
-        //    action.payload.forEach(session => newState.currentSessions[session.id] = session);
-        //     return newState;
-        // };
+        case GET_MY_SESSIONS: {
+            const newState = { ...state, mySessions: [] };
+            action.payload.forEach(session => newState.mySessions.push(session));
+            return newState;
+        };
         case GET_SINGLE_SESSION: {
             const newState = { ...state, singleSession: {} };
             newState.singleSession = action.payload;
