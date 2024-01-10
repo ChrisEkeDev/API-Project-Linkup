@@ -14,27 +14,27 @@ module.exports = {
       {
         playerId: 2,
         teamId: 1,
-        status: "member"
+        status: "host"
       },
       {
         playerId: 1,
         teamId: 2,
-        status: "member"
+        status: "host"
       },
       {
         playerId: 4,
         teamId: 3,
-        status: "member"
+        status: "host"
       },
       {
         playerId: 4,
         teamId: 4,
-        status: "member"
+        status: "host"
       },
       {
         playerId: 3,
         teamId: 5,
-        status: "member"
+        status: "host"
       },
       {
         playerId: 2,

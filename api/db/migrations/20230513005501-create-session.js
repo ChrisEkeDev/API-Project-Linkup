@@ -36,6 +36,14 @@ module.exports = {
           key: 'id'
         },
       },
+      hostId: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Teams',
+          key: 'id'
+        }
+      },
       private: {
         type: Sequelize.BOOLEAN,
         allowNull: false,

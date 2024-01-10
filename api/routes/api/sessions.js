@@ -3,8 +3,7 @@ const router = express.Router();
 const { CheckIn, Session, Player, Comment, SessionImage, Membership, Court } = require('../../db/models');
 const { Op, fn, col } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
-const { uploadImage, deleteImages } = require('../../utils/aws');
-const { geocodeAddress } = require('../../utils/googleServices');
+const { uploadMedia, deleteMedia } = require('../../utils/aws');
 const { validateCreateSession, validateEditSession } = require('./validation/expressValidations')
 const { sessionNotFound, playerNotAuthorized } =require('./constants/responseMessages');
 
@@ -157,7 +156,7 @@ router.get('/:sessionId', async (req, res) => {
 // Create an Session
 
 ////////////////////
-router.post('/', requireAuth, uploadImage, validateCreateSession, async (req, res) => {
+router.post('/', requireAuth, uploadMedia, validateCreateSession, async (req, res) => {
     const { name, address, private, startDate, endDate } = req.body;
     const image = req.file;
     const playerId = req.player.id;

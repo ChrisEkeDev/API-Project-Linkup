@@ -54,10 +54,24 @@ const validateCreateComment = [
     handleValidationErrors('There was a problem creating your comment')
 ]
 
+const validateCreateTeam = [
+    check('name').exists({checkFalsy: true}).isLength({max: 60, min: 5}).withMessage('Name must be 60 characters or less'),
+    check('private').exists().isBoolean().withMessage('Private must be a boolean'),
+    handleValidationErrors("There was a problem creating your team")
+]
+
+const validateEditTeam = [
+    check('name').optional().isLength({max: 60, min: 5}).withMessage('Name must be 60 characters or less'),
+    check('private').optional().isBoolean().withMessage('Private must be a boolean'),
+    handleValidationErrors("There was a problem updating your team")
+]
+
 module.exports = {
     validateLogin,
     validateSignUp,
     validateCreateComment,
     validateCreateSession,
-    validateEditSession
+    validateEditSession,
+    validateCreateTeam,
+    validateEditTeam
 }

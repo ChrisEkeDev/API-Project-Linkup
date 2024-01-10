@@ -1,8 +1,8 @@
 'use strict';
+const { Model, Validator } = require('sequelize');
+const { Sequelize } = require('.');
+const { Membership } = require('../models')
 
-const {
-  Model, Validator
-} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Team extends Model {
 
@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true
-    }
+    },
   }, {
     sequelize,
     modelName: 'Team'

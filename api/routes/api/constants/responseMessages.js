@@ -34,10 +34,42 @@ const playerNotAuthorized = {
     error: "You are not authorized to make this request"
 }
 
+const teamNotFound = {
+    status: 404,
+    message: "Team couldn't be found",
+    data: null,
+    error: "The 'teamId' is not recognized as a valid entity"
+}
+
+const cantDeleteMembership = {
+    status: 405,
+    message: "Can't Delete Membership",
+    data: null,
+    error: "You can't delete your membership for a team you created"
+}
+
+const membershipNotFound = {
+    status: 404,
+    message: "Membership couldn't be found",
+    data: null,
+    error: "The memberhsip doesn't exist between that player and team"
+}
+
+const membershipAlreadyExists = {
+    status: 403,
+    message: "Membership already exists",
+    data: null,
+    error: "A memberhsip already exist between that player and team"
+}
+
 module.exports = {
     courtNotFound,
     likeNotFound,
     sessionNotFound,
+    teamNotFound,
     commentNotFound,
+    cantDeleteMembership,
+    membershipNotFound,
+    membershipAlreadyExists,
     playerNotAuthorized
 }

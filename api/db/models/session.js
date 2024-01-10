@@ -11,6 +11,12 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'id'
       })
 
+      Session.belongsTo(models.Team, {
+        as: "host",
+        foreignKey: 'hostId',
+        targetKey: 'id'
+      })
+
       Session.belongsTo(models.Court, {
         foreignKey: 'courtId',
         targetKey: 'id'
@@ -34,8 +40,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'sessionId',
         sourceKey: 'id'
       })
-
-
 
       Session.hasMany(models.CheckIn, {
         foreignKey: 'sessionId',
@@ -66,6 +70,10 @@ module.exports = (sequelize, DataTypes) => {
     courtId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    hostId: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     },
     private: {
       type: DataTypes.BOOLEAN,

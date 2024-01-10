@@ -2,6 +2,7 @@
 
 const { Model, Validator } = require('sequelize');
 
+
 module.exports = (sequelize, DataTypes) => {
   class Player extends Model {
 
@@ -10,18 +11,18 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'playerId',
         sourceKey: 'id'
       })
-      // Player.belongsToMany(models.Team, {
-      //   through: models.Membership,
-      //   foreignKey: 'playerId',
-      //   otherKey: 'teamId',
-      //   sourceKey: 'id',
-      //   targetKey: 'id'
-      // })
+      Player.belongsToMany(models.Team, {
+        through: models.Membership,
+        foreignKey: 'playerId',
+        otherKey: 'teamId',
+        sourceKey: 'id',
+        targetKey: 'id'
+      })
 
-      // Player.hasMany(models.Membership, {
-      //   foreignKey: 'playerId',
-      //   sourceKey: 'id'
-      // })
+      Player.hasMany(models.Membership, {
+        foreignKey: 'playerId',
+        sourceKey: 'id'
+      })
 
       Player.belongsToMany(models.Session, {
         through: models.CheckIn,

@@ -11,15 +11,13 @@ function Alerts(props) {
         <div className='alerts'>
             <AnimatePresence>
             {
-                alerts.length > 0 ?
                 alerts.map(alert => (
                     <AlertItem
                         key={alert.id}
                         alert={alert}
                         removeAlerts={removeAlerts}
                     />
-                )) :
-                null
+                ))
             }
             </AnimatePresence>
         </div>

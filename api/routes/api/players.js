@@ -3,12 +3,12 @@ const router = express.Router();
 const bcrypt = require('bcryptjs')
 const { setTokenCookie } = require('../../utils/jwt')
 const { Player } = require('../../db/models');
-const { uploadImage, deleteImages } = require('../../utils/aws');
+const { uploadMedia, deleteMedia } = require('../../utils/aws');
 const { validateSignUp } = require('./validation/expressValidations');
 
 
 // Signup
-router.post('/', uploadImage, validateSignUp, async (req, res) => {
+router.post('/', uploadMedia, validateSignUp, async (req, res) => {
     const { name, email, password } = req.body;
     const image = req.file;
 

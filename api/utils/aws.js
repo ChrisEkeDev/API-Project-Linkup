@@ -8,18 +8,28 @@ AWS.config.update({
     correctClockSkew: true
 })
 
-const uploadImage = multer({
+const uploadMedia = multer({
     storage: multerS3({
         s3: s3,
         acl: 'public-read',
         bucket: 'linkup-bucket',
+        metadata: (req, file, cb) => {
+            const { player } = req;
+            cb(null, {
+                playerId: player.id,
+                uploadDate: new Date().toISOString(),
+                fileSize: file.size,
+                originalname: file.originalname,
+                contentType: file.mimetype
+            })
+        },
         key: function (req, file, cb) {
-            cb(null, file.originalname); //use Date.now() for unique file keys
+            cb(null, Date.now().toString() + "-" + req.player.name + "-" + file.originalname); //use Date.now() for unique file keys
         }
     })
 }).single("image");
 
-const deleteImages = (images) => {
+const deleteMedia = (images) => {
     if (images.length) {
         images.forEach( async(image) => {
             const imageKey = image.url.split('/');
@@ -36,4 +46,4 @@ const deleteImages = (images) => {
 
 
 
-module.exports = { uploadImage, deleteImages };
+module.exports = { uploadMedia, deleteMedia };
