@@ -94,7 +94,60 @@ export const sessionsAlerts = {
     deleteSessionError: {
         status: "fail",
         title: "Error",
-        message: "Your session was deleted successfully."
+        message: 'We couldn\'t delete the session for you.'
+    },
+    checkInSuccess: {
+        status: "success",
+        title: "Success",
+        message: "You've been checked in successfully."
+    },
+    checkInError: {
+        status: "fail",
+        title: "Error",
+        message: "We couldn\'t check you in successfully."
+    }
+}
+
+export const teamAlerts = {
+    teamNotFound: {
+        status: 'fail',
+        title: 'Couldn\'t retrieve team',
+        message: 'We couldnt get any of the team.'
+    },
+    teamNotFound: {
+        status: 'fail',
+        title: 'Team not found',
+        message: 'We couldn\'t find a team with that id number.'
+    },
+    createTeamError: {
+        status: 'fail',
+        title: 'Error',
+        message: 'We couldn\'t create the team for you.'
+    },
+    createTeamSuccess: {
+        status: 'success',
+        title: 'Success',
+        message: 'Your team was created successfully.'
+    },
+    updateTeamSuccess: {
+        status: 'success',
+        title: 'Success',
+        message: 'Your team was updated successfully.'
+    },
+    updateTeamError: {
+        status: 'fail',
+        title: 'Error',
+        message: 'We couldn\'t update the team for you.'
+    },
+    deleteTeamSuccess: {
+        status: "success",
+        title: "Success",
+        message: "Your team was deleted successfully."
+    },
+    deleteTeamError: {
+        status: "fail",
+        title: "Error",
+        message: 'We couldn\'t update the team for you.'
     },
     checkInSuccess: {
         status: "success",

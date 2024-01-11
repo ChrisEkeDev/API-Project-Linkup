@@ -19,5 +19,5 @@ export const UPDATE_SESSION = '/sessions/:id/update';
 export const TEAMS_ROUTER = '/teams*'
 export const TEAMS = '/teams'
 export const NEW_TEAM = '/teams/new'
-export const SINGLE_TEAM = '/teams/:teamId'
-export const UPDATE_TEAM = '/teams/:teamId/update'
+export const SINGLE_TEAM = '/teams/:id'
+export const UPDATE_TEAM = '/teams/:id/update'

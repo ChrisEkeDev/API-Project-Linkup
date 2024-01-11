@@ -28,7 +28,7 @@ function SessionsRouter() {
                         path={ROUTES.SESSIONS}
                         component={view.Sessions}
                     />
-                    {/* <Route
+                    <Route
                         exact
                         path={ROUTES.NEW_SESSION}
                         component={view.NewSession}
@@ -42,7 +42,7 @@ function SessionsRouter() {
                         exact
                         path={ROUTES.SINGLE_SESSION}
                         component={view.SingleSession}
-                    /> */}
+                    />
                 </Switch>
             </AnimatePresence>
         </div>

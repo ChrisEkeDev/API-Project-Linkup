@@ -30,7 +30,7 @@ function SingleSession({session}) {
     const isCheckedIn = checkIns.filter(checkin => checkin.playerId === auth.id).length > 0;
 
     return (
-        <motion.main {...base_animations} className='page single_session'>
+        <motion.main {...base_animations} className='page sessions'>
             <motion.header variants={child_variants} className='header'>
                 <Back route={`/sessions`}/>
                 <div className='actions'>

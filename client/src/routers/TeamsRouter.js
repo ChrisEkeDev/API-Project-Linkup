@@ -28,21 +28,21 @@ function TeamsRouter() {
                         path={ROUTES.TEAMS}
                         component={view.Teams}
                     />
-                    {/* <Route
-                        exact
-                        path={ROUTES.SINGLE_TEAM}
-                        component={view.SingleTeam}
-                    />
                     <Route
                         exact
-                        path={ROUTES.CREATE_TEAM}
+                        path={ROUTES.NEW_TEAM}
                         component={view.NewTeam}
                     />
                     <Route
                         exact
                         path={ROUTES.UPDATE_TEAM}
                         component={view.UpdateTeam}
-                    /> */}
+                    />
+                    <Route
+                        exact
+                        path={ROUTES.SINGLE_TEAM}
+                        component={view.SingleTeam}
+                    />
                 </Switch>
             </AnimatePresence>
         </div>

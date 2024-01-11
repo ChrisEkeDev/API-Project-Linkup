@@ -29,9 +29,9 @@ function NewSession() {
 
 
   return (
-    <motion.main {...page_transitions} className='page new_session'>
+    <motion.main {...page_transitions} className='page sessions'>
         <header className='header'>
-        <Back route={`/sessions`}/>
+        <Back />
         </header>
         <Scroll>
         <form className='session_form'>

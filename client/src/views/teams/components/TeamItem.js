@@ -13,7 +13,10 @@ function TeamItem({team}) {
     // const formattedTime = format(parsedDate, 'MM/dd @ h:mm a');
 
     return (
-        <motion.li variants={child_variants} className='team_item'>
+        <motion.li
+            variants={child_variants}
+            onClick={()=> navigate(`/teams/${team.id}`)}
+            className='team_item'>
             {team.private && <div className='team_privacy'><PiLockBold/></div>}
             <div className='float_left'>
             <ProfileImage

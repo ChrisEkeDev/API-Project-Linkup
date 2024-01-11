@@ -3,10 +3,10 @@ import { csrfFetch } from './csrf';
 // TYPES
 const SEARCH_TEAMS = '/linkup/teams/SEARCH_TEAMS';
 const GET_MY_TEAMS = '/linkup/teams/GET_MY_TEAMS';
-// const GET_SINGLE_TEAM = '/linkup/teams/GET_SINGLE_TEAM';
-// const CREATE_TEAM = '/linkup/teams/CREATE_TEAM';
-// const UPDATE_TEAM = '/linkup/teams/UPDATE_TEAM';
-// const DELETE_TEAM = '/linkup/teams/DELETE_TEAM';
+const GET_SINGLE_TEAM = '/linkup/teams/GET_SINGLE_TEAM';
+const CREATE_TEAM = '/linkup/teams/CREATE_TEAM';
+const UPDATE_TEAM = '/linkup/teams/UPDATE_TEAM';
+const DELETE_TEAM = '/linkup/teams/DELETE_TEAM';
 
 
 
@@ -21,25 +21,25 @@ const actionGetMyTeams = (teams) => ({
     payload: teams
 })
 
-// const actionGetSingleTeam = (team) => ({
-//     type: GET_SINGLE_TEAM,
-//     payload: team
-// })
+const actionGetSingleTeam = (team) => ({
+    type: GET_SINGLE_TEAM,
+    payload: team
+})
 
-// const actionCreateTeam = (team) => ({
-//     type: CREATE_TEAM,
-//     payload: team
-// })
+const actionCreateTeam = (team) => ({
+    type: CREATE_TEAM,
+    payload: team
+})
 
-// const actionUpdateTeam = (team) => ({
-//     type: UPDATE_TEAM,
-//     payload: team
-// })
+const actionUpdateTeam = (team) => ({
+    type: UPDATE_TEAM,
+    payload: team
+})
 
-// const actionDeleteTeam = (team) => ({
-//     type: DELETE_TEAM,
-//     payload: team
-// })
+const actionDeleteTeam = (team) => ({
+    type: DELETE_TEAM,
+    payload: team
+})
 
 
 //THUNKS
@@ -66,68 +66,57 @@ export const thunkGetMyTeams = () => async dispatch => {
     }
 }
 
-// export const thunkGetSingleTeam = (teamId) => async dispatch => {
-//     const res = await csrfFetch(`/api/teams/${teamId}`);
-//     if (res.ok) {
-//         const team = await res.json();
-//         dispatch(actionGetSingleTeam(team))
-//     } else {
-//         const errors = await res.json();
-//         return errors;
-//     }
-// }
+export const thunkGetSingleTeam = (teamId) => async dispatch => {
+    const res = await csrfFetch(`/api/teams/${teamId}`);
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionGetSingleTeam(jsonResponse.data))
+        return jsonResponse
+    } catch(error) {
+        console.error(error)
+    }
+}
 
-// export const thunkCreateTeam = (team, imageData) => async dispatch => {
-//     const res = await csrfFetch('/api/teams', {
-//         method: 'POST',
-//         body: JSON.stringify(team)
-//     });
+export const thunkCreateNewTeam = (teamData) => async dispatch => {
+    const res = await csrfFetch('/api/teams', {
+        method: 'POST',
+        body: JSON.stringify(teamData)
+    });
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionCreateTeam(jsonResponse.data));
+        return jsonResponse;
+    } catch(error) {
+        console.error(error)
+    }
+}
 
-//     if (res.ok) {
-//         const newTeam = await res.json();
-//         dispatch(actionCreateTeam(newTeam))
-//         if (imageData) {
-//             await fetch(`/api/teams/${newTeam.id}/images`, {
-//                 method: 'POST',
-//                 headers: {"XSRF-TOKEN": Cookies.get('XSRF-TOKEN')},
-//                 body: imageData
-//             })
-//         }
-//         return newTeam;
-//     } else {
-//         const errors = await res.json();
-//         return errors;
-//     }
-// }
+export const thunkUpdateTeam = (teamData, teamId) => async dispatch => {
+    const res = await csrfFetch(`/api/teams/${teamId}`, {
+        method: 'PUT',
+        body: JSON.stringify(teamData)
+    });
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionUpdateTeam(jsonResponse.data));
+        return jsonResponse;
+    } catch(error) {
+        console.error(error)
+    }
+}
 
-// export const thunkUpdateTeam = (team) => async dispatch => {
-//     const res = await csrfFetch(`/api/teams/${team.id}`, {
-//         method: 'PUT',
-//         body: JSON.stringify(team)
-//     });
-//     if (res.ok) {
-//         const updatedTeam = await res.json();
-//         dispatch(actionUpdateTeam(updatedTeam))
-//         return updatedTeam
-//     } else {
-//         const errors = await res.json();
-//         return errors;
-//     }
-// }
-
-// export const thunkDeleteTeam = (team) => async dispatch => {
-//     const res = await csrfFetch(`/api/teams/${team.id}`, {
-//         method: 'DELETE'
-//     })
-//     if (res.ok) {
-//         const message = await res.json();
-//         dispatch(actionDeleteTeam(team))
-//         return message
-//     } else {
-//         const errors = await res.json();
-//         return errors;
-//     }
-// }
+export const thunkDeleteTeam = (team) => async dispatch => {
+    const res = await csrfFetch(`/api/teams/${team.id}`, {
+        method: 'DELETE'
+    })
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionDeleteTeam(jsonResponse.data));
+        return jsonResponse;
+    } catch(error) {
+        console.error(error)
+    }
+}
 
 
 // REDUCER
@@ -141,26 +130,26 @@ const teamsReducer = (state = initialState, action) => {
             return newState;
         };
         case GET_MY_TEAMS: {
-            const newState = { ...state, currentTeams: {} };
+            const newState = { ...state, myTeams: [] };
             action.payload.forEach(team => newState.myTeams.push(team));
             return newState;
         };
-        // case GET_SINGLE_TEAM: {
-        //     const newState = { ...state, singleTeam: {} };
-        //     newState.singleTeam = action.payload;
-        //     return newState
-        // };
-        // case CREATE_TEAM:
-        // case UPDATE_TEAM: {
-        //     const newState = { ...state };
-        //     newState.allTeams = { ...newState.allTeams, [action.payload.id]: action.payload };
-        //     return newState;
-        // };
-        // case DELETE_TEAM: {
-        //     const newState = { ...state };
-        //     delete newState.allTeams[action.payload.id];
-        //     return newState;
-        // };
+        case GET_SINGLE_TEAM: {
+            const newState = { ...state, singleTeam: {} };
+            newState.singleTeam = action.payload;
+            return newState
+        };
+        case CREATE_TEAM:
+        case UPDATE_TEAM: {
+            const newState = { ...state, singleTeam: {}  };
+            newState.allTeams = action.payload;
+            return newState;
+        };
+        case DELETE_TEAM: {
+            const newState = { ...state };
+            delete newState.allTeams[action.payload.id];
+            return newState;
+        };
         default:
             return state;
     }
