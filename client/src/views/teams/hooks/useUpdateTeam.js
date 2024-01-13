@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { useApp } from "../../../context/AppContext";
 import { teamAlerts } from '../../../constants/alerts';
-import { thunkCreateNewTeam } from "../../../store/teams";
 import { thunkUpdateTeam } from "../../../store/teams";
 
-function useNewTeam(team) {
+function useUpdateTeam(team) {
     const { dispatch, navigate, setLoading, handleAlerts } = useApp();
-    const { createTeamSuccess, createTeamError, updateTeamSuccess, updateTeamError  } = teamAlerts;
+    const { updateTeamSuccess, updateTeamError } = teamAlerts;
+    console.log(team)
     const [ teamData, setTeamData ] = useState({
-        name: team ? team?.name : '',
-        private: team ? team?.private : false
+        name: team.name,
+        private: team.private
     });
     const [ errors, setErrors ] = useState({});
 
@@ -21,39 +21,28 @@ function useNewTeam(team) {
         setTeamData((prev) => ({ ...prev, private: !teamData.private }));
     }
 
-    const createTeam = async (e) => {
+    const updateTeam = async (e) => {
         setLoading(true)
         e.preventDefault();
         try {
-            const data = await dispatch(thunkCreateNewTeam(teamData));
-            handleAlerts(createTeamSuccess)
+            const data = await dispatch(thunkUpdateTeam(teamData, team.id));
+            handleAlerts(updateTeamSuccess)
             navigate(`/teams/${data.data.id}`)
         } catch (e) {
-            handleAlerts(createTeamError)
-            handleAlerts(createTeamError)
+            handleAlerts(updateTeamError)
             console.error(e)
         } finally {
             setLoading(false)
         }
     }
 
-    // Session form input validation error handler
-    useEffect(() => {
-        const errors = {};
-        const { name } = teamData;
-        if (name && name.trim().length < 3) {
-            errors.name = "Please enter a name for your team."
-        }
-        setErrors(errors)
-    }, [ teamData.name ])
-
     return {
         teamData,
         errors,
         handleInput,
         handleToggle,
-        createTeam,
+        updateTeam,
     };
 }
 
-export default useNewTeam
+export default useUpdateTeam;

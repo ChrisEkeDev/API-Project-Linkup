@@ -8,6 +8,10 @@ import useAppClock from "../hooks/useAppClock";
 import useAlerts from "../hooks/useAlerts";
 import LoadingData from "../components/shared/loading";
 import Alerts from "../components/alerts";
+import { thunkSearchSessions, thunkGetMySessions } from '../store/sessions';
+import { thunkGetPlayerCheckIns } from '../store/checkins';
+import { thunkSearchTeams, thunkGetMyTeams } from '../store/teams';
+import { thunkGetMyMemberships } from "../store/memberships";
 
 
 const AppContext = createContext();
@@ -15,6 +19,7 @@ const AppContext = createContext();
 export const useApp = () => useContext(AppContext);
 
 function AppProvider({children}) {
+  const [ authLoading, setAuthLoading ] = useState(true)
   const auth = useSelector(state => state.auth.player)
   const { alerts, handleAlerts, removeAlerts } = useAlerts();
   const [ theme, setTheme ] = useState('light');
@@ -64,10 +69,20 @@ function AppProvider({children}) {
             if (res.status >= 400) {
               navigate('/sign-in')
             } else {
-              navigate('/search')
+              navigate('/search');
+              const p1 = await dispatch(thunkGetMySessions());
+              const p2 = await dispatch(thunkGetMyTeams());
+              const p3 = await dispatch(thunkGetPlayerCheckIns())
+              const p4 = await dispatch(thunkGetMyMemberships())
             }
         } catch(e) {
             console.log(e)
+        } finally {
+          const p1 = await dispatch(thunkSearchSessions());
+          const p2 = await dispatch(thunkSearchTeams());
+          Promise.all([p1, p2]).then((values) => {
+            setAuthLoading(false)
+          })
         }
     }
     if (!auth) {
@@ -78,6 +93,7 @@ function AppProvider({children}) {
   return (
       <AppContext.Provider
         value={{
+          authLoading,
           theme,
           currentTime,
           currentLocation,

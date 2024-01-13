@@ -7,11 +7,11 @@ import Scroll from '../../components/shared/scroll';
 import ProfileImage from '../../components/shared/profileImage';
 import Button from '../../components/shared/button';
 import { PiSignOutBold, PiTrashBold, PiMapPinBold , PiMoonStarsBold, PiSunHorizonBold   } from 'react-icons/pi';
-import { formatDistanceToNow, parseISO } from 'date-fns';
+import { formatDistance , parseISO } from 'date-fns';
 
 function Profile() {
     const { auth, signOut, setLoading, theme, handleTheme, locationServices, setLocationServices } = useApp();
-    const formattedDate = formatDistanceToNow(parseISO(auth.createdAt))
+    const formattedDate = formatDistance (parseISO(auth.createdAt), new Date())
 
     const handleSignOut = () => {
         setLoading(true)
@@ -43,8 +43,8 @@ function Profile() {
                                 size={5}
                             />
                             <div>
-                                <p className='sm bold'>{auth.name}</p>
-                                <p className='xs'>Became a member {formattedDate} ago</p>
+                                <p className='md bold'>{auth.name}</p>
+                                <p className='sm'>Became a member {formattedDate} ago</p>
                             </div>
                         </div>
                         {/* <div className='profile_stats'>

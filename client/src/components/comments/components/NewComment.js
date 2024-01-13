@@ -9,7 +9,7 @@ import { slide_variants, base_animations } from '../../../constants/animations';
 
 function NewComment(props) {
     const { auth } = useApp();
-    const formattedTime = format(new Date(), "MMM do, yyyy - p")
+    const formattedTime = format(new Date(), "MMM do, yyyy @ p")
 
     const  {
         setCreating,
@@ -30,6 +30,7 @@ function NewComment(props) {
                     <div className='comment_contents'>
                         <div className='comment_creator details'>
                             <p className="sm bold">{auth.name}</p>
+                            <span>&#8226;</span>
                             <small className='xs'>{formattedTime}</small>
                         </div>
                         <textarea

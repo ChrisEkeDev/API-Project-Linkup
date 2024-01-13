@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import IconButton from '../../../components/shared/button/IconButton';
-import { TbSortAscending } from "react-icons/tb";
+import { PiListBold, PiCalendarFill } from "react-icons/pi";
 import { viewValues } from "../../../constants/constants";
 import '../styles.scss';
 
@@ -25,10 +25,13 @@ function CheckInView({view, setView}) {
     }, [])
 
   return (
-    <div className='sessions_sorter'>
-            <span className="sort_label">{viewValues[view]}</span>
+    <div className='sorter'>
+            <span className="sorter_label">{viewValues[view]}</span>
             <IconButton
-                icon={TbSortAscending}
+                icon={
+                    view === "calendar" ? PiCalendarFill
+                    : PiListBold
+                }
                 action={() => setMenu(!menu)}
             />
             {

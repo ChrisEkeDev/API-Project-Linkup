@@ -19,7 +19,7 @@ import { useState } from 'react';
 function Search() {
     const [showingResults, setShowingResults] = useState('sessions')
     const sessions = useSelector(state => state.sessions.allSessions);
-    const teams = useSelector(state => state.teams.allTeams)
+    const teams = useSelector(state => state.teams.searchedTeams)
     const { navigate } = useApp();
     const {
         query,

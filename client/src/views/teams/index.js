@@ -3,19 +3,30 @@ import { motion } from 'framer-motion';
 import './styles.scss';
 import TeamItem from './components/TeamItem';
 import * as ROUTE from '../../constants/routes';
-// import TeamsSorter from './components/SessionSorter';
 import Button from '../../components/shared/button';
 import IconButton from '../../components/shared/button/IconButton';
+import useTeams from './hooks/useTeams'
 import { useApp } from '../../context/AppContext';
 import useTeamSearch from './hooks/useTeamSearch';
 import Scroll from '../../components/shared/scroll';
+import { statusOrder } from '../../constants/constants'
 import { page_transitions } from '../../constants/animations';
-import { PiPlusBold, PiMagnifyingGlassBold } from 'react-icons/pi';
+import { PiPlusBold, PiMagnifyingGlassBold, PiCoffee } from 'react-icons/pi';
+import LoadingData from '../../components/shared/loading'
 
 
-function SearchTeams() {
-  const teams = useSelector(state => state.teams.myTeams);
-  const { navigate } = useApp();
+function Teams() {
+  const myTeams = useSelector(state => state.teams.myTeams);
+  const myTeamsArr = Object.values(myTeams)
+  const myMemberships = useSelector(state => state.memberships.myMemberships)
+  const myMembershipsArr = Object.values(myMemberships)
+  const joinedTeams = myMembershipsArr.filter(membership => membership.status !== 'pending');
+  const pendingTeams = myMembershipsArr.filter(membership => membership.status === 'pending');
+  const { navigate, dispatch } = useApp();
+  const { loading } = useTeams();
+
+
+  if (loading) return <LoadingData/>
 
   return (
       <motion.main {...page_transitions} className='page teams'>
@@ -30,18 +41,58 @@ function SearchTeams() {
         </header>
         <Scroll>
           <section className='list_items'>
-            <span className='section_label xs bold'>{teams.length} Team{teams.length === 1 ? null : 's'}</span>
-            <ul>
+            <span className='section_label xs bold'>{myTeamsArr.length} Team{myTeamsArr.length === 1 ? null : 's'} Created</span>
+            {myTeamsArr.length > 0 ?
+              <ul>
               {
-                teams.map(team => (
+                myTeamsArr.map(team => (
                   <TeamItem team={team}/>
                 ))
               }
-            </ul>
+            </ul> :
+            <div className="no_teams">
+              <PiCoffee className='icon'/>
+              <p className='xs bold'>No Teams Created</p>
+            </div>
+            }
+          </section>
+          <section className='joined_groups list_items'>
+            <span className='section_label xs bold'>{joinedTeams.length} Team{joinedTeams.length === 1 ? null : 's'} Joined</span>
+            {
+              joinedTeams.length > 0 ?
+              <ul>
+                {
+                  joinedTeams.map(membership => (
+                    <TeamItem team={membership.Team}/>
+                  ))
+                }
+              </ul> :
+              <div className="no_teams">
+                <PiCoffee className='icon'/>
+                <p className='xs bold'>No Teams Joined</p>
+              </div>
+            }
+          </section>
+          <section className='joined_groups list_items'>
+            <span className='section_label xs bold'>{pendingTeams.length} Team{pendingTeams.length === 1 ? null : 's'} Awaiting Approval</span>
+            {
+              pendingTeams.length > 0 ?
+              <ul>
+                {
+                  pendingTeams.map(membership => (
+                    <TeamItem team={membership.Team}/>
+                  ))
+                }
+              </ul> :
+              <div className="no_teams">
+                <PiCoffee className='icon'/>
+                <p className='xs bold'>No Teams Awaiting Approval</p>
+              </div>
+            }
           </section>
         </Scroll>
       </motion.main>
   )
 }
 
-export default SearchTeams
+export default Teams

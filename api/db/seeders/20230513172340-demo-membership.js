@@ -39,7 +39,7 @@ module.exports = {
       {
         playerId: 2,
         teamId: 5,
-        status: "member"
+        status: "co-host"
       },
       {
         playerId: 2,
@@ -49,12 +49,12 @@ module.exports = {
       {
         playerId: 2,
         teamId: 3,
-        status: "member"
+        status: "pending"
       },
       {
         playerId: 1,
         teamId: 4,
-        status: "member"
+        status: "co-host"
       },
       {
         playerId: 1,
@@ -64,7 +64,7 @@ module.exports = {
       {
         playerId: 3,
         teamId: 1,
-        status: "member"
+        status: "pending"
       },
       {
         playerId: 3,
@@ -74,7 +74,7 @@ module.exports = {
       {
         playerId: 4,
         teamId: 5,
-        status: "member"
+        status: "pending"
       },
       {
         playerId: 4,
@@ -94,7 +94,7 @@ module.exports = {
       {
         playerId: 1,
         teamId: 1,
-        status: "member"
+        status: "pending"
       },
       {
         playerId: 2,
@@ -109,17 +109,17 @@ module.exports = {
       {
         playerId: 3,
         teamId: 4,
-        status: "member"
+        status: "pending"
       },
       {
         playerId: 4,
         teamId: 2,
-        status: "member"
+        status: "pending"
       },
       {
         playerId: 5,
         teamId: 2,
-        status: "member"
+        status: "pending"
       },
       {
         playerId: 5,
@@ -129,7 +129,7 @@ module.exports = {
       {
         playerId: 5,
         teamId: 3,
-        status: "member"
+        status: "co-host"
       },
       {
         playerId: 5,

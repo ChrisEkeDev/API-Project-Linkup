@@ -6,12 +6,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
     left: 0;
     width: 5rem;
     position: fixed;
     gap: 1rem;
     padding: 2rem 1rem;
-    z-index: 100;
+    z-index: 50;
     color: var(--border-color);
   }
 

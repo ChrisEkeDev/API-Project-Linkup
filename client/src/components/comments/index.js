@@ -6,7 +6,7 @@ import Comment from './components/Comment';
 import Button from '../../components/shared/button';
 import './styles.scss';
 import NewComment from './components/NewComment';
-import { PiChatCircleTextBold, PiChatsCircleBold } from 'react-icons/pi';
+import { PiChatCircleTextFill, PiChatsCircle } from 'react-icons/pi';
 import { parent_variants, slide_variants, base_animations } from '../../constants/animations';
 
 function Comments() {
@@ -26,7 +26,7 @@ function Comments() {
                     <div></div>
                     <Button
                         styles="secondary new_comment_btn"
-                        icon={PiChatCircleTextBold }
+                        icon={PiChatCircleTextFill }
                         label="New Comment"
                         action={creating ? () => setCreating(false) : () => setCreating(true)}
                         disabled={creating}
@@ -49,8 +49,8 @@ function Comments() {
                         creating ?
                         null :
                         <motion.div className='no_comments'>
-                            <PiChatsCircleBold  className='icon'/>
-                            <span className='xs bold'>No Comments Yet</span>
+                            <PiChatsCircle className='icon'/>
+                            <span className='sm bold'>No Comments Yet</span>
                         </motion.div> :
                         comments.map(comment => (
                             <Comment comment={comment}/>

@@ -1,6 +1,7 @@
 import { csrfFetch } from './csrf';
 
 // TYPES
+const GET_ALL_TEAMS = '/linkup/teams/GET_ALL_TEAMS'
 const SEARCH_TEAMS = '/linkup/teams/SEARCH_TEAMS';
 const GET_MY_TEAMS = '/linkup/teams/GET_MY_TEAMS';
 const GET_SINGLE_TEAM = '/linkup/teams/GET_SINGLE_TEAM';
@@ -11,6 +12,11 @@ const DELETE_TEAM = '/linkup/teams/DELETE_TEAM';
 
 
 // ACTIONS
+const actionGetAllTeams = (teams) => ({
+    type: GET_ALL_TEAMS,
+    payload: teams
+})
+
 const actionSearchTeams = (teams) => ({
     type: SEARCH_TEAMS,
     payload: teams
@@ -43,6 +49,17 @@ const actionDeleteTeam = (team) => ({
 
 
 //THUNKS
+
+export const thunkGetAllTeams = () => async dispatch => {
+    const res = await csrfFetch(`/api/teams/all`);
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionGetAllTeams(jsonResponse.data))
+        return jsonResponse
+    } catch(error) {
+        console.error(error)
+    }
+}
 
 export const thunkSearchTeams = (query, sortBy) => async dispatch => {
     const res = await csrfFetch(`/api/teams/search/?query=${query}&sortBy=${sortBy}`);
@@ -120,29 +137,30 @@ export const thunkDeleteTeam = (team) => async dispatch => {
 
 
 // REDUCER
-const initialState = { allTeams: [], singleTeam: {}, myTeams: []};
+const initialState = { allTeams:{}, searchedTeams: [], singleTeam: {}, myTeams: {} };
 
 const teamsReducer = (state = initialState, action) => {
     switch(action.type) {
+        case GET_ALL_TEAMS: {
+            const newState = { ...state, allTeams: {} };
+            action.payload.forEach(team => newState.allTeams[team.id] = team);
+            return newState;
+        }
         case SEARCH_TEAMS: {
-            const newState = { ...state, allTeams: [] }
-            action.payload.forEach(team => newState.allTeams.push(team));
+            const newState = { ...state, searchedTeams: [] }
+            action.payload.forEach(team => newState.searchedTeams.push(team));
             return newState;
         };
         case GET_MY_TEAMS: {
-            const newState = { ...state, myTeams: [] };
-            action.payload.forEach(team => newState.myTeams.push(team));
+            const newState = { ...state, myTeams: {} };
+            action.payload.forEach(team => newState.myTeams[team.id] = team);
             return newState;
         };
-        case GET_SINGLE_TEAM: {
-            const newState = { ...state, singleTeam: {} };
-            newState.singleTeam = action.payload;
-            return newState
-        };
+        case GET_SINGLE_TEAM:
         case CREATE_TEAM:
         case UPDATE_TEAM: {
             const newState = { ...state, singleTeam: {}  };
-            newState.allTeams = action.payload;
+            newState.singleTeam = action.payload;
             return newState;
         };
         case DELETE_TEAM: {

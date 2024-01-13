@@ -8,7 +8,8 @@ function Button(props) {
     icon: Icon,
     styles,
     action,
-    disabled
+    disabled,
+    loading
   } = props;
   return (
     <div className='button--wrapper'>
@@ -16,7 +17,7 @@ function Button(props) {
         onClick={action}
         className={`button ${type} ${styles} ${disabled ? 'button--disabled' : ''}`} disabled={disabled}>
           <span className={`button--contents ${!Icon && 'centered'}`}>
-            { Icon && <Icon className='button--icon'/> }
+            { Icon && <Icon className={`button--icon ${loading ? 'button--loading' : ''}`}/> }
             <span>{label}</span>
           </span>
       </button>

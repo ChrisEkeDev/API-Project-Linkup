@@ -24,10 +24,9 @@ function SessionItem({session}) {
         <ProfileImage
           player={session.creator}
         />
-        <div className='session_details'>
-          <p className='sm'>{session.name} by <span className='bold'>{session.creator.name}</span></p>
+        <div>
+          <p className='sm bold'>{session.name} by <span className='bold'>{session.creator.name}</span></p>
           <p className='sm bold'>{session.Court.address}</p>
-          <p className='sm bold'></p>
           <p className='md bold accent'>{formattedTime}</p>
         </div>
       </div>

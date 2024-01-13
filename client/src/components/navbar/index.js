@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom';
 import './styles.scss';
 import * as ROUTES from '../../constants/routes';
-import { PiGearBold, PiCalendarBold, PiMagnifyingGlassBold, PiUserCircleBold, PiUsersBold, PiBasketballBold } from 'react-icons/pi';
+import { PiGearBold, PiCalendarFill, PiMagnifyingGlassBold, PiUserCircleFill, PiUsersFill, PiBasketballFill } from 'react-icons/pi';
 import ProfileImage from '../shared/profileImage';
 import { useApp } from '../../context/AppContext';
 
@@ -18,22 +18,22 @@ function NavBar() {
                 </li>
                 <li title="Check Ins" className='app_link'>
                     <NavLink to={ROUTES.CHECKINS} className="nav_link" activeClassName="active_link">
-                        <PiCalendarBold className='nav_icon' />
+                        <PiCalendarFill className='nav_icon' />
                     </NavLink>
                 </li>
                 <li title="My Sessions" className='app_link'>
                     <NavLink to={ROUTES.SESSIONS} className="nav_link" activeClassName="active_link">
-                        <PiBasketballBold className='nav_icon' />
+                        <PiBasketballFill className='nav_icon' />
                     </NavLink>
                 </li>
                 <li title="My Teams" className='app_link'>
                     <NavLink to={ROUTES.TEAMS} className="nav_link" activeClassName="active_link">
-                        <PiUsersBold className='nav_icon' />
+                        <PiUsersFill className='nav_icon' />
                     </NavLink>
                 </li>
                 <li title="My Profile" className='app_link'>
                     <NavLink to={ROUTES.PROFILE} className="nav_link" activeClassName="active_link">
-                        <PiUserCircleBold className='nav_icon' />
+                        <PiUserCircleFill className='nav_icon' />
                         {/* <ProfileImage
                             player={auth}
                             size={2.5}

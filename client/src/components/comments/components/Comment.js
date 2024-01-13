@@ -40,7 +40,7 @@ function Comment({ comment }) {
 
   const isReply = comment?.replyTo !== null;
   const parsedDate = parseISO(comment.updatedAt);
-  const formattedTime = format(parsedDate, "MMM do, yyyy - p")
+  const formattedTime = format(parsedDate, "MMM do, yyyy @ p")
 
   return (
   <>

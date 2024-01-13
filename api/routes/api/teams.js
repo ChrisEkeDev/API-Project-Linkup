@@ -4,7 +4,7 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../errors/validationErrors');
 const { Team, Membership, Player } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
-const { Op, fn, col } = require('sequelize');
+const { Sequelize, Op, fn, col } = require('sequelize');
 const { validateCreateTeam, validateEditTeam } = require('./validation/expressValidations')
 const { teamNotFound, playerNotAuthorized, membershipNotFound, membershipAlreadyExists } = require('./constants/responseMessages');
 
@@ -22,7 +22,7 @@ router.get('/search/*', async (req, res) => {
         include: [
             {
                 model: Membership,
-                attributes: ['status']
+                attributes: []
             },
             {
                 as: "captain",
@@ -31,24 +31,9 @@ router.get('/search/*', async (req, res) => {
             },
         ],
         order: [
-            [sortBy ? sortBy : 'startDate', sortBy === 'startDate' ? 'ASC' : 'DESC']
+            [sortBy ? sortBy : 'createdAt', sortBy === 'startDate' ? 'ASC' : 'DESC']
         ]
     })
-
-    for (let team of teams) {
-        let members = await Player.findAll({
-            include: [{
-                model: Team,
-                where: { id: team.id },
-                through: { model: Membership, attributes: [] },
-                attributes: []
-            }],
-            attributes: ['name', 'profileImage', 'createdAt'],
-            limit: 5,
-            order: [['createdAt', 'DESC']]
-        });
-        team.dataValues.memberPreview = members;
-    }
 
     function calculateRelevance(team) {
         let relevance = 0;
@@ -86,7 +71,7 @@ router.get('/current', requireAuth, async (req, res) => {
         include: [
             {
                 model: Membership,
-                attributes: ['status']
+                attributes: []
             },
             {
                 as: "captain",
@@ -95,21 +80,6 @@ router.get('/current', requireAuth, async (req, res) => {
             },
         ]
     })
-
-    for (let team of teams) {
-        let members = await Player.findAll({
-            include: [{
-                model: Team,
-                where: { id: team.id },
-                through: { model: Membership, attributes: [] },
-                attributes: []
-            }],
-            attributes: ['name', 'profileImage', 'createdAt'],
-            limit: 5,
-            order: [['createdAt', 'DESC']]
-        });
-        team.dataValues.memberPreview = members;
-    }
 
     return res.status(200).json({
         status: 200,
@@ -132,15 +102,14 @@ router.get('/:teamId', async (req, res) => {
             {
                 model: Player,
                 as: "captain",
-                attributes: ['name', 'profileImage']
+                attributes: ['id', 'name', 'profileImage']
             },
             {
                 model: Player,
                 through: {
-                    model: Membership,
-                    attributes: ['status']
+                    model: Membership
                 },
-                attributes: ['name', 'profileImage']
+                attributes: ['id', 'name', 'profileImage']
             }
         ]
     })
@@ -192,8 +161,7 @@ router.post('/', requireAuth, validateCreateTeam, async (req, res) => {
             {
                 model: Player,
                 through: {
-                    model: Membership,
-                    attributes: ['status']
+                    model: Membership
                 },
                 attributes: ['name', 'profileImage']
             }
@@ -247,8 +215,7 @@ router.put('/:teamId', requireAuth, validateEditTeam, async (req, res) => {
             {
                 model: Player,
                 through: {
-                    model: Membership,
-                    attributes: ['status']
+                    model: Membership
                 },
                 attributes: ['name', 'profileImage']
             }
@@ -293,10 +260,37 @@ router.delete('/:teamId', requireAuth, async (req, res) => {
 })
 
 
+// GET ALL MEMBERSHIPS FOR A TEAM
+router.get('/:teamId/memberships', async (req, res) => {
+    const { teamId } = req.params;
+    const team = await Team.findByPk(teamId)
+
+    if (!team) {
+        return res.status(404).json(teamNotFound)
+    }
+
+    const memberships = await Membership.findAll({
+        where: { teamId },
+        attributes: {
+            include: ['createdAt']
+        },
+        include: {
+            model: Player
+        }
+    })
+
+    return res.status(200).json({
+        status: 200,
+        message: null,
+        data: memberships,
+        error: null
+    })
+})
+
 
 //Request a Membership for a Team based on the Team's id
-router.post('/join', requireAuth, async (req, res) => {
-    const { teamId } = req.body;
+router.post('/:teamId/join-team', requireAuth, async (req, res) => {
+    const { teamId } = req.params;
     const playerId = req.player.id;
     const team = await Team.findByPk(teamId);
 
@@ -317,17 +311,28 @@ router.post('/join', requireAuth, async (req, res) => {
         status: team.private ? 'pending' : 'member'
     })
 
+    const createdMembership = await Membership.findByPk(newMembership.id, {
+        attributes: {
+            include: ['createdAt']
+        },
+        include: {
+            model: Player
+        }
+    })
+
     return res.status(201).json({
         status: 201,
         message: null,
-        data: newMembership,
+        data: createdMembership,
         error: null
     })
 })
 
+
 // Promote to Co-Host
-router.put('/promote-co-host', requireAuth, async (req, res) => {
-    const { teamId, playerId } = req.body;
+router.put('/:teamId/promote-to-co-host', requireAuth, async (req, res) => {
+    const { teamId } = req.params;
+    const { playerId } = req.body;
     const authId = req.player.id;
 
     const authMembership = await Membership.findOne({
@@ -349,17 +354,27 @@ router.put('/promote-co-host', requireAuth, async (req, res) => {
     membership.set({status: 'co-host'})
     membership.save();
 
+    const updatedMembership = await Membership.findByPk(membership.id, {
+        attributes: {
+            include: ['createdAt']
+        },
+        include: {
+            model: Player
+        }
+    })
+
     return res.status(201).json({
         status: 201,
         message: "",
-        data: membership,
+        data: updatedMembership,
         error: null
     })
 })
 
 // Promote to Member
-router.put('/promote-member', requireAuth, async (req, res) => {
-    const { teamId, playerId } = req.body;
+router.put('/:teamId/add-to-team', requireAuth, async (req, res) => {
+    const { teamId } = req.params;
+    const { playerId } = req.body;
     const authId = req.player.id;
 
     const authMembership = await Membership.findOne({
@@ -381,25 +396,59 @@ router.put('/promote-member', requireAuth, async (req, res) => {
     membership.set({status: 'member'})
     membership.save();
 
+    const updatedMembership = await Membership.findByPk(membership.id, {
+        attributes: {
+            include: ['createdAt']
+        },
+        include: {
+            model: Player
+        }
+    })
+
     return res.status(201).json({
         status: 201,
         message: "",
+        data: updatedMembership,
+        error: null
+    })
+})
+
+router.delete('/:teamId/leave-team', requireAuth, async (req, res) => {
+    const { teamId } = req.params;
+    const playerId = req.player.id;
+    const team = await Team.findByPk(teamId)
+    if (!team) return res.status(404).json(teamNotFound)
+    const membership = await Membership.findOne({
+        where: { playerId, teamId }
+    })
+    if (!membership) return res.status(404).json(membershipNotFound)
+    if (membership.status === 'host') {
+        return res.status(403).json(cantDeleteMembership)
+    }
+    await membership.destroy()
+    return res.status(200).json({
+        status: 200,
+        message: "Membership deleted successfully",
         data: membership,
         error: null
     })
 })
 
-
 // // Delete membership to a group specified by id
-router.delete('/kick-from-team', requireAuth, async (req, res) => {
-    const { teamId, playerId } = req.body;
-    const { authId } = req.player.id;
+router.delete('/:teamId/remove-from-team', requireAuth, async (req, res) => {
+    const { teamId } = req.params;
+    const { playerId } = req.body;
+    const authId = req.player.id;
 
     const requestMembership = await Membership.findOne({
         where: { playerId: authId, teamId }
     })
 
-    if (!requestMembership) {
+    const membership = await Membership.findOne({
+        where: { playerId, teamId }
+    })
+
+    if (!requestMembership && !membership) {
         return res.status(404).json(membershipNotFound)
     }
 
@@ -416,19 +465,11 @@ router.delete('/kick-from-team', requireAuth, async (req, res) => {
         return res.status(403).json(playerNotAuthorized)
     }
 
-    const membership = await Membership.findOne({
-        where: { playerId, teamId }
-    })
-
-    if (!memberhsip) {
-        return res.status(404).json(membershipNotFound)
-    }
-
     await membership.destroy()
 
     return res.status(200).json({
         status: 200,
-        message: "Membership delete successful",
+        message: "Membership deleted successfully",
         data: null,
         error: null
     })

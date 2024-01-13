@@ -1,5 +1,12 @@
 @import url('../../../index.css');
-
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 .button {
     padding: 0 1rem;
@@ -44,7 +51,16 @@
     .button--icon {
         font-size: 1.25rem;
     }
+
+    .button--loading {
+        animation-duration: .619s;
+        animation-name: spin;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+    }
 }
+
+
 
 
 .icon_button {

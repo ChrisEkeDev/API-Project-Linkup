@@ -80,3 +80,11 @@ export const timeFormatOptions = {
     minute: "numeric",
     second: "numeric",
 }
+
+
+export const statusOrder = {
+    'host': 1,
+    'co-host': 2,
+    'member': 3,
+    'pending': 4
+}

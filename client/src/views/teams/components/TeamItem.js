@@ -3,46 +3,33 @@ import { motion } from 'framer-motion';
 import { useApp } from '../../../context/AppContext';
 import ProfileImage from '../../../components/shared/profileImage';
 import { child_variants } from '../../../constants/animations';
-import { format, parseISO } from 'date-fns';
 import '../styles.scss';
-import { PiLockBold, PiLockOpenBold } from 'react-icons/pi';
+import { PiLockFill, PiLockOpen } from 'react-icons/pi';
 
 function TeamItem({team}) {
-    const { navigate, setCurrentLocation } = useApp();
-    // const parsedDate = parseISO(team.startDate);
-    // const formattedTime = format(parsedDate, 'MM/dd @ h:mm a');
-
+    const { navigate } = useApp();
     return (
         <motion.li
             variants={child_variants}
             onClick={()=> navigate(`/teams/${team.id}`)}
             className='team_item'>
-            {team.private && <div className='team_privacy'><PiLockBold/></div>}
             <div className='float_left'>
             <ProfileImage
                 player={team.captain}
             />
             <div className='team_details'>
-                <p className='xs'>{team.captain.name}</p>
+                <p className='sm bold'>Created by {team.captain.name}</p>
                 <p className='md bold'>{team.name}</p>
-                <div className='member_preview'>
-                    {
-                        team.memberPreview.length > 1 ?
-                        team.memberPreview.map(member => (
-                            <div
-                                title={member.name}
-                                style={{backgroundImage: `url(${member.profileImage})`}}
-                                className='team_member_preview'
-                            />
-                        )) :
-                        <p>No members</p>
-                    }
-                </div>
+                <p className='sm bold'>{team.members} member{team.members === 1 ? null : 's'}</p>
             </div>
             </div>
             <div className='player_count'>
-                <h2 className='count accent'>{team.members}</h2>
-                <small>Members</small>
+                {
+                    team.private ?
+                    <PiLockFill className='team_privacy'/> :
+                    <PiLockOpen className='team_privacy'/>
+                }
+                <small>{team.private ? 'Private' : 'Public'}</small>
             </div>
         </motion.li>
     )

@@ -161,6 +161,29 @@ export const teamAlerts = {
     }
 }
 
+export const membershipAlerts = {
+    playerMembershipDeleteSuccess: {
+        status: 'success',
+        title: 'Success',
+        message: 'Player removed from the team successfully'
+    },
+    playerMembershipDeleteError: {
+        status: 'fail',
+        title: 'Error',
+        message: 'There was a problem removing the player. Try again.'
+    },
+    authMembershipDeleteSuccess: {
+        status: 'success',
+        title: 'Success',
+        message: 'You were removed from the team successfully'
+    },
+    authMembershipDeleteError: {
+        status: 'fail',
+        title: 'Error',
+        message: 'There was a problem removing you from the team. Try again.'
+    }
+}
+
 export const commentsAlerts = {
     commentCreateSuccess: {
         status: 'success',

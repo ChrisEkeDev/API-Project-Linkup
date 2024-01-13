@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import IconButton from '../../../components/shared/button/IconButton';
-import { PiCalendarBold, PiStarBold, PiUsersBold } from "react-icons/pi";
+import { PiCalendarFill, PiStarFill, PiUsersFill } from "react-icons/pi";
 import { sessionSortValues, teamSortValues } from "../../../constants/constants";
 import '../styles.scss';
 
@@ -37,9 +37,9 @@ const Sorter = ({showingResults, sortBy, handleSort}) => {
             <span className="sorter_label">{values[sortBy]}</span>
             <IconButton
                 icon={
-                    sortBy === 'startDate' ? PiCalendarBold
-                    : sortBy === 'createdAt' ? PiStarBold
-                    : PiUsersBold
+                    sortBy === 'startDate' ? PiCalendarFill
+                    : sortBy === 'createdAt' ? PiStarFill
+                    : PiUsersFill
                 }
                 action={() => setMenu(!menu)}
             />

@@ -15,7 +15,7 @@ import SessionInformation from './components/SessionInformation';
 import SessionCheckIns from './components/SessionCheckIns';
 import LoadingData from '../../components/shared/loading';
 import Scroll from '../../components/shared/scroll';
-import { PiXBold, PiUserPlusBold , PiUserMinusBold, PiPencilSimpleLineBold, PiTrashBold  } from 'react-icons/pi'
+import { PiXBold, PiUserPlusFill , PiUserMinusBold, PiPencilSimpleLineFill, PiTrashBold  } from 'react-icons/pi'
 import { base_animations, child_variants, parent_variants } from '../../constants/animations';
 import CountDown from '../../components/countdown';
 
@@ -32,33 +32,23 @@ function SingleSession({session}) {
     return (
         <motion.main {...base_animations} className='page sessions'>
             <motion.header variants={child_variants} className='header'>
-                <Back route={`/sessions`}/>
+                <Back/>
                 <div className='actions'>
                     <CountDown endTime={session.startDate} expires={session.endDate} />
                     {
                         isCreator ?
-                        <>
-                            <Button
-                                styles='secondary'
-                                label="Edit Session"
-                                icon={PiPencilSimpleLineBold}
-                                action={() => navigate(`/sessions/${session.id}/update`)}
-                            />
-                            <Button
-                                styles='tertiary'
-                                icon={PiTrashBold}
-                                label="Delete Session"
-                                action={onOpenModal}
-                            />
-                        </> :
-                        <>
-                            <Button
-                                styles='primary'
-                                icon={isCheckedIn ? PiUserMinusBold : PiUserPlusBold  }
-                                label={isCheckedIn ? "Check Out" : "Check In"}
-                                action={isCheckedIn ? checkOut : checkIn}
-                            />
-                        </>
+                        <Button
+                            styles='secondary'
+                            label="Edit Session"
+                            icon={PiPencilSimpleLineFill}
+                            action={() => navigate(`/sessions/${session.id}/update`)}
+                        /> :
+                        <Button
+                            styles='primary'
+                            icon={isCheckedIn ? PiUserMinusBold : PiUserPlusFill  }
+                            label={isCheckedIn ? "Check Out" : "Check In"}
+                            action={isCheckedIn ? checkOut : checkIn}
+                        />
                     }
                 </div>
             </motion.header>
@@ -75,7 +65,17 @@ function SingleSession({session}) {
                     </motion.div>
                 </motion.section>
             </Scroll>
-
+            <motion.footer className="footer">
+                    {
+                        isCreator  &&
+                        <Button
+                            styles='tertiary'
+                            icon={PiTrashBold}
+                            label="Delete Session"
+                            action={onOpenModal}
+                        />
+                    }
+            </motion.footer>
         <Modal
             isModalOpen={isModalOpen}
             onCloseModal={onCloseModal}

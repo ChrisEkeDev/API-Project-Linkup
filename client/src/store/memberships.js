@@ -2,125 +2,141 @@ import { csrfFetch } from './csrf';
 
 
 // TYPES
-const GET_GROUP_MEMBERS = '/linkup/memberships/GET_GROUP_MEMBERS'
-const GET_GROUP_MEMBERSHIPS = '/linkup/memberships/GET_GROUP_MEMBERSHIPS'
 const GET_MY_MEMBERSHIPS = '/linkup/memberships/GET_MY_MEMBERSHIPS'
-const ADD_MEMBERSHIP = '/linkup/memberships/ADD_MEMBERSHIP'
-const UPDATE_MEMBERSHIP = '/linkup/memberships/UPDATE_MEMBERSHIP'
-const DELETE_MEMBERSHIP = '/linkup/memberships/DELETE_MEMBERSHIP'
+const GET_TEAM_MEMBERSHIPS = '/linkup/memberships/GET_TEAM_MEMBERSHIPS'
+const JOIN_TEAM = '/linkup/memberships/JOIN_TEAM'
+const LEAVE_TEAM = '/linkup/memberships/LEAVE_TEAM'
+const ADD_TO_TEAM = '/linkup/memberships/ADD_TO_TEAM'
+const PROMOTE_TO_CO_HOST = '/linkup/memberships/PROMOTE_TO_CO_HOST'
+const REMOVE_FROM_TEAM = '/linkup/memberships/REMOVE_FROM_TEAM'
 
 
 // ACTIONS
-
-const actionGetGroupMembers = (members) => ({
-    type: GET_GROUP_MEMBERS,
-    payload: members
-})
-
-const actionGetGroupMemberships = (memberships) => ({
-    type: GET_GROUP_MEMBERSHIPS,
-    payload: memberships
-})
-
 const actionGetMyMemberships = (memberships) => ({
     type: GET_MY_MEMBERSHIPS,
     payload: memberships
 })
 
-const actionAddMembership = (membership) => ({
-    type: ADD_MEMBERSHIP,
+const actionGetTeamMemberships = (memberships) => ({
+    type: GET_TEAM_MEMBERSHIPS,
+    payload: memberships
+})
+
+const actionJoinTeam = (membership) => ({
+    type: JOIN_TEAM,
     payload: membership
 })
 
-const actionUpdateMembership = (membership) => ({
-    type: UPDATE_MEMBERSHIP,
+const actionAddToTeam = (membership) => ({
+    type: ADD_TO_TEAM,
     payload: membership
 })
 
-const actionDeleteMembership = (membership) => ({
-    type: DELETE_MEMBERSHIP,
+const actionPromoteToCoHost = (membership) => ({
+    type: PROMOTE_TO_CO_HOST,
+    payload: membership
+})
+
+const actionLeaveTeam = (membership) => ({
+    type: LEAVE_TEAM,
+    payload: membership
+})
+
+const actionRemoveFromTeam = (membership) => ({
+    type: REMOVE_FROM_TEAM,
     payload: membership
 })
 
 
 // THUNKS
-
-export const thunkGetGroupMembers = (groupId) => async dispatch => {
-    const res = await csrfFetch(`/api/groups/${groupId}/members`);
-    if (res.ok) {
-        const data = await res.json();
-        dispatch(actionGetGroupMembers(data.Members))
-    } else {
-        const errors = await res.json();
-        return errors
-    }
-}
-
-export const thunkGetGroupMemberships = (groupId) => async dispatch => {
-    const res = await csrfFetch(`/api/groups/${groupId}/memberships`);
-    if (res.ok) {
-        const data = await res.json();
-        dispatch(actionGetGroupMemberships(data.Memberships))
-    } else {
-        const errors = await res.json();
-        return errors
-    }
-}
-
 export const thunkGetMyMemberships = () => async dispatch => {
-    const res = await csrfFetch('/api/memberships');
-    if (res.ok) {
-        const data = await res.json();
-        dispatch(actionGetMyMemberships(data.Memberships))
-    } else {
-        const errors = await res.json();
-        return errors
+    const res = await csrfFetch('/api/memberships/current');
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionGetMyMemberships(jsonResponse.data))
+        return jsonResponse
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const thunkGetTeamMemberships = (teamId) => async dispatch => {
+    const res = await csrfFetch(`/api/teams/${teamId}/memberships`);
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionGetTeamMemberships(jsonResponse.data))
+        return jsonResponse
+    } catch(error) {
+        console.error(error)
     }
 }
 
 
-export const thunkAddMembership = (groupId) => async dispatch => {
-    const res = await csrfFetch(`/api/groups/${groupId}/membership`, {
+export const thunkJoinTeam = (teamId) => async dispatch => {
+    const res = await csrfFetch(`/api/teams/${teamId}/join-team`, {
         method: 'POST'
     });
-    if (res.ok) {
-        const data = await res.json();
-        dispatch(actionAddMembership(data))
-    } else {
-        const errors = await res.json();
-        return errors;
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionJoinTeam(jsonResponse.data))
+        return jsonResponse
+    } catch(error) {
+        console.error(error)
     }
 }
 
-export const thunkUpdateMembership = (data, memberData) => async dispatch => {
-    const res = await csrfFetch(`/api/groups/${data.membership.groupId}/membership`, {
+export const thunkAddToTeam = (teamId, playerId) => async dispatch => {
+    const res = await csrfFetch(`/api/teams/${teamId}/add-to-team`, {
         method: 'PUT',
-        body: JSON.stringify(memberData)
+        body: JSON.stringify({playerId})
     });
-
-    if (res.ok) {
-        const membership = await res.json();
-        data.member.Membership.status = membership.status
-        const payload = {membership: membership, member: data.member }
-        dispatch(actionUpdateMembership(payload))
-    } else {
-        const errors = res.json();
-        return errors;
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionAddToTeam(jsonResponse.data))
+        return jsonResponse
+    } catch(error) {
+        console.error(error)
     }
 }
 
-export const thunkDeleteMembership = (membership, memberData) => async dispatch => {
-    const res = await csrfFetch(`/api/groups/${membership.groupId}/membership`, {
-        method: 'DELETE',
-        body: JSON.stringify(memberData)
+export const thunkPromoteToCoHost = (teamId, playerId) => async dispatch => {
+    const res = await csrfFetch(`/api/teams/${teamId}/promote-to-co-host`, {
+        method: 'PUT',
+        body: JSON.stringify({playerId})
     });
-    if (res.ok) {
-        const message = res.json();
-        dispatch(actionDeleteMembership(membership))
-        return message;
-    } else {
-        const errors = res.json();
-        return errors;
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionPromoteToCoHost(jsonResponse.data))
+        return jsonResponse
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const thunkLeaveTeam = (teamId) => async dispatch => {
+    const res = await csrfFetch(`/api/teams/${teamId}/leave-team`, {
+        method: 'DELETE',
+    });
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionLeaveTeam(jsonResponse.data))
+        return jsonResponse
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const thunkRemoveFromTeam = (teamId, playerId) => async dispatch => {
+    const res = await csrfFetch(`/api/teams/${teamId}/remove-from-team`, {
+        method: 'DELETE',
+        body: JSON.stringify({playerId})
+    });
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionRemoveFromTeam(jsonResponse.data))
+        return jsonResponse
+    } catch(error) {
+        console.error(error)
     }
 }
 
@@ -128,44 +144,45 @@ export const thunkDeleteMembership = (membership, memberData) => async dispatch 
 
 // REDUCER
 
-const initialState = { myMemberships: {}, groupMemberships:{}, groupMembers: {} }
+const initialState = { myMemberships: {}, teamMemberships: {} }
 const membershipsReducer = (state = initialState, action) => {
     switch(action.type) {
-        case GET_GROUP_MEMBERS: {
-            const newState = { myMemberships: {...state.myMemberships}, groupMemberships: {...state.groupMemberships}, groupMembers: {}};
-            action.payload.forEach(member => newState.groupMembers[member.id] = member)
-            return newState;
-        };
-        case GET_GROUP_MEMBERSHIPS: {
-            const newState = { myMemberships: {...state.myMemberships}, groupMemberships: {}, groupMembers: {...state.groupMembers}}
-            action.payload.forEach(membership => newState.groupMemberships[membership.id] = membership);
+        case GET_TEAM_MEMBERSHIPS: {
+            const newState = { ...state, teamMemberships: {} }
+            action.payload.forEach(membership => newState.teamMemberships[membership.id] = membership)
             return newState;
         }
         case GET_MY_MEMBERSHIPS: {
-            const newState = { myMemberships: {}, groupMemberships: {...state.groupMemberships}, groupMembers: {...state.groupMembers}}
-            action.payload.forEach(membership => newState.myMemberships[membership.id] = membership);
+            const newState = { ...state, myMemberships: {} }
+            action.payload.forEach(membership => newState.myMemberships[membership.id] = membership)
             return newState;
         }
-        case ADD_MEMBERSHIP: {
-            const newState = { groupMembers: {...state.groupMembers},  myMemberships: {...state.myMemberships}, groupMemberships: {...state.groupMemberships} };
-            newState.myMemberships = {...newState.myMemberships, [action.payload.id]: action.payload};
-            newState.groupMemberships = {...newState.groupMemberships, [action.payload.id]: action.payload}
+        case JOIN_TEAM:
+        case ADD_TO_TEAM: {
+            const newState = { ...state, myMemberships: { ...state.myMemberships }, teamMemberships: { ...state.teamMemberships } };
+            newState.myMemberships = { ...newState.myMemberships, [action.payload.id]: action.payload };
+            newState.teamMemberships = { ...newState.teamMemberships, [action.payload.id]: action.payload };
             return newState;
         }
-        case UPDATE_MEMBERSHIP: {
-            const newState = { groupMembers: {...state.groupMembers},  myMemberships: {...state.myMemberships}, groupMemberships: {...state.groupMemberships} };
-            newState.groupMembers = {...newState.groupMembers, [action.payload.member.id]: action.payload.member}
-            newState.myMemberships = {...newState.myMemberships, [action.payload.membership.id]: action.payload.membership};
-            newState.groupMemberships = {...newState.groupMemberships, [action.payload.membership.id]: action.payload.membership}
-            return newState;
-        }
-        case DELETE_MEMBERSHIP: {
-            const newState = { groupMembers: {...state.groupMembers}, myMemberships: {...state.myMemberships}, groupMemberships: {...state.groupMemberships} };
-            delete newState.groupMembers[action.payload.userId]
+        // case UPDATE_MEMBERSHIP: {
+        //     const newState = { groupMembers: {...state.groupMembers},  myMemberships: {...state.myMemberships}, groupMemberships: {...state.groupMemberships} };
+        //     newState.groupMembers = {...newState.groupMembers, [action.payload.member.id]: action.payload.member}
+        //     newState.myMemberships = {...newState.myMemberships, [action.payload.membership.id]: action.payload.membership};
+        //     newState.groupMemberships = {...newState.groupMemberships, [action.payload.membership.id]: action.payload.membership}
+        //     return newState;
+        // }
+        case LEAVE_TEAM:
+        case REMOVE_FROM_TEAM: {
+            const newState = { ...state, myMemberships: { ...state.myMemberships }, teamMemberships: { ...state.teamMemberships } };
             delete newState.myMemberships[action.payload.id];
-            delete newState.groupMemberships[action.payload.id];
+            delete newState.teamMemberships[action.payload.id];
             return newState;
         }
+        // case DELETE_MEMBERSHIP: {
+        //     const newState = { myMemberships: {...state.myMemberships} };
+        //     delete newState.myMemberships[action.payload.id];
+        //     return newState;
+        // }
         default:
             return state;
     }

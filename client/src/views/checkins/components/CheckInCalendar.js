@@ -6,7 +6,7 @@ import { format, addMonths, subMonths,addDays, startOfWeek,
 import { AnimatePresence, motion } from 'framer-motion';
 import CheckInCalendarItem from './CheckInCalendarItem';
 import CheckInList from './CheckInList';
-import { PiCaretRightBold , PiCaretLeftBold , PiCalendarBold } from 'react-icons/pi';
+import { PiCaretRightFill , PiCaretLeftFill , PiCalendar } from 'react-icons/pi';
 import IconButton from '../../../components/shared/button/IconButton';
 import '../styles.scss';
 import Scroll from '../../../components/shared/scroll';
@@ -117,7 +117,7 @@ function CheckInCalendar({checkIns}) {
                 <div className="month_header">
                     <IconButton
                         styles='header_icon'
-                        icon={PiCaretLeftBold}
+                        icon={PiCaretLeftFill}
                         action={prevMonth}
                     />
                     <h1>
@@ -125,26 +125,23 @@ function CheckInCalendar({checkIns}) {
                     </h1>
                     <IconButton
                         styles='header_icon'
-                        icon={PiCaretRightBold}
+                        icon={PiCaretRightFill}
                         action={nextMonth}
                     />
                 </div>
                 <div className='weekdays_container'>{weekDays}</div>
                 <div className="days_container">{weekRows}</div>
             </motion.div>
-            <Scroll>
-                <AnimatePresence>
-                    {
-                        filteredCheckIns .length > 0 ?
-                        <CheckInList checkIns={filteredCheckIns}/> :
-                        <motion.div className='no_check_ins'>
-                            <PiCalendarBold className='icon'/>
-                            <span className='xs bold'>No Check Ins Today</span>
-                        </motion.div>
-                    }
-                </AnimatePresence>
-            </Scroll>
-
+            <AnimatePresence>
+                {
+                    filteredCheckIns .length > 0 ?
+                    <CheckInList checkIns={filteredCheckIns}/> :
+                    <motion.div className='no_check_ins'>
+                        <PiCalendar className='icon'/>
+                        <span className='sm bold'>No CheckIns for {format(day, 'MM/dd/yyyy')} </span>
+                    </motion.div>
+                }
+            </AnimatePresence>
         </>
     )
 }

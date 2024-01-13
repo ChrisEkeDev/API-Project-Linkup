@@ -20,13 +20,13 @@ const { requireAuth } = require('../../utils/auth');
 // })
 
 
-// Route to get all teams Ithe current user is a member of
+// Route to get all teams the current user is a member of
 router.get('/current', requireAuth, async (req, res) => {
     const playerId = req.player.id;
 
     let teams = await Membership.findAll({
         where: { playerId, status: {[Op.ne]: 'host'}},
-        attributes: ['status'],
+        attributes: ['id', 'status', 'teamId'],
         include: [
             {
                 model: Team,
@@ -45,6 +45,13 @@ router.get('/current', requireAuth, async (req, res) => {
 
         ]
     })
+
+    for (const team of teams) {
+        const count = await Membership.count({
+            where: { teamId: team.Team.id }
+        })
+        team.dataValues.Team.dataValues.members = count;
+    }
 
     return res.status(200).json({
         status: 200,

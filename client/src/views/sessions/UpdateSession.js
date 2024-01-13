@@ -102,7 +102,7 @@ function UpdateSessionWrapper() {
         const getSession = async () => {
             try {
                 const res = await dispatch(thunkGetSingleSession(id));
-                if (res.status === 200 && res.status === 200 && session) {
+                if (res.status === 200 && session) {
                     setLoading(false);
                 }
             } catch(e) {
