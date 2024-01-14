@@ -10,7 +10,6 @@ router.post('/', async(req, res) => {
     try {
         const response = await axios.get(endpoint);
         const { results } = response.data;
-        console.log(results)
         return res.status(200).json({
             status: 200,
             message: "",
@@ -18,7 +17,6 @@ router.post('/', async(req, res) => {
             errors: {}
         })
     } catch(e) {
-        console.log(e)
         return res.status(404).json({
             status: 404,
             message: "There was an error getting data",

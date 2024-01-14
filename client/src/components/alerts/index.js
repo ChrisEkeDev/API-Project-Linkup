@@ -5,8 +5,6 @@ import { AnimatePresence } from 'framer-motion';
 
 function Alerts(props) {
     const { removeAlerts, alerts } = props;
-    console.log(alerts)
-
     return (
         <div className='alerts'>
             <AnimatePresence>

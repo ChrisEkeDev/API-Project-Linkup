@@ -7,7 +7,8 @@ const sessionImageRouter = require('./sessionImages.js');
 const membershipRouter = require('./memberships.js');
 const checkInRouter = require('./checkIn.js');
 const placesRouter = require('./places.js');
-const commentRouter = require('./comments.js')
+const sessionChatsRouter = require('./session-chats.js')
+const teamChatsRouter = require('./team-chats.js')
 const likeRouter = require('./likes.js')
 
 const { restoreUser } = require('../../utils/jwt.js');
@@ -33,7 +34,9 @@ router.use('/check-ins', checkInRouter);
 
 router.use('/places', placesRouter);
 
-router.use('/comments', commentRouter);
+router.use('/session-chats', sessionChatsRouter);
+
+router.use('/team-chats', teamChatsRouter);
 
 router.use('/likes', likeRouter);
 

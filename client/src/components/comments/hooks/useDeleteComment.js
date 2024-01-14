@@ -7,7 +7,6 @@ function useDeleteComment() {
     const dispatch = useDispatch();
 
     const deleteComment = async (comment) => {
-        console.log(comment)
         try {
             const response = await dispatch(thunkDeleteComment(comment.id))
             if ( response.status === 200) {

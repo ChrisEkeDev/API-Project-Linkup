@@ -49,9 +49,9 @@ const validateEditSession = [
     handleValidationErrors("There was a problem updating your session")
 ]
 
-const validateCreateComment = [
-    check("text").exists({checkFalsy: true}).isLength({max: 250}).withMessage("Comments can't be longer than 250 characters"),
-    handleValidationErrors('There was a problem creating your comment')
+const validateCreateChat = [
+    check("content").exists({checkFalsy: true}).isLength({max: 250}).withMessage("Messages can't be longer than 250 characters"),
+    handleValidationErrors('There was a problem creating your message')
 ]
 
 const validateCreateTeam = [
@@ -69,7 +69,7 @@ const validateEditTeam = [
 module.exports = {
     validateLogin,
     validateSignUp,
-    validateCreateComment,
+    validateCreateChat,
     validateCreateSession,
     validateEditSession,
     validateCreateTeam,

@@ -9,7 +9,6 @@ export const getEndDate = (sessionData, duration, cb) => {
 
     }
     cb(newData);
-    console.log(newData)
 }
 
 

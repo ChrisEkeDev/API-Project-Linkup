@@ -22,7 +22,6 @@ function CountDown({endTime, expires }) {
         } else {
             setTimeLeft(timeLeft)
         }
-        console.log(timeLeft)
     }, [currentTime])
 
     return (

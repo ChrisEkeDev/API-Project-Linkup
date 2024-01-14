@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const { teamChat } = require('../../utils/websockets')
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../errors/validationErrors');
-const { Team, Membership, Player } = require('../../db/models');
+const { Team, Membership, Player, TeamChat } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { Sequelize, Op, fn, col } = require('sequelize');
 const { validateCreateTeam, validateEditTeam } = require('./validation/expressValidations')
@@ -474,6 +475,66 @@ router.delete('/:teamId/remove-from-team', requireAuth, async (req, res) => {
         error: null
     })
 
+})
+
+
+router.get('/:teamId/chat-feed', requireAuth, async (req, res) => {
+    const { teamId } = req.params;
+
+    const teamFeed = await TeamChat.findAll({
+        where: { teamId },
+        include: {
+            model: Player,
+            attributes: ['name', 'profileImage']
+        },
+        order: [['createdAt', 'ASC']]
+    })
+
+    return res.status(200).json({
+        status: 200,
+        message: null,
+        data: teamFeed,
+        error: null
+    })
+})
+
+
+
+router.post('/:teamId/chat-feed', requireAuth, async (req, res) => {
+    const playerId = req.player.id;
+    const { teamId } = req.params;
+    const { content } = req.body;
+    const team = await Team.findByPk(teamId);
+    if (!team) {
+        return res.status(404).json(teamNotFound)
+    }
+    const membership = await Membership.findOne({
+        where: { playerId, teamId }
+    })
+
+    if (!membership) {
+        return res.status(404).json(membershipNotFound)
+    }
+
+    const teamChat = await TeamChat.create({
+        content,
+        playerId,
+        teamId
+    })
+
+    const chat = await TeamChat.findByPk(teamChat.id, {
+        include: {
+            model: Player,
+            attributes: ['name', 'profileImage']
+        }
+    })
+
+    return res.status(201).json({
+        status: 201,
+        message: "Chat created successfully",
+        data: chat,
+        error: null
+    })
 })
 
 module.exports = router;

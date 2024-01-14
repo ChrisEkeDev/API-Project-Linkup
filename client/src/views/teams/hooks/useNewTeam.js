@@ -30,7 +30,6 @@ function useNewTeam(team) {
             navigate(`/teams/${data.data.id}`)
         } catch (e) {
             handleAlerts(createTeamError)
-            handleAlerts(createTeamError)
             console.error(e)
         } finally {
             setLoading(false)

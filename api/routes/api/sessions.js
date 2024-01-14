@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { CheckIn, Session, Player, Comment, SessionImage, Membership, Court } = require('../../db/models');
+const { CheckIn, Session, Player, Comment, SessionImage, SessionChat, Court } = require('../../db/models');
 const { Op, fn, col } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
 const { uploadMedia, deleteMedia } = require('../../utils/aws');
@@ -526,6 +526,63 @@ router.delete('/:sessionId/check-ins', requireAuth, async (req, res) => {
         data: existingCheckIn,
         error: null
 
+    })
+})
+
+
+router.get('/:sessionId/chat-feed', requireAuth, async (req, res) => {
+    const { sessionId } = req.params;
+    const sessionFeed = await SessionChat.findAll({
+        where: { sessionId },
+        include: {
+            model: Player,
+            attributes: ['name', 'profileImage']
+        },
+        order: [['createdAt', 'ASC']]
+    })
+    return res.status(200).json({
+        status: 200,
+        message: null,
+        data: sessionFeed,
+        error: null
+    })
+})
+
+
+router.post('/:sessionId/chat-feed', requireAuth, async (req, res) => {
+    const playerId = req.player.id;
+    const { sessionId } = req.params;
+    const { content } = req.body;
+    const session = await Session.findByPk(sessionId);
+    if (!session) {
+        return res.status(404).json(sessionNotFound)
+    }
+
+    const checkIn = await CheckIn.findOne({
+        where: { playerId, sessionId }
+    })
+
+    if (!checkIn) {
+        return res.status(404).json(checkInNotFound)
+    }
+    const sessionChat = await SessionChat.create({
+        content,
+        playerId,
+        teamId
+    })
+
+    const chat = await SessionChat.findByPk(sessionChat.id, {
+        include: {
+            model: Player,
+            attributes: ['name', 'profileImage']
+        }
+    })
+
+    return res.status(201).json({
+        status: 201,
+        message: "Chat created successfully",
+        data: chat,
+        error: null
     })
 })
 

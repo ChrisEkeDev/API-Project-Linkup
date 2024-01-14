@@ -2,7 +2,6 @@ import axios from "axios";
 
 export const geocodeAddress = async (e, address, cb) => {
     e.preventDefault();
-    console.log('clicked')
     try {
         const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
         const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;

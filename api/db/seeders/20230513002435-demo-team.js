@@ -13,27 +13,27 @@ module.exports = {
     await queryInterface.bulkInsert(options, [
       {
         captainId: 2,
-        name: 'Backgammon Brothers & Sisters',
+        name: 'Ball Hogs',
         private: false
       },
       {
         captainId: 1,
-        name: 'Crochet Stitchers in Atlanta',
+        name: 'Lik Buttah',
         private: false
       },
       {
         captainId: 4,
-        name: 'Conspiracy Theorists',
+        name: 'NO Smoking',
         private: true
       },
       {
         captainId: 4,
-        name: 'Web Developers Connect',
+        name: 'Air Up There',
         private: true
       },
       {
         captainId: 3,
-        name: 'Horse Riders of the Storm',
+        name: 'GameBreakers',
         private: false
       },
     ])

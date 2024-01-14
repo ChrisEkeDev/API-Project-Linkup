@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import useModal from '../../hooks/useModal';
 import LoadingData from '../../components/shared/loading';
 import { thunkGetSingleTeam } from '../../store/teams';
+import { thunkGetTeamFeed } from '../../store/chats'
 import { thunkGetTeamMemberships } from '../../store/memberships'
 import Scroll from '../../components/shared/scroll';
 import useMemberships from './hooks/useMemberships';
@@ -17,6 +18,7 @@ import { CgSpinner } from 'react-icons/cg';
 import { PiXBold, PiUserPlusBold , PiUserMinusBold, PiPencilSimpleLineFill, PiTrashBold, PiSignOutBold  } from 'react-icons/pi'
 import { base_animations, child_variants, parent_variants } from '../../constants/animations';
 import TeamDetails from './components/TeamDetails';
+import TeamFeed from './components/TeamFeed'
 
 function SingleTeam({team, memberships}) {
     const [tabView, setTabView ] = useState('details')
@@ -71,7 +73,7 @@ function SingleTeam({team, memberships}) {
             <header className='tab_header'>
                     <div className='float_left tabs'>
                         <p className={`tab bold ${tabView === 'details' && 'active-tab'}`} onClick={() => setTabView('details')}>Details</p>
-                        {/* <p className={`tab bold ${tabView === 'chat' && 'active-tab'}`} onClick={() => setTabView('chat')}>Chat</p> */}
+                        <p className={`tab bold ${tabView === 'feed' && 'active-tab'}`} onClick={() => setTabView('feed')}>Live Chat</p>
                         <p className={`tab bold ${tabView === 'members' && 'active-tab'}`} onClick={() => setTabView('members')}>Members</p>
                     </div>
                     <div className='float_right'>
@@ -83,8 +85,8 @@ function SingleTeam({team, memberships}) {
                         {/* {tabView === 'teams' ? teams.length : sessions.length} {showingResults} */}
                     </span>
                     {
-                        tabView === 'chat' ?
-                        <div>Chat</div>:
+                        tabView === 'feed' ?
+                        <TeamFeed />:
                         tabView === 'members' ?
                         <TeamMembers isAuth={isAuth} /> :
                         <TeamDetails />
@@ -101,16 +103,20 @@ function SingleTeamWrapper() {
     const [ loading, setLoading ] = useState(true);
     const singleTeam = useSelector(state => state.teams.singleTeam)
     const teamMemberships = useSelector(state => state.memberships.teamMemberships)
+    const teamFeed = useSelector(state => state.chats.teamFeed)
 
     useEffect(() => {
         const loadTeam = async () => {
             try {
                 const singleTeamData = await dispatch(thunkGetSingleTeam(id));
                 const teamMembershipData = await dispatch(thunkGetTeamMemberships(id))
-                if (singleTeamData.status === 200 && singleTeam && teamMembershipData.status === 200 && teamMemberships) {
+                const teamFeedData = await dispatch(thunkGetTeamFeed(id))
+                if (
+                    singleTeamData.status === 200 && singleTeam
+                    && teamMembershipData.status === 200 && teamMemberships
+                    && teamFeedData.status == 200 && teamFeedData) {
                     setLoading(false);
                 }
-                console.log()
             } catch(e) {
                 console.log(e)
             }
@@ -122,7 +128,7 @@ function SingleTeamWrapper() {
     if (loading) return <LoadingData/>
 
     return (
-        <SingleTeam team={singleTeam} memberships={teamMemberships} />
+        <SingleTeam team={singleTeam} memberships={teamMemberships} feed={teamFeed} />
     )
 }
 

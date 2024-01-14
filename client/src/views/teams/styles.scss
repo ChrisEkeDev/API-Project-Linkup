@@ -163,3 +163,17 @@
         font-size: 1.5rem;
     }
 }
+
+.feed_list {
+    padding-bottom: 11rem;
+}
+
+.chat_item {
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+    border-radius: 1.5rem;
+    &:hover {
+        background: var(--hover)
+    }
+}

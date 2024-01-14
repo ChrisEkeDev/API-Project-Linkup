@@ -76,7 +76,6 @@ function UpdateTeamWrapper() {
     const { dispatch } = useApp();
     const [loading, setLoading ] = useState(true);
     const team = useSelector(state => state.teams.singleTeam);
-    console.log(team)
 
     useEffect(() => {
         const getTeam = async () => {

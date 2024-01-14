@@ -52,7 +52,6 @@ function useNewSession() {
         try {
             const session = { ...sessionData }
             session.address = addressObject;
-            console.log(session)
             const data = await dispatch(thunkCreateNewSession(session));
             handleAlerts(createSessionSuccess)
             navigate(`/sessions/${data.data.id}`)

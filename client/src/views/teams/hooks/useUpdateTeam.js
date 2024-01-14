@@ -6,7 +6,6 @@ import { thunkUpdateTeam } from "../../../store/teams";
 function useUpdateTeam(team) {
     const { dispatch, navigate, setLoading, handleAlerts } = useApp();
     const { updateTeamSuccess, updateTeamError } = teamAlerts;
-    console.log(team)
     const [ teamData, setTeamData ] = useState({
         name: team.name,
         private: team.private

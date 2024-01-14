@@ -4,7 +4,7 @@ import authReducer from './auth';
 import teamsReducer from './teams';
 import sessionsReducer from './sessions';
 import membershipsReducer from './memberships';
-import commentsReducer from './comments';
+import chatsReducer from './chats';
 import checkInsReducer from './checkins';
 import searchReducer from './search';
 
@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
     memberships: membershipsReducer,
     checkIns: checkInsReducer,
     search: searchReducer,
-    comments: commentsReducer
+    chats: chatsReducer,
 })
 
 let enhancer;

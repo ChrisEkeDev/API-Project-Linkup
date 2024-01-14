@@ -47,7 +47,7 @@ module.exports = {
           }
         },
         sessionId: {
-            type: Sequelize.STRING,
+            type: Sequelize.INTEGER,
             allowNull: false,
             references: {
               model: 'Sessions',

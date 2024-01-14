@@ -19,11 +19,18 @@ const sessionNotFound = {
     error: "The 'sessionId' is not recognized as a valid entity"
 };
 
-const commentNotFound = {
+const chatNotFound = {
     status: 404,
-    message: "Comment couldn't be found",
+    message: "Message couldn't be found",
     data: null,
-    error: "The 'commentId' is not recognized as a valid entity"
+    error: "The 'chatId' is not recognized as a valid entity"
+};
+
+const checkInNotFound = {
+    status: 404,
+    message: "CheckIn couldn't be found",
+    data: null,
+    error: "The 'checkInId' is not recognized as a valid entity"
 };
 
 
@@ -67,9 +74,10 @@ module.exports = {
     likeNotFound,
     sessionNotFound,
     teamNotFound,
-    commentNotFound,
+    chatNotFound,
     cantDeleteMembership,
     membershipNotFound,
     membershipAlreadyExists,
-    playerNotAuthorized
+    playerNotAuthorized,
+    checkInNotFound
 }

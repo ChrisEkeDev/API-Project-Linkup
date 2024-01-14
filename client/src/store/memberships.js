@@ -158,19 +158,13 @@ const membershipsReducer = (state = initialState, action) => {
             return newState;
         }
         case JOIN_TEAM:
+        case PROMOTE_TO_CO_HOST:
         case ADD_TO_TEAM: {
             const newState = { ...state, myMemberships: { ...state.myMemberships }, teamMemberships: { ...state.teamMemberships } };
             newState.myMemberships = { ...newState.myMemberships, [action.payload.id]: action.payload };
             newState.teamMemberships = { ...newState.teamMemberships, [action.payload.id]: action.payload };
             return newState;
         }
-        // case UPDATE_MEMBERSHIP: {
-        //     const newState = { groupMembers: {...state.groupMembers},  myMemberships: {...state.myMemberships}, groupMemberships: {...state.groupMemberships} };
-        //     newState.groupMembers = {...newState.groupMembers, [action.payload.member.id]: action.payload.member}
-        //     newState.myMemberships = {...newState.myMemberships, [action.payload.membership.id]: action.payload.membership};
-        //     newState.groupMemberships = {...newState.groupMemberships, [action.payload.membership.id]: action.payload.membership}
-        //     return newState;
-        // }
         case LEAVE_TEAM:
         case REMOVE_FROM_TEAM: {
             const newState = { ...state, myMemberships: { ...state.myMemberships }, teamMemberships: { ...state.teamMemberships } };
@@ -178,11 +172,6 @@ const membershipsReducer = (state = initialState, action) => {
             delete newState.teamMemberships[action.payload.id];
             return newState;
         }
-        // case DELETE_MEMBERSHIP: {
-        //     const newState = { myMemberships: {...state.myMemberships} };
-        //     delete newState.myMemberships[action.payload.id];
-        //     return newState;
-        // }
         default:
             return state;
     }

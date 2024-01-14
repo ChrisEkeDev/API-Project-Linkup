@@ -13,43 +13,43 @@ module.exports = {
    await queryInterface.bulkInsert(options, [
     {
       creatorId: 1,
-      name: 'Backgammon Tournament Round 1',
+      name: 'Running 5s',
       courtId: 1,
       private: false,
-      startDate: '2023-12-15T13:00:00.000Z',
-      endDate: '2023-12-15T17:00:00.000Z'
+      startDate: '2024-02-04T10:00:00.000Z',
+      endDate: '2024-02-04T15:00:00.000Z'
     },
     {
       creatorId: 2,
-      name: 'Backgammon Tournament Final',
+      name: 'We Tryna Hoop',
       courtId: 2,
       private: false,
-      startDate: '2023-12-15T14:00:00.000Z',
-      endDate: '2023-12-15T16:00:00.000Z'
+      startDate: '2024-02-10T14:00:00.000Z',
+      endDate: '2024-02-10T16:00:00.000Z'
     },
     {
       creatorId: 3,
-      name: 'Horse Ride and Relax',
+      name: 'Running Games',
       courtId: 3,
       private: false,
-      startDate: '2024-01-05T12:00:00.000Z',
-      endDate: '2024-01-05T16:30:00.000Z'
+      startDate: '2024-01-25T12:00:00.000Z',
+      endDate: '2024-01-25T16:30:00.000Z'
     },
     {
       creatorId: 4,
-      name: 'Private Meet & Greet',
+      name: 'Private Runs',
       courtId: 4,
-      private: false,
-      startDate: '2024-01-11T22:00:00.000Z',
-      endDate: '2024-01-12T01:00:00.000Z'
+      private: true,
+      startDate: '2024-03-11T22:00:00.000Z',
+      endDate: '2024-03-12T01:00:00.000Z'
     },
     {
       creatorId: 5,
-      name: 'Crochet Off for Charity',
+      name: 'Park Runs',
       courtId: 5,
       private: false,
-      startDate: '2024-01-17T08:00:00.000Z',
-      endDate: '2024-01-17T12:00:00.000Z'
+      startDate: '2024-02-17T08:00:00.000Z',
+      endDate: '2024-02-17T12:00:00.000Z'
     },
    ])
   },
