@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useApp} from '../../../context/AppContext'
 import { thunkCreateTeamChat, thunkGetTeamFeed } from '../../../store/chats'
 
-function useNewTeamChat(socket) {
+function useNewTeamChat({socket, room}) {
   const team = useSelector(state => state.teams.singleTeam)
   const { dispatch } = useApp()
   const [ content, setContent ] = useState('')
@@ -15,7 +15,7 @@ function useNewTeamChat(socket) {
   const createTeamChat = async () => {
     try {
       const res = await dispatch(thunkCreateTeamChat(team.id, content));
-      socket.emit('new_message', {chat: res.data, room: team.id})
+      socket.emit('new_message', room)
     } catch (e) {
         console.error(e)
     } finally {

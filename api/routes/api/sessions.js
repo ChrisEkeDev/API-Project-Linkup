@@ -372,25 +372,25 @@ router.delete('/:sessionId', requireAuth, async (req, res) => {
     })
 })
 
-// /////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
 
-// // Delete "outdated" sessions
+// Delete "outdated" sessions
 
-// /////////////////////
-// router.delete("/", async (req, res) => {
-//     const sessions = await Session.findAll();
-//     const today = new Date();
-//     const dateLimit = today.setDate(today.getDate() - 3)
-//     const oldSessions = sessions.filter((session) => new Date(session.endDate) < new Date(dateLimit));
-//     oldSessions.forEach(session => session.destroy());
-//     return res.status(200).json({
-//         status: 200,
-//         message: "Sessions older than 3 days have been deleted",
-//         data: null,
-//         error: null
-//     })
+/////////////////////
+router.delete("/", async (req, res) => {
+    const sessions = await Session.findAll();
+    const today = new Date();
+    const dateLimit = today.setDate(today.getDate() - 3)
+    const oldSessions = sessions.filter((session) => new Date(session.endDate) < new Date(dateLimit));
+    oldSessions.forEach(session => session.destroy());
+    return res.status(200).json({
+        status: 200,
+        message: "Sessions older than 3 days have been deleted",
+        data: null,
+        error: null
+    })
 
-// })
+})
 
 
 //////////////////////////////////////////////////////////

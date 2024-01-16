@@ -31,7 +31,7 @@ function SessionCheckIns({checkIns}) {
   return (
     <div className='session_players'>
       <span className='section_label xs bold'>{checkIns.length} Players </span>
-        <motion.ul
+        <ul
           className='checkIn_list'
           ref={carouselRef}
           onMouseDown={startDragging}
@@ -46,7 +46,7 @@ function SessionCheckIns({checkIns}) {
                 ))
             }
           </AnimatePresence>
-        </motion.ul>
+        </ul>
     </div>
   )
 }

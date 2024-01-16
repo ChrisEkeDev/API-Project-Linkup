@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       })
 
 
-      Session.hasMany(models.Comment, {
+      Session.hasMany(models.SessionChat, {
         foreignKey: 'sessionId',
         sourceKey: 'id'
       })

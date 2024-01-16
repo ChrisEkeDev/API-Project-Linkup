@@ -1,3 +1,5 @@
+
+
 export const parent_variants = {
     visible: {
         opacity: 1,
@@ -87,4 +89,25 @@ export const slide_small_variants = {
         x: -50,
         opacity: 0,
     }
+}
+
+export const fadeOutAnimation = (controls) => {
+    controls.start({x: -100, opacity: 0 })
+}
+
+export const chat_variants = {
+    visible: {
+        x: 0,
+        opacity: 1,
+    },
+    hidden: {
+        x: -100,
+        opacity: 0,
+    }
+}
+
+export const list_item_animations = {
+    initial: "hidden",
+    animate: "visible",
+    exit: "hidden"
 }

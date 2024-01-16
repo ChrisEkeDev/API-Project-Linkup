@@ -111,6 +111,15 @@ router.get('/:teamId', async (req, res) => {
                     model: Membership
                 },
                 attributes: ['id', 'name', 'profileImage']
+            },
+            {
+                model: TeamChat,
+                include: {
+                    model: Player,
+                    attributes: ['name', 'profileImage']
+                },
+                order: [['createdAt', 'DESC']],
+                limit: 3
             }
         ]
     })
@@ -165,6 +174,15 @@ router.post('/', requireAuth, validateCreateTeam, async (req, res) => {
                     model: Membership
                 },
                 attributes: ['name', 'profileImage']
+            },
+            {
+                model: TeamChat,
+                include: {
+                    model: Player,
+                    attributes: ['name', 'profileImage']
+                },
+                order: [['createdAt', 'DESC']],
+                limit: 3
             }
         ]
     })
@@ -219,6 +237,15 @@ router.put('/:teamId', requireAuth, validateEditTeam, async (req, res) => {
                     model: Membership
                 },
                 attributes: ['name', 'profileImage']
+            },
+            {
+                model: TeamChat,
+                include: {
+                    model: Player,
+                    attributes: ['name', 'profileImage']
+                },
+                order: [['createdAt', 'DESC']],
+                limit: 3
             }
         ]
     })
@@ -471,7 +498,7 @@ router.delete('/:teamId/remove-from-team', requireAuth, async (req, res) => {
     return res.status(200).json({
         status: 200,
         message: "Membership deleted successfully",
-        data: null,
+        data: membership,
         error: null
     })
 

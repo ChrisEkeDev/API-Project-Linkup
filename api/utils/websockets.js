@@ -17,16 +17,24 @@ const sessionChat = io.of('/session');
 teamChat.on('connection', (socket) => {
     console.log(`User online - ${socket.id}`)
 
-    socket.on('join_room', (data) => {
-        socket.join(data.room)
+    socket.on('join_room', (room) => {
+        socket.join(room)
     })
 
-    socket.on('new_message', (data) => {
-        teamChat.to(data.room).emit("update_feed", data.chat)
+    socket.on('new_message', (room) => {
+        teamChat.to(room).emit("update_feed")
     })
 
-    socket.on('disconnect', (data) => {
-        socket.broadcast.to(data.room).emit('offline', `User as left the chat.`)
+    socket.on('update_message', (room) => {
+        teamChat.to(room).emit("update_feed")
+    })
+
+    socket.on('delete_message', (room) => {
+        teamChat.to(room).emit("update_feed")
+    })
+
+    socket.on('disconnect', (room) => {
+        socket.broadcast.to(room).emit('offline')
     });
 })
 

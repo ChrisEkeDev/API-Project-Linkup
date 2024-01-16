@@ -157,18 +157,28 @@ const membershipsReducer = (state = initialState, action) => {
             action.payload.forEach(membership => newState.myMemberships[membership.id] = membership)
             return newState;
         }
-        case JOIN_TEAM:
-        case PROMOTE_TO_CO_HOST:
-        case ADD_TO_TEAM: {
-            const newState = { ...state, myMemberships: { ...state.myMemberships }, teamMemberships: { ...state.teamMemberships } };
+        case JOIN_TEAM: {
+            const newState = { ...state, myMemberships: { ...state.myMemberships } };
             newState.myMemberships = { ...newState.myMemberships, [action.payload.id]: action.payload };
+            return newState;
+        }
+        case PROMOTE_TO_CO_HOST: {
+            const newState = { ...state, teamMemberships: { ...state.teamMemberships } };
             newState.teamMemberships = { ...newState.teamMemberships, [action.payload.id]: action.payload };
             return newState;
         }
-        case LEAVE_TEAM:
-        case REMOVE_FROM_TEAM: {
-            const newState = { ...state, myMemberships: { ...state.myMemberships }, teamMemberships: { ...state.teamMemberships } };
+        case ADD_TO_TEAM: {
+            const newState = { ...state, teamMemberships: { ...state.teamMemberships } };
+            newState.teamMemberships = { ...newState.teamMemberships, [action.payload.id]: action.payload };
+            return newState;
+        }
+        case LEAVE_TEAM: {
+            const newState = { ...state, myMemberships: { ...state.myMemberships } };
             delete newState.myMemberships[action.payload.id];
+            return newState;
+        }
+        case REMOVE_FROM_TEAM: {
+            const newState = { ...state, teamMemberships: { ...state.teamMemberships } };
             delete newState.teamMemberships[action.payload.id];
             return newState;
         }

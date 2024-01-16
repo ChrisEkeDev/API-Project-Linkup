@@ -1,11 +1,11 @@
 import React from 'react'
 import { AnimatePresence, motion } from 'framer-motion';
 import ProfileImage from '../../../components/shared/profileImage';
-import { checkin_variants, base_animations } from '../../../constants/animations';
+import { slide_variants, base_animations } from '../../../constants/animations';
 
 function TeamMember({membership}) {
   return (
-    <motion.li variants={checkin_variants} {...base_animations} title={membership.Player.name} className='session_player'>
+    <motion.li title={membership.Player.name} className='session_player'>
         <ProfileImage
             player={membership.Player}
             size={4}

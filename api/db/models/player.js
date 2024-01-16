@@ -7,10 +7,17 @@ module.exports = (sequelize, DataTypes) => {
   class Player extends Model {
 
     static associate(models) {
-      Player.hasMany(models.Comment, {
+      Player.hasMany(models.TeamChat, {
         foreignKey: 'playerId',
         sourceKey: 'id'
       })
+
+      Player.hasMany(models.SessionChat, {
+        foreignKey: 'playerId',
+        sourceKey: 'id'
+      })
+
+
       Player.belongsToMany(models.Team, {
         through: models.Membership,
         foreignKey: 'playerId',

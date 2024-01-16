@@ -1,64 +1,65 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import { useApp } from '../../../context/AppContext'
 import { AnimatePresence, motion } from 'framer-motion';
+import { parent_variants, base_animations } from '../../../constants/animations';
 import useNewTeamChat from '../hooks/useNewTeamChat';
+import useTeamChatWebSocket from '../hooks/useTeamChatWebSocket'
 import { useSelector } from 'react-redux'
 import ChatItem from './ChatItem'
 import ChatInput from '../../../components/shared/inputs/ChatInput'
-import { thunkGetTeamFeed } from '../../../store/chats';
+import Scroll from '../../../components/shared/scroll';
 
-function TeamFeed({socket}) {
+
+function TeamFeed() {
+    const { socket, room } = useTeamChatWebSocket();
     const teamFeed = useSelector(state => state.chats.teamFeed)
     const teamFeedArr = Object.values(teamFeed)
-    const { handleInput, content, createTeamChat } = useNewTeamChat(socket);
+    const { handleInput, content, createTeamChat } = useNewTeamChat({socket, room});
+    const ref = useRef(null)
+
+    useEffect(() => {
+        if (ref.current) {
+            ref.current.scrollTop = ref.current.scrollHeight
+        }
+        socket.on("update_feed", () => {
+            ref.current.scrollTop = ref.current.scrollHeight
+        })
+    }, [])
+
+
 
     return (
-        <section className="team_feed">
-            {
-                teamFeedArr.length > 0 ?
-                <ul className="feed_list">
-                    {
-                        teamFeedArr.map(message => (
-                            <ChatItem key={message.id} message={message}/>
-                        ))
-                    }
-                </ul> :
-                <div className="no_chats"></div>
-            }
+        <Scroll ref={ref}>
+            <section className="team_feed container_border">
+            <span className='section_label xs bold'>Showing all messages for past 30 days</span>
+                {
+                    teamFeedArr.length > 0 ?
+                    <motion.ul variants={parent_variants} {...base_animations} className="feed_list">
+                        <AnimatePresence>
+                        {
+                            teamFeedArr.map(chat => (
+                                <ChatItem
+                                    socket={socket}
+                                    room={room}
+                                    key={chat.id}
+                                    chat={chat}
+                                />
+                            ))
+                        }
+                        </AnimatePresence>
+                    </motion.ul> :
+                    <div className="no_chats"></div>
+                }
+
+            </section>
             <ChatInput
                 handleInput={handleInput}
                 content={content}
                 createTeamChat={createTeamChat}
             />
-        </section>
+        </Scroll>
     )
 }
 
-function TeamFeedWrapper() {
-    const team = useSelector(state => state.teams.singleTeam)
-    const socket = io('http://localhost:3030/team');
-    const { auth, dispatch } = useApp()
-
-    useEffect(() => {
-        socket.on('connect', () => {
-            socket.emit('join_room', {room: team.id})
-        });
-
-        socket.on('update_feed', async () => {
-            await dispatch(thunkGetTeamFeed(team.id))
-        });
-
-        socket.on('offline', (message) => {
-            console.log(`${auth.name} ${message}`)
-        })
-
-        return () => socket.disconnect();
-    }, [])
-
-    return (
-        <TeamFeed socket={socket} />
-    )
-}
-
-export default TeamFeedWrapper
+export default TeamFeed

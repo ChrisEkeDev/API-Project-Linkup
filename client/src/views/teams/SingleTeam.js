@@ -15,7 +15,7 @@ import { thunkGetTeamMemberships } from '../../store/memberships'
 import Scroll from '../../components/shared/scroll';
 import useMemberships from './hooks/useMemberships';
 import { CgSpinner } from 'react-icons/cg';
-import { PiXBold, PiUserPlusBold , PiUserMinusBold, PiPencilSimpleLineFill, PiTrashBold, PiSignOutBold  } from 'react-icons/pi'
+import { PiXBold, PiUserPlusBold , PiUserMinusBold, PiPencilSimpleLineFill, PiTrashBold, PiSignOutBold, PiLockFill, PiLockOpen, PiLockOpenBold } from 'react-icons/pi'
 import { base_animations, child_variants, parent_variants } from '../../constants/animations';
 import TeamDetails from './components/TeamDetails';
 import TeamFeed from './components/TeamFeed'
@@ -31,7 +31,14 @@ function SingleTeam({team, memberships}) {
     return (
         <motion.main {...base_animations} className='page teams'>
             <motion.header variants={child_variants} className='header'>
-                <Back route={`/teams`}/>
+                <div className="flex">
+                    {
+                        team.private ?
+                        <PiLockFill title='Private' className='team_privacy_icon'/> :
+                        <PiLockOpenBold title='Public' className='team_privacy_icon'/>
+                    }
+                    <p className="lg bold">{team.name}</p>
+                </div>
                 <div className='actions'>
                     {
                         isHost ?
@@ -79,20 +86,15 @@ function SingleTeam({team, memberships}) {
                     <div className='float_right'>
                     </div>
                 </header>
-            <Scroll>
                 <motion.section variants={parent_variants} {...base_animations} className='section scroll'>
-                    <span className='section_label xs bold'>
-                        {/* {tabView === 'teams' ? teams.length : sessions.length} {showingResults} */}
-                    </span>
                     {
                         tabView === 'feed' ?
                         <TeamFeed />:
                         tabView === 'members' ?
-                        <TeamMembers isAuth={isAuth} /> :
+                        <TeamMembers isMember={isMember} /> :
                         <TeamDetails />
                     }
                 </motion.section>
-            </Scroll>
         </motion.main>
     )
 }

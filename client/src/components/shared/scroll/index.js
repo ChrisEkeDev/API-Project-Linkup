@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import './styles.scss'
 
 
-function Scroll({children}) {
+const Scroll = forwardRef((props, ref) => {
+  const { children } = props;
   return (
-    <section className='scroll_window'>
+    <section ref={ref} className='scroll_window'>
         {children}
     </section>
   )
-}
+})
 
 export default Scroll

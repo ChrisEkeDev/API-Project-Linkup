@@ -30,12 +30,22 @@
     margin-bottom: .25rem;
 }
 
+.team_privacy_icon {
+    font-size: 1.5rem
+}
+
 .team_information {
     padding: 1rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    justify-content: space-between;
     margin-bottom: 1rem;
+}
+
+.team_info_flex {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .member_preview {
@@ -43,6 +53,43 @@
     margin-top: .20rem
 }
 
+.members_overlay {
+    position: absolute;
+    width:calc(100% - 2rem);
+    height:calc(100% - 4rem);
+    z-index: 10;
+    pointer-events: none;
+    background-image: linear-gradient(
+        90deg,
+      rgba(255,255,255,1) 0%,
+      rgba(255,255,255, 0) 15%,
+      rgba(255,255,255, 0) 75%,
+      rgba(255,255,255, 1) 95%);
+}
+
+.swipe_icon {
+    color: var(--text);
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.members_list {
+    padding: 1rem 0;
+}
+
+.details_members {
+    cursor: pointer;
+    list-style-type: none;
+    overflow-x: scroll;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow-y: hidden;
+    gap: 2rem;
+    padding-right: 5rem;
+    padding-left: 2rem;
+
+}
 
 .toggle_container {
     display: flex;
@@ -102,17 +149,17 @@
     }
 }
 
-.see_all_players {
-    flex-shrink: 0;
+.team_captain {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 4rem;
-    height: 4rem;
-    aspect-ratio: 1;
-    font-size: 1.5rem;
-    box-shadow: var(--box-shadow)
+    gap: .5rem;
+    .host_status {
+        display: flex;
+        align-items: center;
+        gap: .25rem;
+    }
 }
 
 .member_status {
@@ -165,7 +212,8 @@
 }
 
 .feed_list {
-    padding-bottom: 11rem;
+    padding: 1rem 0 17rem 0;
+    width: 100%;
 }
 
 .chat_item {
@@ -173,7 +221,67 @@
     display: flex;
     gap: 1rem;
     border-radius: 1.5rem;
+    position: relative;
+    transition: background .2s ease;
     &:hover {
-        background: var(--hover)
+        background: var(--hover);
+        .chat_controls {
+            opacity: 1;
+            pointer-events: unset;
+        }
     }
+
+    .chat_details {
+        width: 100%;
+        padding: .5rem 0 0 0;
+    }
+
+    .textarea {
+        border: none;
+        width: calc(100% - 6rem);
+        resize: none;
+        overflow-y: 'hidden';
+        padding: 0;
+        font-size: 1rem;
+        background: transparent;
+
+        // &:disabled {
+        //     backgroundn: none;
+        // }
+        &:focus {
+            outline: transparent;
+        }
+    }
+}
+
+.chat_controls {
+    transition: opacity .2s ease;
+    opacity: 0;
+    pointer-events: none;
+    display: flex;
+    position: absolute;
+    gap: .5rem;
+    right: 1rem;
+}
+
+.container_border {
+    border-top: var(--border);
+    position: relative;
+}
+
+.chat_preview_list {
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 1rem 0;
+    width: 100%;
+
+    .chat_item {
+        pointer-events: none;
+    }
+}
+
+.chat_flex {
+    display: flex;
+    align-items: center;;
+    gap: .5rem;
 }

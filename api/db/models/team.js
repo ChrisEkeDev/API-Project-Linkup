@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: 'id'
       });
 
+      Team.hasMany(models.TeamChat, {
+        foreignKey: 'teamId',
+        sourceKey: 'id'
+      })
+
       Team.hasMany(models.Membership, {
         foreignKey: 'teamId',
         sourceKey: 'id'
@@ -42,6 +47,7 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
       validate: {
         len: [5,60]
       }
