@@ -12,12 +12,11 @@ module.exports = {
       await queryInterface.createTable('Likes', {
         id: {
           allowNull: false,
-          autoIncrement: true,
           primaryKey: true,
-          type: Sequelize.INTEGER
+          type: Sequelize.UUIDV4,
         },
         playerId: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.UUIDV4,
           allowNull: false,
           references: {
             model: 'Players',
@@ -25,8 +24,8 @@ module.exports = {
           },
           onDelete: 'CASCADE'
         },
-        courtId: {
-            type: Sequelize.INTEGER,
+        entityId: {
+            type: Sequelize.UUIDV4,
             allowNull: false,
             references: {
               model: 'Courts',

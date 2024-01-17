@@ -25,7 +25,7 @@ router.get('/current', requireAuth, async (req, res) => {
     const playerId = req.player.id;
 
     let teams = await Membership.findAll({
-        where: { playerId, status: {[Op.ne]: 'host'}},
+        where: { playerId },
         attributes: ['id', 'status', 'teamId'],
         include: [
             {

@@ -1,7 +1,7 @@
 import { csrfFetch } from './csrf';
-import Cookies from 'js-cookie';
 
 // TYPES
+const GET_ALL_SESSIONS = '/linkup/sessions/GET_ALL_SESSIONS';
 const SEARCH_SESSIONS = '/linkup/sessions/SEARCH_SESSIONS';
 const GET_MY_SESSIONS = '/linkup/sessions/GET_MY_SESSIONS';
 const GET_SINGLE_SESSION = '/linkup/sessions/GET_SINGLE_SESSION';
@@ -12,6 +12,10 @@ const DELETE_SESSION = '/linkup/sessions/DELETE_SESSION';
 
 
 // ACTIONS
+const actionGetAllSessions = (sessions) => ({
+    type: GET_ALL_SESSIONS,
+    payload: sessions
+})
 
 const actionSearchSessions = (sessions) => ({
     type: SEARCH_SESSIONS,
@@ -46,6 +50,17 @@ const actionDeleteSession = (session) => ({
 
 
 //THUNKS
+
+export const thunkGetAllSessions = () => async dispatch => {
+    const res = await csrfFetch(`/api/sessions/all`);
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionGetAllSessions(jsonResponse.data))
+        return jsonResponse
+    } catch(error) {
+        console.error(error)
+    }
+}
 
 export const thunkSearchSessions = (query, sortBy) => async dispatch => {
     const res = await csrfFetch(`/api/sessions/search/?query=${query}&sortBy=${sortBy}`);
@@ -122,18 +137,23 @@ export const thunkDeleteSession = (session) => async dispatch => {
 
 
 // REDUCER
-const initialState = { allSessions: [], singleSession: {}, mySessions: []};
+const initialState = { allSessions: {}, singleSession: {}, mySessions: {}, searchedSessions: []};
 
 const sessionsReducer = (state = initialState, action) => {
     switch(action.type) {
+        case GET_ALL_SESSIONS: {
+            const newState = { ...state, allSessions: {} };
+            action.payload.forEach(session => newState.allSessions[session.id] = session);
+            return newState;
+        }
         case SEARCH_SESSIONS: {
-            const newState = { ...state, allSessions: [] }
-            action.payload.forEach(session => newState.allSessions.push(session));
+            const newState = { ...state, searchedSessions: [] }
+            action.payload.forEach(session => newState.searchedSessions.push(session));
             return newState;
         }
         case GET_MY_SESSIONS: {
-            const newState = { ...state, mySessions: [] };
-            action.payload.forEach(session => newState.mySessions.push(session));
+            const newState = { ...state, mySessions: {} };
+            action.payload.forEach(session => newState.mySessions[session.id] = session);
             return newState;
         };
         case GET_SINGLE_SESSION: {

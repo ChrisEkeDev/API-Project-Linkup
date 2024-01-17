@@ -12,7 +12,6 @@ function SessionPlayer({checkIn}) {
                 player={player}
                 size={4}
             />
-            {/* <p className='xs'>{player?.name}</p> */}
         </motion.li>
     )
 }

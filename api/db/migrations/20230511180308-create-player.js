@@ -1,7 +1,6 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 
-
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA
@@ -12,9 +11,8 @@ module.exports = {
     await queryInterface.createTable('Players', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUIDV4,
       },
       name: {
         type: Sequelize.STRING,

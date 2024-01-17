@@ -56,8 +56,10 @@
 .members_overlay {
     position: absolute;
     width:calc(100% - 2rem);
-    height:calc(100% - 4rem);
+    height:calc(100% - 2rem);
     z-index: 10;
+    margin: 1rem 0;
+    // background-color: red;
     pointer-events: none;
     background-image: linear-gradient(
         90deg,
@@ -284,4 +286,29 @@
     display: flex;
     align-items: center;;
     gap: .5rem;
+}
+
+
+.team_sessions {
+    padding: 1rem 0;
+}
+
+.team_session_list {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.team_session_item {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 1.5rem;
+    padding: 1rem;
+    border: 1.5rem;
+    transition: background .2s;
+    &:hover {
+        background-color: var(--hover);
+    }
 }

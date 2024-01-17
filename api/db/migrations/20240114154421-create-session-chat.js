@@ -12,16 +12,15 @@ module.exports = {
     await queryInterface.createTable('SessionChats', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUIDV4,
       },
       content: {
         type: Sequelize.STRING,
         allowNull: false
       },
       sessionId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUIDV4,
         allowNull: false,
         references: {
           model: 'Sessions',
@@ -29,7 +28,7 @@ module.exports = {
         }
     },
       playerId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUIDV4,
         allowNull: false,
         references: {
           model: 'Players',

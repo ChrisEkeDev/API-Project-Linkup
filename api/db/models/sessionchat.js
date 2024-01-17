@@ -1,7 +1,7 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
+
 module.exports = (sequelize, DataTypes) => {
   class SessionChat extends Model {
     static associate(models) {
@@ -18,21 +18,21 @@ module.exports = (sequelize, DataTypes) => {
   }
   SessionChat.init({
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true
+      defaultValue: uuidv4()
     },
     content:  {
       type: DataTypes.STRING,
       allowNull: false
     },
     sessionId:  {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false
   },
     playerId:  {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false
   }
   }, {

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useApp } from '../../../context/AppContext'
 import { thunkUpdateTeamChat, thunkDeleteTeamChat } from "../../../store/chats";
 
-function useChatItem(props) {
+function useTeamChat(props) {
     const {chat, socket, room} = props;
     const { dispatch } = useApp();
     const [content, setContent] = useState(chat.content);
@@ -55,4 +55,4 @@ function useChatItem(props) {
     return { ref, content, handleInput, updateTeamChat, deleteTeamChat, editing, setEditing }
 }
 
-export default useChatItem
+export default useTeamChat

@@ -9,12 +9,12 @@ import '../styles.scss';
 function SessionItem({session}) {
   const { navigate, setCurrentLocation } = useApp();
   const parsedDate = parseISO(session?.startDate);
-  const formattedTime = format(parsedDate, 'MM/dd @ h:mm a');
+  const formattedTime = format(parsedDate, 'MM/dd @ p');
 
   if (!session) return <li>loading</li>
 
   const handleNavigate = () => {
-    setCurrentLocation({lat: session.Court.lat, lng: session.Court.lng})
+    setCurrentLocation({lat: session.lat, lng: session.lng})
     navigate(`/sessions/${session.id}`)
   }
 
@@ -26,7 +26,7 @@ function SessionItem({session}) {
         />
         <div>
           <p className='sm bold'>{session.name} by <span className='bold'>{session.creator.name}</span></p>
-          <p className='sm bold'>{session.Court.address}</p>
+          <p className='sm bold'>{session.address}</p>
           <p className='md bold accent'>{formattedTime}</p>
         </div>
       </div>

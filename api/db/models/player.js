@@ -1,7 +1,7 @@
 'use strict';
 
 const { Model, Validator } = require('sequelize');
-
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = (sequelize, DataTypes) => {
   class Player extends Model {
@@ -53,10 +53,10 @@ module.exports = (sequelize, DataTypes) => {
 
   Player.init({
     id: {
-      type:DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true
+      defaultValue: uuidv4()
     },
     name:  {
       type: DataTypes.STRING,

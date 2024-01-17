@@ -20,7 +20,8 @@ function Teams() {
   const myTeamsArr = Object.values(myTeams)
   const myMemberships = useSelector(state => state.memberships.myMemberships)
   const myMembershipsArr = Object.values(myMemberships)
-  const joinedTeams = myMembershipsArr.filter(membership => membership.status !== 'pending');
+  const hostTeams = myMembershipsArr.filter(membership => membership.status === 'host')
+  const joinedTeams = myMembershipsArr.filter(membership => membership.status !== 'host' && membership.status !== 'pending');
   const pendingTeams = myMembershipsArr.filter(membership => membership.status === 'pending');
   const { navigate, dispatch } = useApp();
   const { loading } = useTeams();
@@ -42,17 +43,17 @@ function Teams() {
         <Scroll>
           <section className='list_items'>
             <span className='section_label xs bold'>{myTeamsArr.length} Team{myTeamsArr.length === 1 ? null : 's'} Created</span>
-            {myTeamsArr.length > 0 ?
+            {hostTeams.length > 0 ?
               <ul>
               {
-                myTeamsArr.map(team => (
-                  <TeamItem team={team}/>
+                hostTeams.map(membership => (
+                  <TeamItem team={membership.Team}/>
                 ))
               }
             </ul> :
-            <div className="no_teams">
+            <div className="no_content">
               <PiCoffee className='icon'/>
-              <p className='xs bold'>No Teams Created</p>
+              <p className='sm bold'>No Teams Created</p>
             </div>
             }
           </section>
@@ -67,9 +68,9 @@ function Teams() {
                   ))
                 }
               </ul> :
-              <div className="no_teams">
+              <div className="no_content">
                 <PiCoffee className='icon'/>
-                <p className='xs bold'>No Teams Joined</p>
+                <p className='sm bold'>No Teams Joined</p>
               </div>
             }
           </section>
@@ -84,9 +85,9 @@ function Teams() {
                   ))
                 }
               </ul> :
-              <div className="no_teams">
+              <div className="no_content">
                 <PiCoffee className='icon'/>
-                <p className='xs bold'>No Teams Awaiting Approval</p>
+                <p className='sm bold'>No Teams Awaiting Approval</p>
               </div>
             }
           </section>

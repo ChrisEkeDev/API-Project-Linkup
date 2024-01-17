@@ -1,7 +1,7 @@
 'use strict';
-const {
-  Model, Validator
-} = require('sequelize');
+const { Model, Validator } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
+
 module.exports = (sequelize, DataTypes) => {
   class Membership extends Model {
 
@@ -19,17 +19,17 @@ module.exports = (sequelize, DataTypes) => {
 
   Membership.init({
     id: {
-      type:DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true
+      defaultValue: uuidv4()
     },
     playerId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false
     },
     teamId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false
     },
     status: {

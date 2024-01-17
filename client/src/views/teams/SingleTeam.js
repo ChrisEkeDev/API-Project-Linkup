@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 import useModal from '../../hooks/useModal';
 import LoadingData from '../../components/shared/loading';
-import { thunkGetSingleTeam } from '../../store/teams';
+import { thunkGetSingleTeam, thunkGetTeamSessions } from '../../store/teams';
 import { thunkGetTeamFeed } from '../../store/chats'
 import { thunkGetTeamMemberships } from '../../store/memberships'
 import Scroll from '../../components/shared/scroll';
@@ -23,15 +23,16 @@ import TeamFeed from './components/TeamFeed'
 function SingleTeam({team, memberships}) {
     const [tabView, setTabView ] = useState('details')
     const { auth, navigate } = useApp();
-    const isMember = Object.values(memberships).find(membership => membership.playerId === auth.id);
+    const membershipsArr = Object.values(memberships)
+    const isMember = membershipsArr.find(membership => membership.playerId === auth.id);
     const isHost = auth.id === team.captain.id
-    const isAuth = isHost || isMember?.status === 'co-host';
     const { leaveTeam, joinTeam } = useMemberships();
 
     return (
         <motion.main {...base_animations} className='page teams'>
             <motion.header variants={child_variants} className='header'>
                 <div className="flex">
+                    <Back />
                     {
                         team.private ?
                         <PiLockFill title='Private' className='team_privacy_icon'/> :
@@ -106,6 +107,7 @@ function SingleTeamWrapper() {
     const singleTeam = useSelector(state => state.teams.singleTeam)
     const teamMemberships = useSelector(state => state.memberships.teamMemberships)
     const teamFeed = useSelector(state => state.chats.teamFeed)
+    const teamSessions = useSelector(state => state.teams.teamSessions)
 
     useEffect(() => {
         const loadTeam = async () => {
@@ -113,10 +115,13 @@ function SingleTeamWrapper() {
                 const singleTeamData = await dispatch(thunkGetSingleTeam(id));
                 const teamMembershipData = await dispatch(thunkGetTeamMemberships(id))
                 const teamFeedData = await dispatch(thunkGetTeamFeed(id))
+                const teamSessionsData = await dispatch(thunkGetTeamSessions(id))
                 if (
                     singleTeamData.status === 200 && singleTeam
                     && teamMembershipData.status === 200 && teamMemberships
-                    && teamFeedData.status == 200 && teamFeedData) {
+                    && teamFeedData.status == 200 && teamFeed
+                    && teamSessionsData.status === 200 && teamSessions
+                ) {
                     setLoading(false);
                 }
             } catch(e) {
@@ -130,7 +135,7 @@ function SingleTeamWrapper() {
     if (loading) return <LoadingData/>
 
     return (
-        <SingleTeam team={singleTeam} memberships={teamMemberships} feed={teamFeed} />
+        <SingleTeam team={singleTeam} memberships={teamMemberships} feed={teamFeed} teamSessions={teamSessions} />
     )
 }
 

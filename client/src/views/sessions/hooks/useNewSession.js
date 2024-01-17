@@ -17,7 +17,7 @@ function useNewSession() {
         name: '',
         startDate: '',
         endDate: '',
-        address: '',
+        address: null,
         duration: 1,
         private: false
     });
@@ -37,6 +37,15 @@ function useNewSession() {
         }
 
     }
+
+    const handleToggle = () => {
+        setSessionData((prev) => ({ ...prev, private: !sessionData.private }));
+    }
+
+    const handleHost = (id) => {
+        setSessionData((prev) => ({ ...prev, hostId: id }));
+    }
+
 
     // Handles the input of the Session Form
     const handleInput = (x) => {
@@ -65,8 +74,7 @@ function useNewSession() {
 
     const handleAddressObject = (rawData) => {
         const addressObject = {
-            id: rawData.place_id,
-            name: rawData.name,
+            place_id: rawData.place_id,
             address: rawData.formatted_address,
             lat: rawData.geometry.location.lat,
             lng: rawData.geometry.location.lng,
@@ -127,6 +135,8 @@ function useNewSession() {
         queryResults,
         errors,
         handleInput,
+        handleHost,
+        handleToggle,
         getPlaces,
         createSession,
     };

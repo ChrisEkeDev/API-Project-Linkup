@@ -8,7 +8,6 @@ function Back({route}) {
   return (
     <div onClick={() => goBack(route)} className='back--button'>
         <TbArrowLeft className='icon'/>
-        <span>Go Back</span>
     </div>
   )
 }

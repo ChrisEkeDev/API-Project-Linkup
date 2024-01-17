@@ -2,6 +2,14 @@
 
 /** @type {import('sequelize-cli').Migration} */
 
+const {
+  player1uuid, team1uuid,
+  player2uuid, team2uuid,
+  player3uuid, team3uuid,
+  player4uuid, team4uuid,
+  player5uuid, team5uuid
+} = require('../seedUUIDs')
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA
@@ -12,27 +20,32 @@ module.exports = {
     options.tableName = 'Teams';
     await queryInterface.bulkInsert(options, [
       {
-        captainId: 2,
+        id: team1uuid,
+        captainId: player2uuid,
         name: 'Ball Hogs',
         private: false
       },
       {
-        captainId: 1,
+        id: team2uuid,
+        captainId: player1uuid,
         name: 'Lik Buttah',
         private: false
       },
       {
-        captainId: 4,
+        id: team3uuid,
+        captainId: player4uuid,
         name: 'NO Smoking',
         private: true
       },
       {
-        captainId: 4,
+        id: team4uuid,
+        captainId: player4uuid,
         name: 'Air Up There',
         private: true
       },
       {
-        captainId: 3,
+        id: team5uuid,
+        captainId: player3uuid,
         name: 'GameBreakers',
         private: false
       },

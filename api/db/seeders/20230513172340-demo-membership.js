@@ -2,6 +2,15 @@
 
 /** @type {import('sequelize-cli').Migration} */
 
+const {
+  player1uuid, team1uuid,
+  player2uuid, team2uuid,
+  player3uuid, team3uuid,
+  player4uuid, team4uuid,
+  player5uuid, team5uuid
+} = require('../seedUUIDs')
+const { v4: uuidv4 } = require('uuid');
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA
@@ -12,128 +21,153 @@ module.exports = {
     options.tableName = 'Memberships';
     await queryInterface.bulkInsert(options, [
       {
-        playerId: 2,
-        teamId: 1,
+        id: uuidv4(),
+        playerId: player2uuid,
+        teamId: team1uuid,
         status: "host"
       },
       {
-        playerId: 1,
-        teamId: 2,
+        id: uuidv4(),
+        playerId: player1uuid,
+        teamId: team2uuid,
         status: "host"
       },
       {
-        playerId: 4,
-        teamId: 3,
+        id: uuidv4(),
+        playerId: player4uuid,
+        teamId: team3uuid,
         status: "host"
       },
       {
-        playerId: 4,
-        teamId: 4,
+        id: uuidv4(),
+        playerId: player4uuid,
+        teamId: team4uuid,
         status: "host"
       },
       {
-        playerId: 3,
-        teamId: 5,
+        id: uuidv4(),
+        playerId: player3uuid,
+        teamId: team5uuid,
         status: "host"
       },
       {
-        playerId: 2,
-        teamId: 5,
+        id: uuidv4(),
+        playerId: player2uuid,
+        teamId: team5uuid,
         status: "co-host"
       },
       {
-        playerId: 2,
-        teamId: 4,
+        id: uuidv4(),
+        playerId: player2uuid,
+        teamId: team4uuid,
         status: "member"
       },
       {
-        playerId: 2,
-        teamId: 3,
+        id: uuidv4(),
+        playerId: player2uuid,
+        teamId: team3uuid,
         status: "pending"
       },
       {
-        playerId: 1,
-        teamId: 4,
+        id: uuidv4(),
+        playerId: player1uuid,
+        teamId: team4uuid,
         status: "co-host"
       },
       {
-        playerId: 1,
-        teamId: 5,
+        id: uuidv4(),
+        playerId: player1uuid,
+        teamId: team5uuid,
         status: "member"
       },
       {
-        playerId: 3,
-        teamId: 1,
+        id: uuidv4(),
+        playerId: player3uuid,
+        teamId: team1uuid,
         status: "pending"
       },
       {
-        playerId: 3,
-        teamId: 2,
+        id: uuidv4(),
+        playerId: player3uuid,
+        teamId: team2uuid,
         status: "member"
       },
       {
-        playerId: 4,
-        teamId: 5,
+        id: uuidv4(),
+        playerId: player4uuid,
+        teamId: team5uuid,
         status: "pending"
       },
       {
-        playerId: 4,
-        teamId: 1,
+        id: uuidv4(),
+        playerId: player4uuid,
+        teamId: team1uuid,
         status: "member"
       },
       {
-        playerId: 5,
-        teamId: 1,
+        id: uuidv4(),
+        playerId: player5uuid,
+        teamId: team1uuid,
         status: "member"
       },
       {
-        playerId: 1,
-        teamId: 3,
+        id: uuidv4(),
+        playerId: player1uuid,
+        teamId: team3uuid,
         status: "member"
       },
       {
-        playerId: 1,
-        teamId: 1,
+        id: uuidv4(),
+        playerId: player1uuid,
+        teamId: team1uuid,
         status: "pending"
       },
       {
-        playerId: 2,
-        teamId: 2,
+        id: uuidv4(),
+        playerId: player2uuid,
+        teamId: team2uuid,
         status: "member"
       },
       {
-        playerId: 3,
-        teamId: 3,
+        id: uuidv4(),
+        playerId: player3uuid,
+        teamId: team3uuid,
         status: "member"
       },
       {
-        playerId: 3,
-        teamId: 4,
+        id: uuidv4(),
+        playerId: player3uuid,
+        teamId: team4uuid,
         status: "pending"
       },
       {
-        playerId: 4,
-        teamId: 2,
+        id: uuidv4(),
+        playerId: player4uuid,
+        teamId: team2uuid,
         status: "pending"
       },
       {
-        playerId: 5,
-        teamId: 2,
+        id: uuidv4(),
+        playerId: player5uuid,
+        teamId: team2uuid,
         status: "pending"
       },
       {
-        playerId: 5,
-        teamId: 4,
+        id: uuidv4(),
+        playerId: player5uuid,
+        teamId: team4uuid,
         status: "member"
       },
       {
-        playerId: 5,
-        teamId: 3,
+        id: uuidv4(),
+        playerId: player5uuid,
+        teamId: team3uuid,
         status: "co-host"
       },
       {
-        playerId: 5,
-        teamId: 5,
+        id: uuidv4(),
+        playerId: player5uuid,
+        teamId: team5uuid,
         status: "member"
       }
     ])

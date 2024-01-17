@@ -6,7 +6,7 @@ import { parent_variants, base_animations } from '../../../constants/animations'
 import useNewTeamChat from '../hooks/useNewTeamChat';
 import useTeamChatWebSocket from '../hooks/useTeamChatWebSocket'
 import { useSelector } from 'react-redux'
-import ChatItem from './ChatItem'
+import ChatItem from './TeamChat'
 import ChatInput from '../../../components/shared/inputs/ChatInput'
 import Scroll from '../../../components/shared/scroll';
 
@@ -56,7 +56,7 @@ function TeamFeed() {
             <ChatInput
                 handleInput={handleInput}
                 content={content}
-                createTeamChat={createTeamChat}
+                create={createTeamChat}
             />
         </Scroll>
     )

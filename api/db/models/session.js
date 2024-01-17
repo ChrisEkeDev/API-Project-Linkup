@@ -1,5 +1,6 @@
 'use strict';
 const { Model, Validator, Op, fn, col } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = (sequelize, DataTypes) => {
   class Session extends Model {
@@ -12,13 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       Session.belongsTo(models.Team, {
-        as: "host",
         foreignKey: 'hostId',
-        targetKey: 'id'
-      })
-
-      Session.belongsTo(models.Court, {
-        foreignKey: 'courtId',
         targetKey: 'id'
       })
 
@@ -50,13 +45,13 @@ module.exports = (sequelize, DataTypes) => {
 
   Session.init({
     id: {
-      type:DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true
+      defaultValue: uuidv4()
     },
     creatorId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false
     },
     name: {
@@ -67,18 +62,34 @@ module.exports = (sequelize, DataTypes) => {
         len: [5,60]
       }
     },
-    courtId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+    placeId: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    lat: {
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+        min: -90,
+        max: 90
+    },
+    lng: {
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+        min: -180,
+        max: 180
     },
     hostId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: true
     },
     private: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: true
+      defaultValue: false
     },
     startDate: {
       type: DataTypes.STRING,

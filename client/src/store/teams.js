@@ -5,6 +5,7 @@ const GET_ALL_TEAMS = '/linkup/teams/GET_ALL_TEAMS'
 const SEARCH_TEAMS = '/linkup/teams/SEARCH_TEAMS';
 const GET_MY_TEAMS = '/linkup/teams/GET_MY_TEAMS';
 const GET_SINGLE_TEAM = '/linkup/teams/GET_SINGLE_TEAM';
+const GET_TEAM_SESSIONS = '/linkup/teams/GET_TEAM_SESSIONS'
 const CREATE_TEAM = '/linkup/teams/CREATE_TEAM';
 const UPDATE_TEAM = '/linkup/teams/UPDATE_TEAM';
 const DELETE_TEAM = '/linkup/teams/DELETE_TEAM';
@@ -30,6 +31,11 @@ const actionGetMyTeams = (teams) => ({
 const actionGetSingleTeam = (team) => ({
     type: GET_SINGLE_TEAM,
     payload: team
+})
+
+const actionGetTeamSessions = (sessions) => ({
+    type: GET_TEAM_SESSIONS,
+    payload: sessions
 })
 
 const actionCreateTeam = (team) => ({
@@ -94,6 +100,17 @@ export const thunkGetSingleTeam = (teamId) => async dispatch => {
     }
 }
 
+export const thunkGetTeamSessions = (teamId) => async dispatch => {
+    const res = await csrfFetch(`/api/teams/${teamId}/sessions`);
+    try {
+        const jsonResponse = await res.json();
+        await dispatch(actionGetTeamSessions(jsonResponse.data))
+        return jsonResponse
+    } catch(error) {
+        console.error(error)
+    }
+}
+
 export const thunkCreateNewTeam = (teamData) => async dispatch => {
     const res = await csrfFetch('/api/teams', {
         method: 'POST',
@@ -137,7 +154,7 @@ export const thunkDeleteTeam = (team) => async dispatch => {
 
 
 // REDUCER
-const initialState = { allTeams:{}, searchedTeams: [], singleTeam: {}, myTeams: {} };
+const initialState = { allTeams:{}, searchedTeams: [], singleTeam: {}, myTeams: {}, teamSessions:{} };
 
 const teamsReducer = (state = initialState, action) => {
     switch(action.type) {
@@ -163,6 +180,11 @@ const teamsReducer = (state = initialState, action) => {
             newState.singleTeam = action.payload;
             return newState;
         };
+        case GET_TEAM_SESSIONS: {
+            const newState = { ...state, teamSessions: {} };
+            action.payload.forEach(session => newState.teamSessions[session.id] = session);
+            return newState;
+        }
         case DELETE_TEAM: {
             const newState = { ...state };
             delete newState.allTeams[action.payload.id];

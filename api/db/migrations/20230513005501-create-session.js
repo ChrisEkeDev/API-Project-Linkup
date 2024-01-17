@@ -1,6 +1,7 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
-
+const { Sequelize, DataTypes } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA
@@ -11,12 +12,11 @@ module.exports = {
     await queryInterface.createTable('Sessions', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUIDV4,
       },
       creatorId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUIDV4,
         allowNull: false,
         references: {
           model: 'Players',
@@ -28,21 +28,29 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      courtId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Courts',
-          key: 'id'
-        },
-      },
       hostId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUIDV4,
         allowNull: true,
         references: {
           model: 'Teams',
           key: 'id'
         }
+      },
+      placeId: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      address: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      lat: {
+          type: Sequelize.DECIMAL,
+          allowNull: false
+      },
+      lng: {
+          type: Sequelize.DECIMAL,
+          allowNull: false
       },
       private: {
         type: Sequelize.BOOLEAN,

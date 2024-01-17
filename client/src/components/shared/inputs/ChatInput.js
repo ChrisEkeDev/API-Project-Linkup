@@ -4,7 +4,7 @@ import './styles.scss';
 import IconButton from '../button/IconButton'
 import { PiPaperPlaneRightFill  } from 'react-icons/pi'
 
-function ChatInput({content, handleInput, createTeamChat}) {
+function ChatInput({content, handleInput, create}) {
   return (
     <div className="chat_input">
         <div className="chat_contents">
@@ -12,7 +12,7 @@ function ChatInput({content, handleInput, createTeamChat}) {
             <IconButton
                 styles='send_btn'
                 icon={PiPaperPlaneRightFill}
-                action={createTeamChat}
+                action={create}
             />
         </div>
     </div>

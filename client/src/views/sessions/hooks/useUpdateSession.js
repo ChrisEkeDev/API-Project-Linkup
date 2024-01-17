@@ -13,11 +13,12 @@ const useUpdateSession = (session) => {
     const [ errors, setErrors ] = useState({});
     const [ sessionData, setSessionData ] = useState({
         name: session?.name ,
-        startDate: session.startDate,
+        startDate: session?.startDate,
         date: convertDateToUI(session.startDate),
         time: convertTimeToUI(session.startDate),
         duration: getDuration(session.startDate, session.endDate),
-        // private: session.private
+        hostId: session.hostId,
+        private: session.private
     });
 
     // Handles the input of the Session Form
@@ -36,6 +37,14 @@ const useUpdateSession = (session) => {
         } finally {
             setLoading(false)
         }
+    }
+
+    const handleToggle = () => {
+        setSessionData((prev) => ({ ...prev, private: !sessionData.private }));
+    }
+
+    const handleHost = (id) => {
+        setSessionData((prev) => ({ ...prev, hostId: id }));
     }
 
 
@@ -75,6 +84,8 @@ const useUpdateSession = (session) => {
         sessionData,
         errors,
         handleInput,
+        handleHost,
+        handleToggle,
         updateSession,
     };
 }

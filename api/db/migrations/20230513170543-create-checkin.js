@@ -11,12 +11,11 @@ module.exports = {
     await queryInterface.createTable('CheckIns', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUIDV4,
       },
       sessionId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUIDV4,
         allowNull: false,
         references: {
           model: 'Sessions',
@@ -25,7 +24,7 @@ module.exports = {
         onDelete: 'CASCADE'
       },
       playerId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUIDV4,
         allowNull: false,
         references: {
           model: 'Players',

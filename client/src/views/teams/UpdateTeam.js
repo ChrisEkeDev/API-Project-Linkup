@@ -25,6 +25,13 @@ function UpdateTeam({team}) {
     <motion.main {...page_transitions} className='page teams'>
         <header className='header'>
             <Back />
+            <Button
+                label="Update Team"
+                styles="primary"
+                icon={PiCalendarCheckFill}
+                action={updateTeam}
+                disabled={Object.keys(errors).length > 0}
+            />
         </header>
         <Scroll>
             <form className='session_form'>
@@ -40,16 +47,7 @@ function UpdateTeam({team}) {
                     error={errors?.name}
                     disabled={false}
                 />
-                <PrivacyToggle {...{ teamData, handleToggle }} />
-                <footer className='form_actions'>
-                    <Button
-                        label="Update Team"
-                        styles="primary"
-                        icon={PiCalendarCheckFill}
-                        action={updateTeam}
-                        disabled={Object.keys(errors).length > 0}
-                    />
-                </footer>
+                <PrivacyToggle data={teamData} handleToggle={handleToggle} />
                 <footer className='form_caution'>
                     <Button
                         label="Delete Team"

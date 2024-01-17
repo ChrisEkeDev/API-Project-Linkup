@@ -11,11 +11,16 @@ import { useApp } from '../../context/AppContext';
 import useSessionSearch from './hooks/useSessionSearch';
 import Scroll from '../../components/shared/scroll';
 import { page_transitions } from '../../constants/animations';
-import { PiPlusBold, PiMagnifyingGlassBold } from 'react-icons/pi';
+import { PiPlusBold, PiMagnifyingGlassBold, PiCoffee } from 'react-icons/pi';
 
 
 function Sessions() {
-  const sessions = useSelector(state => state.sessions.mySessions);
+  const { auth } = useApp();
+  const sessionsData = useSelector(state => state.sessions.mySessions);
+  const sessions = Object.values(sessionsData)
+  console.log(sessions)
+  const createdSessions = sessions.filter(session => session.creator.id === auth.id)
+  const joinedSessions = sessions.filter(session => session.creator.id !== auth.id)
   const { navigate } = useApp();
 
   return (
@@ -31,37 +36,34 @@ function Sessions() {
           </header>
           <Scroll>
             <section className='list_items'>
-              <span className='section_label xs bold'>{sessions.length} Session{sessions.length === 1 ? null : 's'}</span>
+              <span className='section_label xs bold'>{createdSessions.length} Session{createdSessions.length === 1 ? null : 's'} created</span>
+              {
+                createdSessions.length > 0 ?
+                <ul>
+                {
+                  createdSessions.map(session => (
+                    <SessionItem session={session}/>
+                  ))
+                }
+              </ul> :
+              <div className="no_content">
+                <PiCoffee className='icon'/>
+                <p className='sm bold'>No Teams Created</p>
+              </div>
+              }
+
+            </section>
+            <section className='list_items'>
+              <span className='section_label xs bold'>{joinedSessions.length} Session{joinedSessions.length === 1 ? null : 's'} attending</span>
               <ul>
                 {
-                  sessions.map(session => (
+                  joinedSessions.map(session => (
                     <SessionItem session={session}/>
                   ))
                 }
               </ul>
             </section>
           </Scroll>
-        {/* <Scroll>
-          <section className='section sessions_list'>
-          <span className='section_label xs bold'>{sessions.length} Sessions</span>
-            <header className='sub_header float_right'>
-                <Button
-                  label='New Session'
-                  styles="secondary new_session-button"
-                  action={() => navigate(ROUTE.NEW_SESSION)}
-                  icon={PiPlusBold}
-                />
-          </header>
-            <motion.ul
-              variants={parent_variants}
-              {...base_animations}
-              className='session_list'>
-                {sessions.map(session => (
-                  <SessionItem session={session} />
-                ))}
-            </motion.ul>
-          </section>
-        </Scroll> */}
       </motion.main>
   )
 }

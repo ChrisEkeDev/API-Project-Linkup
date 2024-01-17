@@ -4,15 +4,15 @@ import { base_animations, child_variants } from '../../../constants/animations';
 import IconButton from '../../../components/shared/button/IconButton'
 import { useApp } from '../../../context/AppContext'
 import { format , parseISO } from 'date-fns'
-import useChatItem from "../hooks/useChatItem"
+import useTeamChat from "../hooks/useTeamChat"
 import ProfileImage from '../../../components/shared/profileImage'
 import { PiPencilSimpleLineFill, PiXBold, PiCheckFatFill, PiTrashBold  } from "react-icons/pi";
 
-function ChatItem(props) {
+function TeamChat(props) {
     const { auth } = useApp();
     const { chat, room, socket } = props;
     const isAuth = auth.id === chat.playerId
-    const { ref, content, handleInput, updateTeamChat, deleteTeamChat, editing, setEditing  } = useChatItem(props)
+    const { ref, content, handleInput, updateTeamChat, deleteTeamChat, editing, setEditing  } = useTeamChat(props)
     const formatDate = format(parseISO(chat.createdAt), 'MM/dd/yy p');
     const textareaRef = useRef(null);
 
@@ -74,4 +74,4 @@ function ChatItem(props) {
     )
 }
 
-export default ChatItem
+export default TeamChat

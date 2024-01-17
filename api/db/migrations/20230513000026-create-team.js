@@ -11,12 +11,11 @@ module.exports = {
     await queryInterface.createTable('Teams', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUIDV4,
       },
       captainId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUIDV4,
         allowNull: false,
         references: {
           model: 'Players',

@@ -1,11 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { teamChat } = require('../../utils/websockets')
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../errors/validationErrors');
-const { Team, Membership, Player, TeamChat } = require('../../db/models');
+const { Team, Membership, Player, TeamChat, Session, CheckIn } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
-const { Sequelize, Op, fn, col } = require('sequelize');
+const {  Op, fn, col } = require('sequelize');
 const { validateCreateTeam, validateEditTeam } = require('./validation/expressValidations')
 const { teamNotFound, playerNotAuthorized, membershipNotFound, membershipAlreadyExists } = require('./constants/responseMessages');
 
@@ -28,7 +25,7 @@ router.get('/search/*', async (req, res) => {
             {
                 as: "captain",
                 model: Player,
-                attributes: ['name', 'profileImage']
+                attributes: ['id', 'name', 'profileImage']
             },
         ],
         order: [
@@ -77,7 +74,7 @@ router.get('/current', requireAuth, async (req, res) => {
             {
                 as: "captain",
                 model: Player,
-                attributes: ['name', 'profileImage']
+                attributes: ['id', 'name', 'profileImage']
             },
         ]
     })
@@ -86,6 +83,44 @@ router.get('/current', requireAuth, async (req, res) => {
         status: 200,
         message:null,
         data: teams,
+        error: null
+    })
+})
+
+// Get all sessions hosted by the team
+router.get('/:teamId/sessions', async(req, res) => {
+    const { teamId } = req.params;
+    const team = await Team.findByPk(teamId)
+    // Checks if the team exists
+    if (!team) {
+        return res.status(404).json(teamNotFound)
+    }
+
+    const teamSessions = await Session.findAll({
+        where: { hostId: team.id},
+        attributes: {
+            include: [
+                [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
+            ],
+            exclude: ['CheckIn','updatedAt']
+        },
+        group: ['Session.id'],
+        include: [
+            {
+                model: Player,
+                as: 'creator'
+            },
+            {
+                model: CheckIn,
+                attributes: []
+            }
+        ]
+    })
+
+    return res.status(200).json({
+        status: 200,
+        message:null,
+        data: teamSessions,
         error: null
     })
 })
@@ -146,6 +181,7 @@ router.post('/', requireAuth, validateCreateTeam, async (req, res) => {
 
     // Creates the team
     const team = await Team.create({
+        id: uuidv4(),
         captainId: playerId,
         name,
         private
@@ -153,6 +189,7 @@ router.post('/', requireAuth, validateCreateTeam, async (req, res) => {
 
     // Create the Membership
     await Membership.create({
+        id: uuidv4(),
         playerId,
         teamId: team.id,
         status: 'host'
@@ -166,7 +203,7 @@ router.post('/', requireAuth, validateCreateTeam, async (req, res) => {
             {
                 model: Player,
                 as: "captain",
-                attributes: ['name', 'profileImage']
+                attributes: ['id', 'name', 'profileImage']
             },
             {
                 model: Player,
@@ -229,7 +266,7 @@ router.put('/:teamId', requireAuth, validateEditTeam, async (req, res) => {
             {
                 model: Player,
                 as: "captain",
-                attributes: ['name', 'profileImage']
+                attributes: ['id', 'name', 'profileImage']
             },
             {
                 model: Player,

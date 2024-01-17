@@ -2,6 +2,7 @@
 const { Model, Validator } = require('sequelize');
 const { Sequelize } = require('.');
 const { Membership } = require('../models')
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = (sequelize, DataTypes) => {
   class Team extends Model {
@@ -23,6 +24,11 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: 'id'
       })
 
+      Team.hasMany(models.Session, {
+        foreignKey: 'hostId',
+        sourceKey: 'id'
+      })
+
       Team.belongsToMany(models.Player, {
         through: models.Membership,
         foreignKey: 'teamId',
@@ -35,13 +41,13 @@ module.exports = (sequelize, DataTypes) => {
 
   Team.init({
     id: {
-      type:DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true
+      defaultValue: uuidv4()
     },
     captainId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false
     },
     name: {

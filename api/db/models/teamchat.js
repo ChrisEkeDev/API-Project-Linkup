@@ -1,5 +1,6 @@
 'use strict';
 const { Model } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = (sequelize, DataTypes) => {
   class TeamChat extends Model {
@@ -16,21 +17,21 @@ module.exports = (sequelize, DataTypes) => {
   }
   TeamChat.init({
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true
+      defaultValue: uuidv4()
     },
     content:  {
       type: DataTypes.STRING,
       allowNull: false
     },
     teamId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false
   },
     playerId:  {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false
   }
   }, {

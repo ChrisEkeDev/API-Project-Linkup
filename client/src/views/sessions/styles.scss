@@ -177,7 +177,7 @@
     gap: 1rem;
     position: relative;
     border-top: var(--border);
-    padding: 2rem 1rem;
+    padding: 0 1rem;
 
 
 }
@@ -188,6 +188,7 @@
     background-color: var(--background);
     left: .5rem;
     top: -1.15rem;
+    text-transform: capitalize;
 }
 
 .checkIn_list{
@@ -200,11 +201,17 @@
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
+    padding: 2rem 0;
+    position: relative;
     align-items: center;
     gap: .5rem;
 
-    .name {
-        font-weight: 600;
+    .player_status_crown {
+        font-size: 1.25rem;
+        position: absolute;
+        top: 1.5rem;
+        right: 0rem;
+        // color: var(--main);
     }
 }
 
@@ -332,6 +339,34 @@
         background-color: var(--hover);
     }
 }
+
+.session_specs {
+    display: flex;
+    align-items: center;
+    padding: 2rem 1rem;
+    gap: 1rem;
+}
+
+
+.session_hosts {
+    margin: 3rem 0;
+    padding: 2rem 0;
+}
+
+.session_host {
+    display: flex;
+    padding: 1rem;
+    align-items: center;
+    border-radius: 1.5rem;
+    gap: 1rem;
+    cursor: pointer;
+    transition: background .3s;
+
+    &:hover {
+        background-color: var(--hover);
+    }
+}
+
 ///////////////////////////////////////////////////////////////
 
 

@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { CheckIn, Session, Player, Comment, SessionImage, SessionChat, Court } = require('../../db/models');
+const { CheckIn, Session, Player, Team, SessionImage, SessionChat } = require('../../db/models');
 const { Op, fn, col } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
 const { uploadMedia, deleteMedia } = require('../../utils/aws');
 const { validateCreateSession, validateEditSession } = require('./validation/expressValidations')
-const { sessionNotFound, playerNotAuthorized } =require('./constants/responseMessages');
+const { sessionNotFound, playerNotAuthorized, teamNotFound } =require('./constants/responseMessages');
+const { v4: uuidv4 } = require('uuid');
 
 
 // Search Sessions Sorted by Relevance
@@ -24,24 +25,35 @@ router.get('/search/*', async(req, res) => {
                 'startDate',
                 'endDate',
                 'creatorId',
+                'address',
+                'lat',
+                'lng',
+                'private',
+                'createdAt',
+                'hostId',
                 [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
             ],
-            exclude: ['CheckIn', 'courtId','updatedAt', 'createdAt', 'private']
+            exclude: ['CheckIn','updatedAt']
         },
         group: ['Session.id'],
         include: [
             {
                 model: Player,
                 as: "creator",
-                attributes: ['name', 'profileImage']
-            },
-            {
-                model: Court,
-                attributes: ['id', 'address', 'lat', 'lng']
+                attributes: ['id', 'name', 'profileImage']
             },
             {
                 model: CheckIn,
                 attributes: []
+            },
+            {
+                model: Team,
+                include: {
+                    model: Player,
+                    as: 'captain',
+                    attributes: ['profileImage', 'name']
+                },
+                attributes: ['id', 'name']
             }
         ],
         where: {
@@ -61,7 +73,7 @@ router.get('/search/*', async(req, res) => {
                 if (session.name.toLowerCase().includes(word)) {
                     relevance++;
                 }
-                if (session.Court.address.toLowerCase().includes(word)) {
+                if (session.address.toLowerCase().includes(word)) {
                     relevance++;
                 }
                 if (session.creator.name.toLowerCase().includes(word)) {
@@ -101,24 +113,35 @@ router.get('/current', requireAuth, async (req, res) => {
                 'startDate',
                 'endDate',
                 'creatorId',
+                'address',
+                'lat',
+                'lng',
+                'private',
+                'createdAt',
+                'hostId',
                 [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
             ],
-            exclude: ['CheckIn', 'courtId','updatedAt', 'createdAt', 'private']
+            exclude: ['CheckIn','updatedAt']
         },
         group: ['Session.id'],
         include: [
             {
                 model: Player,
                 as: "creator",
-                attributes: ['name', 'profileImage']
-            },
-            {
-                model: Court,
-                attributes: ['id', 'address', 'lat', 'lng']
+                attributes: ['id', 'name', 'profileImage']
             },
             {
                 model: CheckIn,
                 attributes: []
+            },
+            {
+                model: Team,
+                include: {
+                    model: Player,
+                    as: 'captain',
+                    attributes: ['profileImage', 'name']
+                },
+                attributes: ['id', 'name']
             }
         ]
     });
@@ -147,9 +170,15 @@ router.get('/:sessionId', async (req, res) => {
                 'startDate',
                 'endDate',
                 'creatorId',
+                'address',
+                'lat',
+                'lng',
+                'private',
+                'createdAt',
+                'hostId',
                 [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
             ],
-            exclude: ['CheckIn', 'courtId','updatedAt', 'createdAt', 'private']
+            exclude: ['CheckIn','updatedAt']
         },
         group: ['Session.id'],
         include: [
@@ -159,15 +188,29 @@ router.get('/:sessionId', async (req, res) => {
                 attributes: ['name', 'profileImage']
             },
             {
-                model: Court,
-                attributes: ['id', 'address', 'lat', 'lng']
-            },
-            {
                 model: CheckIn,
                 include: {
                     model: Player,
                     as: 'player',
                 }
+            },
+            {
+                model: Team,
+                include: {
+                    model: Player,
+                    as: 'captain',
+                    attributes: ['profileImage', 'name']
+                },
+                attributes: ['id', 'name']
+            },
+            {
+                model: SessionChat,
+                include: {
+                    model: Player,
+                    attributes: ['name', 'profileImage']
+                },
+                order: [['createdAt', 'DESC']],
+                limit: 3
             }
         ]
     })
@@ -190,41 +233,33 @@ router.get('/:sessionId', async (req, res) => {
 
 ////////////////////
 router.post('/', requireAuth, uploadMedia, validateCreateSession, async (req, res) => {
-    const { name, address, private, startDate, endDate } = req.body;
+    const { name, address, private, startDate, endDate, hostId } = req.body;
     const image = req.file;
     const playerId = req.player.id;
 
-    const existingCourt = await Court.findOne({
-        where: { placeId: address.id }
-    })
-
-    let newCourt;
-
-    if (!existingCourt) {
-        newCourt = await Court.create({
-            placeId: address.id,
-            name: address.name,
-            address: address.address,
-            lat: address.lat,
-            lng: address.lng
-        })
-    }
-
     const session = await Session.create({
+        id: uuidv4(),
         creatorId: playerId,
         name,
-        courtId: existingCourt ? existingCourt.id : newCourt.id,
+        placeId: address.place_id,
+        address: address.address,
+        lat: address.lat,
+        lng: address.lng,
         private,
         startDate,
-        endDate
+        endDate,
+        hostId
     })
 
     await CheckIn.create({
-        sessionId: session.id, playerId
+        id: uuidv4(),
+        sessionId: session.id,
+        playerId
     })
 
     if (image) {
         await SessionImage.create({
+            id: uuidv4(),
             sessionId: session.id,
             url: image.location
         })
@@ -238,24 +273,35 @@ router.post('/', requireAuth, uploadMedia, validateCreateSession, async (req, re
                 'startDate',
                 'endDate',
                 'creatorId',
+                'address',
+                'lat',
+                'lng',
+                'private',
+                'createdAt',
+                'hostId',
                 [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
             ],
-            exclude: ['CheckIn', 'courtId','updatedAt', 'createdAt', 'private']
+            exclude: ['CheckIn','updatedAt']
         },
         group: ['Session.id'],
         include: [
             {
                 model: Player,
                 as: "creator",
-                attributes: ['name', 'profileImage']
-            },
-            {
-                model: Court,
-                attributes: ['id', 'address', 'lat', 'lng']
+                attributes: ['id', 'name', 'profileImage']
             },
             {
                 model: CheckIn,
                 attributes: []
+            },
+            {
+                model: Team,
+                include: {
+                    model: Player,
+                    as: 'captain',
+                    attributes: ['profileImage', 'name']
+                },
+                attributes: ['id', 'name']
             }
         ]
     });
@@ -280,11 +326,17 @@ router.post('/', requireAuth, uploadMedia, validateCreateSession, async (req, re
 router.put('/:sessionId', requireAuth, validateEditSession, async (req, res) => {
     const { sessionId } = req.params;
     const playerId = req.player.id;
-    const { name, startDate, endDate } = req.body;
-    let session = await Session.scope(null).findByPk(sessionId);
+    const { name, startDate, endDate, hostId } = req.body;
+    const session = await Session.findByPk(sessionId);
+    const team = await Team.findByPk(hostId)
+    console.log(session , hostId)
 
     if (!session) {
         return res.status(404).json(sessionNotFound)
+    }
+
+    if (!team) {
+        return res.status(404).json(teamNotFound)
     }
 
     const isAuthorized = playerId == session.creatorId;
@@ -293,13 +345,19 @@ router.put('/:sessionId', requireAuth, validateEditSession, async (req, res) => 
         return res.status(403).json(playerNotAuthorized)
     }
 
-    await session.set({
-        name: name ? name : session.name,
-        startDate: startDate ? startDate : session.startDate,
-        endDate: endDate ? endDate : session.endDate
-    })
+    try {
+        await session.set({
+            name: name ? name : session.name,
+            startDate: startDate ? startDate : session.startDate,
+            endDate: endDate ? endDate : session.endDate,
+            hostId: hostId ? hostId : session.hostId
+        })
+        await session.save();
+    } catch (e) {
+        console.log(e)
+    }
 
-    await session.save();
+
 
     const updatedSession = await Session.findByPk(session.id, {
         attributes: {
@@ -309,24 +367,30 @@ router.put('/:sessionId', requireAuth, validateEditSession, async (req, res) => 
                 'startDate',
                 'endDate',
                 'creatorId',
+                'address',
+                'lat',
+                'lng',
+                'private',
+                'createdAt',
+                'hostId',
                 [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
             ],
-            exclude: ['CheckIn', 'courtId', 'updatedAt', 'createdAt', 'private']
+            exclude: ['CheckIn', 'updatedAt']
         },
         group: ['Session.id'],
         include: [
             {
                 model: Player,
                 as: "creator",
-                attributes: ['name', 'profileImage']
-            },
-            {
-                model: Court,
-                attributes: ['id', 'address', 'lat', 'lng']
+                attributes: ['id', 'name', 'profileImage']
             },
             {
                 model: CheckIn,
                 attributes: []
+            },
+            {
+                model: Team,
+                attributes: ['id', 'name']
             }
         ]
     });

@@ -2,6 +2,15 @@
 
 /** @type {import('sequelize-cli').Migration} */
 
+const {
+  player1uuid, team1uuid,
+  player2uuid, team2uuid,
+  player3uuid, team3uuid,
+  player4uuid, team4uuid,
+  player5uuid, team5uuid
+} = require('../seedUUIDs')
+const { v4: uuidv4 } = require('uuid');
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA
@@ -12,79 +21,94 @@ module.exports = {
     options.tableName = 'TeamChats';
     await queryInterface.bulkInsert(options, [
       {
+        id: uuidv4(),
         content: "Hey everyone, let's organize a friendly basketball game this weekend!",
-        teamId: 1,
-        playerId: 2
+        teamId: team1uuid,
+        playerId: player2uuid
       },
       {
+        id: uuidv4(),
         content: "Sounds like a great idea! I'm in for the Ball Hogs.",
-        teamId: 2,
-        playerId: 1
+        teamId: team2uuid,
+        playerId: player1uuid
       },
       {
+        id: uuidv4(),
         content: "Count me in too! I'll join the Ball Hogs as well.",
-        teamId: 3,
-        playerId: 4
+        teamId: team3uuid,
+        playerId: player4uuid
       },
       {
+        id: uuidv4(),
         content: "I'm in for Lik Buttah! Let's do this.",
-        teamId: 4,
-        playerId: 4
+        teamId: team4uuid,
+        playerId: player4uuid
       },
       {
+        id: uuidv4(),
         content: "NO Smoking here! We're ready to dominate the court.",
-        teamId: 5,
-        playerId: 3
+        teamId: team5uuid,
+        playerId: player3uuid
       },
       {
+        id: uuidv4(),
         content: "I'll join Lik Buttah. Let's make it a competitive match!",
-        teamId: 5,
-        playerId: 2
+        teamId: team5uuid,
+        playerId: player2uuid
       },
       {
+        id: uuidv4(),
         content: "I'm Air Up There, and I'm bringing my A-game.",
-        teamId: 4,
-        playerId: 2
+        teamId: team4uuid,
+        playerId: player2uuid
       },
       {
+        id: uuidv4(),
         content: "GameBreakers reporting in! Let's have some fun out there.",
-        teamId: 3,
-        playerId: 2
+        teamId: team3uuid,
+        playerId: player2uuid
       },
       {
+        id: uuidv4(),
         content: "I'll join NO Smoking to balance things out.",
-        teamId: 4,
-        playerId: 1
+        teamId: team4uuid,
+        playerId: player1uuid
       },
       {
+        id: uuidv4(),
         content: "Count me in for Air Up There as well!",
-        teamId: 5,
-        playerId: 1
+        teamId: team5uuid,
+        playerId: player1uuid
       },
       {
+        id: uuidv4(),
         content: "Alright, we have our teams set. Let's decide on the date and time.",
-        teamId: 3,
-        playerId: 1
+        teamId: team3uuid,
+        playerId: player1uuid
       },
       {
+        id: uuidv4(),
         content: "How about Sunday afternoon at the local court?",
-        teamId: 2,
-        playerId: 3
+        teamId: team2uuid,
+        playerId: player3uuid
       },
       {
+        id: uuidv4(),
         content: "Sunday works for me! What time?",
-        teamId: 5,
-        playerId: 4
+        teamId: team5uuid,
+        playerId: player4uuid
       },
       {
+        id: uuidv4(),
         content: "Let's make it 2 PM on Sunday.",
-        teamId: 1,
-        playerId: 5
+        teamId: team1uuid,
+        playerId: player5uuid
       },
       {
+        id: uuidv4(),
         content: "Sounds good! See you all there.",
-        teamId: 1,
-        playerId: 5
+        teamId: team1uuid,
+        playerId: player5uuid
       }
     ])
   },

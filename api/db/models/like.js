@@ -1,4 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = (sequelize, DataTypes) => {
     class Like extends Model {
@@ -8,8 +9,13 @@ module.exports = (sequelize, DataTypes) => {
                 targetKey: 'id'
             })
 
-            Like.belongsTo(models.Court, {
-                foreignKey: 'courtId',
+            Like.belongsTo(models.TeamChat, {
+                foreignKey: 'entityId',
+                targetKey: 'id'
+            })
+
+            Like.belongsTo(models.SessionChat, {
+                foreignKey: 'entityId',
                 targetKey: 'id'
             })
         }
@@ -17,17 +23,17 @@ module.exports = (sequelize, DataTypes) => {
 
     Like.init({
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             allowNull: false,
             primaryKey: true,
-            autoIncrement: true
+            defaultValue: uuidv4()
         },
         playerId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             allowNull: false
         },
-        courtId: {
-            type: DataTypes.INTEGER,
+        entityId: {
+            type: DataTypes.UUID,
             allowNull: false
         }
     }, {

@@ -2,6 +2,15 @@
 
 /** @type {import('sequelize-cli').Migration} */
 
+const {
+  player1uuid, team1uuid, session1uuid,
+  player2uuid, team2uuid, session2uuid,
+  player3uuid, team3uuid, session3uuid,
+  player4uuid, team4uuid, session4uuid,
+  player5uuid, team5uuid, session5uuid
+} = require('../seedUUIDs')
+
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA
@@ -12,41 +21,66 @@ module.exports = {
    options.tableName = 'Sessions';
    await queryInterface.bulkInsert(options, [
     {
-      creatorId: 1,
+      id: session1uuid,
+      creatorId: player1uuid,
+      hostId: team2uuid,
       name: 'Running 5s',
-      courtId: 1,
+      placeId: 'M3S4C0U2T',
+      address: '123 Fake St Mesa, AZ',
+      lat: 33.4151843,
+      lng: -111.8314724,
       private: false,
       startDate: '2024-02-04T10:00:00.000Z',
       endDate: '2024-02-04T15:00:00.000Z'
     },
     {
-      creatorId: 2,
+      id: session2uuid,
+      creatorId: player2uuid,
+      hostId: team1uuid,
       name: 'We Tryna Hoop',
-      courtId: 2,
+      placeId: '4TL4NT4C0U2T',
+      address: '345 Imaginary Ln Atlanta, GA',
+      lat: 33.748752,
+      lng: -84.38768449999999,
       private: false,
       startDate: '2024-02-10T14:00:00.000Z',
       endDate: '2024-02-10T16:00:00.000Z'
     },
     {
-      creatorId: 3,
+      id: session3uuid,
+      creatorId: player3uuid,
+      hostId: team5uuid,
       name: 'Running Games',
-      courtId: 3,
+      placeId: '54L3MC0U2T',
+      address: '1000 Who Cares Blvd Salem, OR',
+      lat: 44.9428975,
+      lng: -123.0350963,
       private: false,
       startDate: '2024-01-25T12:00:00.000Z',
       endDate: '2024-01-25T16:30:00.000Z'
     },
     {
-      creatorId: 4,
+      id: session4uuid,
+      creatorId: player4uuid,
+      hostId: team4uuid,
       name: 'Private Runs',
-      courtId: 4,
+      placeId: '4U5TINC0U2T',
+      address: '78 Nowhere Dr Austin, TX',
+      lat: 30.267153,
+      lng: -97.7430608,
       private: true,
       startDate: '2024-03-11T22:00:00.000Z',
       endDate: '2024-03-12T01:00:00.000Z'
     },
     {
-      creatorId: 5,
+      id: session5uuid,
+      creatorId: player5uuid,
+      hostId: null,
       name: 'Park Runs',
-      courtId: 5,
+      placeId: 'M3542C0U2T',
+      address: '909 Out There Pkwy Mesa, AZ',
+      lat: 33.4151843,
+      lng: -111.8314724,
       private: false,
       startDate: '2024-02-17T08:00:00.000Z',
       endDate: '2024-02-17T12:00:00.000Z'

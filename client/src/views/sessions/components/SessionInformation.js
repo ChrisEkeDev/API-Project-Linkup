@@ -13,7 +13,7 @@ function SessionInformation({session}) {
             />
             <div className='session_details'>
             <p className='sm'>{session.name} by <span className='bold'>{session.creator.name}</span></p>
-            <p className='sm bold'>{session.Court.address}</p>
+            <p className='sm bold'>{session.address}</p>
             <p className='sm bold'></p>
             <p className='md bold accent'>{formattedTime}</p>
             </div>

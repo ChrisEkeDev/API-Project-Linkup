@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import useNewSession from './hooks/useNewSession';
 import Back from '../../components/shared/button/Back';
@@ -9,11 +10,15 @@ import { PiCheckCircleBold, PiWarningBold, PiMagnifyingGlassBold, PiMapPinBold, 
 import { CgSpinner } from 'react-icons/cg';
 import { page_transitions } from '../../constants/animations';
 import SessionPlaceResults from './components/SessionPlaceResults';
-
-
+import PrivacyToggle from '../../components/shared/inputs/PrivacyToggle'
+import SessionHosts from './components/SessionHosts';
 
 
 function NewSession() {
+  const teamMemberships = useSelector(state => state.memberships.myMemberships);
+  const teamMembershipsArr = Object.values(teamMemberships)
+  const teamsWithAuth = teamMembershipsArr.filter(membership => membership.status === 'host' || membership.status === 'co-host');
+
   const {
     sessionData,
     addressObject,
@@ -23,6 +28,8 @@ function NewSession() {
     errors,
     status,
     handleInput,
+    handleToggle,
+    handleHost,
     getPlaces,
     createSession
   } = useNewSession();
@@ -31,7 +38,14 @@ function NewSession() {
   return (
     <motion.main {...page_transitions} className='page sessions'>
         <header className='header'>
-        <Back />
+          <Back />
+          <Button
+            label="Create Session"
+            styles="primary"
+            icon={PiCalendarPlusBold}
+            action={createSession}
+            disabled={Object.keys(errors).length > 0}
+          />
         </header>
         <Scroll>
         <form className='session_form'>
@@ -76,6 +90,7 @@ function NewSession() {
                   : status === "fail" ? PiWarningBold
                   : PiMagnifyingGlassBold
               }
+              loading={status === "loading"}
               action={getPlaces}
             />
           </div>
@@ -125,15 +140,8 @@ function NewSession() {
               disabled={false}
             />
           </div>
-          <footer className='form_actions'>
-            <Button
-              label="Create Session"
-              styles="primary"
-              icon={PiCalendarPlusBold}
-              action={createSession}
-              disabled={Object.keys(errors).length > 0}
-            />
-          </footer>
+          <PrivacyToggle data={sessionData} handleToggle={handleToggle} />
+          <SessionHosts teams={teamsWithAuth} handleHost={handleHost} sessionData={sessionData} />
         </form>
         </Scroll>
     </motion.main>

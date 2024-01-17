@@ -16,6 +16,13 @@ function NewTeam() {
         <motion.main {...page_transitions} className='page teams'>
             <header className='header'>
                 <Back />
+                <Button
+                    label="Create Team"
+                    styles="primary"
+                    icon={PiCalendarPlusBold}
+                    action={createTeam}
+                    disabled={Object.keys(errors).length > 0}
+                />
             </header>
             <Scroll>
                 <form className='session_form'>
@@ -31,17 +38,8 @@ function NewTeam() {
                         error={errors?.name}
                         disabled={false}
                     />
-                    <PrivacyToggle {...{ teamData, handleToggle }} />
+                    <PrivacyToggle data={teamData} handleToggle={handleToggle}/>
                     {/* PLACE TO UPLOAD IMAGES */}
-                    <footer className='form_actions'>
-                        <Button
-                        label="Create Team"
-                        styles="primary"
-                        icon={PiCalendarPlusBold}
-                        action={createTeam}
-                        disabled={Object.keys(errors).length > 0}
-                        />
-                    </footer>
                 </form>
             </Scroll>
         </motion.main>
