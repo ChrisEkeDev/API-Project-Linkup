@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import { base_animations, child_variants } from '../../../constants/animations';
 import IconButton from '../../../components/shared/button/IconButton'
@@ -6,13 +7,16 @@ import { useApp } from '../../../context/AppContext'
 import { format , parseISO } from 'date-fns'
 import useTeamChat from "../hooks/useTeamChat"
 import ProfileImage from '../../../components/shared/profileImage'
-import { PiPencilSimpleLineFill, PiXBold, PiCheckFatFill, PiTrashBold  } from "react-icons/pi";
+import { PiHeartFill, PiHeartBold, PiPencilSimpleLineFill, PiXBold, PiCheckFatFill, PiTrashBold  } from "react-icons/pi";
 
 function TeamChat(props) {
     const { auth } = useApp();
     const { chat, room, socket } = props;
+    const myLikes = useSelector(state => state.chats.myLikes)
+    const myLikesArr = Object.values(myLikes)
+    const chatLiked = myLikesArr.find(like => like.playerId === auth.id && chat.id === like.entityId)
     const isAuth = auth.id === chat.playerId
-    const { ref, content, handleInput, updateTeamChat, deleteTeamChat, editing, setEditing  } = useTeamChat(props)
+    const { ref, content, handleInput, updateTeamChat, deleteTeamChat, editing, setEditing, addLike, removeLike   } = useTeamChat(props)
     const formatDate = format(parseISO(chat.createdAt), 'MM/dd/yy p');
     const textareaRef = useRef(null);
 
@@ -67,6 +71,13 @@ function TeamChat(props) {
                         />
                     </>
                 }
+                </div>
+            }
+            {
+                !isAuth &&
+                <div className='chat_likes' onClick={chatLiked ? removeLike : addLike }>
+                    { chatLiked ? <PiHeartFill className="icon"/> : <PiHeartBold className='icon'/> }
+                    <p className='xs bold'>{chat.likes}</p>
                 </div>
             }
 

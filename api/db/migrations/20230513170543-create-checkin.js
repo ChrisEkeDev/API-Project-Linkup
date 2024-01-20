@@ -32,6 +32,12 @@ module.exports = {
         },
         onDelete: 'CASCADE'
       },
+      status: {
+        type: Sequelize.ENUM,
+        allowNull: false,
+        defaultValue: 'pending',
+        values: ['pending', 'attending'],
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

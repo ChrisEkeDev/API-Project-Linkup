@@ -46,7 +46,10 @@ function UpdateSession({session}) {
             </header>
             <Scroll>
             <form className='session_form'>
-                <header className='form_header'>
+                {
+                    sessionData &&
+                    <>
+                    <header className='form_header'>
                     <h2>Update Session</h2>
                 </header>
                 <Input
@@ -109,6 +112,9 @@ function UpdateSession({session}) {
                         action={onOpenModal}
                     />
                 </footer>
+                </>
+                }
+
             </form>
             </Scroll>
             <Modal

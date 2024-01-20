@@ -181,6 +181,13 @@
     gap: 1rem;
 }
 
+.attendance_actions {
+    display: grid;
+    grid-template-columns: 3rem 3rem;
+    align-items: center;
+    gap: 1rem;
+}
+
 .joined_groups {
     margin-top: 1rem;
 }
@@ -218,69 +225,13 @@
     width: 100%;
 }
 
-.chat_item {
-    padding: 1rem;
-    display: flex;
-    gap: 1rem;
-    border-radius: 1.5rem;
-    position: relative;
-    transition: background .2s ease;
-    &:hover {
-        background: var(--hover);
-        .chat_controls {
-            opacity: 1;
-            pointer-events: unset;
-        }
-    }
 
-    .chat_details {
-        width: 100%;
-        padding: .5rem 0 0 0;
-    }
-
-    .textarea {
-        border: none;
-        width: calc(100% - 6rem);
-        resize: none;
-        overflow-y: 'hidden';
-        padding: 0;
-        font-size: 1rem;
-        background: transparent;
-
-        // &:disabled {
-        //     backgroundn: none;
-        // }
-        &:focus {
-            outline: transparent;
-        }
-    }
-}
-
-.chat_controls {
-    transition: opacity .2s ease;
-    opacity: 0;
-    pointer-events: none;
-    display: flex;
-    position: absolute;
-    gap: .5rem;
-    right: 1rem;
-}
 
 .container_border {
     border-top: var(--border);
     position: relative;
 }
 
-.chat_preview_list {
-    display: flex;
-    flex-direction: column-reverse;
-    padding: 1rem 0;
-    width: 100%;
-
-    .chat_item {
-        pointer-events: none;
-    }
-}
 
 .chat_flex {
     display: flex;

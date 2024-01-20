@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { Player, SessionChat } = require('../../db/models');
+const { Player, SessionChat, Like } = require('../../db/models');
+const { Sequelize, Op, fn, col } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
 const { validateCreateChat} = require("./validation/expressValidations");
 const { chatNotFound } =require('./constants/responseMessages');
@@ -25,10 +26,22 @@ router.put('/:chatId', requireAuth, validateCreateChat,  async(req, res) => {
     sessionChat.save();
 
     const chat = await SessionChat.findByPk(sessionChat.id, {
-        include: {
-            model: Player,
-            attributes: ['name', 'profileImage']
-        }
+        attributes: {
+            include: [
+                [Sequelize.fn('COUNT', Sequelize.col('Likes.id')), 'likes']
+            ]
+        },
+        include: [
+            {
+                model: Player,
+                attributes: ['name', 'profileImage']
+            },
+            {
+                model: Like,
+                attributes: [] // empty array means do not fetch columns from the Likes table
+            }
+        ],
+        group: ['SessionChat.id']
     })
 
     return res.status(201).json({

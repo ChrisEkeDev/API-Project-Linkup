@@ -2,10 +2,13 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useApp } from "../../../context/AppContext";
 import { sessionsAlerts } from '../../../constants/alerts'
-import { getEndDate, getDateObject } from "../../../helpers/dateHelpers";
+import { getDateData } from "../../../helpers/dateHelpers";
 import { thunkCreateNewSession } from "../../../store/sessions";
+import { convertDateToUI, convertTimeToUI } from "../../../helpers/dateTimeFormatters";
+import { addHours } from "date-fns";
 
 function useNewSession() {
+    const today = new Date().toISOString();
     const { dispatch, navigate, setLoading, handleAlerts } = useApp();
     const { createSessionSuccess,createSessionError  } = sessionsAlerts;
     const [ query, setQuery ] = useState("");
@@ -15,10 +18,11 @@ function useNewSession() {
     const [ status, setStatus ] = useState(null)
     const [ sessionData, setSessionData ] = useState({
         name: '',
-        startDate: '',
-        endDate: '',
-        address: null,
+        startDate: today,
+        date: convertDateToUI(today),
+        time: convertTimeToUI(today),
         duration: 1,
+        address: null,
         private: false
     });
     const [ errors, setErrors ] = useState({});
@@ -117,13 +121,9 @@ function useNewSession() {
 
     // Convert and store the date if the date or time keys change on the sesssion data
     useEffect(() => {
-        getDateObject(sessionData, sessionData.date, sessionData.time, setSessionData)
-    }, [sessionData.date, sessionData.time])
-
-    // Gets the End date from the duration value
-    useEffect(() => {
-        getEndDate(sessionData, sessionData.duration, setSessionData)
-    }, [sessionData.duration])
+        const { startDate , endDate } = getDateData(sessionData.date, sessionData.time, sessionData.duration)
+        setSessionData((prev) => ({...prev, startDate: startDate , endDate: endDate}))
+    }, [sessionData.date, sessionData.time, sessionData.duration])
 
 
     return {

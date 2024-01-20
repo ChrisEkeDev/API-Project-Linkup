@@ -27,11 +27,10 @@ module.exports = {
         entityId: {
             type: Sequelize.UUIDV4,
             allowNull: false,
-            references: {
-              model: 'Courts',
-              key: 'id'
-            },
-            onDelete: 'CASCADE'
+        },
+        entityType: {
+          type: Sequelize.ENUM,
+          values: ['team-chat', 'session-chat'],
         },
         createdAt: {
           allowNull: false,

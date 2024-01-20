@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { useApp } from "../../../context/AppContext";
-import { getEndDate, getDateObject } from "../../../helpers/dateHelpers";
+import { getDateData } from "../../../helpers/dateHelpers";
 import { thunkUpdateSession } from "../../../store/sessions";
 import { convertDateToUI, convertTimeToUI, getDuration } from "../../../helpers/dateTimeFormatters";
 import { geocodeAddress } from "../../../helpers/geocodeAddress";
@@ -20,6 +20,8 @@ const useUpdateSession = (session) => {
         hostId: session.hostId,
         private: session.private
     });
+    console.log(sessionData)
+
 
     // Handles the input of the Session Form
     const handleInput = (x) => {
@@ -70,15 +72,9 @@ const useUpdateSession = (session) => {
 
     // Convert and store the date if the date or time keys change on the sesssion data
     useEffect(() => {
-        getDateObject(sessionData, sessionData.date, sessionData.time, setSessionData)
-        console.log(sessionData.time)
-    }, [sessionData.date, sessionData.time])
-
-    // Gets the End date from the duration value
-    useEffect(() => {
-        getEndDate(sessionData, sessionData.duration, setSessionData)
-    }, [sessionData.duration]);
-
+        const { startDate , endDate } = getDateData(sessionData.date, sessionData.time, sessionData.duration)
+        setSessionData((prev) => ({...prev, startDate: startDate , endDate: endDate}))
+    }, [sessionData.date, sessionData.time, sessionData.duration])
 
     return {
         sessionData,

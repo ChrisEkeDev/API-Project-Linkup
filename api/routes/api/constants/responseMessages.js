@@ -1,9 +1,16 @@
-const courtNotFound = {
+const entityNotFound = {
     status: 404,
-    message: "Court couldn't be found",
+    message: "Entity couldn't be found",
     data: null,
-    error: "The 'courtId' is not recognized as a valid entity"
+    error: "The 'entityId' is not recognized as a valid entity"
 };
+
+const alreadyLiked = {
+    status: 403,
+    message: "This was already liked by you",
+    data: null,
+    error: "This item was already liked by this player"
+}
 
 const likeNotFound = {
     status: 404,
@@ -70,7 +77,8 @@ const membershipAlreadyExists = {
 }
 
 module.exports = {
-    courtNotFound,
+    entityNotFound,
+    alreadyLiked,
     likeNotFound,
     sessionNotFound,
     teamNotFound,

@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useApp } from '../../../context/AppContext'
-import { thunkUpdateSessionChat, thunkDeleteSessionChat } from "../../../store/chats";
+import { thunkUpdateSessionChat, thunkDeleteSessionChat, thunkAddLike, thunkRemoveLike, thunkGetSessionFeed, thunkGetMyLikes } from "../../../store/chats";
+import { useSelector } from 'react-redux';
 
 function useSessionChat(props) {
+    const sessionId = useSelector(state => state.sessions.singleSession).id;
     const {chat, socket, room} = props;
     const { dispatch } = useApp();
     const [content, setContent] = useState(chat.content);
@@ -45,6 +47,34 @@ function useSessionChat(props) {
         }
     }
 
+    const addLike = async () => {
+        const data = { entityId: chat.id, entityType: 'session-chat'}
+        try {
+            const response = await dispatch(thunkAddLike(data));
+            await dispatch(thunkGetMyLikes())
+            await dispatch(thunkGetSessionFeed(sessionId))
+            if (response.status >= 400) {
+                throw new Error(response.error)
+            }
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+    const removeLike = async () => {
+        const data = { entityId: chat.id }
+        try {
+            const response = await dispatch(thunkRemoveLike(data));
+            await dispatch(thunkGetMyLikes())
+            await dispatch(thunkGetSessionFeed(sessionId))
+            if (response.status >= 400) {
+                throw new Error(response.error)
+            }
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         document.addEventListener('click', handleClickOutside, true)
         return () => {
@@ -52,7 +82,7 @@ function useSessionChat(props) {
         }
     }, [])
 
-    return { ref, content, handleInput, updateSessionChat, deleteSessionChat, editing, setEditing }
+    return { ref, content, handleInput, updateSessionChat, deleteSessionChat, editing, setEditing, addLike, removeLike  }
 }
 
 export default useSessionChat

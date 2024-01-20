@@ -23,127 +23,152 @@ module.exports = {
       {
         id: uuidv4(),
         sessionId: session1uuid,
-        playerId: player2uuid
+        playerId: player2uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session2uuid,
-        playerId: player2uuid
+        playerId: player2uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session3uuid,
-        playerId: player3uuid
+        playerId: player3uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session4uuid,
-        playerId: player4uuid
+        playerId: player4uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session5uuid,
-        playerId: player1uuid
+        playerId: player1uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session5uuid,
-        playerId: player2uuid
+        playerId: player2uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session3uuid,
-        playerId: player2uuid
+        playerId: player2uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session4uuid,
-        playerId: player2uuid
+        playerId: player2uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session3uuid,
-        playerId: player1uuid
+        playerId: player1uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session4uuid,
-        playerId: player1uuid
+        playerId: player1uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session2uuid,
-        playerId: player1uuid
+        playerId: player1uuid,
+        status: 'pending'
       },
       {
         id: uuidv4(),
         sessionId: session1uuid,
-        playerId: player1uuid
+        playerId: player1uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session1uuid,
-        playerId: player3uuid
+        playerId: player3uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session2uuid,
-        playerId: player3uuid
+        playerId: player3uuid,
+        status: 'pending'
       },
       {
         id: uuidv4(),
         sessionId: session4uuid,
-        playerId: player3uuid
+        playerId: player3uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session5uuid,
-        playerId: player3uuid
+        playerId: player3uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session3uuid,
-        playerId: player4uuid
+        playerId: player4uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session1uuid,
-        playerId: player4uuid
+        playerId: player4uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session2uuid,
-        playerId: player4uuid
+        playerId: player4uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session5uuid,
-        playerId: player4uuid
+        playerId: player4uuid,
+        status: 'pending'
       },
       {
         id: uuidv4(),
         sessionId: session4uuid,
-        playerId: player5uuid
+        playerId: player5uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session5uuid,
-        playerId: player5uuid
+        playerId: player5uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session1uuid,
-        playerId: player5uuid
+        playerId: player5uuid,
+        status: 'pending'
       },
       {
         id: uuidv4(),
         sessionId: session2uuid,
-        playerId: player5uuid
+        playerId: player5uuid,
+        status: 'attending'
       },
       {
         id: uuidv4(),
         sessionId: session3uuid,
-        playerId: player5uuid
+        playerId: player5uuid,
+        status: 'attending'
       }
     ])
   },

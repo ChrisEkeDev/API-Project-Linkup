@@ -5,11 +5,10 @@
     z-index: 50;
     display: flex;
     gap: 1rem;
-    left: 50%;
-    bottom: 2rem;
-    transform: translateX(-50%);
+    right: 2rem;
+    top: 2rem;
 
-    flex-direction: column-reverse;
+    flex-direction: column;
 
 }
 

@@ -82,9 +82,14 @@ export const timeFormatOptions = {
 }
 
 
-export const statusOrder = {
+export const statusOrderMembership = {
     'host': 1,
     'co-host': 2,
     'member': 3,
     'pending': 4
+}
+
+export const statusOrderAttendance = {
+    'attending': 1,
+    'pending': 2
 }

@@ -35,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
         entityId: {
             type: DataTypes.UUID,
             allowNull: false
+        },
+        entityType: {
+            type: DataTypes.ENUM,
+            allowNull: false,
+            values: ['team-chat', 'session-chat'],
         }
     }, {
         sequelize,

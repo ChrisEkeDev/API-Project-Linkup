@@ -5,12 +5,12 @@ import { PiChatsCircle } from 'react-icons/pi'
 function LatestMessages({entity}) {
   return (
     <section className="container_border">
-        <span className='section_label xs bold'>Latest Messages</span>
+        <span className='section_label xs bold'>Top Comments</span>
         {
             entity?.TeamChats?.length > 0  ||
             entity?.SessionChats?.length > 0
             ?
-            <ul className="chat_preview_list">
+            <ul className="chat_preview">
                 {
                     entity.TeamChats ?
                     entity.TeamChats.map(chat => (

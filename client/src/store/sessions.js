@@ -109,6 +109,7 @@ export const thunkCreateNewSession = (sessionData) => async dispatch => {
 }
 
 export const thunkUpdateSession = (sessionData, sessionId) => async dispatch => {
+    console.log(sessionData)
     const res = await csrfFetch(`/api/sessions/${sessionId}`, {
         method: 'PUT',
         body: JSON.stringify(sessionData)

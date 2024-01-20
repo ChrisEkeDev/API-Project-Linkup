@@ -91,9 +91,9 @@ function SingleTeam({team, memberships}) {
                     {
                         tabView === 'feed' ?
                         <TeamFeed />:
-                        tabView === 'members' ?
-                        <TeamMembers isMember={isMember} /> :
-                        <TeamDetails />
+                        tabView === 'details' ?
+                        <TeamDetails /> :
+                        <TeamMembers isMember={isMember} />
                     }
                 </motion.section>
         </motion.main>

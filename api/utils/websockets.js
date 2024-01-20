@@ -11,8 +11,8 @@ const io = new Server(server, {
     }
 });
 
-const teamChat = io.of('/team');
-const sessionChat = io.of('/session');
+const teamChat = io.of('/teams');
+const sessionChat = io.of('/sessions');
 
 teamChat.on('connection', (socket) => {
     console.log(`User online - ${socket.id}`)
@@ -31,6 +31,30 @@ teamChat.on('connection', (socket) => {
 
     socket.on('delete_message', (room) => {
         teamChat.to(room).emit("update_feed")
+    })
+
+    socket.on('disconnect', (room) => {
+        socket.broadcast.to(room).emit('offline')
+    });
+})
+
+sessionChat.on('connection', (socket) => {
+    console.log(`User online - ${socket.id}`)
+
+    socket.on('join_room', (room) => {
+        socket.join(room)
+    })
+
+    socket.on('new_message', (room) => {
+        sessionChat.to(room).emit("update_feed")
+    })
+
+    socket.on('update_message', (room) => {
+        sessionChat.to(room).emit("update_feed")
+    })
+
+    socket.on('delete_message', (room) => {
+        sessionChat.to(room).emit("update_feed")
     })
 
     socket.on('disconnect', (room) => {

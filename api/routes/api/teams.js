@@ -387,7 +387,7 @@ router.post('/:teamId/join-team', requireAuth, async (req, res) => {
 
     return res.status(201).json({
         status: 201,
-        message: null,
+        message: team.private ? "You request to join is pending" : "You have joined this team",
         data: createdMembership,
         error: null
     })

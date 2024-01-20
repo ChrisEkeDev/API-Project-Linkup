@@ -9,7 +9,7 @@ function useSessionChatWebSocket() {
     const { auth, dispatch } = useApp();
     const sessionId = session.id;
     const player = auth.name;
-    const socket = io('http://localhost:3030/team');
+    const socket = io('http://localhost:3030/sessions');
     const room = `Room ${session.name}`
 
     useEffect(() => {
@@ -26,7 +26,9 @@ function useSessionChatWebSocket() {
             console.log(`${player} has left the chat`)
         })
 
-          return () => socket.disconnect();
+        return () => {
+            socket.disconnect(); // Close WebSocket connection
+        };
     }, [])
 
     return { socket, room }

@@ -14,7 +14,7 @@ function CheckInListItem({checkIn}) {
         <div className="check_in_list_item flex_spaced">
             <div>
                 <p className='sm'>{checkIn.session.name}</p>
-                <p className='sm bold'>{checkIn.session.Court.address}</p>
+                <p className='sm bold'>{checkIn.session.address}</p>
                 <p className='md bold'>{formattedTime}</p>
             </div>
             <Button

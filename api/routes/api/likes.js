@@ -1,8 +1,24 @@
 const express = require('express');
+const { v4: uuidv4 } = require('uuid');
 const router = express.Router();
-const { Court, Player, Like } = require('../../db/models');
+const { SessionChat, TeamChat, Like } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
-const { courtNotFound, likeNotFound, playerNotAuthorized } = require('./constants/responseMessages');
+const { entityNotFound, likeNotFound, playerNotAuthorized } = require('./constants/responseMessages');
+
+
+
+router.get('/current', requireAuth, async(req, res) => {
+    const playerId = req.player.id;
+    const myLikes = await Like.findAll({
+        where: { playerId }
+    })
+    return res.status(201).json({
+        status: 201,
+        message: "",
+        data: myLikes,
+        errors: {}
+    })
+})
 
 ///////////////////////////////////////////////////////////
 
@@ -11,14 +27,27 @@ const { courtNotFound, likeNotFound, playerNotAuthorized } = require('./constant
 //////////////////
 router.post('/', requireAuth, async(req, res) => {
     const playerId = req.player.id;
-    const { courtId } = req.body;
-    const court = await Court.findByPk(courtId);
-    if (!court) {
-        return res.status(404).json(courtNotFound)
+    const { entityId, entityType } = req.body;
+    const sessionChat = await SessionChat.findByPk(entityId)
+    const teamChat = await TeamChat.findByPk(entityId)
+
+    if (!sessionChat && !teamChat) {
+        return res.status(404).json(entityNotFound)
     }
+
+    const existingLike = await Like.findOne({
+        where: { playerId, entityId }
+    })
+
+    if (existingLike) {
+        return res.status(404).json(alreadyLiked)
+    }
+
     const like = await Like.create({
+        id: uuidv4(),
         playerId,
-        courtId
+        entityId,
+        entityType
     })
 
     return res.status(201).json({
@@ -36,11 +65,14 @@ router.post('/', requireAuth, async(req, res) => {
 // Remove a Like
 
 ///////////////////
-router.delete('/:likeId', requireAuth, async(req, res) => {
+router.delete('/', requireAuth, async(req, res) => {
     const playerId = req.player.id;
-    const { likeId } = req.params;
-    const like = await Like.findByPk(likeId);
-    const playerAuthorized = playerId == like.playerId;
+    const { entityId } = req.body;
+    const like = await Like.findOne({
+        where: { playerId, entityId }
+    });
+    const playerAuthorized = playerId === like.playerId;
+
     if (!like) {
         return res.status(404).json(likeNotFound)
     }

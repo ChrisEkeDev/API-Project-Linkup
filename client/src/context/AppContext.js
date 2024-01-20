@@ -9,9 +9,10 @@ import useAlerts from "../hooks/useAlerts";
 import LoadingData from "../components/shared/loading";
 import Alerts from "../components/alerts";
 import { thunkSearchSessions, thunkGetMySessions } from '../store/sessions';
-import { thunkGetPlayerCheckIns } from '../store/checkins';
+import { thunkGetMyCheckIns } from '../store/checkins';
 import { thunkSearchTeams, thunkGetMyTeams } from '../store/teams';
 import { thunkGetMyMemberships } from "../store/memberships";
+import { thunkGetMyLikes } from "../store/chats";
 
 
 const AppContext = createContext();
@@ -72,8 +73,9 @@ function AppProvider({children}) {
               navigate('/search');
               const p1 = await dispatch(thunkGetMySessions());
               const p2 = await dispatch(thunkGetMyTeams());
-              const p3 = await dispatch(thunkGetPlayerCheckIns())
+              const p3 = await dispatch(thunkGetMyCheckIns())
               const p4 = await dispatch(thunkGetMyMemberships())
+              const p5 = await dispatch(thunkGetMyLikes())
             }
         } catch(e) {
             console.log(e)

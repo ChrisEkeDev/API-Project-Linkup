@@ -1,35 +1,34 @@
 import Back from '../../components/shared/button/Back';
 import { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
-import useSession from './hooks/useSession';
+import useCheckIns from './hooks/useCheckIns';
 import Button from '../../components/shared/button';
-import Modal from '../../components/shared/modal';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { thunkGetSingleSession } from '../../store/sessions';
 import { thunkGetSessionFeed } from '../../store/chats';
 import { thunkGetSessionCheckIns } from '../../store/checkins';
 import { useParams } from 'react-router-dom';
-import useModal from '../../hooks/useModal';
-import SessionInformation from './components/SessionInformation';
+import SessionCheckins from './components/SessionCheckins';
 import SessionDetails from './components/SessionDetails';
-
 import SessionFeed from './components/SessionFeed';
 import LoadingData from '../../components/shared/loading';
 import { PiLockFill, PiLockOpenBold, PiXBold, PiUserPlusFill , PiUserMinusBold, PiPencilSimpleLineFill, PiTrashBold  } from 'react-icons/pi'
 import { base_animations, child_variants, parent_variants } from '../../constants/animations';
 import CountDown from '../../components/countdown';
+import { CgSpinner } from 'react-icons/cg';
 
 
 function SingleSession({session}) {
+    const myCheckIns = useSelector(state => state.checkIns.myCheckIns);
+    const myCheckInsArr = Object.values(myCheckIns)
     const [tabView, setTabView ] = useState('details')
-    const { deleteSession, checkIn, checkOut } = useSession(session);
-    const checkInsData = useSelector(state => state.checkIns.sessionCheckIns);
-    const checkIns = Object.values(checkInsData)
+    const { checkIn, checkOut } = useCheckIns();
     const { auth, navigate } = useApp();
-    const { isModalOpen, onOpenModal, onCloseModal } = useModal();
     const isCreator = auth?.id == session?.creatorId;
-    const isCheckedIn = checkIns.filter(checkin => checkin.playerId === auth.id).length > 0;
+    const isCheckedIn = myCheckInsArr.find(checkin => checkin.sessionId === session.id);
+
+    console.log(isCheckedIn)
 
     return (
         <motion.main {...base_animations} className='page sessions'>
@@ -54,10 +53,28 @@ function SingleSession({session}) {
                             action={() => navigate(`/sessions/${session.id}/update`)}
                         /> :
                         <Button
-                            styles='primary'
-                            icon={isCheckedIn ? PiUserMinusBold : PiUserPlusFill  }
-                            label={isCheckedIn ? "Check Out" : "Check In"}
+                            styles={
+                                isCheckedIn ?
+                                isCheckedIn?.status === 'pending'
+                                ? 'secondary'
+                                : 'secondary'
+                                : 'primary'
+                            }
+                            icon={
+                                isCheckedIn ?
+                                isCheckedIn?.status === 'pending'
+                                ? CgSpinner
+                                : PiUserMinusBold
+                                : PiUserPlusFill
+                              }
+                            label={isCheckedIn ?
+                                isCheckedIn?.status === 'pending'
+                                ? 'Awaiting Approval'
+                                : 'Leave Session'
+                                : 'Join Session'
+                            }
                             action={isCheckedIn ? checkOut : checkIn}
+                            loading={isCheckedIn?.status === 'pending'}
                         />
                     }
                 </div>
@@ -66,6 +83,7 @@ function SingleSession({session}) {
                 <div className='float_left tabs'>
                     <p className={`tab bold ${tabView === 'details' && 'active-tab'}`} onClick={() => setTabView('details')}>Details</p>
                     <p className={`tab bold ${tabView === 'feed' && 'active-tab'}`} onClick={() => setTabView('feed')}>Live Chat</p>
+                    <p className={`tab bold ${tabView === 'attendees' && 'active-tab'}`} onClick={() => setTabView('attendees')}>Attendees</p>
                 </div>
                 <div className='float_right'>
                 </div>
@@ -73,33 +91,12 @@ function SingleSession({session}) {
             <motion.section variants={parent_variants} {...base_animations} className='section scroll'>
                 {
                     tabView === 'feed' ?
-                    <SessionFeed />:
-                    <SessionDetails />
+                    <SessionFeed /> :
+                    tabView === 'details' ?
+                    <SessionDetails /> :
+                    <SessionCheckins isCheckedIn={isCheckedIn} isCreator={isCreator} />
                 }
             </motion.section>
-        <Modal
-            isModalOpen={isModalOpen}
-            onCloseModal={onCloseModal}
-        >
-            <div className='modal_container'>
-                <h2 className='md modal_title'>Are you sure you want to delete this session?</h2>
-                <SessionInformation session={session} />
-                <div className='modal_actions'>
-                    <Button
-                        label="Keep Session"
-                        styles="tertiary"
-                        icon={PiXBold}
-                        action={onCloseModal}
-                    />
-                    <Button
-                        label="Delete Session"
-                        styles="warning"
-                        icon={PiTrashBold}
-                        action={deleteSession}
-                    />
-                </div>
-            </div>
-        </Modal>
     </motion.main>
     )
 }

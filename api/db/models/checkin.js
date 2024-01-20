@@ -35,15 +35,15 @@ module.exports = (sequelize, DataTypes) => {
     playerId: {
       type: DataTypes.UUID,
       allowNull: false
+    },
+    status: {
+      type: DataTypes.ENUM,
+      allowNull: false,
+      values: ['pending', 'attending'],
     }
   }, {
     sequelize,
-    modelName: 'CheckIn',
-    defaultScope: {
-      attributes: {
-        exclude: ['createdAt', 'updatedAt']
-      }
-    }
+    modelName: 'CheckIn'
   });
   return CheckIn;
 };

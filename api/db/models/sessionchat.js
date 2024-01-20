@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
           foreignKey: "sessionId",
           targetKey: 'id'
       })
+
+      SessionChat.hasMany(models.Like, {
+        foreignKey: "entityId",
+        targetKey: 'id'
+      })
     }
   }
   SessionChat.init({

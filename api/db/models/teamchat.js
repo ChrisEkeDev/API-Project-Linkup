@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
           foreignKey: "teamId",
           targetKey: 'id'
       })
+      TeamChat.hasMany(models.Like, {
+        foreignKey: "entityId",
+        targetKey: 'id'
+      })
     }
   }
   TeamChat.init({

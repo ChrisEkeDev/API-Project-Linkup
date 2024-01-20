@@ -9,7 +9,7 @@ function useTeamChatWebSocket() {
     const { auth, dispatch } = useApp();
     const teamId = team.id;
     const player = auth.name;
-    const socket = io('http://localhost:3030/team');
+    const socket = io('http://localhost:3030/teams');
     const room = `Room ${team.name}`
 
     useEffect(() => {
@@ -26,7 +26,9 @@ function useTeamChatWebSocket() {
             console.log(`${player} has left the chat`)
         })
 
-          return () => socket.disconnect();
+        return () => {
+            socket.disconnect(); // Close WebSocket connection
+        };
     }, [])
 
     return { socket, room }

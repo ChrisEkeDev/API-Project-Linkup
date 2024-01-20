@@ -1,4 +1,4 @@
-import { addHours } from "date-fns";
+import { addHours, parseISO } from "date-fns";
 
 export const getEndDate = (sessionData, duration, cb) => {
     const newData = { ...sessionData };
@@ -23,4 +23,12 @@ export const getDateObject = (sessionData, date, time, cb) => {
 
     }
     cb(newData);
+}
+
+
+
+export const getDateData = (date, time, duration) => {
+    const startDate = new Date(date + " " + time).toISOString()
+    const endDate = addHours(parseISO(startDate), duration).toISOString()
+    return { startDate, endDate }
 }

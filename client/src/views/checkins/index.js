@@ -9,10 +9,11 @@ import './styles.scss';
 import { page_transitions } from '../../constants/animations';
 import { useApp } from '../../context/AppContext';
 import { useSelector } from 'react-redux';
-import { thunkGetPlayerCheckIns } from '../../store/checkins';
+import { thunkGetMyCheckIns } from '../../store/checkins';
 
-function CheckIns({checkInsData}) {
-    const checkIns = Object.values(checkInsData);
+function CheckIns() {
+    const myCheckIns = useSelector(state => state.checkIns.myCheckIns)
+    const myCheckInsArr = Object.values(myCheckIns);
     const [ view, setView ] = useState('calendar');
 
     return (
@@ -25,8 +26,8 @@ function CheckIns({checkInsData}) {
                 <AnimatePresence>
                     {
                         view === "calendar" ?
-                        <CheckInCalendar checkIns={checkIns} /> :
-                        <CheckInList checkIns={checkIns}/>
+                        <CheckInCalendar checkIns={myCheckInsArr} /> :
+                        <CheckInList checkIns={myCheckInsArr}/>
                     }
                 </AnimatePresence>
             </Scroll>
@@ -37,15 +38,15 @@ function CheckIns({checkInsData}) {
 
 function CheckInsWrapper() {
     const { dispatch } = useApp();
-    const checkIns = useSelector(state => state.checkIns.playerCheckIns)
+
     const [ loading, setLoading ] = useState(true)
 
 
     useEffect(() => {
         const loadCheckIns = async () => {
             try {
-                const checkInData = await dispatch(thunkGetPlayerCheckIns())
-                if (checkInData.status === 200) setLoading(false)
+                const myCheckInData = await dispatch(thunkGetMyCheckIns())
+                if (myCheckInData.status === 200 && myCheckInData) setLoading(false)
             } catch(e) {
                 console.log(e)
             }
@@ -57,7 +58,7 @@ function CheckInsWrapper() {
     if (loading) return <LoadingData/>
 
     return (
-        <CheckIns checkInsData={checkIns} />
+        <CheckIns />
     )
 }
 export default CheckInsWrapper

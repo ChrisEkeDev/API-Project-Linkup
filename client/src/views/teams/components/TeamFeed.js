@@ -25,6 +25,10 @@ function TeamFeed() {
         socket.on("update_feed", () => {
             ref.current.scrollTop = ref.current.scrollHeight
         })
+
+        return () => {
+            socket.disconnect(); // Close WebSocket connection
+        };
     }, [])
 
 
