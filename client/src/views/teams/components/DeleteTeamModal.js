@@ -3,14 +3,19 @@ import { PiXBold, PiTrashBold} from 'react-icons/pi';
 import useDeleteTeam from '../hooks/useDeleteTeam'
 import Button from '../../../components/shared/button'
 
-function DeleteTeamModal({team, close}) {
+function DeleteTeamModal({close}) {
 
     const { deleteTeam } = useDeleteTeam();
 
     return (
         <div className='modal_container'>
-            <h2 className='md modal_title'>Are you sure you want to delete this team?</h2>
-            {/* PREVEIW OF TEAM */}
+            <h2 className='md modal_title'>
+                Are you sure you want to delete this team?
+            </h2>
+            <p className='sm modal_body'>
+                This cannot be undone. All messages and data shared in the team will
+                be deleted. Forever. Do you still want to do it?
+            </p>
             <div className='modal_actions'>
                 <Button
                     label="Keep Team"

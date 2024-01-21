@@ -15,16 +15,19 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       Team.hasMany(models.TeamChat, {
+        onDelete: 'CASCADE',
         foreignKey: 'teamId',
         sourceKey: 'id'
       })
 
       Team.hasMany(models.Membership, {
+        onDelete: 'CASCADE',
         foreignKey: 'teamId',
         sourceKey: 'id'
       })
 
       Team.hasMany(models.Session, {
+        onDelete: 'SET NULL',
         foreignKey: 'hostId',
         sourceKey: 'id'
       })

@@ -34,7 +34,8 @@ module.exports = {
         references: {
           model: 'Teams',
           key: 'id'
-        }
+        },
+        onDelete: 'SET NULL'
       },
       placeId: {
         allowNull: false,

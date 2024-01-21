@@ -312,7 +312,7 @@ router.put('/:teamId', requireAuth, validateEditTeam, async (req, res) => {
 // Delete a team based on ID
 router.delete('/:teamId', requireAuth, async (req, res) => {
     const { teamId } = req.params;
-    let team = await Team.findByPk(teamId)
+    const team = await Team.findByPk(teamId)
     const playerId = req.player.id;
 
     // Checks if the groups exists
@@ -320,7 +320,7 @@ router.delete('/:teamId', requireAuth, async (req, res) => {
         return res.status(404).json(teamNotFound)
     }
 
-    const isCaptain = playerId == team.captainId;
+    const isCaptain = playerId === team.captainId;
 
     if(!isCaptain) {
         return res.status(403).json(playerNotAuthorized)
@@ -331,7 +331,7 @@ router.delete('/:teamId', requireAuth, async (req, res) => {
     return res.status(200).json({
         status: 200,
         message: team.name + " was deleted successfully.",
-        data: null,
+        data: team,
         error: null,
     })
 })
@@ -605,6 +605,7 @@ router.post('/:teamId/chat-feed', requireAuth, async (req, res) => {
     }
 
     const teamChat = await TeamChat.create({
+        id: uuidv4(),
         content,
         playerId,
         teamId

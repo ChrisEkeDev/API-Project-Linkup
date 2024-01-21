@@ -45,83 +45,84 @@ function UpdateSession({session}) {
                 />
             </header>
             <Scroll>
-            <form className='session_form'>
-                {
-                    sessionData &&
-                    <>
-                    <header className='form_header'>
-                    <h2>Update Session</h2>
-                </header>
-                <Input
-                    label="Name"
-                    placeholder='Hoops at the Parks'
-                    value={sessionData?.name}
-                    setValue={handleInput}
-                    name='name'
-                    error={errors?.name}
-                    disabled={false}
-                />
-                <div className='form_verification'>
-                    <PiMapPinBold className="icon"/>
-                    <div className='details'>
-                        <p className='xs bold'>Address</p>
-                        <p className='sm'>{session.address}</p>
-                    </div>
-                </div>
-                <div className='form_flex'>
-                <Input
-                    label="Date"
-                    name="date"
-                    type="date"
-                    iconRight={<PiCalendarBold className='input_icon'/>}
-                    value={sessionData?.date}
-                    setValue={handleInput}
-                    error={errors?.date}
-                    disabled={false}
-                />
-                <Input
-                    label="Time"
-                    name="time"
-                    type="time"
-                    iconRight={<PiClockBold className='input_icon'/>}
-                    value={sessionData?.time}
-                    setValue={handleInput}
-                    error={errors?.time}
-                    disabled={false}
-                />
-                <Input
-                    label="Duration (hours)"
-                    name="duration"
-                    type="number"
-                    min={1}
-                    max={6}
-                    iconRight={<PiCaretUpDownBold className='input_icon'/>}
-                    value={sessionData?.duration}
-                    setValue={handleInput}
-                    error={errors?.duration}
-                    disabled={false}
-                />
-                </div>
-                <PrivacyToggle data={sessionData} handleToggle={handleToggle} />
-                <SessionHosts teams={teamsWithAuth} handleHost={handleHost} sessionData={sessionData} />
-                <footer className='form_caution'>
-                    <Button
-                        label="Delete Session"
-                        styles="tertiary"
-                        icon={PiTrashBold}
-                        action={onOpenModal}
-                    />
-                </footer>
-                </>
-                }
-
-            </form>
+                <form className='session_form'>
+                    {
+                        sessionData &&
+                        <>
+                        <header className='form_header'>
+                            <h2>Update Session</h2>
+                        </header>
+                        <Input
+                            label="Name"
+                            placeholder='Hoops at the Parks'
+                            value={sessionData?.name}
+                            setValue={handleInput}
+                            name='name'
+                            error={errors?.name}
+                            disabled={false}
+                        />
+                        <div className='form_verification'>
+                            <PiMapPinBold className="icon"/>
+                            <div className='details'>
+                                <p className='xs bold'>Address</p>
+                                <p className='sm'>{session.address}</p>
+                            </div>
+                        </div>
+                        <div className='form_flex'>
+                            <Input
+                                label="Date"
+                                name="date"
+                                type="date"
+                                iconRight={<PiCalendarBold className='input_icon'/>}
+                                value={sessionData?.date}
+                                setValue={handleInput}
+                                error={errors?.date}
+                                disabled={false}
+                            />
+                            <Input
+                                label="Time"
+                                name="time"
+                                type="time"
+                                iconRight={<PiClockBold className='input_icon'/>}
+                                value={sessionData?.time}
+                                setValue={handleInput}
+                                error={errors?.time}
+                                disabled={false}
+                            />
+                            <Input
+                                label="Duration (hours)"
+                                name="duration"
+                                type="number"
+                                min={1}
+                                max={6}
+                                iconRight={<PiCaretUpDownBold className='input_icon'/>}
+                                value={sessionData?.duration}
+                                setValue={handleInput}
+                                error={errors?.duration}
+                                disabled={false}
+                            />
+                        </div>
+                        <PrivacyToggle data={sessionData} handleToggle={handleToggle} />
+                        <SessionHosts teams={teamsWithAuth} handleHost={handleHost} sessionData={sessionData} />
+                        <footer className='form_caution'>
+                            <Button
+                                label="Delete Session"
+                                styles="tertiary"
+                                icon={PiTrashBold}
+                                action={onOpenModal}
+                            />
+                        </footer>
+                        </>
+                    }
+                </form>
             </Scroll>
             <Modal
                 isModalOpen={isModalOpen}
                 onCloseModal={onCloseModal}
             >
-                <DeleteSessionModal session={session} close={onCloseModal} />
+                <DeleteSessionModal
+                    close={onCloseModal}
+                />
             </Modal>
         </motion.main>
   )

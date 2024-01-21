@@ -123,8 +123,8 @@ export const thunkUpdateSession = (sessionData, sessionId) => async dispatch => 
     }
 }
 
-export const thunkDeleteSession = (session) => async dispatch => {
-    const res = await csrfFetch(`/api/sessions/${session.id}`, {
+export const thunkDeleteSession = (sessionId) => async dispatch => {
+    const res = await csrfFetch(`/api/sessions/${sessionId}`, {
         method: 'DELETE'
     })
     try {

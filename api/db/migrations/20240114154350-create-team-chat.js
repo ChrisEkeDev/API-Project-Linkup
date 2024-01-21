@@ -25,7 +25,8 @@ module.exports = {
         references: {
           model: 'Teams',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE'
     },
       playerId: {
         type: Sequelize.UUIDV4,

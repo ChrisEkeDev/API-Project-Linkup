@@ -26,17 +26,20 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       Session.hasMany(models.SessionImage, {
+        onDelete: 'CASCADE',
         foreignKey: 'sessionId',
         sourceKey: 'id'
       })
 
 
       Session.hasMany(models.SessionChat, {
+        onDelete: 'CASCADE',
         foreignKey: 'sessionId',
         sourceKey: 'id'
       })
 
       Session.hasMany(models.CheckIn, {
+        onDelete: 'CASCADE',
         foreignKey: 'sessionId',
         sourceKey: 'id'
       })

@@ -139,8 +139,8 @@ export const thunkUpdateTeam = (teamData, teamId) => async dispatch => {
     }
 }
 
-export const thunkDeleteTeam = (team) => async dispatch => {
-    const res = await csrfFetch(`/api/teams/${team.id}`, {
+export const thunkDeleteTeam = (teamId) => async dispatch => {
+    const res = await csrfFetch(`/api/teams/${teamId}`, {
         method: 'DELETE'
     })
     try {
@@ -186,8 +186,8 @@ const teamsReducer = (state = initialState, action) => {
             return newState;
         }
         case DELETE_TEAM: {
-            const newState = { ...state };
-            delete newState.allTeams[action.payload.id];
+            const newState = { ...state, myTeams: { ...state.myTeams }  };
+            delete newState.myTeams[action.payload.id];
             return newState;
         };
         default:

@@ -9,9 +9,11 @@ function Alerts(props) {
     return (
         <motion.div
             variants={slide_small_variants}
-            {...base_animations} className='alerts'>
+            {...base_animations}
+            className='alerts'>
             <AnimatePresence >
             {
+                alerts.length > 0 &&
                 alerts.map(alert => (
                     <AlertItem
                         key={alert.id}

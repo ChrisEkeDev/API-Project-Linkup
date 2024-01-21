@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { useApp } from "../../../context/AppContext"
-import { thunkGetMyMemberships } from '../../../store/memberships'
-import { thunkGetMyTeams } from '../../../store/teams'
+import { thunkGetMyCheckIns } from '../../../store/checkins'
+import { thunkGetMySessions } from '../../../store/sessions'
 
 
-function useTeams() {
+function useSessions() {
     const { dispatch } = useApp();
     const [ loading, setLoading ] = useState(true)
 
     useEffect(() => {
         const getData = async () => {
             try {
-                const res = await dispatch(thunkGetMyTeams())
-                const res2 = await dispatch(thunkGetMyMemberships())
+                const res = await dispatch(thunkGetMySessions())
+                const res2 = await dispatch(thunkGetMyCheckIns())
                 if (res.status === 200 && res2.status === 200) {
                     setLoading(false)
                 }
@@ -27,4 +27,4 @@ function useTeams() {
     return { loading }
 }
 
-export default useTeams
+export default useSessions

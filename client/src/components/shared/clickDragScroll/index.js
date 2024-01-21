@@ -41,9 +41,15 @@ function ClickDragScroll(props) {
                 onMouseMove={onDrag}
             >
             <AnimatePresence>
-                <PiHandSwipeLeftFill className="swipe_icon" />
-                {children}
-                <PiHandSwipeRightFill className="swipe_icon" />
+                <PiHandSwipeLeftFill
+                    key={'start-pointer'}
+                    className="swipe_icon"
+                />
+                    {children}
+                <PiHandSwipeRightFill
+                    key={'end-pointer'}
+                    className="swipe_icon"
+                />
             </AnimatePresence>
             </ul>
         </section>

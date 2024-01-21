@@ -8,20 +8,24 @@ import SessionsSorter from './components/SessionSorter';
 import Button from '../../components/shared/button';
 import IconButton from '../../components/shared/button/IconButton';
 import { useApp } from '../../context/AppContext';
+import useSessions from './hooks/useSessions'
 import useSessionSearch from './hooks/useSessionSearch';
 import Scroll from '../../components/shared/scroll';
 import { page_transitions } from '../../constants/animations';
 import { PiPlusBold, PiMagnifyingGlassBold, PiCoffee } from 'react-icons/pi';
+import LoadingData from '../../components/shared/loading'
 
 
 function Sessions() {
-  const { auth } = useApp();
+  const { auth, navigate } = useApp();
   const sessionsData = useSelector(state => state.sessions.mySessions);
   const sessions = Object.values(sessionsData)
-  console.log(sessions)
   const createdSessions = sessions.filter(session => session.creator.id === auth.id)
   const joinedSessions = sessions.filter(session => session.creator.id !== auth.id)
-  const { navigate } = useApp();
+  const { loading } = useSessions();
+
+
+  if (loading) return <LoadingData/>
 
   return (
       <motion.main {...page_transitions} className='page sessions' >

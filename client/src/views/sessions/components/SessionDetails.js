@@ -1,16 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Scroll from '../../../components/shared/scroll';
-import SessionInformation from './SessionInformation';
+import { useApp } from '../../../context/AppContext';
 import PlayerCheckins from './PlayerCheckins';
 import LatestMessages from '../../../components/shared/chat/LatestMessages';
 import { format, parseISO } from 'date-fns';
 import ProfileImage from '../../../components/shared/profileImage';
+import { thunkGetSingleSession } from '../../../store/sessions'
 
 function SessionDetails() {
+    const { dispatch } = useApp();
     const singleSession = useSelector(state => state.sessions.singleSession);
     const formatTime = format(parseISO(singleSession.startDate), 'MMM dd, yyyy @ p')
+
+    useEffect(() => {
+        dispatch(thunkGetSingleSession(singleSession.id))
+    }, [])
 
     return (
         <Scroll>

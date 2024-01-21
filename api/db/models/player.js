@@ -7,12 +7,27 @@ module.exports = (sequelize, DataTypes) => {
   class Player extends Model {
 
     static associate(models) {
+
+      Player.hasMany(models.Session, {
+        onDelete: 'CASCADE',
+        foreignKey: 'creatorId',
+        sourceKey: 'id'
+      })
+
+      Player.hasMany(models.Team, {
+        onDelete: 'CASCADE',
+        foreignKey: 'captainId',
+        sourceKey: 'id'
+      })
+
       Player.hasMany(models.TeamChat, {
+        onDelete: 'CASCADE',
         foreignKey: 'playerId',
         sourceKey: 'id'
       })
 
       Player.hasMany(models.SessionChat, {
+        onDelete: 'CASCADE',
         foreignKey: 'playerId',
         sourceKey: 'id'
       })
@@ -27,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       Player.hasMany(models.Membership, {
+        onDelete: 'CASCADE',
         foreignKey: 'playerId',
         sourceKey: 'id'
       })
@@ -40,11 +56,13 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       Player.hasMany(models.CheckIn, {
+        onDelete: 'CASCADE',
         foreignKey: 'playerId',
         sourceKey: 'id'
       })
 
       Player.hasMany(models.Like, {
+        onDelete: 'SET_NULL',
         foreignKey: 'playerId',
         sourceKey: 'id'
       })

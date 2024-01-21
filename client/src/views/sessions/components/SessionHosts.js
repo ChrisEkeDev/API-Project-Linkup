@@ -9,7 +9,7 @@ function SessionHosts(props) {
         <ul className='container_border session_hosts'>
             <span className='section_label xs bold'>Select a Team to Host this Session (Optional)</span>
             {teams.map(team => (
-                <li className='session_host' onClick={() => handleHost(team.Team.id)}>
+                <li key={team.Team.id} className='session_host' onClick={() => handleHost(team.Team.id)}>
                    {
                     team.Team.id === currentHostId ?
                     <PiCheckCircleFill className='lg' /> :

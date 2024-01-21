@@ -4,6 +4,7 @@ const { Player, TeamChat } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { validateCreateChat } = require("./validation/expressValidations");
 const { chatNotFound } =require('./constants/responseMessages');
+const { v4: uuidv4 } = require('uuid');
 
 
 router.put('/:chatId', requireAuth, validateCreateChat,  async(req, res) => {

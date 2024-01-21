@@ -1,6 +1,6 @@
 'use strict';
 const { Model } = require('sequelize');
-const { v4: uuidv4 } = require('uuid');
+
 
 module.exports = (sequelize, DataTypes) => {
   class TeamChat extends Model {
@@ -23,8 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: DataTypes.UUID,
       allowNull: false,
-      primaryKey: true,
-      defaultValue: uuidv4()
+      primaryKey: true
     },
     content:  {
       type: DataTypes.STRING,
