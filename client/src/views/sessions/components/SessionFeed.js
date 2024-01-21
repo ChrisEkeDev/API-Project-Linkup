@@ -9,6 +9,7 @@ import useSessionChatWebSocket from '../hooks/useSessionChatWebSocket'
 import SessionChat from './SessionChat'
 import ChatInput from '../../../components/shared/inputs/ChatInput'
 import Scroll from '../../../components/shared/scroll';
+import LoadingData from '../../../components/shared/loading';
 import { PiChatsCircle } from 'react-icons/pi'
 
 function SessionFeed() {
@@ -22,14 +23,14 @@ function SessionFeed() {
         if (ref.current) {
             ref.current.scrollTop = ref.current.scrollHeight
         }
-        socket.on("update_feed", () => {
+
+        socket?.on("update_feed", () => {
             ref.current.scrollTop = ref.current.scrollHeight
         })
 
-        return () => {
-            socket.disconnect(); // Close WebSocket connection
-        }
     }, [])
+
+    if (socket === null) return <LoadingData/>
 
     return (
         <Scroll ref={ref}>

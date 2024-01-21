@@ -15,6 +15,7 @@ function useNewSessionChat({socket, room}) {
   const createSessionChat = async () => {
     try {
       const res = await dispatch(thunkCreateSessionChat(session.id, content));
+      console.log(socket)
       socket.emit('new_message', room)
     } catch (e) {
         console.error(e)

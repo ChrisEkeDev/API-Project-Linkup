@@ -6,9 +6,10 @@ import { parent_variants, base_animations } from '../../../constants/animations'
 import useNewTeamChat from '../hooks/useNewTeamChat';
 import useTeamChatWebSocket from '../hooks/useTeamChatWebSocket'
 import { useSelector } from 'react-redux'
-import ChatItem from './TeamChat'
+import TeamChat from './TeamChat'
 import ChatInput from '../../../components/shared/inputs/ChatInput'
 import Scroll from '../../../components/shared/scroll';
+import LoadingData from '../../../components/shared/loading';
 
 
 function TeamFeed() {
@@ -22,16 +23,12 @@ function TeamFeed() {
         if (ref.current) {
             ref.current.scrollTop = ref.current.scrollHeight
         }
-        socket.on("update_feed", () => {
+        socket?.on("update_feed", () => {
             ref.current.scrollTop = ref.current.scrollHeight
         })
-
-        return () => {
-            socket.disconnect(); // Close WebSocket connection
-        };
     }, [])
 
-
+    if (socket === null) return <LoadingData/>
 
     return (
         <Scroll ref={ref}>
@@ -43,7 +40,7 @@ function TeamFeed() {
                         <AnimatePresence>
                         {
                             teamFeedArr.map(chat => (
-                                <ChatItem
+                                <TeamChat
                                     socket={socket}
                                     room={room}
                                     key={chat.id}

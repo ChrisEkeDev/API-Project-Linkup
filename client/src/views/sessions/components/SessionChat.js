@@ -73,14 +73,10 @@ function SessionChat(props) {
                 }
                 </div>
             }
-            {
-                !isAuth &&
-                <div className='chat_likes' onClick={chatLiked ? removeLike : addLike }>
-                    { chatLiked ? <PiHeartFill className="icon"/> : <PiHeartBold className='icon'/> }
-                    <p className='xs bold'>{chat.likes}</p>
-                </div>
-            }
-
+            <div className='chat_likes' onClick={chatLiked ? removeLike : addLike }>
+                { chatLiked ? <PiHeartFill className="icon"/> : <PiHeartBold className='icon'/> }
+                <p className='xs bold'>{chat.likes}</p>
+            </div>
         </motion.li>
     )
 }

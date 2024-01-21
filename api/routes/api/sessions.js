@@ -207,7 +207,7 @@ router.get('/:sessionId', async (req, res) => {
                 model: SessionChat,
                 attributes: {
                     include: [
-                        [fn('COUNT', Sequelize.col('Likes.id')), 'likes']
+                        [fn('COUNT', col('Likes.id')), 'likes']
                     ]
                 },
                 include: [
@@ -266,7 +266,8 @@ router.post('/', requireAuth, uploadMedia, validateCreateSession, async (req, re
     await CheckIn.create({
         id: uuidv4(),
         sessionId: session.id,
-        playerId
+        playerId,
+        status: 'attending'
     })
 
     if (image) {
@@ -714,7 +715,7 @@ router.get('/:sessionId/chat-feed', async (req, res) => {
         where: { sessionId },
         attributes: {
             include: [
-                [Sequelize.fn('COUNT', Sequelize.col('Likes.id')), 'likes']
+                [fn('COUNT', col('Likes.id')), 'likes']
             ]
         },
         include: [

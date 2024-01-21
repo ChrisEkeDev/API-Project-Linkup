@@ -10,7 +10,7 @@ function Alerts(props) {
         <motion.div
             variants={slide_small_variants}
             {...base_animations} className='alerts'>
-            <AnimatePresence mode="wait">
+            <AnimatePresence >
             {
                 alerts.map(alert => (
                     <AlertItem

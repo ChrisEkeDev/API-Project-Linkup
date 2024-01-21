@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { Team, Membership, Player, TeamChat, Session, CheckIn } = require('../../db/models');
+const { Team, Membership, Player, TeamChat, Session, CheckIn, Like } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
-const {  Op, fn, col } = require('sequelize');
+const {  Op, fn, col, literal } = require('sequelize');
 const { validateCreateTeam, validateEditTeam } = require('./validation/expressValidations')
 const { teamNotFound, playerNotAuthorized, membershipNotFound, membershipAlreadyExists } = require('./constants/responseMessages');
-
+const { v4: uuidv4 } = require('uuid');
 
 // Get all teams
 router.get('/search/*', async (req, res) => {
@@ -149,11 +149,23 @@ router.get('/:teamId', async (req, res) => {
             },
             {
                 model: TeamChat,
-                include: {
-                    model: Player,
-                    attributes: ['name', 'profileImage']
+                attributes: {
+                    include: [
+                        [fn('COUNT', col('Likes.id')), 'likes']
+                    ]
                 },
-                order: [['createdAt', 'DESC']],
+                include: [
+                    {
+                        model: Player,
+                        attributes: ['name', 'profileImage']
+                    },
+                    {
+                        model: Like,
+                        attributes: [] // empty array means do not fetch columns from the Likes table
+                    }
+                ],
+                group: ['TeamChat.id'],
+                order: [[literal("likes"), 'DESC']],
                 limit: 3
             }
         ]
@@ -547,10 +559,22 @@ router.get('/:teamId/chat-feed', requireAuth, async (req, res) => {
 
     const teamFeed = await TeamChat.findAll({
         where: { teamId },
-        include: {
-            model: Player,
-            attributes: ['name', 'profileImage']
+        attributes: {
+            include: [
+                [fn('COUNT',col('Likes.id')), 'likes']
+            ]
         },
+        include: [
+            {
+                model: Player,
+                attributes: ['name', 'profileImage']
+            },
+            {
+                model: Like,
+                attributes: [] // empty array means do not fetch columns from the Likes table
+            }
+        ],
+        group: ['TeamChat.id'],
         order: [['createdAt', 'ASC']]
     })
 

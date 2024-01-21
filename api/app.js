@@ -14,6 +14,7 @@ const routes = require('./routes')
 
 // Initialize express application
 const app = express();
+const http = require('http').Server(app);
 
 // Parsing & Logging Middleware
 app.use(morgan('dev')) // Logs information about requests and responses
@@ -34,4 +35,4 @@ app.use(handleResourceNotFound)
 app.use(handleSequelizeErrors)
 app.use(errorFormatter)
 
-module.exports = app;
+module.exports = { app, http };

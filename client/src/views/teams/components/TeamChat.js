@@ -38,7 +38,7 @@ function TeamChat(props) {
                     <span>&#8226;</span>
                     <p className="xs bold">{formatDate}</p>
                 </div>
-                <textarea ref={textareaRef} className="textarea" disabled={!editing} value={content} onChange={handleInput}></textarea>
+                <textarea ref={textareaRef} className="chat_textarea" disabled={!editing} value={content} onChange={handleInput}></textarea>
             </div>
             {
                 isAuth &&
@@ -73,14 +73,10 @@ function TeamChat(props) {
                 }
                 </div>
             }
-            {
-                !isAuth &&
-                <div className='chat_likes' onClick={chatLiked ? removeLike : addLike }>
-                    { chatLiked ? <PiHeartFill className="icon"/> : <PiHeartBold className='icon'/> }
-                    <p className='xs bold'>{chat.likes}</p>
-                </div>
-            }
-
+            <div className='chat_likes' onClick={chatLiked ? removeLike : addLike }>
+                { chatLiked ? <PiHeartFill className="icon"/> : <PiHeartBold className='icon'/> }
+                <p className='xs bold'>{chat.likes}</p>
+            </div>
         </motion.li>
     )
 }
