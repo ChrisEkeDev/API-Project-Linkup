@@ -1,5 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const AppleStrategy = require('passport-apple');
 const { v4: uuidv4 } = require('uuid');
 const { Player, PlayerSettings } = require('../db/models');
 const bcrypt = require('bcryptjs')
@@ -43,6 +44,18 @@ passport.use(new GoogleStrategy({
     } catch(e) {
         return done(e, null);
     }
+}));
+
+passport.use(new AppleStrategy({
+    clientID: "YOUR_SERVICES_ID", // Your Services ID
+    teamID: "YOUR_TEAM_ID", // Your Apple Team ID
+    keyID: "YOUR_KEY_ID", // Your Key ID
+    privateKeyLocation: "path/to/your/private/key.p8", // Path to your private key file
+    callbackURL: 'http://localhost:8000/api/auth/apple/callback'
+}, (accessToken, refreshToken, profile, done) => {
+    // User’s profile is available in profile, proceed with your logic
+    // Example: Find or create a user in your database
+    done(null, profile);
 }));
 
 passport.serializeUser((player, done) => {
