@@ -1,37 +1,28 @@
 import React from 'react'
-import IconButton from '../../../components/shared/button/IconButton'
-import { PiGoogleLogoBold, PiFacebookLogoBold, PiXLogoBold, PiTwitterLogoBold } from "react-icons/pi";
+import Button from '../../../components/shared/button';
 import useOAuth2 from '../hooks/useOAuth2'
-import { TbBrandX, TbBrandGoogle , TbBrandFacebook  } from "react-icons/tb";
+import { FcGoogle } from "react-icons/fc";
+import { IoLogoApple } from "react-icons/io5";
+import { TbArrowRight } from "react-icons/tb";
 
-
-function OAuth() {
-    const { googleAuth } = useOAuth2();
+function OAuth({title}) {
+    const { googleAuth, appleAuth } = useOAuth2();
 
     return (
         <div className="auth_oauth">
             <span className="auth_divide xs bold">or</span>
-            <p className="sm bold">Sign in using social account</p>
-            <div className="oauth_container">
-                <IconButton
-                    label="Login with Google"
-                    styles="lg_icon"
-                    icon={TbBrandGoogle}
-                    action={googleAuth}
-                />
-                <IconButton
-                    label="Login with Facebook"
-                    styles="lg_icon"
-                    icon={TbBrandFacebook}
-                    action={googleAuth}
-                />
-                <IconButton
-                    label="Login with X"
-                    styles="lg_icon"
-                    icon={TbBrandX}
-                    action={googleAuth}
-                />
-            </div>
+            <Button
+                label={`${title} using your Google account`}
+                icon={FcGoogle}
+                action={googleAuth}
+                styles="auth_form_button secondary"
+            />
+            <Button
+                label={`${title} using your Apple account`}
+                icon={IoLogoApple}
+                action={appleAuth}
+                styles="auth_form_button secondary"
+            />
         </div>
     )
 }

@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import '../styles.scss';
 import Input from '../../../components/shared/inputs/textInput';
 import Button from '../../../components/shared/button';
+import { TbUserPlus, TbCode } from "react-icons/tb";
 import useSignUp from '../hooks/useSignUp';
+import useSignIn from '../hooks/useSignIn';
+import OAuth from '../components/OAuth'
 
 function SignUp() {
     const {
@@ -12,6 +15,9 @@ function SignUp() {
       handleInput,
       onSignUp,
     } = useSignUp();
+    const {
+      onSignInGuest
+    } = useSignIn();
 
   return (
     <main className='page auth'>
@@ -64,14 +70,23 @@ function SignUp() {
         </section>
         <footer className='auth_form--actions'>
           <Button
-            styles='auth_form--button primary'
+            styles='auth_form_button primary'
             type='button'
+            icon={TbUserPlus}
             label='Sign up'
             disabled={Object.values(errors).length}
             action={onSignUp}
           />
+          <Button
+            styles='auth_form_button secondary'
+            type="button"
+            icon={TbCode}
+            label='Sign in as guest'
+            action={onSignInGuest}
+          />
         </footer>
       </form>
+      <OAuth title='Sign up'/>
     </main>
   )
 }

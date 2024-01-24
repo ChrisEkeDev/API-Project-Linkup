@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { base_animations, child_variants } from '../../../constants/animations';
 import IconButton from '../../../components/shared/button/IconButton'
 import { useApp } from '../../../context/AppContext'
-import { format , parseISO } from 'date-fns'
+import { format , parseISO, isSameDay } from 'date-fns'
 import useTeamChat from "../hooks/useTeamChat"
 import ProfileImage from '../../../components/shared/profileImage'
 import { PiHeartFill, PiHeartBold, PiPencilSimpleLineFill, PiXBold, PiCheckFatFill, PiTrashBold  } from "react-icons/pi";
@@ -17,7 +17,10 @@ function TeamChat(props) {
     const chatLiked = myLikesArr.find(like => like.playerId === auth.id && chat.id === like.entityId)
     const isAuth = auth.id === chat.playerId
     const { ref, content, handleInput, updateTeamChat, deleteTeamChat, editing, setEditing, addLike, removeLike   } = useTeamChat(props)
-    const formatDate = format(parseISO(chat.createdAt), 'MM/dd/yy p');
+    const today = new Date();
+    const createdToday = isSameDay(parseISO(chat.createdAt), today);
+    const chatDateFormat = createdToday ? 'p' : `MM/dd  •  p`;
+    const formatDate = format(parseISO(chat.createdAt), chatDateFormat);
     const textareaRef = useRef(null);
 
     useEffect(() => {

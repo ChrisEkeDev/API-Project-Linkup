@@ -47,14 +47,13 @@ passport.use(new GoogleStrategy({
 }));
 
 passport.use(new AppleStrategy({
-    clientID: "YOUR_SERVICES_ID", // Your Services ID
-    teamID: "YOUR_TEAM_ID", // Your Apple Team ID
-    keyID: "YOUR_KEY_ID", // Your Key ID
+    clientID: process.env.APPLE_SERVICES_ID, // Your Services ID
+    teamID: process.env.APPLE_TEAM_ID, // Your Apple Team ID
+    keyID: process.env.APPLE_KEY_ID, // Your Key ID
     privateKeyLocation: "path/to/your/private/key.p8", // Path to your private key file
     callbackURL: 'http://localhost:8000/api/auth/apple/callback'
 }, (accessToken, refreshToken, profile, done) => {
-    // User’s profile is available in profile, proceed with your logic
-    // Example: Find or create a user in your database
+    console.log(profile)
     done(null, profile);
 }));
 

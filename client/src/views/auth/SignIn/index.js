@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Input from '../../../components/shared/inputs/textInput';
 import Button from '../../../components/shared/button';
 import OAuth from '../components/OAuth'
+import { TbLogin2, TbCode } from "react-icons/tb";
 import '../styles.scss';
 import useSignIn from '../hooks/useSignIn';
 
@@ -45,21 +46,23 @@ function SignIn() {
                 </section>
                 <footer className='auth_form--actions'>
                     <Button
-                        styles='auth_form--button primary'
+                        styles='auth_form_button primary'
                         type="button"
+                        icon={TbLogin2}
                         label='Sign in'
                         disabled={Object.values(errors).length}
                         action={onSignIn}
                     />
                     <Button
-                        styles='auth_form--button secondary'
+                        styles='auth_form_button secondary'
                         type="button"
+                        icon={TbCode}
                         label='Sign in as guest'
                         action={onSignInGuest}
                     />
                 </footer>
             </form>
-            <OAuth />
+            <OAuth title='Sign in'/>
         </main>
             )
 }

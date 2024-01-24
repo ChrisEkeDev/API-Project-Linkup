@@ -85,6 +85,36 @@
 
 }
 
+.arrow {
+    position: absolute;
+    right: 1rem;
+    opacity: 0
+}
+
+.auth_form_button {
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    height: 3rem;
+    border-radius: 3rem;
+    width: 100%;
+    gap: 1.5rem;
+    box-shadow: var(--box-shadow);
+    transition: background .2s ease;
+
+    .button--icon {
+        font-size: 1.25rem;
+    }
+
+    &:hover {
+        .arrow {
+            opacity: 1
+        }
+    }
+}
+
 .lg_icon {
     height: 4rem;
     border-radius: 4rem;
@@ -125,12 +155,18 @@
 .primary {
     background-color: var(--main);
     color: white;
+    &:hover {
+        background: var(--main-hover)
+    }
 }
 
 
 .secondary {
     background-color: var(--background);
     color: var(--main);
+    &:hover {
+        background: var(--hover)
+    }
 }
 
 .tertiary {

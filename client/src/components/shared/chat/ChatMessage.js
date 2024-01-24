@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useApp } from '../../../context/AppContext'
 import { AnimatePresence, motion } from 'framer-motion';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, isSameDay } from 'date-fns';
 import { PiHeartBold, PiHeartFill } from 'react-icons/pi'
 import ProfileImage from '../profileImage';
 import './styles.scss'
@@ -12,6 +12,10 @@ function ChatMessage({chat}) {
     const myLikes = useSelector(state => state.chats.myLikes)
     const myLikesArr = Object.values(myLikes)
     const chatLiked = myLikesArr.find(like => like.playerId === auth.id && chat.id === like.entityId)
+    const today = new Date();
+    const createdToday = isSameDay(parseISO(chat.createdAt), today);
+    const chatDateFormat = createdToday ? 'p' : 'MM/dd  •  p';
+    const formatDate = format(parseISO(chat.createdAt), chatDateFormat);
 
   return (
     <li key={chat.id} className="chat_item">
@@ -23,7 +27,7 @@ function ChatMessage({chat}) {
             <div className="chat_flex">
                 <p className="sm bold">{chat.Player.name}</p>
                 <span>&#8226;</span>
-                <p className="xs bold">{format(parseISO(chat.createdAt), 'MM/dd/yy p')}</p>
+                <p className="xs bold">{formatDate}</p>
             </div>
             <textarea className="chat_textarea" disabled={true} value={chat.content}></textarea>
         </div>

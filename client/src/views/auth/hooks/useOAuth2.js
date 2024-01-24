@@ -7,7 +7,12 @@ function useOAuth2() {
         window.location.href = 'http://localhost:8000/api/auth/google';
     }
 
-    return {googleAuth}
+    const appleAuth = (e) => {
+        e.preventDefault()
+        alert('Coming Soon')
+    }
+
+    return {googleAuth, appleAuth}
 }
 
 export default useOAuth2
