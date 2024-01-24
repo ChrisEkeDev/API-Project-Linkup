@@ -1,0 +1,115 @@
+@import url('../../../index.css');
+
+.input {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 1.5rem 0;
+
+    input {
+        width: 100%;
+        padding: 0 1rem;
+        height: 3rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 1.5rem;
+        box-shadow: var(--box-shadow);
+        background-color: var(--background);
+        color: var(--white);
+        &:hover,
+        &:focus {
+            background-color: var(--hover);
+            outline: transparent;
+            & + .label {
+                color: var(--main);
+            }
+        }
+    }
+
+    .icon {
+        position: absolute;
+        right: 1rem;
+        font-size: 1.25rem;
+        top: .90rem;
+        cursor: pointer;
+        color: var(--white);
+
+    }
+
+    .label {
+        position: absolute;
+        top: -.75rem;
+        left: .5rem;
+        font-size: .8rem;
+        padding: .25rem .5rem;
+        border-radius: .5rem;
+        background-color: var(--background);
+        color: var(--label);
+        font-weight: 600;
+    }
+
+    .error {
+        margin-top: .5rem;
+        display: flex;
+        align-items: center;
+        align-self: flex-start;
+        gap: .5rem;
+        color: var(--error);
+        font-size: .8rem;
+    }
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button
+ {
+    background: transparent;
+    -webkit-appearance: none;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+}
+
+.chat_input {
+
+    padding: 2rem 1rem 2rem 7rem;
+    position: absolute;
+    width: 100%;
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 60%);
+    right: 1.5rem;
+    bottom: 0;
+
+    textarea {
+        border: none;
+        width: 100%;
+        padding: 1rem;
+        height: 6rem;
+        resize: none;
+        border-radius: 1.5rem;
+        box-shadow: var(--box-shadow);
+        &:focus, &:hover {
+            outline: transparent
+        }
+    }
+
+    .chat_contents {
+        position: relative;
+        display: flex;
+        align-items: center
+
+    }
+
+    .send_btn {
+        position: absolute;
+        right: 1rem;
+    }
+}

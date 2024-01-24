@@ -1,0 +1,395 @@
+@import url('../../index.css');
+
+////////////////////////////////////////////////////////////////////
+.sessions {
+    padding-top: 1rem;
+    padding-right: 1rem;
+}
+.session_list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: 10rem;
+}
+
+.session_item {
+    padding: 1rem;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 1rem;
+    width: 100%;
+    transition: background .3s ;
+
+    &:hover {
+        background-color: var(--hover);
+        .accent {
+            color: var(--main)
+        }
+    }
+
+
+
+    .creator {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding-right: 1rem;
+        border-right: var(--border);
+        .image {
+            height: 5rem;
+            aspect-ratio: 1;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: .5rem;
+        }
+        span {
+            font-weight: 600;
+        }
+    }
+
+
+
+    .session_arrow {
+        position: absolute;
+        right: 2rem;
+        display: none;
+    }
+}
+
+.player_count {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin-right: 1rem;
+    .count {
+        font-size: 2rem;
+    }
+
+    small {
+        font-size: .8rem;
+        font-weight: 600;
+        color: var(--label);
+    }
+}
+
+.sessions_search {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5rem;
+    padding: 1rem 1.5rem 1rem 1rem;
+
+}
+
+
+.search_flex {
+    display: flex;
+    width: 100%;
+}
+.search_input {
+    height: 3rem;
+    border: none;
+    width: 100%;
+    padding: 0 1rem;
+    border-radius: 5rem;
+    box-shadow: var(--box-shadow);
+    background-color: var(--background);
+    color: var(--white);
+    &:focus, &:hover  {
+        background-color: var(--black-hover);
+        outline: transparent;
+    }
+}
+
+
+.sorter {
+    position: relative;
+    padding: 0;
+    border-radius: .5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .sorter_label {
+        font-size: .8rem;
+        text-align: right;
+        white-space: nowrap;
+    }
+}
+
+.results {
+    position: relative;
+    border-top: var(--border);
+    padding-top: 1rem;
+}
+
+.session_information {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 1rem 3rem 1rem;
+    .player_count {
+        .count {
+            color: var(--mains)
+        }
+    }
+}
+
+.session_creator {
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-right: var(--border);
+    flex-shrink: 0;
+}
+
+
+.sessions_info {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: .5rem;
+
+
+    .grid {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .icon {
+            font-size: 1.25rem;
+        }
+    }
+}
+
+.session_players {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+    border-top: var(--border);
+    padding: 0 1rem;
+
+
+}
+
+.section_label {
+    position: absolute;
+    padding: .5rem;
+    background-color: var(--background);
+    left: .5rem;
+    top: -1.15rem;
+    text-transform: capitalize;
+}
+
+.checkIn_list{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.session_player {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 0;
+    position: relative;
+    align-items: center;
+    gap: .5rem;
+
+    .player_status_crown {
+        font-size: 1.25rem;
+        position: absolute;
+        top: 1.5rem;
+        right: 0rem;
+        // color: var(--main);
+    }
+}
+
+.session_form {
+    height: calc(100% - 1rem);
+
+    h2 {
+        margin: 1rem 0;
+        padding: 1rem;
+    }
+    .form_input {
+        display: flex;
+        gap: 1rem;
+
+        .input_button {
+            margin-top: 1.5rem;
+        }
+    }
+
+    .input_icon {
+        position: absolute;
+        right: 1rem;
+        font-size: 1.25rem;
+        top: .75rem;
+        pointer-events: none;
+    }
+    .form_flex {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .form_verification {
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        border-radius: 1.5rem;
+        margin-bottom: 1rem;
+
+        .icon {
+            font-size: 1.5rem;
+        }
+    }
+
+
+}
+
+.form_actions {
+    padding: 3rem 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.form_caution {
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
+}
+
+.modal_container {
+    position: relative;
+    background-color: var(--background);
+    width: 600px;
+    padding: 2rem;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    flex-direction: column;
+    border-radius: 1.5rem;
+
+    .modal_title {
+        padding-left: 1rem;
+        padding-right: 4rem;
+    }
+
+    .session_creator {
+        padding-right: 4rem;
+    }
+}
+
+.results_container {
+    position: relative;
+}
+
+.results_list {
+    // box-shadow: var(--box-shadow);
+    padding: 0rem 1rem 2rem 0;
+    border-radius: 1.5rem;
+    max-height: 300px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+}
+
+.fade_overlay {
+    position: absolute;
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 0) 5%,
+        rgba(255, 255, 255, 0) 85%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+
+}
+
+.result_item {
+    display: flex;
+    align-items: center;
+    padding: .5rem 1rem;
+    gap: .5rem;
+    border-radius: 1rem;
+    transition: background .2s;
+    cursor: pointer;
+
+    .icon {
+        font-size: .5rem;
+    }
+
+    &:hover {
+        background-color: var(--hover);
+    }
+}
+
+.session_specs {
+    display: flex;
+    align-items: center;
+    padding: 2rem 1rem;
+    gap: 1rem;
+}
+
+
+.session_hosts {
+    margin: 3rem 0;
+    padding: 2rem 0;
+}
+
+.session_host {
+    display: flex;
+    padding: 1rem;
+    align-items: center;
+    border-radius: 1.5rem;
+    gap: 1rem;
+    cursor: pointer;
+    transition: background .3s;
+
+    &:hover {
+        background-color: var(--hover);
+    }
+}
+
+///////////////////////////////////////////////////////////////
+
+
+
+
+@media screen and (max-width: 1109px) {
+
+}
+
+/* Mobile */
+@media screen and (max-width: 900px) {
+    .sessions {
+        .header {
+            h2 {
+                display: none;
+            }
+        }
+    }
+
+}
+
+/* Mobile */
+@media screen and (max-width: 500px) {
+
+
+}

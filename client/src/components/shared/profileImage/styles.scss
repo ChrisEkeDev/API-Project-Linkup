@@ -1,0 +1,41 @@
+@import url('../../../index.css');
+
+.image_border {
+    aspect-ratio: 1;
+    border-radius: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--box-shadow);
+
+    .initial {
+        font-weight: 600;
+        text-transform: uppercase;
+        color: var(--text);
+    }
+
+    .image {
+        aspect-ratio: 1;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        background-color: var(--background);
+    }
+
+    .profile_circle {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--hover);
+    }
+    .details {
+        p {
+            font-size: 1rem;
+        }
+    }
+}
+
+.border_profile {
+    outline: var(--main-border)
+}

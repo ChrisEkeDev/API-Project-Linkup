@@ -1,0 +1,39 @@
+@import url('../../../index.css');
+
+.modal-overlay {
+    position: absolute;
+    top: 0%;
+    bottom: 0%;
+    left: 0%;
+    right: 0%;
+    background-color: rgba(0,0,0,.5);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .modal {
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        width: auto;
+        position: relative;
+
+        .modal_close {
+            position: absolute;
+            right: 3rem;
+            top: 3rem;
+            z-index: 501;
+        }
+        .modal_actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        .modal_body {
+            padding: 1rem 4rem 2rem 1rem;
+        }
+    }
+}

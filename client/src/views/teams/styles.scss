@@ -1,0 +1,259 @@
+@import url('../../index.css');
+
+.teams {
+    padding-top: 1rem;
+    padding-right: 1rem;
+}
+
+.team_item {
+    padding: 1rem;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 1rem;
+    width: 100%;
+    transition: background .3s ;
+
+    &:hover {
+        background-color: var(--hover);
+        .accent {
+            color: var(--main)
+        }
+    }
+}
+
+
+.team_privacy {
+    font-size: 2rem;
+    margin-bottom: .25rem;
+}
+
+.team_privacy_icon {
+    font-size: 1.5rem
+}
+
+.team_information {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.team_info_flex {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.member_preview {
+    display: flex;
+    margin-top: .20rem
+}
+
+.members_overlay {
+    position: absolute;
+    width:calc(100% - 2rem);
+    height:calc(100% - 2rem);
+    z-index: 10;
+    margin: 1rem 0;
+    // background-color: red;
+    pointer-events: none;
+    background-image: linear-gradient(
+        90deg,
+      rgba(255,255,255,1) 0%,
+      rgba(255,255,255, 0) 15%,
+      rgba(255,255,255, 0) 75%,
+      rgba(255,255,255, 1) 95%);
+}
+
+.swipe_icon {
+    color: var(--text);
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.members_list {
+    padding: 1rem 0;
+}
+
+.details_members {
+    cursor: pointer;
+    list-style-type: none;
+    overflow-x: scroll;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow-y: hidden;
+    gap: 2rem;
+    padding-right: 5rem;
+    padding-left: 2rem;
+
+}
+
+.toggle_container {
+    display: flex;
+    height: 3rem;
+    padding: 0 1rem;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+}
+
+.toggle_switch {
+    display: flex;
+    height: 1rem;
+    aspect-ratio: 2 / 1;
+    border-radius: 1rem;
+    background-color: var(--hover);
+    position: relative;
+}
+
+.toggle_node {
+    height: 1rem;
+    border-radius: 1rem;
+    aspect-ratio: 1;
+    background-color: var(--text);
+    position: absolute;
+    left: 0;
+    transition: all .2s ease;
+}
+
+.on_private {
+    left: calc(100% - 1rem);
+}
+
+.tip {
+    background-color: var(--hover);
+    margin: 1rem 0 1rem 1rem;
+    border-radius: 1.5rem;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+    .tip_icon {
+        flex-shrink: 0;
+        font-size: 1.5rem;
+    }
+}
+
+
+.member_item {
+    display: flex;
+    padding: 1rem;
+    justify-content: space-between;
+    border-radius: 1.5rem;
+
+    &:hover {
+        background-color: var(--hover);
+    }
+}
+
+.team_captain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    .host_status {
+        display: flex;
+        align-items: center;
+        gap: .25rem;
+    }
+}
+
+.member_status {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+    text-transform: uppercase;
+    outline: var(--border);
+    padding: .25rem .5rem;
+    border-radius: .5rem;
+}
+
+.member_actions {
+    display: grid;
+    grid-template-columns: 3rem 3rem 3rem;
+    align-items: center;
+    gap: 1rem;
+}
+
+.attendance_actions {
+    display: grid;
+    grid-template-columns: 3rem 3rem;
+    align-items: center;
+    gap: 1rem;
+}
+
+.joined_groups {
+    margin-top: 1rem;
+}
+
+.member-host {
+    background-color: var(--main);
+    color: var(--background)
+}
+
+.member-co-host {
+    color: var(--text)
+}
+
+.member-pending {
+    background: var(--hover);
+    color: var(--text)
+}
+
+.no_teams {
+    padding: 2rem 0 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: .5;
+    gap: .5rem;
+
+    .icon {
+        font-size: 1.5rem;
+    }
+}
+
+.feed_list {
+    padding: 1rem 0 17rem 0;
+    width: 100%;
+}
+
+
+
+.container_border {
+    border-top: var(--border);
+    position: relative;
+}
+
+
+
+.team_sessions {
+    padding: 1rem 0;
+}
+
+.team_session_list {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.team_session_item {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 1.5rem;
+    padding: 1rem;
+    border: 1.5rem;
+    transition: background .2s;
+    &:hover {
+        background-color: var(--hover);
+    }
+}

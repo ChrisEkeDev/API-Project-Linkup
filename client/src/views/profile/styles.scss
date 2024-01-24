@@ -1,0 +1,61 @@
+@import url('../../index.css');
+
+
+.profile_user_info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1rem;
+    margin-bottom: 3rem;
+}
+
+
+.profile_actions {
+    margin-top: 10rem;
+}
+
+.profile_stats {
+    border-top:  var(--border);
+    position: relative;
+    padding: 3rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    .stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.profile_settings {
+    border-top:  var(--border);
+    position: relative;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.settings_toggle {
+    cursor: pointer;
+    padding: 1rem;
+    display: flex;
+    border-radius: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    transition: background .2s ease;
+    position: relative;
+    margin-left: 1rem;
+
+
+    &:hover {
+        background-color: var(--hover);
+    }
+
+    .toggle_icon {
+        font-size: 1.25rem;
+    }
+}

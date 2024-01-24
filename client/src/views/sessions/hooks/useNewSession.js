@@ -1,0 +1,146 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useApp } from "../../../context/AppContext";
+import { sessionsAlerts } from '../../../constants/alerts'
+import { getDateData } from "../../../helpers/dateHelpers";
+import { thunkCreateNewSession } from "../../../store/sessions";
+import { convertDateToUI, convertTimeToUI } from "../../../helpers/dateTimeFormatters";
+import { addHours } from "date-fns";
+
+function useNewSession() {
+    const today = new Date().toISOString();
+    const { dispatch, navigate, setLoading, handleAlerts } = useApp();
+    const { createSessionSuccess,createSessionError  } = sessionsAlerts;
+    const [ query, setQuery ] = useState("");
+    const [ queryResults, setQueryResults ] = useState([]);
+    const [ addressObject, setAddressObject ] = useState(null);
+    const [ addressConfirmed, setAddressConfirmed ] = useState(false);
+    const [ status, setStatus ] = useState(null)
+    const [ sessionData, setSessionData ] = useState({
+        name: '',
+        startDate: today,
+        date: convertDateToUI(today),
+        time: convertTimeToUI(today),
+        duration: 1,
+        address: null,
+        private: false
+    });
+    const [ errors, setErrors ] = useState({});
+
+    const getPlaces = async (e) => {
+        e.preventDefault()
+        setStatus("loading");
+        setAddressConfirmed(false);
+        try {
+            const response = await axios.post(`/api/places`, { query });
+            setQueryResults(response.data.data)
+            setStatus("success")
+        } catch(e) {
+            setStatus("fail")
+            console.log(e)
+        }
+
+    }
+
+    const handleToggle = () => {
+        setSessionData((prev) => ({ ...prev, private: !sessionData.private }));
+    }
+
+    const handleHost = (id) => {
+        setSessionData((prev) => ({ ...prev, hostId: id }));
+    }
+
+
+    // Handles the input of the Session Form
+    const handleInput = (x) => {
+        setSessionData((prev) => ({ ...prev, [x.target.id]: x.target.value }));
+        if (x.target.id === "address") {
+            setQuery(x.target.value)
+        }
+    }
+
+    const createSession = async (e) => {
+        setLoading(true)
+        e.preventDefault();
+        try {
+            const session = { ...sessionData }
+            session.address = addressObject;
+            const data = await dispatch(thunkCreateNewSession(session));
+            handleAlerts(createSessionSuccess)
+            navigate(`/sessions/${data.data.id}`)
+        } catch (e) {
+            handleAlerts(createSessionError)
+            console.error(e)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const handleAddressObject = (rawData) => {
+        const addressObject = {
+            place_id: rawData.place_id,
+            address: rawData.formatted_address,
+            lat: rawData.geometry.location.lat,
+            lng: rawData.geometry.location.lng,
+        }
+        setAddressObject(addressObject);
+        setAddressConfirmed(true)
+    }
+
+
+    // Session form input validation error handler
+    useEffect(() => {
+        const errors = {};
+        const { name, startDate, duration, address, endDate } = sessionData;
+        if (name && name.trim().length < 3) {
+            errors.name = "Please enter a name for your session."
+        }
+        if (!addressObject) {
+            errors.address ="Please verify your address."
+        }
+
+        if (!startDate || startDate < new Date()) {
+            errors.date = "Please enter a valid date and time.";
+            errors.time = "Enter a valid time."
+        }
+
+        if (!duration) {
+            errors.duration = "Enter a duration"
+        }
+        setErrors(errors)
+    }, [sessionData.name, addressConfirmed, sessionData.endDate, sessionData.startDate, sessionData.endDate, sessionData.address ])
+
+
+    // Resets the address verification if the address changes
+    useEffect(() => {
+        setAddressConfirmed(false);
+        setQueryResults([])
+        setStatus(null)
+    }, [query])
+
+
+    // Convert and store the date if the date or time keys change on the sesssion data
+    useEffect(() => {
+        const { startDate , endDate } = getDateData(sessionData.date, sessionData.time, sessionData.duration)
+        setSessionData((prev) => ({...prev, startDate: startDate , endDate: endDate}))
+    }, [sessionData.date, sessionData.time, sessionData.duration])
+
+
+    return {
+        sessionData,
+        addressObject,
+        handleAddressObject,
+        addressConfirmed,
+        status,
+        queryResults,
+        errors,
+        handleInput,
+        handleHost,
+        handleToggle,
+        getPlaces,
+        createSession,
+    };
+}
+
+
+export default useNewSession;

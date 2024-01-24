@@ -1,0 +1,198 @@
+@import url('../../index.css');
+
+.checkins {
+    padding-top: 1rem;
+    padding-right: 1rem;
+}
+
+.calendar_wrapper {
+    width: 100%;
+    transition: all .2s;
+    padding: 0rem .25rem 3rem 1rem;
+}
+
+.month_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 700;
+    padding: 1rem 0;
+
+    .header_icon {
+        cursor: pointer;
+        &:hover {
+          opacity: .5;
+        }
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: uppercase;
+    }
+}
+
+.weekdays_container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1rem;
+    padding: 0;
+}
+
+.weekday_container {
+    text-align: center;
+    font-size: .8rem;
+    padding: 1rem 0px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+.days_container {
+    display: grid;
+    gap: 1rem;
+}
+
+.day_container {
+    background-blend-mode: multiply;
+    cursor: pointer;
+    flex-grow: 1;
+    flex-basis: 0;
+    max-width: 100%;
+    aspect-ratio: 1.25;
+    position: relative;
+    border-radius: 1rem;
+    // outline: var(--border);
+    box-shadow: var(--box-shadow);
+    color: black;
+    display: flex;
+    padding: 1rem;
+    gap: 5px;
+    flex-wrap: wrap;
+    transition: all .2s;
+    &:hover {
+      background-color: var(--hover);
+    }
+
+    .number {
+      position: absolute;
+      font-size: 1rem;
+      left: 1rem;
+      bottom: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+  }
+
+
+  .current {
+      background-color: var(--border-color);
+      &:hover {
+          background-color: var(--main);
+        }
+        .number {
+            color: var(--text);
+        }
+    }
+
+    .day_selected {
+        background-color: var(--main);
+        font-weight: 700;
+        transition: all .2s;
+        .number {
+          color: var(--background);
+          transition: all .2s;
+        }
+    }
+
+
+.off_month {
+    outline: transparent;
+    &:hover {
+        background-color: var(--background);
+    }
+    .number {
+        color: var(--border-color);
+      }
+}
+
+.row_grid {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    &:last-of-type {
+        border: none;
+    }
+}
+
+.checkin_calendar_item {
+    position: relative;
+    display: flex;
+
+    .calendar_item_node {
+        height: .75rem;
+        aspect-ratio: 1;
+        border-radius: 1rem;
+        background-color: var(--main);
+
+    }
+    &:hover {
+        .calendar_item_menu {
+            display: flex;
+
+        }
+    }
+}
+
+.calendar_item_menu {
+    position: absolute;
+    display: none;
+    background-color: var(--background);
+    padding: .5rem;
+    flex-direction: column;
+    left: 2rem;
+    box-shadow: var(--box-shadow);
+    border-radius: 1rem;
+    z-index: 10;
+    .float_left {
+        gap: .25rem;
+    }
+    p {
+        white-space: nowrap;
+    }
+}
+
+.check_ins_list_wrapper {
+    position: relative;
+    border-top: var(--border);
+}
+
+.check_ins_list {
+    padding: 1rem 0 1rem 1rem;
+}
+.check_in_list_item {
+    padding: 1rem 0;
+
+}
+
+.selected_check_in {
+    margin: 3rem 0 10rem 0;
+}
+
+.no_check_ins {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 0;
+    border-radius: .5rem;
+    gap: 1rem;
+    opacity: .5;
+    .icon {
+        font-size: 3rem;
+    }
+}

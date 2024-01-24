@@ -1,0 +1,80 @@
+@import url('../../../index.css');
+
+.chat_item {
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+    border-radius: 1.5rem;
+    position: relative;
+    transition: background .2s ease;
+    &:hover {
+        background: var(--hover);
+        .chat_controls {
+            opacity: 1;
+            pointer-events: unset;
+        }
+    }
+
+
+}
+
+.chat_details {
+    width: 100%;
+    padding: .5rem 0 0 0;
+}
+
+.chat_textarea {
+    border: none;
+    width: calc(100% - 6rem);
+    resize: none;
+    overflow-y: 'hidden';
+    padding: 0;
+    font-size: 1rem;
+    background: transparent;
+    &:focus {
+        outline: transparent;
+    }
+}
+
+.chat_preview {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+    width: 100%;
+
+    .chat_item {
+        pointer-events: none;
+    }
+}
+
+.chat_flex {
+    display: flex;
+    align-items: center;;
+    gap: .5rem;
+}
+
+
+.chat_controls {
+    transition: opacity .2s ease;
+    opacity: 0;
+    pointer-events: none;
+    display: flex;
+    position: absolute;
+    gap: .5rem;
+    right: 1rem;
+    bottom: 1rem;
+}
+
+.chat_likes {
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    .icon {
+        font-size: 1.25rem;
+    }
+}
