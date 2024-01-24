@@ -4,11 +4,15 @@ const AppleStrategy = require('passport-apple');
 const { v4: uuidv4 } = require('uuid');
 const { Player, PlayerSettings } = require('../db/models');
 const bcrypt = require('bcryptjs')
+const isProduction = process.env.NODE_ENV === 'production';
+
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://localhost:8000/api/auth/google/callback'
+    callbackURL:  isProduction
+        ? `${process.env.BACKEND_URL}/api/auth/google/callback`
+        : 'http://localhost:8000/api/auth/google/callback'
 }, async (accessToken, refreshToken, profile, done) => {
     try {
         const foundPlayer = await Player.findOne({ where: { email: profile.emails[0].value } });
@@ -51,7 +55,9 @@ passport.use(new AppleStrategy({
     teamID: process.env.APPLE_TEAM_ID, // Your Apple Team ID
     keyID: process.env.APPLE_KEY_ID, // Your Key ID
     privateKeyLocation: "path/to/your/private/key.p8", // Path to your private key file
-    callbackURL: 'http://localhost:8000/api/auth/apple/callback'
+    callbackURL:  isProduction
+    ? `${process.env.BACKEND_URL}/api/auth/apple/callback`
+    : 'http://localhost:8000/api/auth/apple/callback'
 }, (accessToken, refreshToken, profile, done) => {
     console.log(profile)
     done(null, profile);

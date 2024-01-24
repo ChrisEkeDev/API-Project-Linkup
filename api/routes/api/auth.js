@@ -5,6 +5,9 @@ const bcrypt = require('bcryptjs')
 const { setTokenCookie } = require('../../utils/jwt')
 const { validateLogin } = require('./validation/expressValidations');
 const { Player } = require('../../db/models');
+const isProduction = process.env.NODEENV === 'production'
+const failRedirect = isProduction ? `${process.env.CLIENT_URL}/sign-in` : 'http://localhost:3000/sign-in'
+const successRedirect = isProduction ? `${process.env.CLIENT_URL}/enable-location` : 'http://localhost:3000/enable-location'
 
 // Restore session
 router.get('/', (req, res) => {
@@ -86,17 +89,17 @@ router.get('/google', passport.authenticate('google', {
     scope: ['profile', 'email']
 }));
 
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: 'http://localhost:3000/sign-in' }), async (req, res) => {
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: failRedirect }), async (req, res) => {
     await setTokenCookie(res, req.user);
-    res.redirect('http://localhost:3000/enable-location');
+    res.redirect(successRedirect);
 });
 
 //APPLE AUTHENTICATION
 router.get('/apple', passport.authenticate('apple'));
 
-router.get('/apple/callback', passport.authenticate('apple', { failureRedirect: 'http://localhost:3000/sign-in' }), async (req, res) => {
+router.get('/apple/callback', passport.authenticate('apple', { failureRedirect: failRedirect }), async (req, res) => {
     await setTokenCookie(res, req.user);
-    res.redirect('http://localhost:3000/enable-location');
+    res.redirect(successRedirect);
 });
 
 
