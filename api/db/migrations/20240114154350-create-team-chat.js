@@ -13,14 +13,14 @@ module.exports = {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUIDV4,
+        type: Sequelize.UUID,
       },
       content:  {
         type: Sequelize.STRING,
         allowNull: false
       },
       teamId: {
-        type: Sequelize.UUIDV4,
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'Teams',
@@ -29,7 +29,7 @@ module.exports = {
         onDelete: 'CASCADE'
     },
       playerId: {
-        type: Sequelize.UUIDV4,
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'Players',

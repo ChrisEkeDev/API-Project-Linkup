@@ -13,10 +13,10 @@ module.exports = {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUIDV4,
+        type: Sequelize.UUID,
       },
       creatorId: {
-        type: Sequelize.UUIDV4,
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'Players',
@@ -29,7 +29,7 @@ module.exports = {
         allowNull: false,
       },
       hostId: {
-        type: Sequelize.UUIDV4,
+        type: Sequelize.UUID,
         allowNull: true,
         references: {
           model: 'Teams',
