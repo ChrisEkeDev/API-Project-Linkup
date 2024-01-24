@@ -1,14 +1,14 @@
 import { csrfFetch } from './csrf';
 
 // TYPES
-const GET_ALL_TEAMS = '/linkup/teams/GET_ALL_TEAMS'
-const SEARCH_TEAMS = '/linkup/teams/SEARCH_TEAMS';
-const GET_MY_TEAMS = '/linkup/teams/GET_MY_TEAMS';
-const GET_SINGLE_TEAM = '/linkup/teams/GET_SINGLE_TEAM';
-const GET_TEAM_SESSIONS = '/linkup/teams/GET_TEAM_SESSIONS'
-const CREATE_TEAM = '/linkup/teams/CREATE_TEAM';
-const UPDATE_TEAM = '/linkup/teams/UPDATE_TEAM';
-const DELETE_TEAM = '/linkup/teams/DELETE_TEAM';
+const GET_ALL_TEAMS = '/backcourts/teams/GET_ALL_TEAMS'
+const SEARCH_TEAMS = '/backcourts/teams/SEARCH_TEAMS';
+const GET_MY_TEAMS = '/backcourts/teams/GET_MY_TEAMS';
+const GET_SINGLE_TEAM = '/backcourts/teams/GET_SINGLE_TEAM';
+const GET_TEAM_SESSIONS = '/backcourts/teams/GET_TEAM_SESSIONS'
+const CREATE_TEAM = '/backcourts/teams/CREATE_TEAM';
+const UPDATE_TEAM = '/backcourts/teams/UPDATE_TEAM';
+const DELETE_TEAM = '/backcourts/teams/DELETE_TEAM';
 
 
 

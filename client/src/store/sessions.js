@@ -1,13 +1,13 @@
 import { csrfFetch } from './csrf';
 
 // TYPES
-const GET_ALL_SESSIONS = '/linkup/sessions/GET_ALL_SESSIONS';
-const SEARCH_SESSIONS = '/linkup/sessions/SEARCH_SESSIONS';
-const GET_MY_SESSIONS = '/linkup/sessions/GET_MY_SESSIONS';
-const GET_SINGLE_SESSION = '/linkup/sessions/GET_SINGLE_SESSION';
-const CREATE_SESSION = '/linkup/sessions/CREATE_SESSION';
-const UPDATE_SESSION = '/linkup/sessions/UPDATE_SESSION';
-const DELETE_SESSION = '/linkup/sessions/DELETE_SESSION';
+const GET_ALL_SESSIONS = '/backcourts/sessions/GET_ALL_SESSIONS';
+const SEARCH_SESSIONS = '/backcourts/sessions/SEARCH_SESSIONS';
+const GET_MY_SESSIONS = '/backcourts/sessions/GET_MY_SESSIONS';
+const GET_SINGLE_SESSION = '/backcourts/sessions/GET_SINGLE_SESSION';
+const CREATE_SESSION = '/backcourts/sessions/CREATE_SESSION';
+const UPDATE_SESSION = '/backcourts/sessions/UPDATE_SESSION';
+const DELETE_SESSION = '/backcourts/sessions/DELETE_SESSION';
 
 
 

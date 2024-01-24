@@ -1,10 +1,10 @@
 import { csrfFetch } from './csrf';
 
 //TYPES
-const GET_COMMENTS_BY_SESSION = '/linkup/comments/GET_COMMENTS_BY_SESSION'
-const CREATE_COMMENT = '/linkup/comments/CREATE_COMMENT'
-const DELETE_COMMENT = '/linkup/comments/DELETE_COMMENT'
-const UPDATE_COMMENT = '/linkup/comments/UPDATE_COMMENT'
+const GET_COMMENTS_BY_SESSION = '/backcourts/comments/GET_COMMENTS_BY_SESSION'
+const CREATE_COMMENT = '/backcourts/comments/CREATE_COMMENT'
+const DELETE_COMMENT = '/backcourts/comments/DELETE_COMMENT'
+const UPDATE_COMMENT = '/backcourts/comments/UPDATE_COMMENT'
 
 // ACTIONS
 const actionGetCommentsBySession = (comments) => ({

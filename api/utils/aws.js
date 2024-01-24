@@ -12,7 +12,7 @@ const uploadMedia = multer({
     storage: multerS3({
         s3: s3,
         acl: 'public-read',
-        bucket: 'linkup-bucket',
+        bucket: 'backcourts-bucket',
         metadata: (req, file, cb) => {
             const { player } = req;
             cb(null, {
@@ -36,7 +36,7 @@ const deleteMedia = (images) => {
             const imageKeyUnencoded = imageKey[imageKey.length - 1]
             const key = decodeURI(imageKeyUnencoded)
             const params = {
-                Bucket: "linkup-bucket",
+                Bucket: "backcourts-bucket",
                 Key: key
             }
             await s3.deleteObject(params).promise();

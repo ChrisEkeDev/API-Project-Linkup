@@ -2,7 +2,7 @@ import { csrfFetch } from "./csrf";
 
 // TYPE
 
-const SEARCH = '/linkup/search/SEARCH';
+const SEARCH = '/backcourts/search/SEARCH';
 
 
 // ACTION

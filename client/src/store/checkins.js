@@ -1,12 +1,12 @@
 import { csrfFetch } from './csrf';
 
 // TYPES
-const GET_MY_CHECKINS = '/linkup/checkIns/GET_MY_CHECKINS'
-const GET_SESSION_CHECKINS = '/linkup/checkIns/GET_SESSION_CHECKINS';
-const ADD_TO_SESSION = '/linkup/checkIns/ADD_TO_SESSION'
-const REMOVE_FROM_SESSION = '/linkup/checkIns/REMOVE_FROM_SESSION'
-const CHECK_IN = '/linkup/checkIns/CHECK_IN';
-const CHECK_OUT = '/linkup/checkIns/CHECK_OUT';
+const GET_MY_CHECKINS = '/backcourts/checkIns/GET_MY_CHECKINS'
+const GET_SESSION_CHECKINS = '/backcourts/checkIns/GET_SESSION_CHECKINS';
+const ADD_TO_SESSION = '/backcourts/checkIns/ADD_TO_SESSION'
+const REMOVE_FROM_SESSION = '/backcourts/checkIns/REMOVE_FROM_SESSION'
+const CHECK_IN = '/backcourts/checkIns/CHECK_IN';
+const CHECK_OUT = '/backcourts/checkIns/CHECK_OUT';
 
 const actionGetMyCheckIns = (checkIns) => ({
     type: GET_MY_CHECKINS,

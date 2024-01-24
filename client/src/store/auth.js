@@ -2,13 +2,13 @@ import { csrfFetch } from "./csrf";
 
 // TYPES
 
-const SET_AUTH = '/linkup/auth/SET_AUTH';
-const REMOVE_AUTH = '/linkup/auth/REMOVE_AUTH';
-const GET_AUTH = '/linkup/auth/GET_AUTH';
-const GET_SETTINGS = '/linkup/auth/GET_SETTINGS'
-const CHANGE_THEME_PREFERENCE = '/linkup/auth/CHANGE_THEME_PREFERENCE'
-const CHANGE_LOCATION_PREFERENCE = '/linkup/auth/CHANGE_LOCATION_PREFERENCE'
-const CHANGE_NOTIFICATION_PREFERENCE = '/linkup/auth/CHANGE_NOTIFICATION_PREFERENCE'
+const SET_AUTH = '/backcourts/auth/SET_AUTH';
+const REMOVE_AUTH = '/backcourts/auth/REMOVE_AUTH';
+const GET_AUTH = '/backcourts/auth/GET_AUTH';
+const GET_SETTINGS = '/backcourts/auth/GET_SETTINGS'
+const CHANGE_THEME_PREFERENCE = '/backcourts/auth/CHANGE_THEME_PREFERENCE'
+const CHANGE_LOCATION_PREFERENCE = '/backcourts/auth/CHANGE_LOCATION_PREFERENCE'
+const CHANGE_NOTIFICATION_PREFERENCE = '/backcourts/auth/CHANGE_NOTIFICATION_PREFERENCE'
 
 // ACTIONS
 

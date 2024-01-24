@@ -2,13 +2,13 @@ import { csrfFetch } from './csrf';
 
 
 // TYPES
-const GET_MY_MEMBERSHIPS = '/linkup/memberships/GET_MY_MEMBERSHIPS'
-const GET_TEAM_MEMBERSHIPS = '/linkup/memberships/GET_TEAM_MEMBERSHIPS'
-const JOIN_TEAM = '/linkup/memberships/JOIN_TEAM'
-const LEAVE_TEAM = '/linkup/memberships/LEAVE_TEAM'
-const ADD_TO_TEAM = '/linkup/memberships/ADD_TO_TEAM'
-const PROMOTE_TO_CO_HOST = '/linkup/memberships/PROMOTE_TO_CO_HOST'
-const REMOVE_FROM_TEAM = '/linkup/memberships/REMOVE_FROM_TEAM'
+const GET_MY_MEMBERSHIPS = '/backcourts/memberships/GET_MY_MEMBERSHIPS'
+const GET_TEAM_MEMBERSHIPS = '/backcourts/memberships/GET_TEAM_MEMBERSHIPS'
+const JOIN_TEAM = '/backcourts/memberships/JOIN_TEAM'
+const LEAVE_TEAM = '/backcourts/memberships/LEAVE_TEAM'
+const ADD_TO_TEAM = '/backcourts/memberships/ADD_TO_TEAM'
+const PROMOTE_TO_CO_HOST = '/backcourts/memberships/PROMOTE_TO_CO_HOST'
+const REMOVE_FROM_TEAM = '/backcourts/memberships/REMOVE_FROM_TEAM'
 
 
 // ACTIONS
