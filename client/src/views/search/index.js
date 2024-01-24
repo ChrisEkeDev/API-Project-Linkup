@@ -12,7 +12,7 @@ import { useApp } from '../../context/AppContext';
 import useSearch from './hooks/useSearch';
 import Scroll from '../../components/shared/scroll';
 import { parent_variants, base_animations } from '../../constants/animations';
-import { PiPlusBold, PiMagnifyingGlassBold } from 'react-icons/pi';
+import { TbSearch } from "react-icons/tb";
 import { useState } from 'react';
 
 
@@ -40,7 +40,7 @@ function Search() {
                 placeholder="Search by name or address"
             />
             <IconButton
-              icon={PiMagnifyingGlassBold}
+              icon={TbSearch}
               styles="primary"
               action={search}
             />

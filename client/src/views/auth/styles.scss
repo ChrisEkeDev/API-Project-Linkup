@@ -56,3 +56,34 @@
     justify-content: flex-end;
     gap: 2rem;
 }
+
+.auth_oauth {
+    margin-top: 2rem;
+    width: 400px;
+    border-top: var(--border);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    gap: 2rem;
+    padding: 2rem 0;
+
+}
+
+.auth_divide {
+    position: absolute;
+    top: -1.2rem;
+    background: var(--background);
+    padding: .5rem 1rem;
+}
+
+.oauth_container {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 4rem;
+}

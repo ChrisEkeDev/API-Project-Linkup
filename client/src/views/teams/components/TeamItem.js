@@ -4,7 +4,7 @@ import { useApp } from '../../../context/AppContext';
 import ProfileImage from '../../../components/shared/profileImage';
 import { child_variants } from '../../../constants/animations';
 import '../styles.scss';
-import { PiLockFill, PiLockOpen } from 'react-icons/pi';
+import { TbUsersGroup , TbLock  } from 'react-icons/tb';
 
 function TeamItem({team}) {
     const { navigate } = useApp();
@@ -26,8 +26,8 @@ function TeamItem({team}) {
             <div className='player_count'>
                 {
                     team.private ?
-                    <PiLockFill className='team_privacy'/> :
-                    <PiLockOpen className='team_privacy'/>
+                    <TbLock  className='team_privacy'/> :
+                    <TbUsersGroup  className='team_privacy'/>
                 }
                 <small>{team.private ? 'Private' : 'Public'}</small>
             </div>

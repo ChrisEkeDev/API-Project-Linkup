@@ -1,6 +1,10 @@
 // Importing packages
 const express = require('express');
 require('express-async-errors');
+const passport = require('passport');
+const passportSetup = require('./config/passport');
+const session = require('express-session');
+const cookieSession = require('cookie-session');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -14,7 +18,20 @@ const routes = require('./routes')
 
 // Initialize express application
 const app = express();
+
+
+//Passport
+app.use(session({
+    secret: process.env.SESSION_COOKIE_KEY, // replace with your own secret
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// HTTP SERVER FOR WEBSOCKETS
 const http = require('http').Server(app);
+
 
 // Parsing & Logging Middleware
 app.use(morgan('dev')) // Logs information about requests and responses
@@ -26,6 +43,8 @@ app.use(bodyParser.json())
 if (isProduction) app.use(cors())
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin"}))
 app.use(csurfCookie)
+
+
 
 // Connect app to routes
 app.use(routes)

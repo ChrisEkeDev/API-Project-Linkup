@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: 'id'
       })
 
+      Player.hasOne(models.PlayerSettings, {
+        onDelete: 'CASCADE',
+        foreignKey: 'playerId',
+        sourceKey: 'id'
+      })
+
       Player.hasMany(models.Team, {
         onDelete: 'CASCADE',
         foreignKey: 'captainId',

@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs')
 const { setTokenCookie } = require('../../utils/jwt')
-const { Player } = require('../../db/models');
+const { Player, PlayerSettings } = require('../../db/models');
 const { uploadMedia, deleteMedia } = require('../../utils/aws');
 const { validateSignUp } = require('./validation/expressValidations');
-
+const { v4: uuidv4 } = require('uuid');
 
 // Signup
 router.post('/', uploadMedia, validateSignUp, async (req, res) => {
@@ -27,13 +27,22 @@ router.post('/', uploadMedia, validateSignUp, async (req, res) => {
         })
     }
 
-    let hashedPassword = bcrypt.hashSync(password, 13)
+    const hashedPassword = bcrypt.hashSync(password, 13)
 
     const player = await Player.create({
+        id: uuidv4(),
         name,
         email,
         hashedPassword,
         profileImage: image ? image.location : null
+    })
+
+    const playerSettings = await PlayerSettings.create({
+        id: uuidv4(),
+        playerId: player.id,
+        theme: 'light',
+        locations: false,
+        notifications: false
     })
 
     const playerPublic = {

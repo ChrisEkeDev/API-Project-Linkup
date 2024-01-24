@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import useLoading from "../hooks/useLoading";
 import useLocationServices from "../hooks/useLocationServices";
-import { thunkRestoreAuth, thunkSignOutPlayer } from "../store/auth";
+import { thunkRestoreAuth, thunkSignOutPlayer, thunkGetSettings } from "../store/auth";
 import useAppClock from "../hooks/useAppClock";
 import useAlerts from "../hooks/useAlerts";
 import LoadingData from "../components/shared/loading";
@@ -70,12 +70,12 @@ function AppProvider({children}) {
             if (res.status >= 400) {
               navigate('/sign-in')
             } else {
-              navigate('/search');
               const p1 = await dispatch(thunkGetMySessions());
               const p2 = await dispatch(thunkGetMyTeams());
               const p3 = await dispatch(thunkGetMyCheckIns())
               const p4 = await dispatch(thunkGetMyMemberships())
               const p5 = await dispatch(thunkGetMyLikes())
+              const p6 = await dispatch(thunkGetSettings())
             }
         } catch(e) {
             console.log(e)
@@ -87,10 +87,10 @@ function AppProvider({children}) {
           })
         }
     }
-    if (!auth) {
-        checkAuth();
-    }
-  }, [auth])
+    checkAuth();
+
+  }, [])
+
 
   return (
       <AppContext.Provider
@@ -112,7 +112,7 @@ function AppProvider({children}) {
           goBack
         }}
         >
-          {loading ? <LoadingData absolute={true}/> : null}
+          {loading ? <LoadingData /> : null}
           {
             Object.keys(alerts).length > 0
             ?

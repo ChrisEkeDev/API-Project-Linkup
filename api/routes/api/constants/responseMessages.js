@@ -5,6 +5,13 @@ const entityNotFound = {
     error: "The 'entityId' is not recognized as a valid entity"
 };
 
+const settingsNotFound = {
+    status: 404,
+    message: "Settings couldn't be found",
+    data: null,
+    error: "The 'settingsId' is not recognized as a valid entity"
+};
+
 const alreadyLiked = {
     status: 403,
     message: "This was already liked by you",
@@ -78,6 +85,7 @@ const membershipAlreadyExists = {
 
 module.exports = {
     entityNotFound,
+    settingsNotFound,
     alreadyLiked,
     likeNotFound,
     sessionNotFound,

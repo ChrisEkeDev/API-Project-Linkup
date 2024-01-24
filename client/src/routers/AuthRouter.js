@@ -26,9 +26,9 @@ function AppRouter() {
             path={ROUTES.HOME}
             component={view.Home}
         />
-        <Route
+        {/* <Route
             component={view.PageNotFound}
-        />
+        /> */}
     </Switch>
   )
 }

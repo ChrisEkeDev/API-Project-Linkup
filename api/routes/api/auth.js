@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 const bcrypt = require('bcryptjs')
 const { setTokenCookie } = require('../../utils/jwt')
 const { validateLogin } = require('./validation/expressValidations');
 const { Player } = require('../../db/models');
-
 
 // Restore session
 router.get('/', (req, res) => {
@@ -80,6 +80,18 @@ router.delete('/', (_req, res) => {
         error: null
     })
 })
+
+// GOOGLE AUTHENTICATION
+router.get('/google', passport.authenticate('google', {
+    scope: ['profile', 'email']
+}));
+
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: 'http://localhost:3000/sign-in' }), async (req, res) => {
+    console.log(res, req.user)
+    await setTokenCookie(res, req.user);
+    res.redirect('http://localhost:3000/enable-location');
+});
+
 
 
 

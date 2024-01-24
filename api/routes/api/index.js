@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const authRouter = require('./auth.js');
+const settingsRouter = require('./settings.js')
 const playerRouter = require('./players.js');
 const teamRouter = require('./teams.js');
 const sessionsRouter = require('./sessions.js');
@@ -19,6 +20,8 @@ const { restoreUser } = require('../../utils/jwt.js');
 router.use(restoreUser)
 
 router.use('/auth', authRouter);
+
+router.use('/settings', settingsRouter)
 
 router.use('/players', playerRouter);
 

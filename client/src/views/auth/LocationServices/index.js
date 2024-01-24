@@ -1,16 +1,21 @@
 import React from 'react'
 import '../styles.scss';
+import { Redirect } from 'react-router-dom'
 import Button from '../../../components/shared/button';
 import { useApp } from '../../../context/AppContext';
 import { TbMapPinCheck, TbMapPinOff } from 'react-icons/tb';
+import useSettings from '../../profile/hooks/useSettings'
 
 function LocationServices() {
     const { navigate, setLocationServices } = useApp();
+    const { locations, toggleLocations } = useSettings();
 
-    const handleLocationServices = (boolean) => {
-        setLocationServices(boolean);
-        navigate('/sessions')
+    const handleLocationServices = () => {
+        toggleLocations();
+        navigate('/search')
     }
+
+    if ( locations ) return <Redirect to='/search'></Redirect>
 
     return (
         <main className='page location_services'>
@@ -22,13 +27,13 @@ function LocationServices() {
                         label='Not this time'
                         styles="tertiary"
                         icon={TbMapPinOff}
-                        action={() => handleLocationServices(false)}
+                        action={() => navigate('/search')}
                     />
                     <Button
                         label="Let's do it"
                         styles="primary"
                         icon={TbMapPinCheck}
-                        action={() => handleLocationServices(true)}
+                        action={() => handleLocationServices()}
                     />
                 </div>
             </section>
