@@ -11,7 +11,7 @@ passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL:  isProduction
-        ? `${process.env.BACKEND_URL}/api/auth/google/callback`
+        ? `${process.env.API_URL}/api/auth/google/callback`
         : 'http://localhost:8000/api/auth/google/callback'
 }, async (accessToken, refreshToken, profile, done) => {
     try {
@@ -56,7 +56,7 @@ passport.use(new AppleStrategy({
     keyID: process.env.APPLE_KEY_ID, // Your Key ID
     privateKeyLocation: "path/to/your/private/key.p8", // Path to your private key file
     callbackURL:  isProduction
-    ? `${process.env.BACKEND_URL}/api/auth/apple/callback`
+    ? `${process.env.API_URL}/api/auth/apple/callback`
     : 'http://localhost:8000/api/auth/apple/callback'
 }, (accessToken, refreshToken, profile, done) => {
     console.log(profile)

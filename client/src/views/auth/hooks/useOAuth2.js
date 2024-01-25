@@ -1,7 +1,6 @@
 import React from 'react'
 const isProduction = process.env.NODE_ENV === 'production';
 function useOAuth2() {
-
     const googleAuth = (e) => {
         e.preventDefault()
         window.location.href = isProduction
