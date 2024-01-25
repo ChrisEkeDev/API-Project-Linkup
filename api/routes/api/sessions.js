@@ -123,7 +123,8 @@ router.get('/current', requireAuth, async (req, res) => {
             ],
             exclude: ['CheckIn','updatedAt']
         },
-        group: ['Session.id'],
+        group: ['Session.id','creator.id', 'creator.name', 'creator.profileImage',
+        'Team.id', 'Team.name', 'captain.profileImage', 'captain.name'],
         include: [
             {
                 model: Player,
@@ -180,12 +181,13 @@ router.get('/:sessionId', async (req, res) => {
             ],
             exclude: ['CheckIn','updatedAt']
         },
-        group: ['Session.id'],
+        group: ['Session.id','creator.id', 'creator.name', 'creator.profileImage',
+        'Team.id', 'Team.name', 'captain.profileImage', 'captain.name'],
         include: [
             {
                 model: Player,
                 as: "creator",
-                attributes: ['name', 'profileImage']
+                attributes: ['id', 'name', 'profileImage']
             },
             {
                 model: CheckIn,
