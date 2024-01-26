@@ -56,7 +56,12 @@ router.get('/search/*', async(req, res) => {
             'Session.name',
             'Session.startDate',
             'Session.address',
-            'Session.private'
+            'Session.private',
+            'creator.id',
+            'creator.name',
+            'creator.profileImage',
+            'host.id',
+            'host.name'
         ],
     })
 
