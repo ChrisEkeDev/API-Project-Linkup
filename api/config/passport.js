@@ -17,7 +17,8 @@ passport.use(new GoogleStrategy({
     try {
         const foundPlayer = await Player.findOne({ where: { email: profile.emails[0].value } });
         if (foundPlayer) return done(null, foundPlayer);
-        const hashedPassword = bcrypt.hashSync(profile.id, 13)
+        const googlePassword = `${profile.displayName}-google-${profile.id.slice(-5)}`
+        const hashedPassword = bcrypt.hashSync(googlePassword, 13)
         const image = profile.photos[0].value;
 
         const player = await Player.create({

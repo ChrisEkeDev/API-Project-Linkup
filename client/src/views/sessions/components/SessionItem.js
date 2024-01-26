@@ -14,7 +14,6 @@ function SessionItem({session}) {
   if (!session) return <li>loading</li>
 
   const handleNavigate = () => {
-    setCurrentLocation({lat: session.lat, lng: session.lng})
     navigate(`/sessions/${session.id}`)
   }
 
@@ -31,7 +30,7 @@ function SessionItem({session}) {
         </div>
       </div>
       <div className='player_count'>
-        <h2 className='count accent'>{session.checkInCount}</h2>
+        <h2 className='count accent'>{session.checkIns}</h2>
         <small>Players</small>
       </div>
     </motion.li>

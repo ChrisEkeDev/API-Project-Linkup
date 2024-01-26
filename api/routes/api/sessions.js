@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { CheckIn, Session, Player, Team, SessionImage, SessionChat, Like } = require('../../db/models');
+const { CheckIn, Session, Player, Team, SessionImage, SessionChat, Like, sequelize } = require('../../db/models');
 const { Sequelize, Op, fn, col, literal } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
 const { uploadMedia, deleteMedia } = require('../../utils/aws');
@@ -17,25 +17,24 @@ router.get('/search/*', async(req, res) => {
     yesterday.setDate(today.getDate() - 1);
     const yesterdayISOString = yesterday.toISOString()
     const lowerCaseQuery = query ? query.toLowerCase() : '';
+
     const sessions = await Session.findAll({
-        attributes: {
-            include: [
-                'id',
-                'name',
-                'startDate',
-                'endDate',
-                'creatorId',
-                'address',
-                'lat',
-                'lng',
-                'private',
-                'createdAt',
-                'hostId',
-                [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
-            ],
-            exclude: ['CheckIn','updatedAt']
+        attributes: [
+            'id',
+            'name',
+            'startDate',
+            'address',
+            'private',
+            [fn('COUNT', col('CheckIns.id')), 'checkIns']
+        ],
+        where: {
+            endDate: {
+                [Op.gte]: yesterdayISOString
+            }
         },
-        group: ['Session.id'],
+        order: [
+            [sortBy ? sortBy : 'startDate', sortBy === 'startDate' ? 'ASC' : 'DESC']
+        ],
         include: [
             {
                 model: Player,
@@ -48,23 +47,18 @@ router.get('/search/*', async(req, res) => {
             },
             {
                 model: Team,
-                include: {
-                    model: Player,
-                    as: 'captain',
-                    attributes: ['profileImage', 'name']
-                },
+                as: "host",
                 attributes: ['id', 'name']
             }
         ],
-        where: {
-            endDate: {
-                [Op.gte]: yesterdayISOString
-            }
-        },
-        order: [
-            [sortBy ? sortBy : 'startDate', sortBy === 'startDate' ? 'ASC' : 'DESC']
-        ]
-    });
+        group: [
+            'Session.id',
+            'Session.name',
+            'Session.startDate',
+            'Session.address',
+            'Session.private'
+        ],
+    })
 
     function calculateRelevance(session) {
         let relevance = 0;

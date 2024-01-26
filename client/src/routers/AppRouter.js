@@ -9,7 +9,7 @@ import Loading from '../components/shared/loading';
 function AppRouter() {
     const { auth } = useApp();
 
-    if (!auth) return <Loading/>
+    // if (!auth) return <Loading/>
 
     return (
         <div className='app_router'>

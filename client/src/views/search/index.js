@@ -1,6 +1,9 @@
 
 import { useSelector } from 'react-redux';
+import { searchTeams } from '../../store/teams';
+import { useQuery } from 'react-query';
 import { AnimatePresence, motion } from 'framer-motion';
+import { searchSessions } from '../../store/sessions';
 import './styles.scss';
 import TeamItem from '../teams/components/TeamItem';
 import SessionItem from '../../views/sessions/components/SessionItem';
@@ -14,20 +17,26 @@ import Scroll from '../../components/shared/scroll';
 import { parent_variants, base_animations } from '../../constants/animations';
 import { TbSearch } from "react-icons/tb";
 import { useState } from 'react';
+import LoadingData from '../../components/shared/loading';
 
 
 function Search() {
     const [showingResults, setShowingResults] = useState('sessions')
-    const sessions = useSelector(state => state.sessions.searchedSessions);
-    const teams = useSelector(state => state.teams.searchedTeams)
-    const { navigate } = useApp();
+    const { query, sortBy, handleSort, handleInput } = useSearch()
     const {
-        query,
-        sortBy,
-        handleSort,
-        handleInput,
-        search
-    } = useSearch()
+        data: sessions,
+        error: sessionsErr,
+        isLoading: sessionsLoading,
+        refetch: reFetchSessions
+    } = useQuery(['sessions', query, sortBy], () => searchSessions(query, sortBy));
+    const {
+        data: teams,
+        error: teamsErr,
+        isLoading: teamsLoading
+    } = useQuery(['teams', query, sortBy], () => searchTeams(query, sortBy));
+
+    if (sessionsErr || teamsErr ) return <div>An error occurred</div>;
+
 
   return (
       <motion.main className='page search'>
@@ -38,11 +47,6 @@ function Search() {
                 onChange={handleInput}
                 className='search_input'
                 placeholder="Search by name or address"
-            />
-            <IconButton
-              icon={TbSearch}
-              styles="primary"
-              action={search}
             />
           </div>
         </div>
@@ -58,27 +62,39 @@ function Search() {
             <Scroll>
                 <section className='section results'>
                     <span className='section_label xs bold'>
-                        {showingResults === 'teams' ? teams.length : sessions.length} {showingResults}
+                        {showingResults === 'teams' ? teams?.length : sessions?.length} {showingResults}
                     </span>
                     {showingResults === 'teams' ?
-                    <motion.ul
-                        variants={parent_variants}
-                        {...base_animations}
-                        className='result_list'>
-                            {teams.map(team => (
-                                <TeamItem team={team} />
-                            ))}
-                    </motion.ul> :
-                    <motion.ul
-                        variants={parent_variants}
-                        {...base_animations}
-                        className='result_list'>
-                            {sessions.map(session => (
-                                <SessionItem session={session} />
-                            ))}
-                    </motion.ul>
+                        <>
+                            {
+                                teamsLoading ?
+                                <LoadingData /> :
+                                <motion.ul
+                                variants={parent_variants}
+                                {...base_animations}
+                                className='result_list'>
+                                    {teams?.map(team => (
+                                        <TeamItem team={team} />
+                                    ))}
+                                </motion.ul>
+                            }
+                        </>
+                        :
+                        <>
+                            {
+                                sessionsLoading ?
+                                <LoadingData /> :
+                                <motion.ul
+                                    variants={parent_variants}
+                                    {...base_animations}
+                                    className='result_list'>
+                                        {sessions?.map(session => (
+                                            <SessionItem session={session} />
+                                        ))}
+                                </motion.ul>
+                            }
+                        </>
                     }
-
                 </section>
             </Scroll>
       </motion.main>

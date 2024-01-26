@@ -10,7 +10,15 @@ const CREATE_TEAM = '/backcourts/teams/CREATE_TEAM';
 const UPDATE_TEAM = '/backcourts/teams/UPDATE_TEAM';
 const DELETE_TEAM = '/backcourts/teams/DELETE_TEAM';
 
-
+export const searchTeams = async (query, sortBy) => {
+    const res = await csrfFetch(`/api/teams/search/?query=${query}&sortBy=${sortBy}`);
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
 
 // ACTIONS
 const actionGetAllTeams = (teams) => ({

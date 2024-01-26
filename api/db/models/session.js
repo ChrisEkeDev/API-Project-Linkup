@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       Session.belongsTo(models.Team, {
+        as: 'host',
         foreignKey: 'hostId',
         targetKey: 'id'
       })

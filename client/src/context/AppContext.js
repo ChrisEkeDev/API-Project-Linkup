@@ -20,7 +20,7 @@ const AppContext = createContext();
 export const useApp = () => useContext(AppContext);
 
 function AppProvider({children}) {
-  const [ authLoading, setAuthLoading ] = useState(true)
+  const [ authLoading, setAuthLoading ] = useState(false)
   const auth = useSelector(state => state.auth.player)
   const { alerts, handleAlerts, removeAlerts } = useAlerts();
   const [ theme, setTheme ] = useState('light');
@@ -62,34 +62,34 @@ function AppProvider({children}) {
     }
   }
 
-  useEffect(() => {
-    const checkAuth = async () => {
-        try {
-            const res = await dispatch(thunkRestoreAuth())
-            handleAlerts(res)
-            if (res.status >= 400) {
-              navigate('/sign-in')
-            } else {
-              const p1 = await dispatch(thunkGetMySessions());
-              const p2 = await dispatch(thunkGetMyTeams());
-              const p3 = await dispatch(thunkGetMyCheckIns())
-              const p4 = await dispatch(thunkGetMyMemberships())
-              const p5 = await dispatch(thunkGetMyLikes())
-              const p6 = await dispatch(thunkGetSettings())
-            }
-        } catch(e) {
-            console.log(e)
-        } finally {
-          const p1 = await dispatch(thunkSearchSessions());
-          const p2 = await dispatch(thunkSearchTeams());
-          Promise.all([p1, p2]).then((values) => {
-            setAuthLoading(false)
-          })
-        }
-    }
-    checkAuth();
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //       try {
+  //           const res = await dispatch(thunkRestoreAuth())
+  //           handleAlerts(res)
+  //           if (res.status >= 400) {
+  //             navigate('/sign-in')
+  //           } else {
+  //             const p1 = await dispatch(thunkGetMySessions());
+  //             const p2 = await dispatch(thunkGetMyTeams());
+  //             const p3 = await dispatch(thunkGetMyCheckIns())
+  //             const p4 = await dispatch(thunkGetMyMemberships())
+  //             const p5 = await dispatch(thunkGetMyLikes())
+  //             const p6 = await dispatch(thunkGetSettings())
+  //           }
+  //       } catch(e) {
+  //           console.log(e)
+  //       } finally {
+  //         const p1 = await dispatch(thunkSearchSessions());
+  //         const p2 = await dispatch(thunkSearchTeams());
+  //         Promise.all([p1, p2]).then((values) => {
+  //           setAuthLoading(false)
+  //         })
+  //       }
+  //   }
+  //   checkAuth();
 
-  }, [])
+  // }, [])
 
 
   return (

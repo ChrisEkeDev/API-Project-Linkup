@@ -9,6 +9,16 @@ const CREATE_SESSION = '/backcourts/sessions/CREATE_SESSION';
 const UPDATE_SESSION = '/backcourts/sessions/UPDATE_SESSION';
 const DELETE_SESSION = '/backcourts/sessions/DELETE_SESSION';
 
+export const searchSessions = async (query, sortBy) => {
+    const res = await csrfFetch(`/api/sessions/search/?query=${query}&sortBy=${sortBy}`);
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
 
 
 // ACTIONS
