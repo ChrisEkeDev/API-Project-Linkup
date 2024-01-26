@@ -6,11 +6,11 @@ import '../styles.scss';
 
 
 
-const Sorter = ({showingResults, sortBy, handleSort}) => {
+const Sorter = ({tab, sortBy, handleSort}) => {
     const [ menu, setMenu ]= useState(false)
     const ref = useRef(null)
 
-    const values = showingResults === 'teams' ? teamSortValues : sessionSortValues;
+    const values = tab === 'teams' ? teamSortValues : sessionSortValues;
 
     const handleSorter = (sort) => {
         handleSort(sort);
@@ -30,7 +30,7 @@ const Sorter = ({showingResults, sortBy, handleSort}) => {
 
     useEffect(() => {
         handleSort('createdAt')
-    }, [showingResults])
+    }, [tab])
 
     return (
         <div className='sorter'>
