@@ -34,7 +34,7 @@ function TeamMembers({membership}) {
                         {
                             filteredMemberships.map(member => (
                                 <MemberItem
-                                    key={membership.id}
+                                    key={member.id}
                                     status={membership}
                                     member={member}
                                 />

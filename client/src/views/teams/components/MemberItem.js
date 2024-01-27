@@ -35,7 +35,7 @@ function MemberItem({member, status}) {
                     </div>
                 } */}
             </div>
-            <p className='sm'>Joined {formatDate}</p>
+            <p className='xs'>Joined {formatDate}</p>
         </div>
 
         </div>

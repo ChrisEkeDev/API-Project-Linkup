@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useApp } from '../../../context/AppContext';
-import { useDispatch } from 'react-redux';
-import { thunkSignUpPlayer } from '../../../store/auth';
+import { useMutation, useQueryClient } from 'react-query';
+import { signUp } from '../../../store/auth';
 
 const useSignUp = () => {
-    const dispatch = useDispatch();
-    const { navigate, setLoading, handleAlerts } = useApp();
+    const client = useQueryClient();
+    const { navigate } = useApp();
     const [ formData, setFormData ] = useState({
         name: "",
         email: "",
@@ -26,23 +26,25 @@ const useSignUp = () => {
         setErrors(newState)
     }
 
-    const onSignUp = async (e) => {
-        setLoading(true);
-        e.preventDefault();
-        try {
-            const res = await dispatch(thunkSignUpPlayer(formData));
-            handleAlerts(res)
-            if (res.status >= 400) {
-                throw new Error();
-            } else {
-                navigate('/enable-location')
-            }
-        } catch (e) {
-            console.error(e)
-        } finally {
-            setLoading(false);
-        }
+    const handleSuccess = (data) => {
+        client.setQueryData(['auth'], data)
+        client.invalidateQueries(['auth'], { exact: true })
+        navigate('/search')
     }
+
+    const onSignUp = async (e) => {
+        e.preventDefault();
+        handleSubmit(formData)
+    }
+
+    const {
+        mutate: handleSubmit,
+        isLoading: signUpLoading
+    } = useMutation({
+        mutationFn: signUp,
+        onError: handleErrors,
+        onSuccess: handleSuccess
+    })
 
     useEffect(() => {
         const errors = {};
@@ -66,6 +68,7 @@ const useSignUp = () => {
 
     return {
         errors,
+        signUpLoading,
         formData,
         handleInput,
         onSignUp,

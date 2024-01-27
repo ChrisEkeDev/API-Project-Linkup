@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { parent_variants, base_animations } from '../../../constants/animations';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
+import { useApp } from '../../../context/AppContext'
 import useNewSessionChat from '../hooks/useNewSessionChat';
 import useSessionChatWebSocket from '../hooks/useSessionChatWebSocket'
 import SessionChat from './SessionChat'
@@ -14,6 +15,7 @@ import { getSessionFeed } from '../../../store/sessions';
 
 function SessionFeed() {
     const { id } = useParams();
+    const { auth } = useApp();
     const { socket, room } = useSessionChatWebSocket();
     const { data: feed, error: feedErr, isLoading: feedLoading } = useQuery(['session-feed', id], () => getSessionFeed(id));
     const { handleInput, content, createSessionChat } = useNewSessionChat({socket, room});
@@ -58,11 +60,15 @@ function SessionFeed() {
                 }
 
             </section>
-            <ChatInput
-                handleInput={handleInput}
-                content={content}
-                create={createSessionChat}
-            />
+            { auth ?
+                <ChatInput
+                    handleInput={handleInput}
+                    content={content}
+                    create={createSessionChat}
+                /> :
+                null
+            }
+
         </Scroll>
     )
 }

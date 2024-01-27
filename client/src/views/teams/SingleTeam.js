@@ -20,7 +20,7 @@ function SingleTeam() {
     const { auth, navigate } = useApp();
     const { data: team, error: teamErr, isLoading: teamLoading } = useQuery(['team', id], () => getTeam(id));
     const { data: membership, isLoading: membershipLoading } = useQuery(['membership-status'], () => getTeamMembershipStatus(id))
-    const isHost = auth.id === team?.captain.id
+    const isHost = auth?.id === team?.captain.id
 
     if (teamLoading) return <LoadingData />
 
@@ -37,41 +37,41 @@ function SingleTeam() {
                     <p className="lg bold">{team?.name}</p>
                 </div>
                 <div className='actions'>
-                    {
+                    { auth && (
                         isHost ?
-                            <Button
-                                styles='secondary'
-                                label="Edit Team"
-                                icon={TbEditCircle}
-                                action={() => navigate(`/teams/${team.id}/update`)}
-                            />:
+                        <Button
+                            styles='secondary'
+                            label="Edit Team"
+                            icon={TbEditCircle}
+                            action={() => navigate(`/teams/${team.id}/update`)}
+                        />:
                         <>
-                            {
-                                membership ?
-                                <Button
-                                    styles='tertiary'
-                                    loading={membership === 'pending'}
-                                    icon={
-                                        membership === 'pending' ?
-                                        CgSpinner :
-                                        TbLogout
-                                    }
-                                    label={
-                                        membership === 'pending' ?
-                                        "Awaiting Approval" :
-                                        "Leave Team"
-                                    }
-                                    // action={() => leaveTeam(team.id)}
-                                /> :
-                                <Button
-                                    styles='tertiary'
-                                    icon={TbLogin2}
-                                    label="Join Team"
-                                    // action={() => joinTeam(team.id)}
-                                />
-                            }
+                        {
+                            membership ?
+                            <Button
+                                styles='tertiary'
+                                loading={membership === 'pending'}
+                                icon={
+                                    membership === 'pending' ?
+                                    CgSpinner :
+                                    TbLogout
+                                }
+                                label={
+                                    membership === 'pending' ?
+                                    "Awaiting Approval" :
+                                    "Leave Team"
+                                }
+                                // action={() => leaveTeam(team.id)}
+                            /> :
+                            <Button
+                                styles='tertiary'
+                                icon={TbLogin2}
+                                label="Join Team"
+                                // action={() => joinTeam(team.id)}
+                            />
+                        }
                         </>
-                    }
+                    )}
                 </div>
             </motion.header>
             <header className='tab_header'>

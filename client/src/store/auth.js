@@ -10,6 +10,56 @@ const CHANGE_THEME_PREFERENCE = '/backcourts/auth/CHANGE_THEME_PREFERENCE'
 const CHANGE_LOCATION_PREFERENCE = '/backcourts/auth/CHANGE_LOCATION_PREFERENCE'
 const CHANGE_NOTIFICATION_PREFERENCE = '/backcourts/auth/CHANGE_NOTIFICATION_PREFERENCE'
 
+export const signIn = async (playerData) => {
+    const res = await csrfFetch('/api/auth', {
+        method: 'POST',
+        body: JSON.stringify(playerData)
+    });
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const signInGuest = async () => {
+    const playerData = {email: 'pcartwirght@email.com', password: 'password1'}
+    const res = await csrfFetch('/api/auth', {
+        method: 'POST',
+        body: JSON.stringify(playerData)
+    });
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const signOut = async () => {
+    const res = await csrfFetch('/api/auth', { method: 'DELETE'});
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const signUp = async (playerData) => {
+    const res = await csrfFetch('/api/players', {
+        method: 'POST',
+        body: JSON.stringify(playerData)
+    });
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
 export const getAuth = async () => {
     const res = await csrfFetch(`/api/auth`);
     try {

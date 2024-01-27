@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useApp } from '../../../context/AppContext';
-import { useDispatch } from 'react-redux';
-import { thunkSignInPlayer } from '../../../store/auth';
+import { useMutation, useQueryClient } from 'react-query';
+import { signIn, signInGuest } from '../../../store/auth';
+
 
 const useSignIn = () => {
-    const dispatch = useDispatch();
-    const { navigate, setLoading, handleAlerts } = useApp();
+    const client = useQueryClient();
+    const { navigate } = useApp();
     const [ formData, setFormData ] = useState({
         email: "",
         password: "",
@@ -22,41 +23,38 @@ const useSignIn = () => {
         setErrors(newState)
     }
 
+    const handleSuccess = (data) => {
+        client.setQueryData(['auth'], data);
+        client.invalidateQueries(['auth'], { exact: true })
+        navigate('/search')
+    }
+
+    const {
+        mutate: handleSignIn,
+        isLoading: signInLoading,
+    } = useMutation({
+        mutationFn: signIn,
+        onError: handleErrors,
+        onSuccess: handleSuccess
+    })
+
+    const {
+        mutate: handleSignInGuest,
+        isLoading: signInGuestLoading,
+    } = useMutation({
+        mutationFn: signInGuest,
+        onError: handleErrors,
+        onSuccess: handleSuccess
+    })
+
     const onSignIn = async (e) => {
-        setLoading(true);
         e.preventDefault();
-        try {
-            const res = await dispatch(thunkSignInPlayer(formData));
-            handleAlerts(res)
-            if (res.status >= 400) {
-                throw new Error();
-            } else {
-                navigate('/enable-location');
-            }
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setLoading(false)
-        }
+        handleSignIn(formData)
     }
 
     const onSignInGuest = async (e) => {
-        setLoading(true);
         e.preventDefault();
-        try {
-            const data = {email: 'pcartwirght@email.com', password: 'password1'};
-            const res = await dispatch(thunkSignInPlayer(data));
-            handleAlerts(res);
-            if ( res.status >= 400 ) {
-                throw new Error();
-            } else {
-                navigate('/enable-location')
-            }
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setLoading(false)
-        }
+        handleSignInGuest()
     }
 
     useEffect(() => {
@@ -79,6 +77,8 @@ const useSignIn = () => {
         errors,
         formData,
         handleInput,
+        signInLoading,
+        signInGuestLoading,
         onSignIn,
         onSignInGuest
     }

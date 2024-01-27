@@ -11,9 +11,11 @@ import Scroll from '../../../components/shared/scroll';
 import LoadingData from '../../../components/shared/loading';
 import { PiChatsCircle } from 'react-icons/pi'
 import { getTeamFeed } from '../../../store/teams';
+import { useApp } from '../../../context/AppContext'
 
 function TeamFeed() {
     const { id } = useParams();
+    const { auth } = useApp();
     const { socket, room } = useTeamChatWebSocket();
     const { data: feed, error: feedErr, isLoading: feedLoading } = useQuery(['team-feed', id], () => getTeamFeed(id));
     const { handleInput, content, createTeamChat } = useNewTeamChat({socket, room});
@@ -58,11 +60,16 @@ function TeamFeed() {
                 }
 
             </section>
-            <ChatInput
-                handleInput={handleInput}
-                content={content}
-                create={createTeamChat}
-            />
+            {
+                auth ?
+                <ChatInput
+                    handleInput={handleInput}
+                    content={content}
+                    create={createTeamChat}
+                /> :
+                null
+            }
+
         </Scroll>
     )
 }

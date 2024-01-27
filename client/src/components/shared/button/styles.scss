@@ -123,6 +123,17 @@
     }
 }
 
+.auth_icon {
+    height: 3rem;
+    border-radius: 3rem;
+    .icon {
+        font-size: 2rem;
+    }
+}
+
+.nav_auth_button {
+    margin-top: 1rem;
+}
 .small_button {
     font-size: .8rem;
     height: 2rem;
@@ -151,6 +162,9 @@
     }
 }
 
+.auth_back {
+    align-self: flex-start;
+}
 
 .primary {
     background-color: var(--main);

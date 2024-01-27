@@ -16,22 +16,23 @@ function MapWrapper(props) {
 
 
   return (
-    <APIProvider apiKey={process.env.REACT_APP_GOOGLE_API_KEY} libraries={['marker']}>
-      <Map
-        mapId={'fc1ef067cfa808f9'}
-        zoom={10}
-        center={currentLocation}
-        gestureHandling={'greedy'}
-        disableDefaultUI={true}
-      >
-        {/* {
-          markers.map(marker => (
-            <SessionMarker {...{setCurrentLocation, marker}} />
-          ))
-        } */}
+    null
+    // <APIProvider apiKey={process.env.REACT_APP_GOOGLE_API_KEY} libraries={['marker']}>
+    //   <Map
+    //     mapId={'fc1ef067cfa808f9'}
+    //     zoom={10}
+    //     center={currentLocation}
+    //     gestureHandling={'greedy'}
+    //     disableDefaultUI={true}
+    //   >
+    //     {/* {
+    //       markers.map(marker => (
+    //         <SessionMarker {...{setCurrentLocation, marker}} />
+    //       ))
+    //     } */}
 
-      </Map>
-    </APIProvider>
+    //   </Map>
+    // </APIProvider>
   )
 }
 

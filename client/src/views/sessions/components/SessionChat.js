@@ -12,10 +12,10 @@ import { PiHeartBold, PiHeartFill, PiPencilSimpleLineFill, PiXBold, PiCheckFatFi
 function SessionChat(props) {
     const { auth } = useApp();
     const { chat, room, socket } = props;
-    const myLikes = useSelector(state => state.chats.myLikes)
-    const myLikesArr = Object.values(myLikes)
-    const chatLiked = myLikesArr.find(like => like.playerId === auth.id && chat.id === like.entityId)
-    const isAuth = auth.id === chat.playerId
+    // const myLikes = useSelector(state => state.chats.myLikes)
+    // const myLikesArr = Object.values(myLikes)
+    // const chatLiked = myLikesArr.find(like => like.playerId === auth.id && chat.id === like.entityId)
+    // const isAuth = auth.id === chat.playerId
     // const { ref, content, handleInput, updateSessionChat, deleteSessionChat, editing, setEditing, addLike, removeLike } = useSessionChat(props)
     const today = new Date();
     const createdToday = isSameDay(parseISO(chat.createdAt), today);
@@ -55,7 +55,7 @@ function SessionChat(props) {
                 </textarea>
             </div>
             {
-                isAuth && null
+                auth && null
                 // <div className="chat_controls">
                 // {
                 //     editing ?

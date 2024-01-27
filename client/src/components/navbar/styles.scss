@@ -4,16 +4,24 @@
 .app_nav {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
+    height: 100%;
     align-items: center;
     position: relative;
     left: 0;
-    width: 5rem;
     position: fixed;
-    gap: 1rem;
-    padding: 2rem 1rem;
     z-index: 50;
     color: var(--border-color);
+  }
+
+  .app_nav_bottom,
+  .app_nav_top {
+    gap: 1rem;
+    width: 5rem;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .app_link:hover {

@@ -1,23 +1,40 @@
 import React from 'react';
+import { useApp } from '../../../context/AppContext';
 import { Link } from 'react-router-dom';
 import Input from '../../../components/shared/inputs/textInput';
 import Button from '../../../components/shared/button';
+import IconButton from '../../../components/shared/button/IconButton';
 import OAuth from '../components/OAuth'
 import { TbLogin2, TbCode } from "react-icons/tb";
+import { Redirect } from 'react-router-dom';
 import '../styles.scss';
 import useSignIn from '../hooks/useSignIn';
+import LoadingData from '../../../components/shared/loading';
+import { RiBasketballFill } from "react-icons/ri";
 
 function SignIn() {
+    const { auth, navigate } = useApp();
     const {
         errors,
         formData,
         handleInput,
+        signInLoading,
+        signInGuestLoading,
         onSignIn,
         onSignInGuest
     } = useSignIn();
 
+    if (auth !== null) return <Redirect to='/search'></Redirect>
+    if (signInLoading || signInGuestLoading) return <LoadingData/>
+
     return (
         <main className='page auth'>
+            <IconButton
+                styles="auth_icon"
+                label="Back to Search"
+                icon={RiBasketballFill}
+                action={() => navigate('/search')}
+            />
             <form className='auth_form'>
                 <header className='auth_form--header'>
                     <h1>Sign in</h1>

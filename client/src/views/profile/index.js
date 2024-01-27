@@ -5,38 +5,34 @@ import { useApp } from '../../context/AppContext';
 import  useSettings from './hooks/useSettings';
 import { page_transitions } from '../../constants/animations';
 import Scroll from '../../components/shared/scroll';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import ProfileImage from '../../components/shared/profileImage';
 import Button from '../../components/shared/button';
 import { formatDistance , parseISO } from 'date-fns';
 import { TbLogout, TbTrash, TbMapPin, TbMapPinOff, TbBellRinging, TbBellOff, TbSun, TbMoon } from "react-icons/tb";
+import { getAuth, signOut } from '../../store/auth';
+import LoadingData from '../../components/shared/loading';
+import { Redirect } from 'react-router-dom';
 
 function Profile() {
-    const { auth, signOut, setLoading } = useApp();
+    const client = useQueryClient();
+    const { navigate } = useApp();
+    const {
+        data: auth,
+        isLoading: authLoading,
+        isError: authErr
+      } = useQuery(['auth'], {
+        queryFn: getAuth,
+      });
     const { theme, locations, notifications, toggleTheme, toggleLocations, toggleNotifications } = useSettings();
-    const formattedDate = formatDistance (parseISO(auth.createdAt), new Date())
 
-    const handleSignOut = () => {
-        setLoading(true)
-        try {
-            signOut()
-        } catch(e) {
-            console.log(e)
-        } finally {
-            setLoading(false)
-        }
-    }
-
+    if (authLoading) return <LoadingData />
+    if (authErr) return <Redirect to='/sign-in' />
 
     return (
         <motion.main {...page_transitions} className='page page_w_title'>
                 <header className='page_header'>
-                    <h2>Dashboard</h2>
-                    <Button
-                        label="SignOut"
-                        styles="primary"
-                        icon={TbLogout}
-                        action={handleSignOut}
-                    />
+                    <h2>My Profile</h2>
                 </header>
                 <Scroll>
                         <div className='profile_user_info float_left'>
@@ -46,7 +42,7 @@ function Profile() {
                             />
                             <div>
                                 <p className='md bold'>{auth.name}</p>
-                                <p className='sm'>Became a member {formattedDate} ago</p>
+                                <p className='sm'>Became a member {formatDistance(parseISO(auth?.createdAt), new Date())} ago</p>
                             </div>
                         </div>
                         <div className='profile_settings'>

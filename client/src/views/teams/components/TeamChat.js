@@ -12,10 +12,10 @@ import { PiHeartFill, PiHeartBold, PiPencilSimpleLineFill, PiXBold, PiCheckFatFi
 function TeamChat(props) {
     const { auth } = useApp();
     const { chat, room, socket } = props;
-    const myLikes = useSelector(state => state.chats.myLikes)
-    const myLikesArr = Object.values(myLikes)
-    const chatLiked = myLikesArr.find(like => like.playerId === auth.id && chat.id === like.entityId)
-    const isAuth = auth.id === chat.playerId
+    // const myLikes = useSelector(state => state.chats.myLikes)
+    // const myLikesArr = Object.values(myLikes)
+    // const chatLiked = myLikesArr.find(like => like.playerId === auth.id && chat.id === like.entityId)
+    // const isAuth = auth.id === chat.playerId
     // const { ref, content, handleInput, updateTeamChat, deleteTeamChat, editing, setEditing, addLike, removeLike   } = useTeamChat(props)
     const today = new Date();
     const createdToday = isSameDay(parseISO(chat.createdAt), today);
@@ -55,7 +55,7 @@ function TeamChat(props) {
                 </textarea>
             </div>
             {
-                isAuth && null
+                auth && null
                 // <div className="chat_controls">
                 // {
                 //     editing ?

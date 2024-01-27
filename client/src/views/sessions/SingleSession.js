@@ -22,7 +22,7 @@ function SingleSession() {
     const { auth, navigate } = useApp();
     const { data: session, error: sessionErr, isLoading: sessionLoading } = useQuery(['sessions', id], () => getSession(id));
     const { data: checkIn, isLoading: checkInLoading } = useQuery(['check-in-status'], () => getSessionCheckInStatus(id))
-    const isCreator = auth.id === session?.creator.id;
+    const isCreator = auth?.id === session?.creator.id;
 
     if (sessionLoading) return <LoadingData />
 
@@ -41,37 +41,39 @@ function SingleSession() {
                 <div className='actions'>
                     <CountDown endTime={session.startDate} expires={session.endDate} />
                     {
-                        isCreator ?
-                        <Button
-                            styles='secondary'
-                            label="Edit Session"
-                            icon={TbEditCircle}
-                            // action={() => navigate(`/sessions/${session.id}/update`)}
-                        /> :
-                        <Button
-                            styles={
-                                checkIn ?
-                                checkIn === 'pending'
-                                ? 'secondary'
-                                : 'secondary'
-                                : 'primary'
-                            }
-                            icon={
-                                checkIn ?
-                                checkIn === 'pending'
-                                ? CgSpinner
-                                : TbUserMinus
-                                : TbUserPlus
-                              }
-                            label={checkIn ?
-                                checkIn === 'pending'
-                                ? 'Awaiting Approval'
-                                : 'Leave Session'
-                                : 'Join Session'
-                            }
-                            // action={checkIn ? () => console.log('checkout') : () =>  console.log('checkIn')}
-                            loading={checkIn === 'pending'}
-                        />
+                        auth && (
+                            isCreator ?
+                            <Button
+                                styles='secondary'
+                                label="Edit Session"
+                                icon={TbEditCircle}
+                                // action={() => navigate(`/sessions/${session.id}/update`)}
+                            /> :
+                            <Button
+                                styles={
+                                    checkIn ?
+                                    checkIn === 'pending'
+                                    ? 'secondary'
+                                    : 'secondary'
+                                    : 'primary'
+                                }
+                                icon={
+                                    checkIn ?
+                                    checkIn === 'pending'
+                                    ? CgSpinner
+                                    : TbUserMinus
+                                    : TbUserPlus
+                                  }
+                                label={checkIn ?
+                                    checkIn === 'pending'
+                                    ? 'Awaiting Approval'
+                                    : 'Leave Session'
+                                    : 'Join Session'
+                                }
+                                // action={checkIn ? () => console.log('checkout') : () =>  console.log('checkIn')}
+                                loading={checkIn === 'pending'}
+                            />
+                        )
                     }
                 </div>
             </motion.header>

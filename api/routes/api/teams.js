@@ -579,7 +579,7 @@ router.delete('/:teamId/remove-from-team', requireAuth, async (req, res) => {
 })
 
 
-router.get('/:teamId/feed', requireAuth, async (req, res) => {
+router.get('/:teamId/feed', async (req, res) => {
     const { teamId } = req.params;
 
     const teamFeed = await TeamChat.findAll({

@@ -16,9 +16,10 @@ function Map() {
     // }, [session])
 
     return (
-        <div className='map_container' ref={ref}>
+        null
+        // <div className='map_container' ref={ref}>
 
-        </div>
+        // </div>
     )
 }
 

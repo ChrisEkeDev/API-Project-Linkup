@@ -40,7 +40,7 @@ router.get('/', (req, res) => {
 
 
 // Sign in user
-router.post('/', validateLogin, async (req, res, next) => {
+router.post('/', validateLogin, async (req, res, _next) => {
     const { email, password } = req.body;
     const player = await Player.unscoped().findOne({
         where: { email }

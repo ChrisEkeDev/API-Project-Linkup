@@ -22,7 +22,7 @@ function CheckInItem({checkIn, isCreator}) {
             <div className='flex'>
                 <p className='bold md'>{player.name}</p>
             </div>
-            <p className='sm'>Joined {formatDate}</p>
+            <p className='xs'>Joined {formatDate}</p>
         </div>
 
         </div>
