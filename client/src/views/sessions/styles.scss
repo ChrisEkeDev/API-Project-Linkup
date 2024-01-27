@@ -206,7 +206,14 @@
     align-items: center;
     gap: .5rem;
 
-    .player_status_crown {
+    .player_status_host {
+        font-size: 1.25rem;
+        position: absolute;
+        top: 1.5rem;
+        right: 0rem;
+        color: var(--main);
+    }
+    .player_status_co-host {
         font-size: 1.25rem;
         position: absolute;
         top: 1.5rem;

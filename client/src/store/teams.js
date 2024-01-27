@@ -20,31 +20,59 @@ export const searchTeams = async (query, sortBy) => {
     }
 }
 
-// ACTIONS
-const actionGetAllTeams = (teams) => ({
-    type: GET_ALL_TEAMS,
-    payload: teams
-})
 
-const actionSearchTeams = (teams) => ({
-    type: SEARCH_TEAMS,
-    payload: teams
-})
+export const getTeam = async (id) => {
+    const res = await csrfFetch(`/api/teams/${id}`);
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
 
-const actionGetMyTeams = (teams) => ({
-    type: GET_MY_TEAMS,
-    payload: teams
-})
+export const getTeamMembershipStatus = async (id) => {
+    const res = await csrfFetch(`/api/teams/${id}/current`);
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
 
-const actionGetSingleTeam = (team) => ({
-    type: GET_SINGLE_TEAM,
-    payload: team
-})
+export const getTeamMemberships = async (id) => {
+    const res = await csrfFetch(`/api/teams/${id}/memberships`)
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
 
-const actionGetTeamSessions = (sessions) => ({
-    type: GET_TEAM_SESSIONS,
-    payload: sessions
-})
+
+
+export const getTeamSessions = async (id) => {
+    const res = await csrfFetch(`/api/teams/${id}/sessions`)
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const getTeamFeed = async (id) => {
+    const res = await csrfFetch(`/api/teams/${id}/feed`);
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
 
 const actionCreateTeam = (team) => ({
     type: CREATE_TEAM,
@@ -63,62 +91,6 @@ const actionDeleteTeam = (team) => ({
 
 
 //THUNKS
-
-export const thunkGetAllTeams = () => async dispatch => {
-    const res = await csrfFetch(`/api/teams/all`);
-    try {
-        const jsonResponse = await res.json();
-        await dispatch(actionGetAllTeams(jsonResponse.data))
-        return jsonResponse
-    } catch(error) {
-        console.error(error)
-    }
-}
-
-export const thunkSearchTeams = (query, sortBy) => async dispatch => {
-    const res = await csrfFetch(`/api/teams/search/?query=${query}&sortBy=${sortBy}`);
-    try {
-        const jsonResponse = await res.json();
-        await dispatch(actionSearchTeams(jsonResponse.data))
-        return jsonResponse
-    } catch(error) {
-        console.error(error)
-    }
-}
-
-export const thunkGetMyTeams = () => async dispatch => {
-    const res = await csrfFetch('/api/teams/current');
-    try {
-        const jsonResponse = await res.json();
-        await dispatch(actionGetMyTeams(jsonResponse.data))
-        return jsonResponse
-    } catch(error) {
-        console.error(error)
-    }
-}
-
-export const thunkGetSingleTeam = (teamId) => async dispatch => {
-    const res = await csrfFetch(`/api/teams/${teamId}`);
-    try {
-        const jsonResponse = await res.json();
-        await dispatch(actionGetSingleTeam(jsonResponse.data))
-        return jsonResponse
-    } catch(error) {
-        console.error(error)
-    }
-}
-
-export const thunkGetTeamSessions = (teamId) => async dispatch => {
-    const res = await csrfFetch(`/api/teams/${teamId}/sessions`);
-    try {
-        const jsonResponse = await res.json();
-        await dispatch(actionGetTeamSessions(jsonResponse.data))
-        return jsonResponse
-    } catch(error) {
-        console.error(error)
-    }
-}
-
 export const thunkCreateNewTeam = (teamData) => async dispatch => {
     const res = await csrfFetch('/api/teams', {
         method: 'POST',

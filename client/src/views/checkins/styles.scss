@@ -99,6 +99,9 @@
         background-color: var(--main);
         font-weight: 700;
         transition: all .2s;
+        .calendar_item_node {
+            color: var(--background);
+        }
         .number {
           color: var(--background);
           transition: all .2s;
@@ -134,11 +137,7 @@
     display: flex;
 
     .calendar_item_node {
-        height: .75rem;
-        aspect-ratio: 1;
-        border-radius: 1rem;
-        background-color: var(--main);
-
+        font-size: 1rem;
     }
     &:hover {
         .calendar_item_menu {

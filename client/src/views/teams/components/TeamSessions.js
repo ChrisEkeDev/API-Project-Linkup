@@ -1,10 +1,23 @@
 import React from 'react'
-import { useApp } from '../../../context/AppContext'
+import { useApp } from '../../../context/AppContext';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
+import { getTeamSessions } from '../../../store/teams';
 import { format, parseISO } from 'date-fns';
 import ProfileImage from '../../../components/shared/profileImage'
 
-function TeamSessions({sessions}) {
-    const { navigate }= useApp();
+function TeamSessions() {
+    const { navigate } = useApp();
+    const { id } = useParams();
+    const {
+        data: sessions,
+        error: sessiosErr,
+        isLoading: sessionsLoading
+    } = useQuery(['team-sessions', id], () => getTeamSessions(id))
+
+    if (sessionsLoading) return <div>Loading..</div>
+    if (sessiosErr) return <div>Error</div>
+
   return (
     <div className='container_border team_sessions'>
         <span className='section_label xs bold'>Sessions hosted by Team</span>

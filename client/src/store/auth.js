@@ -10,7 +10,78 @@ const CHANGE_THEME_PREFERENCE = '/backcourts/auth/CHANGE_THEME_PREFERENCE'
 const CHANGE_LOCATION_PREFERENCE = '/backcourts/auth/CHANGE_LOCATION_PREFERENCE'
 const CHANGE_NOTIFICATION_PREFERENCE = '/backcourts/auth/CHANGE_NOTIFICATION_PREFERENCE'
 
-// ACTIONS
+export const getAuth = async () => {
+    const res = await csrfFetch(`/api/auth`);
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const getMyTeams= async (id) => {
+    const res = await csrfFetch(`/api/teams/current`);
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+
+
+export const getMySessions = async () => {
+    const res = await csrfFetch(`/api/sessions/current`);
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const getMyCheckIns = async (id) => {
+    const res = await csrfFetch(`/api/check-ins/current`)
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const getMyMemberships = async () => {
+    const res = await csrfFetch(`/api/memberships/current`)
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+
+export const getMySettings = async () => {
+    const res = await csrfFetch('/api/settings/current')
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const getMyLikes = async () => {
+    const res = await csrfFetch(`/api/likes/current`);
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
 
 export const actionSetAuthPlayer = (player) => ({
     type: SET_AUTH,
@@ -19,16 +90,6 @@ export const actionSetAuthPlayer = (player) => ({
 
 const actionRemoveAuthPlayer = () => ({
     type: REMOVE_AUTH
-})
-
-const actionGetAuthPlayer = (player) => ({
-    type: GET_AUTH,
-    payload: player
-})
-
-const actionGetSettings = (settings) => ({
-    type: GET_SETTINGS,
-    payload: settings
 })
 
 const actionChangeThemePreference = (settings) => ({
@@ -85,17 +146,6 @@ export const thunkSignOutPlayer = () => async dispatch => {
     }
 }
 
-export const thunkRestoreAuth = () => async dispatch => {
-    const res = await csrfFetch('/api/auth');
-    try {
-        const jsonResponse = await res.json();
-        dispatch(actionGetAuthPlayer(jsonResponse.data))
-        return jsonResponse;
-    } catch (error) {
-        console.error(error);
-    }
-}
-
 export const thunkSignUpPlayer = (playerData) => async dispatch => {
     const res = await csrfFetch('/api/players', {
         method: 'POST',
@@ -105,18 +155,6 @@ export const thunkSignUpPlayer = (playerData) => async dispatch => {
     try {
         const jsonResponse = await res.json();
         dispatch(actionSetAuthPlayer(jsonResponse.data))
-        return jsonResponse;
-    } catch(error) {
-        console.error(error);
-    }
-}
-
-export const thunkGetSettings = () => async dispatch => {
-    const res = await csrfFetch('/api/settings/current', {
-    })
-    try {
-        const jsonResponse = await res.json();
-        dispatch(actionGetSettings(jsonResponse.data))
         return jsonResponse;
     } catch(error) {
         console.error(error);

@@ -1,34 +1,30 @@
 import Back from '../../components/shared/button/Back';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import useCheckIns from './hooks/useCheckIns';
 import Button from '../../components/shared/button';
-import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import { thunkGetSingleSession } from '../../store/sessions';
-import { thunkGetSessionFeed } from '../../store/chats';
-import { thunkGetSessionCheckIns } from '../../store/checkins';
+import { useQuery } from 'react-query';
+import { getSession, getSessionCheckInStatus } from '../../store/sessions';
 import { useParams } from 'react-router-dom';
 import SessionCheckins from './components/SessionCheckins';
 import SessionDetails from './components/SessionDetails';
 import SessionFeed from './components/SessionFeed';
 import LoadingData from '../../components/shared/loading';
-import { PiLockFill, PiLockOpenBold, PiXBold, PiUserPlusFill , PiUserMinusBold, PiPencilSimpleLineFill, PiTrashBold  } from 'react-icons/pi'
 import { base_animations, child_variants, parent_variants } from '../../constants/animations';
 import CountDown from '../../components/countdown';
 import { CgSpinner } from 'react-icons/cg';
+import { TbUserMinus, TbUserPlus, TbEditCircle, TbLock, TbLockOpen } from 'react-icons/tb';
 
 
-function SingleSession({session}) {
-    const myCheckIns = useSelector(state => state.checkIns.myCheckIns);
-    const myCheckInsArr = Object.values(myCheckIns)
+function SingleSession() {
+    const { id } = useParams();
     const [tabView, setTabView ] = useState('details')
-    const { checkIn, checkOut } = useCheckIns();
     const { auth, navigate } = useApp();
-    const isCreator = auth?.id == session?.creatorId;
-    const isCheckedIn = myCheckInsArr.find(checkin => checkin.sessionId === session.id);
+    const { data: session, error: sessionErr, isLoading: sessionLoading } = useQuery(['sessions', id], () => getSession(id));
+    const { data: checkIn, isLoading: checkInLoading } = useQuery(['check-in-status'], () => getSessionCheckInStatus(id))
+    const isCreator = auth.id === session?.creator.id;
 
-    console.log(isCheckedIn)
+    if (sessionLoading) return <LoadingData />
 
     return (
         <motion.main {...base_animations} className='page sessions'>
@@ -36,11 +32,11 @@ function SingleSession({session}) {
                 <div className="flex">
                     <Back />
                     {
-                        session.private ?
-                        <PiLockFill title='Private' className='team_privacy_icon'/> :
-                        <PiLockOpenBold title='Public' className='team_privacy_icon'/>
+                        session?.private ?
+                        <TbLock title='Private' className='team_privacy_icon'/> :
+                        <TbLockOpen title='Public' className='team_privacy_icon'/>
                     }
-                    <p className="lg bold">{session.name}</p>
+                    <p className="lg bold">{session?.name}</p>
                 </div>
                 <div className='actions'>
                     <CountDown endTime={session.startDate} expires={session.endDate} />
@@ -49,32 +45,32 @@ function SingleSession({session}) {
                         <Button
                             styles='secondary'
                             label="Edit Session"
-                            icon={PiPencilSimpleLineFill}
-                            action={() => navigate(`/sessions/${session.id}/update`)}
+                            icon={TbEditCircle}
+                            // action={() => navigate(`/sessions/${session.id}/update`)}
                         /> :
                         <Button
                             styles={
-                                isCheckedIn ?
-                                isCheckedIn?.status === 'pending'
+                                checkIn ?
+                                checkIn === 'pending'
                                 ? 'secondary'
                                 : 'secondary'
                                 : 'primary'
                             }
                             icon={
-                                isCheckedIn ?
-                                isCheckedIn?.status === 'pending'
+                                checkIn ?
+                                checkIn === 'pending'
                                 ? CgSpinner
-                                : PiUserMinusBold
-                                : PiUserPlusFill
+                                : TbUserMinus
+                                : TbUserPlus
                               }
-                            label={isCheckedIn ?
-                                isCheckedIn?.status === 'pending'
+                            label={checkIn ?
+                                checkIn === 'pending'
                                 ? 'Awaiting Approval'
                                 : 'Leave Session'
                                 : 'Join Session'
                             }
-                            action={isCheckedIn ? checkOut : checkIn}
-                            loading={isCheckedIn?.status === 'pending'}
+                            // action={checkIn ? () => console.log('checkout') : () =>  console.log('checkIn')}
+                            loading={checkIn === 'pending'}
                         />
                     }
                 </div>
@@ -90,11 +86,11 @@ function SingleSession({session}) {
             </header>
             <motion.section variants={parent_variants} {...base_animations} className='section scroll'>
                 {
+                    tabView === 'details' ?
+                    <SessionDetails session={session} /> :
                     tabView === 'feed' ?
                     <SessionFeed /> :
-                    tabView === 'details' ?
-                    <SessionDetails /> :
-                    <SessionCheckins isCheckedIn={isCheckedIn} isCreator={isCreator} />
+                    <SessionCheckins status={checkIn} isCreator={isCreator} />
                 }
             </motion.section>
     </motion.main>
@@ -102,39 +98,39 @@ function SingleSession({session}) {
 }
 
 
-function SingleSessionWrapper() {
-    const { id } = useParams();
-    const { dispatch } = useApp();
-    const [ loading, setLoading ] = useState(true);
-    const singleSession = useSelector(state => state.sessions.singleSession);
-    const sessionCheckIns = useSelector(state => state.checkIns.sessionCheckIns)
-    const sessionFeed = useSelector(state => state.chats.sessionFeed)
+// function SingleSessionWrapper() {
+//     const { id } = useParams();
+//     const { dispatch } = useApp();
+//     const [ loading, setLoading ] = useState(true);
+//     const singleSession = useSelector(state => state.sessions.singleSession);
+//     const sessionCheckIns = useSelector(state => state.checkIns.sessionCheckIns)
+//     const sessionFeed = useSelector(state => state.chats.sessionFeed)
 
-    useEffect(() => {
-        const loadSession = async () => {
-            try {
-                const singleSessionData = await dispatch(thunkGetSingleSession(id));
-                const sessionCheckInData = await dispatch(thunkGetSessionCheckIns(id))
-                const sessionFeedData = await dispatch(thunkGetSessionFeed(id))
-                if (
-                    singleSessionData.status === 200 && singleSession
-                    && sessionCheckInData.status === 200 && sessionCheckIns
-                    && sessionFeedData.status === 200 && sessionFeed) {
-                    setLoading(false);
-                }
-            } catch(e) {
-                console.log(e)
-            }
-        }
-        loadSession();
+//     useEffect(() => {
+//         const loadSession = async () => {
+//             try {
+//                 const singleSessionData = await dispatch(thunkGetSingleSession(id));
+//                 const sessionCheckInData = await dispatch(thunkGetSessionCheckIns(id))
+//                 const sessionFeedData = await dispatch(thunkGetSessionFeed(id))
+//                 if (
+//                     singleSessionData.status === 200 && singleSession
+//                     && sessionCheckInData.status === 200 && sessionCheckIns
+//                     && sessionFeedData.status === 200 && sessionFeed) {
+//                     setLoading(false);
+//                 }
+//             } catch(e) {
+//                 console.log(e)
+//             }
+//         }
+//         loadSession();
 
-    }, [dispatch, id])
+//     }, [dispatch, id])
 
-    if (loading) return <LoadingData/>
+//     if (loading) return <LoadingData/>
 
-    return (
-        <SingleSession session={singleSession} checkIns={sessionCheckIns} feed={sessionFeed}/>
-    )
-}
+//     return (
+//         <SingleSession session={singleSession} checkIns={sessionCheckIns} feed={sessionFeed}/>
+//     )
+// }
 
-export default SingleSessionWrapper
+export default SingleSession

@@ -6,7 +6,6 @@ import sessionsReducer from './sessions';
 import membershipsReducer from './memberships';
 import chatsReducer from './chats';
 import checkInsReducer from './checkins';
-import searchReducer from './search';
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -14,7 +13,6 @@ const rootReducer = combineReducers({
     sessions: sessionsReducer,
     memberships: membershipsReducer,
     checkIns: checkInsReducer,
-    search: searchReducer,
     chats: chatsReducer,
 })
 

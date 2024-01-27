@@ -1,18 +1,23 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import MemberItem from './MemberItem'
-import { parent_variants } from '../../../constants/animations';
-import ProfileImage from '../../../components/shared/profileImage'
+import { getTeamMemberships } from '../../../store/teams';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 import { statusOrderMembership } from '../../../constants/constants'
 import React from 'react'
-import { useSelector } from 'react-redux';
+import LoadingData from '../../../components/shared/loading';
 import Scroll from '../../../components/shared/scroll';
 
-function TeamMembers({isMember}) {
-    const teamMemberships = useSelector(state => state.memberships.teamMemberships)
-    const teamMembershipsArr = Object.values(teamMemberships);
-    const isPlayerHost = isMember.status === 'host'
-    const isPlayerCoHost = isMember.status === 'co-host'
-    const sortedMemberships = teamMembershipsArr.sort((a, b) => {
+function TeamMembers({membership}) {
+    const { id } = useParams();
+    const { data: memberships, error: membershipsErr, isLoading: membershipsLoading } = useQuery(['team-memberships', id], () => getTeamMemberships(id))
+    const isPlayerHost = membership === 'host'
+    const isPlayerCoHost = membership === 'co-host'
+
+    if (membershipsLoading) return <LoadingData />
+    if (membershipsErr) return <div>Error</div>
+
+    const sortedMemberships = memberships?.sort((a, b) => {
         return statusOrderMembership[a.status] - statusOrderMembership[b.status]
     })
 
@@ -24,14 +29,14 @@ function TeamMembers({isMember}) {
     return (
         <Scroll>
             <motion.ul className='members_list container_border'>
-            <span className='section_label xs bold'>{teamMembershipsArr.length} Member{teamMembershipsArr.length === 1 ? '' : 's'}</span>
+            <span className='section_label xs bold'>{filteredMemberships.length} Member{filteredMemberships.length === 1 ? '' : 's'}</span>
                     <AnimatePresence>
                         {
-                            filteredMemberships.map(membership => (
+                            filteredMemberships.map(member => (
                                 <MemberItem
                                     key={membership.id}
-                                    isMember={isMember}
-                                    membership={membership}
+                                    status={membership}
+                                    member={member}
                                 />
                             ))
                         }

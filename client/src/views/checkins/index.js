@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion';
 import LoadingData from '../../components/shared/loading';
 import CheckInList from './components/CheckInList';
@@ -7,14 +7,17 @@ import Scroll from '../../components/shared/scroll'
 import CheckInView from './components/CheckInView'
 import './styles.scss';
 import { page_transitions } from '../../constants/animations';
-import { useApp } from '../../context/AppContext';
-import { useSelector } from 'react-redux';
-import { thunkGetMyCheckIns } from '../../store/checkins';
+import { getMyCheckIns } from '../../store/auth';
+import { useQuery } from 'react-query';
 
 function CheckIns() {
-    const myCheckIns = useSelector(state => state.checkIns.myCheckIns)
-    const myCheckInsArr = Object.values(myCheckIns);
     const [ view, setView ] = useState('calendar');
+    const { data: checkIns, error: checkInsErr, isLoading: checkInsLoading} = useQuery('my-check-ins', getMyCheckIns);
+
+    console.log(checkIns)
+
+    if (checkInsLoading) return <LoadingData/>
+    if (checkInsErr) return <div>Error getting your sessions</div>
 
     return (
         <motion.main {...page_transitions} className='page checkins'>
@@ -26,8 +29,8 @@ function CheckIns() {
                 <AnimatePresence>
                     {
                         view === "calendar" ?
-                        <CheckInCalendar checkIns={myCheckInsArr} /> :
-                        <CheckInList checkIns={myCheckInsArr}/>
+                        <CheckInCalendar checkIns={checkIns} /> :
+                        <CheckInList checkIns={checkIns}/>
                     }
                 </AnimatePresence>
             </Scroll>
@@ -36,29 +39,4 @@ function CheckIns() {
 }
 
 
-function CheckInsWrapper() {
-    const { dispatch } = useApp();
-
-    const [ loading, setLoading ] = useState(true)
-
-
-    useEffect(() => {
-        const loadCheckIns = async () => {
-            try {
-                const myCheckInData = await dispatch(thunkGetMyCheckIns())
-                if (myCheckInData.status === 200 && myCheckInData) setLoading(false)
-            } catch(e) {
-                console.log(e)
-            }
-        }
-
-        loadCheckIns();
-    }, [dispatch])
-
-    if (loading) return <LoadingData/>
-
-    return (
-        <CheckIns />
-    )
-}
-export default CheckInsWrapper
+export default CheckIns

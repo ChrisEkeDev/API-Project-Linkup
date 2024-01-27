@@ -1,23 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion'
 import { Switch, Route } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
-import { useApp } from '../context/AppContext';
 import * as view from '../views';
-import { thunkGetMySessions } from '../store/sessions';
 
 function SessionsRouter() {
     const location = useLocation()
-    const { dispatch } = useApp();
-
-    useEffect(() => {
-        try {
-            dispatch(thunkGetMySessions())
-        } catch(e) {
-            console.error(e)
-        }
-    }, [])
 
     return (
         <div className='router_container'>

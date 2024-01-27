@@ -1,4 +1,4 @@
-
+import { motion } from 'framer-motion'
 import TeamItem from '../teams/components/TeamItem';
 import SessionItem from '../../views/sessions/components/SessionItem';
 import Sorter from './components/Sorter';

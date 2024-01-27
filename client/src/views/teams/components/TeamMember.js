@@ -2,7 +2,7 @@ import React from 'react'
 import { AnimatePresence, motion } from 'framer-motion';
 import ProfileImage from '../../../components/shared/profileImage';
 import { slide_variants, base_animations } from '../../../constants/animations';
-import { PiCrownBold, PiCrownFill } from 'react-icons/pi';
+import { TbCrown } from 'react-icons/tb';
 
 function TeamMember({membership}) {
   const isHost = membership.status === 'host';
@@ -11,8 +11,8 @@ function TeamMember({membership}) {
   return (
     <motion.li title={membership.Player.name} className='session_player'>
         {
-          isHost ? <PiCrownFill className='player_status_crown'/> :
-          isCoHost ? <PiCrownBold className='player_status_crown'/>:
+          isHost ? <TbCrown className='player_status_host'/> :
+          isCoHost ? <TbCrown className='player_status_co-host'/>:
         null
         }
         <ProfileImage

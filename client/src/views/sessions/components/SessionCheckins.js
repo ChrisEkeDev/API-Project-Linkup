@@ -1,15 +1,21 @@
 import React from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import CheckInItem from './CheckInItem'
-import { useSelector } from 'react-redux';
+import { getSessionCheckIns } from '../../../store/sessions';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 import Scroll from '../../../components/shared/scroll';
 import { statusOrderAttendance } from '../../../constants/constants'
+import LoadingData from '../../../components/shared/loading';
 
-function SessionCheckins({isCheckedIn, isCreator}) {
-    const sessionCheckIns = useSelector(state => state.checkIns.sessionCheckIns)
-    const sessionCheckInsArr = Object.values(sessionCheckIns);
+function SessionCheckIns({status, isCreator}) {
+    const { id } = useParams();
+    const { data: checkIns, error: checkInsErr, isLoading: checkInsLoading } = useQuery(['session-checkIns', id], () => getSessionCheckIns(id))
 
-    const sortedCheckIns = sessionCheckInsArr.sort((a, b) => {
+    if (checkInsLoading) return <LoadingData />
+    if (checkInsErr) return <div>Error</div>
+
+    const sortedCheckIns = checkIns.sort((a, b) => {
         return statusOrderAttendance[a.status] - statusOrderAttendance[b.status]
     })
 
@@ -22,13 +28,12 @@ function SessionCheckins({isCheckedIn, isCreator}) {
     return (
         <Scroll>
             <motion.ul className='members_list container_border'>
-            <span className='section_label xs bold'>{sessionCheckInsArr.length} Player{sessionCheckInsArr.length === 1 ? '' : 's'} checked in</span>
+            <span className='section_label xs bold'>{filteredCheckIns.length} Player{filteredCheckIns.length === 1 ? '' : 's'} checked in</span>
                     <AnimatePresence>
                         {
                             filteredCheckIns.map(checkIn => (
                                 <CheckInItem
                                     key={checkIn.id}
-                                    isCheckedIn={isCheckedIn}
                                     isCreator={isCreator}
                                     checkIn={checkIn}
                                 />
@@ -40,4 +45,4 @@ function SessionCheckins({isCheckedIn, isCreator}) {
     )
 }
 
-export default SessionCheckins
+export default SessionCheckIns

@@ -21,26 +21,47 @@ export const searchSessions = async (query, sortBy) => {
 
 
 
+export const getSession = async (id) => {
+    const res = await csrfFetch(`/api/sessions/${id}`);
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const getSessionCheckInStatus = async (id) => {
+    const res = await csrfFetch(`/api/sessions/${id}/current`);
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const getSessionCheckIns = async (id) => {
+    const res = await csrfFetch(`/api/sessions/${id}/check-ins`)
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const getSessionFeed = async (id) => {
+    const res = await csrfFetch(`/api/sessions/${id}/feed`);
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
 // ACTIONS
-const actionGetAllSessions = (sessions) => ({
-    type: GET_ALL_SESSIONS,
-    payload: sessions
-})
-
-const actionSearchSessions = (sessions) => ({
-    type: SEARCH_SESSIONS,
-    payload: sessions
-})
-
-const actionGetMySessions = (sessions) => ({
-    type: GET_MY_SESSIONS,
-    payload: sessions
-})
-
-const actionGetSingleSession = (session) => ({
-    type: GET_SINGLE_SESSION,
-    payload: session
-})
 
 const actionCreateSession = (session) => ({
     type: CREATE_SESSION,
@@ -56,53 +77,6 @@ const actionDeleteSession = (session) => ({
     type: DELETE_SESSION,
     payload: session
 })
-
-
-
-//THUNKS
-
-export const thunkGetAllSessions = () => async dispatch => {
-    const res = await csrfFetch(`/api/sessions/all`);
-    try {
-        const jsonResponse = await res.json();
-        await dispatch(actionGetAllSessions(jsonResponse.data))
-        return jsonResponse
-    } catch(error) {
-        console.error(error)
-    }
-}
-
-export const thunkSearchSessions = (query, sortBy) => async dispatch => {
-    const res = await csrfFetch(`/api/sessions/search/?query=${query}&sortBy=${sortBy}`);
-    try {
-        const jsonResponse = await res.json();
-        await dispatch(actionSearchSessions(jsonResponse.data))
-        return jsonResponse
-    } catch(error) {
-        console.error(error)
-    }
-}
-export const thunkGetMySessions = () => async dispatch => {
-    const res = await csrfFetch('/api/sessions/current');
-    try {
-        const jsonResponse = await res.json();
-        await dispatch(actionGetMySessions(jsonResponse.data));
-        return jsonResponse;
-    } catch(error) {
-        console.error(error)
-    }
-}
-
-export const thunkGetSingleSession = (sessionId) => async dispatch => {
-    const res = await csrfFetch(`/api/sessions/${sessionId}`);
-    try {
-        const jsonResponse = await res.json();
-        await dispatch(actionGetSingleSession(jsonResponse.data));
-        return jsonResponse;
-    } catch(error) {
-        console.error(error)
-    }
-}
 
 export const thunkCreateNewSession = (sessionData) => async dispatch => {
     const res = await csrfFetch(`/api/sessions`, {

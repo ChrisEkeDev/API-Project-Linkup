@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion';
-import { PiHandSwipeLeftFill, PiHandSwipeRightFill } from "react-icons/pi";
+import { TbHandFinger } from "react-icons/tb";
 
 function ClickDragScroll(props) {
     const { title, children} = props;
@@ -41,15 +41,21 @@ function ClickDragScroll(props) {
                 onMouseMove={onDrag}
             >
             <AnimatePresence>
-                <PiHandSwipeLeftFill
+                <div
+                    className="swipe_icon"
                     key={'start-pointer'}
-                    className="swipe_icon"
-                />
+                >
+                    <span className='xs bold'>Drag</span>
+                    <TbHandFinger className="icon" />
+                </div>
                     {children}
-                <PiHandSwipeRightFill
-                    key={'end-pointer'}
+                <div
                     className="swipe_icon"
-                />
+                    key={'end-pointer'}
+                >
+                    <TbHandFinger className="icon" />
+                    <span className='xs bold'>Drag</span>
+                </div>
             </AnimatePresence>
             </ul>
         </section>

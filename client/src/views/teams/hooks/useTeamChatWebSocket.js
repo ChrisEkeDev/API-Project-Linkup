@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useApp } from '../../../context/AppContext'
 import { useSelector } from 'react-redux';
 import io from 'socket.io-client';
-import { thunkGetTeamFeed } from "../../../store/chats";
+// import { thunkGetTeamFeed } from "../../../store/chats";
 
 function useTeamChatWebSocket() {
     const [socket, setSocket] = useState(null)
@@ -22,7 +22,7 @@ function useTeamChatWebSocket() {
         });
 
         socket?.on('update_feed', async () => {
-            await dispatch(thunkGetTeamFeed(teamId))
+            // await dispatch(thunkGetTeamFeed(teamId))
         });
 
         socket?.on('offline', () => {

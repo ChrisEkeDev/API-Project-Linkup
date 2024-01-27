@@ -1,23 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion'
 import { Switch, Route } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
-import { useApp } from '../context/AppContext';
 import * as view from '../views';
-import { thunkGetMyTeams } from '../store/teams';
 
 function TeamsRouter() {
     const location = useLocation();
-    const { dispatch } = useApp();
-
-    useEffect(() => {
-        try {
-            dispatch(thunkGetMyTeams())
-        } catch(e) {
-            console.error(e)
-        }
-    }, [])
 
     return (
         <div className='router_container'>

@@ -16,21 +16,25 @@ function TeamChat(props) {
     const myLikesArr = Object.values(myLikes)
     const chatLiked = myLikesArr.find(like => like.playerId === auth.id && chat.id === like.entityId)
     const isAuth = auth.id === chat.playerId
-    const { ref, content, handleInput, updateTeamChat, deleteTeamChat, editing, setEditing, addLike, removeLike   } = useTeamChat(props)
+    // const { ref, content, handleInput, updateTeamChat, deleteTeamChat, editing, setEditing, addLike, removeLike   } = useTeamChat(props)
     const today = new Date();
     const createdToday = isSameDay(parseISO(chat.createdAt), today);
     const chatDateFormat = createdToday ? 'p' : `MM/dd  •  p`;
     const formatDate = format(parseISO(chat.createdAt), chatDateFormat);
     const textareaRef = useRef(null);
 
-    useEffect(() => {
-        const textarea = textareaRef.current;
-        textarea.style.height = 'auto'; // Reset height to recompute
-        textarea.style.height = `${textarea.scrollHeight}px`; // Set to scroll height
-    }, [content]);
+    // useEffect(() => {
+    //     const textarea = textareaRef.current;
+    //     textarea.style.height = 'auto'; // Reset height to recompute
+    //     textarea.style.height = `${textarea.scrollHeight}px`; // Set to scroll height
+    // }, [content]);
 
     return (
-        <motion.li variants={child_variants} {...base_animations} ref={ref} className="chat_item">
+        <motion.li
+            variants={child_variants}
+            {...base_animations}
+            // ref={ref}
+            className="chat_item">
             <ProfileImage
                 size={4}
                 player={chat.Player}
@@ -41,45 +45,52 @@ function TeamChat(props) {
                     <span>&#8226;</span>
                     <p className="xs bold">{formatDate}</p>
                 </div>
-                <textarea ref={textareaRef} className="chat_textarea" disabled={!editing} value={content} onChange={handleInput}></textarea>
+                <textarea
+                    ref={textareaRef}
+                    className="chat_textarea"
+                    // disabled={!editing}
+                    value={chat.content}
+                    // onChange={handleInput}
+                >
+                </textarea>
             </div>
             {
-                isAuth &&
-                <div className="chat_controls">
-                {
-                    editing ?
-                    <>
-                        <IconButton
-                            icon={PiXBold}
-                            action={() => setEditing(false)}
-                            styles="small_button"
-                        />
-                        <IconButton
-                            icon={PiCheckFatFill }
-                            action={updateTeamChat}
-                            styles="small_button"
-                        />
-                    </>
-                    :
-                    <>
-                        <IconButton
-                            icon={PiPencilSimpleLineFill}
-                            action={() => setEditing(true)}
-                            styles="small_button"
-                        />
-                        <IconButton
-                            icon={PiTrashBold}
-                            action={deleteTeamChat}
-                            styles="small_button"
-                        />
-                    </>
-                }
-                </div>
+                isAuth && null
+                // <div className="chat_controls">
+                // {
+                //     editing ?
+                //     <>
+                //         <IconButton
+                //             icon={PiXBold}
+                //             action={() => setEditing(false)}
+                //             styles="small_button"
+                //         />
+                //         <IconButton
+                //             icon={PiCheckFatFill }
+                //             action={updateTeamChat}
+                //             styles="small_button"
+                //         />
+                //     </>
+                //     :
+                //     <>
+                //         <IconButton
+                //             icon={PiPencilSimpleLineFill}
+                //             action={() => setEditing(true)}
+                //             styles="small_button"
+                //         />
+                //         <IconButton
+                //             icon={PiTrashBold}
+                //             action={deleteTeamChat}
+                //             styles="small_button"
+                //         />
+                //     </>
+                // }
+                // </div>
             }
-            <div className='chat_likes' onClick={chatLiked ? removeLike : addLike }>
+            {/* <div className='chat_likes' onClick={chatLiked ? removeLike : addLike }>
                 { chatLiked ? <PiHeartFill className="icon"/> : <PiHeartBold className='icon'/> }
                 <p className='xs bold'>{chat.likes}</p>
-            </div>
+            </div> */}
         </motion.li>
     )
 }

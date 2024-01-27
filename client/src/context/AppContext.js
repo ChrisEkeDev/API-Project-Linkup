@@ -8,11 +8,8 @@ import useAppClock from "../hooks/useAppClock";
 import useAlerts from "../hooks/useAlerts";
 import LoadingData from "../components/shared/loading";
 import Alerts from "../components/alerts";
-import { thunkSearchSessions, thunkGetMySessions } from '../store/sessions';
-import { thunkGetMyCheckIns } from '../store/checkins';
-import { thunkSearchTeams, thunkGetMyTeams } from '../store/teams';
-import { thunkGetMyMemberships } from "../store/memberships";
-import { thunkGetMyLikes } from "../store/chats";
+import { getAuth } from '../store/auth';
+import { useQuery } from 'react-query';
 
 
 const AppContext = createContext();
@@ -20,8 +17,9 @@ const AppContext = createContext();
 export const useApp = () => useContext(AppContext);
 
 function AppProvider({children}) {
-  const [ authLoading, setAuthLoading ] = useState(false)
-  const auth = useSelector(state => state.auth.player)
+  const { data: auth, error: authErr, isLoading: authLoading } = useQuery('auth', getAuth);
+  // const [ authLoading, setAuthLoading ] = useState(false)
+  // const auth = useSelector(state => state.auth.player)
   const { alerts, handleAlerts, removeAlerts } = useAlerts();
   const [ theme, setTheme ] = useState('light');
   const { currentTime } = useAppClock();

@@ -45,7 +45,7 @@ export const appThemes = {
 
 export const sessionSortValues = {
     startDate: 'Happening Soon',
-    checkInCount: 'Most Players',
+    checkIns: 'Most Players',
     createdAt: "Newest"
 }
 

@@ -1,32 +1,28 @@
 import Back from '../../components/shared/button/Back';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import TeamMembers from './components/TeamMembers';
 import { useApp } from '../../context/AppContext';
 import Button from '../../components/shared/button';
-import Modal from '../../components/shared/modal';
-import { useSelector } from 'react-redux';
+import { useQuery } from 'react-query';
 import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
-import useModal from '../../hooks/useModal';
 import LoadingData from '../../components/shared/loading';
-import { thunkGetSingleTeam, thunkGetTeamSessions } from '../../store/teams';
-import { thunkGetTeamFeed } from '../../store/chats'
-import { thunkGetTeamMemberships } from '../../store/memberships'
-import Scroll from '../../components/shared/scroll';
-import useMemberships from './hooks/useMemberships';
+import { getTeamMembershipStatus, getTeam } from '../../store/teams';
 import { CgSpinner } from 'react-icons/cg';
-import { PiXBold, PiUserPlusBold , PiUserMinusBold, PiPencilSimpleLineFill, PiTrashBold, PiSignOutBold, PiLockFill, PiLockOpen, PiLockOpenBold } from 'react-icons/pi'
+import { TbLogout, TbLogin2, TbLockOpen, TbLock, TbEditCircle } from 'react-icons/tb'
 import { base_animations, child_variants, parent_variants } from '../../constants/animations';
 import TeamDetails from './components/TeamDetails';
 import TeamFeed from './components/TeamFeed'
 
-function SingleTeam({team, memberships}) {
-    const [tabView, setTabView ] = useState('details')
+function SingleTeam() {
+    const { id } = useParams();
+    const [ tabView, setTabView ] = useState('details')
     const { auth, navigate } = useApp();
-    const membershipsArr = Object.values(memberships)
-    const isMember = membershipsArr.find(membership => membership.playerId === auth.id);
-    const isHost = auth.id === team.captain.id
-    const { leaveTeam, joinTeam } = useMemberships();
+    const { data: team, error: teamErr, isLoading: teamLoading } = useQuery(['team', id], () => getTeam(id));
+    const { data: membership, isLoading: membershipLoading } = useQuery(['membership-status'], () => getTeamMembershipStatus(id))
+    const isHost = auth.id === team?.captain.id
+
+    if (teamLoading) return <LoadingData />
 
     return (
         <motion.main {...base_animations} className='page teams'>
@@ -34,11 +30,11 @@ function SingleTeam({team, memberships}) {
                 <div className="flex">
                     <Back />
                     {
-                        team.private ?
-                        <PiLockFill title='Private' className='team_privacy_icon'/> :
-                        <PiLockOpenBold title='Public' className='team_privacy_icon'/>
+                        team?.private ?
+                        <TbLock title='Private' className='team_privacy_icon'/> :
+                        <TbLockOpen title='Public' className='team_privacy_icon'/>
                     }
-                    <p className="lg bold">{team.name}</p>
+                    <p className="lg bold">{team?.name}</p>
                 </div>
                 <div className='actions'>
                     {
@@ -46,32 +42,32 @@ function SingleTeam({team, memberships}) {
                             <Button
                                 styles='secondary'
                                 label="Edit Team"
-                                icon={PiPencilSimpleLineFill}
+                                icon={TbEditCircle}
                                 action={() => navigate(`/teams/${team.id}/update`)}
                             />:
                         <>
                             {
-                                isMember ?
+                                membership ?
                                 <Button
                                     styles='tertiary'
-                                    loading={isMember.status === 'pending'}
+                                    loading={membership === 'pending'}
                                     icon={
-                                        isMember.status === 'pending' ?
+                                        membership === 'pending' ?
                                         CgSpinner :
-                                        PiSignOutBold
+                                        TbLogout
                                     }
                                     label={
-                                        isMember.status === 'pending' ?
+                                        membership === 'pending' ?
                                         "Awaiting Approval" :
                                         "Leave Team"
                                     }
-                                    action={() => leaveTeam(team.id)}
+                                    // action={() => leaveTeam(team.id)}
                                 /> :
                                 <Button
                                     styles='tertiary'
-                                    icon={PiSignOutBold}
+                                    icon={TbLogin2}
                                     label="Join Team"
-                                    action={() => joinTeam(team.id)}
+                                    // action={() => joinTeam(team.id)}
                                 />
                             }
                         </>
@@ -89,54 +85,15 @@ function SingleTeam({team, memberships}) {
                 </header>
                 <motion.section variants={parent_variants} {...base_animations} className='section scroll'>
                     {
-                        tabView === 'feed' ?
-                        <TeamFeed />:
                         tabView === 'details' ?
                         <TeamDetails /> :
-                        <TeamMembers isMember={isMember} />
+                        tabView === 'feed' ?
+                        <TeamFeed /> :
+                        <TeamMembers membership={membership} />
                     }
                 </motion.section>
         </motion.main>
     )
 }
 
-function SingleTeamWrapper() {
-    const { id } = useParams();
-    const { dispatch } = useApp();
-    const [ loading, setLoading ] = useState(true);
-    const singleTeam = useSelector(state => state.teams.singleTeam)
-    const teamMemberships = useSelector(state => state.memberships.teamMemberships)
-    const teamFeed = useSelector(state => state.chats.teamFeed)
-    const teamSessions = useSelector(state => state.teams.teamSessions)
-
-    useEffect(() => {
-        const loadTeam = async () => {
-            try {
-                const singleTeamData = await dispatch(thunkGetSingleTeam(id));
-                const teamMembershipData = await dispatch(thunkGetTeamMemberships(id))
-                const teamFeedData = await dispatch(thunkGetTeamFeed(id))
-                const teamSessionsData = await dispatch(thunkGetTeamSessions(id))
-                if (
-                    singleTeamData.status === 200 && singleTeam
-                    && teamMembershipData.status === 200 && teamMemberships
-                    && teamFeedData.status == 200 && teamFeed
-                    && teamSessionsData.status === 200 && teamSessions
-                ) {
-                    setLoading(false);
-                }
-            } catch(e) {
-                console.log(e)
-            }
-        }
-        loadTeam();
-
-    }, [dispatch, id])
-
-    if (loading) return <LoadingData/>
-
-    return (
-        <SingleTeam team={singleTeam} memberships={teamMemberships} feed={teamFeed} teamSessions={teamSessions} />
-    )
-}
-
-export default SingleTeamWrapper
+export default SingleTeam

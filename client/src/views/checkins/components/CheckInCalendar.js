@@ -6,7 +6,7 @@ import { format, addMonths, subMonths,addDays, startOfWeek,
 import { AnimatePresence, motion } from 'framer-motion';
 import CheckInCalendarItem from './CheckInCalendarItem';
 import CheckInList from './CheckInList';
-import { PiCaretRightFill , PiCaretLeftFill , PiCalendar } from 'react-icons/pi';
+import { TbChevronLeft , TbChevronRight, TbCalendarQuestion } from 'react-icons/tb';
 import IconButton from '../../../components/shared/button/IconButton';
 import '../styles.scss';
 import Scroll from '../../../components/shared/scroll';
@@ -117,7 +117,7 @@ function CheckInCalendar({checkIns}) {
                 <div className="month_header">
                     <IconButton
                         styles='header_icon'
-                        icon={PiCaretLeftFill}
+                        icon={TbChevronLeft}
                         action={prevMonth}
                     />
                     <h1>
@@ -125,7 +125,7 @@ function CheckInCalendar({checkIns}) {
                     </h1>
                     <IconButton
                         styles='header_icon'
-                        icon={PiCaretRightFill}
+                        icon={TbChevronRight}
                         action={nextMonth}
                     />
                 </div>
@@ -136,8 +136,8 @@ function CheckInCalendar({checkIns}) {
                 {
                     filteredCheckIns .length > 0 ?
                     <CheckInList checkIns={filteredCheckIns}/> :
-                    <motion.div className='no_check_ins'>
-                        <PiCalendar className='icon'/>
+                    <motion.div className='no_content'>
+                        <TbCalendarQuestion className='icon'/>
                         <span className='sm bold'>No CheckIns for {format(day, 'MM/dd/yyyy')} </span>
                     </motion.div>
                 }

@@ -60,7 +60,12 @@ router.get('/current', requireAuth, async (req, res) => {
     const playerId = req.player.id;
 
     let teams = await Team.findAll({
-        where: { captainId: playerId },
+        where: {
+            [Op.or]: [
+                { captainId: playerId },
+                { '$Memberships.playerId$': playerId}
+            ]
+        },
         attributes: {
             include: [[fn('COUNT', col('Memberships.id')), 'members']],
             exclude: ['updatedAt']
@@ -69,7 +74,6 @@ router.get('/current', requireAuth, async (req, res) => {
         include: [
             {
                 model: Membership,
-                attributes: []
             },
             {
                 as: "captain",
@@ -164,7 +168,7 @@ router.get('/:teamId', async (req, res) => {
                         attributes: [] // empty array means do not fetch columns from the Likes table
                     }
                 ],
-                group: ['TeamChat.id'],
+                group: ['TeamChat.id', 'Player.name', 'Player.profileImage'],
                 order: [[literal("likes"), 'DESC']],
                 limit: 3
             }
@@ -334,6 +338,27 @@ router.delete('/:teamId', requireAuth, async (req, res) => {
         data: team,
         error: null,
     })
+})
+
+////////////////////////////////////////
+
+// Checks users membership status in the specified team
+
+////////////////////////////////////////
+router.get('/:teamId/current', requireAuth, async (req, res) => {
+    const { teamId } = req.params;
+    const playerId = req.player.id;
+    const membership = await Membership.findOne({
+        where: {playerId, teamId }
+    })
+
+    return res.status(200).json({
+        status: 200,
+        message: null,
+        data: membership ? membership.status : false,
+        error: null
+    })
+
 })
 
 
@@ -554,7 +579,7 @@ router.delete('/:teamId/remove-from-team', requireAuth, async (req, res) => {
 })
 
 
-router.get('/:teamId/chat-feed', requireAuth, async (req, res) => {
+router.get('/:teamId/feed', requireAuth, async (req, res) => {
     const { teamId } = req.params;
 
     const teamFeed = await TeamChat.findAll({
@@ -588,7 +613,7 @@ router.get('/:teamId/chat-feed', requireAuth, async (req, res) => {
 
 
 
-router.post('/:teamId/chat-feed', requireAuth, async (req, res) => {
+router.post('/:teamId/feed', requireAuth, async (req, res) => {
     const playerId = req.player.id;
     const { teamId } = req.params;
     const { content } = req.body;

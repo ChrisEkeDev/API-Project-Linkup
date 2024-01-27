@@ -16,6 +16,7 @@ router.get('/current', requireAuth,  async (req, res) => {
                 attributes: ['id', 'name', 'startDate', 'endDate', 'hostId'],
                 include: {
                     model: Team,
+                    as: 'host',
                     attributes: ['name'],
                     include: [
                         {

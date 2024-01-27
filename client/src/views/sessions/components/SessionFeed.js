@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import io from 'socket.io-client';
-import { useApp } from '../../../context/AppContext'
 import { AnimatePresence, motion } from 'framer-motion';
 import { parent_variants, base_animations } from '../../../constants/animations';
-import { useSelector } from 'react-redux';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 import useNewSessionChat from '../hooks/useNewSessionChat';
 import useSessionChatWebSocket from '../hooks/useSessionChatWebSocket'
 import SessionChat from './SessionChat'
@@ -11,11 +10,12 @@ import ChatInput from '../../../components/shared/inputs/ChatInput'
 import Scroll from '../../../components/shared/scroll';
 import LoadingData from '../../../components/shared/loading';
 import { PiChatsCircle } from 'react-icons/pi'
+import { getSessionFeed } from '../../../store/sessions';
 
 function SessionFeed() {
+    const { id } = useParams();
     const { socket, room } = useSessionChatWebSocket();
-    const sessionFeed = useSelector(state => state.chats.sessionFeed)
-    const sessionFeedArr = Object.values(sessionFeed);
+    const { data: feed, error: feedErr, isLoading: feedLoading } = useQuery(['session-feed', id], () => getSessionFeed(id));
     const { handleInput, content, createSessionChat } = useNewSessionChat({socket, room});
     const ref = useRef(null);
 
@@ -23,25 +23,24 @@ function SessionFeed() {
         if (ref.current) {
             ref.current.scrollTop = ref.current.scrollHeight
         }
-
         socket?.on("update_feed", () => {
             ref.current.scrollTop = ref.current.scrollHeight
         })
-
     }, [])
 
-    if (socket === null) return <LoadingData/>
+    if (socket === null || feedLoading) return <LoadingData />
+    if (feedErr) return <div>Error.</div>
 
     return (
         <Scroll ref={ref}>
             <section className="team_feed container_border">
                 <span className='section_label xs bold'>Showing all messages for this session</span>
                 {
-                    sessionFeedArr.length > 0 ?
+                    feed.length > 0 ?
                     <motion.ul variants={parent_variants} {...base_animations} className="feed_list">
                         <AnimatePresence>
                         {
-                            sessionFeedArr.map(chat => (
+                            feed.map(chat => (
                                 <SessionChat
                                     socket={socket}
                                     room={room}

@@ -8,16 +8,6 @@ const REMOVE_FROM_SESSION = '/backcourts/checkIns/REMOVE_FROM_SESSION'
 const CHECK_IN = '/backcourts/checkIns/CHECK_IN';
 const CHECK_OUT = '/backcourts/checkIns/CHECK_OUT';
 
-const actionGetMyCheckIns = (checkIns) => ({
-    type: GET_MY_CHECKINS,
-    payload: checkIns
-})
-
-const actionGetSessionCheckIns = (checkIns) => ({
-    type: GET_SESSION_CHECKINS,
-    payload: checkIns
-})
-
 const actionAddToSession = (checkIn) => ({
     type: ADD_TO_SESSION,
     payload: checkIn
@@ -37,28 +27,6 @@ const actionCheckOut = (checkIn) => ({
     type: CHECK_OUT,
     payload: checkIn
 })
-
-export const thunkGetMyCheckIns = () => async dispatch => {
-    const res = await csrfFetch('/api/check-ins/current');
-    try {
-        const jsonResponse = await res.json();
-        dispatch(actionGetMyCheckIns(jsonResponse.data))
-        return jsonResponse;
-    } catch(error) {
-        console.error(error)
-    }
-
-}
-export const thunkGetSessionCheckIns = (sessionId) => async dispatch => {
-    const res = await csrfFetch(`/api/sessions/${sessionId}/check-ins`)
-    try {
-        const jsonResponse = await res.json();
-        dispatch(actionGetSessionCheckIns(jsonResponse.data))
-        return jsonResponse;
-    } catch(error) {
-        console.error(error)
-    }
-}
 
 export const thunkAddToSession = (sessionId, playerId) => async dispatch => {
     const res = await csrfFetch(`/api/sessions/${sessionId}/add-to-session`, {

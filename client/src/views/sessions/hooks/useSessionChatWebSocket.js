@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useApp } from '../../../context/AppContext'
 import { useSelector } from 'react-redux';
 import io from 'socket.io-client';
-import { thunkGetSessionFeed } from "../../../store/chats";
+// import { thunkGetSessionFeed } from "../../../store/chats";
 
 function useSessionChatWebSocket() {
     const [socket, setSocket] = useState(null)
@@ -22,7 +22,7 @@ function useSessionChatWebSocket() {
         });
 
         socket?.on('update_feed', async () => {
-            await dispatch(thunkGetSessionFeed(sessionId))
+            // await dispatch(thunkGetSessionFeed(sessionId))
         });
 
         socket?.on('offline', () => {

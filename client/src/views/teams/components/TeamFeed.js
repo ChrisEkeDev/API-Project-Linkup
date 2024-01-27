@@ -1,21 +1,21 @@
 import React, { useEffect, useRef } from 'react';
-import io from 'socket.io-client';
-import { useApp } from '../../../context/AppContext'
 import { AnimatePresence, motion } from 'framer-motion';
 import { parent_variants, base_animations } from '../../../constants/animations';
 import useNewTeamChat from '../hooks/useNewTeamChat';
 import useTeamChatWebSocket from '../hooks/useTeamChatWebSocket'
-import { useSelector } from 'react-redux'
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 import TeamChat from './TeamChat'
 import ChatInput from '../../../components/shared/inputs/ChatInput'
 import Scroll from '../../../components/shared/scroll';
 import LoadingData from '../../../components/shared/loading';
-
+import { PiChatsCircle } from 'react-icons/pi'
+import { getTeamFeed } from '../../../store/teams';
 
 function TeamFeed() {
+    const { id } = useParams();
     const { socket, room } = useTeamChatWebSocket();
-    const teamFeed = useSelector(state => state.chats.teamFeed)
-    const teamFeedArr = Object.values(teamFeed)
+    const { data: feed, error: feedErr, isLoading: feedLoading } = useQuery(['team-feed', id], () => getTeamFeed(id));
     const { handleInput, content, createTeamChat } = useNewTeamChat({socket, room});
     const ref = useRef(null)
 
@@ -28,18 +28,19 @@ function TeamFeed() {
         })
     }, [])
 
-    if (socket === null) return <LoadingData/>
+    if (socket === null || feedLoading) return <LoadingData />
+    if (feedErr) return <div>Error.</div>
 
     return (
         <Scroll ref={ref}>
             <section className="team_feed container_border">
             <span className='section_label xs bold'>Showing all messages for past 30 days</span>
                 {
-                    teamFeedArr.length > 0 ?
+                    feed.length > 0 ?
                     <motion.ul variants={parent_variants} {...base_animations} className="feed_list">
                         <AnimatePresence>
                         {
-                            teamFeedArr.map(chat => (
+                            feed.map(chat => (
                                 <TeamChat
                                     socket={socket}
                                     room={room}
@@ -50,7 +51,10 @@ function TeamFeed() {
                         }
                         </AnimatePresence>
                     </motion.ul> :
-                    <div className="no_chats"></div>
+                    <div className="no_content">
+                        <PiChatsCircle className='icon'/>
+                        <p className='sm bold'>No Messages Yet</p>
+                    </div>
                 }
 
             </section>

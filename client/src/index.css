@@ -277,18 +277,21 @@
     color: var(--main);
   }
 
+  .deg45 {
+    transform: rotate(45deg);
+  }
 
   .no_content {
     display: flex;
     flex-direction: column;
-    padding: 3rem 0 4rem 0;
+    padding: 2rem 0 2rem 0;
     align-items: center;
     justify-content: center;
     gap: .5rem;
     opacity: .5;
 
     .icon {
-      font-size: 3rem;
+      font-size: 2.5rem;
     }
   }
 

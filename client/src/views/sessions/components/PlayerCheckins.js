@@ -1,21 +1,30 @@
 import React, { useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { getSessionCheckIns } from '../../../store/sessions';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 import SessionPlayer from './SessionPlayer'
 import ClickDragScroll from '../../../components/shared/clickDragScroll';
 
-function PlayerCheckins() {
-    const sessionCheckIns = useSelector(state => state.checkIns.sessionCheckIns)
-    const sessionCheckInsArr = Object.values(sessionCheckIns)
+function PlayerCheckIns() {
+  const { id } = useParams();
+  const {
+    data: checkIns,
+    error: checkInsErr,
+    isLoading: checkInsLoading
+  } = useQuery(['session-checkIns', id], () => getSessionCheckIns(id))
 
-    return (
-      <ClickDragScroll title={`${sessionCheckInsArr.length} Player${sessionCheckInsArr.length !== 1  ? 's' : ''} checked in`}>
-        {
-          sessionCheckInsArr.map((checkIn) => {
-            return <SessionPlayer key={checkIn.id} checkIn={checkIn}/>
-          })
-        }
-      </ClickDragScroll>
-    )
+  if (checkInsLoading) return <div>Loading..</div>
+  if (checkInsErr) return <div>Error</div>
+
+  return (
+    <ClickDragScroll title={`${checkIns.length} Player${checkIns.length !== 1  ? 's' : ''} checked in`}>
+      {
+        checkIns.map((checkIn) => {
+          return <SessionPlayer key={checkIn.id} checkIn={checkIn}/>
+        })
+      }
+    </ClickDragScroll>
+  )
 }
 
-export default PlayerCheckins
+export default PlayerCheckIns

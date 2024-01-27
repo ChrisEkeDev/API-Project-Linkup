@@ -3,7 +3,6 @@ import Back from '../../components/shared/button/Back';
 import { AnimatePresence, motion } from 'framer-motion';
 import { page_transitions } from '../../constants/animations';
 import { useParams } from 'react-router-dom';
-import { thunkGetSingleSession } from '../../store/sessions';
 import Scroll from '../../components/shared/scroll'
 import useUpdateSession from './hooks/useUpdateSession';
 import Input from '../../components/shared/inputs/textInput';
@@ -131,31 +130,6 @@ function UpdateSession({session}) {
 
 
 
-function UpdateSessionWrapper() {
-    const { id } = useParams();
-    const { dispatch } = useApp();
-    const [ loading, setLoading ] = useState(true);
-    const session = useSelector(state => state.sessions.singleSession);
-    useEffect(() => {
-        const getSession = async () => {
-            try {
-                const res = await dispatch(thunkGetSingleSession(id));
-                if (res.status === 200 && session) {
-                    setLoading(false);
-                }
-            } catch(e) {
-                console.log(e)
-            }
-        }
-        getSession();
 
-    }, [dispatch, id])
 
-    if (loading) return <LoadingData/>
-
-    return (
-        <UpdateSession session={session}/>
-    )
-}
-
-export default UpdateSessionWrapper
+export default UpdateSession

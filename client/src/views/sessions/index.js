@@ -1,31 +1,26 @@
 
-import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import './styles.scss';
 import SessionItem from './components/SessionItem';
-import * as ROUTE from '../../constants/routes';
-import SessionsSorter from './components/SessionSorter';
 import Button from '../../components/shared/button';
-import IconButton from '../../components/shared/button/IconButton';
 import { useApp } from '../../context/AppContext';
-import useSessions from './hooks/useSessions'
-import useSessionSearch from './hooks/useSessionSearch';
 import Scroll from '../../components/shared/scroll';
 import { page_transitions } from '../../constants/animations';
-import { PiPlusBold, PiMagnifyingGlassBold, PiCoffee } from 'react-icons/pi';
+import { TbCirclePlus, TbError404  } from 'react-icons/tb';
 import LoadingData from '../../components/shared/loading'
+import { useQuery } from 'react-query';
+import { getMySessions } from '../../store/auth';
 
 
 function Sessions() {
   const { auth, navigate } = useApp();
-  const sessionsData = useSelector(state => state.sessions.mySessions);
-  const sessions = Object.values(sessionsData)
+  const { data: sessions, error: sessionsErr, isLoading: sessionsLoading} = useQuery('my-sessions', getMySessions);
+
+  if (sessionsLoading) return <LoadingData/>
+  if (sessionsErr) return <div>Error getting your sessions</div>
+
   const createdSessions = sessions.filter(session => session.creator.id === auth.id)
   const joinedSessions = sessions.filter(session => session.creator.id !== auth.id)
-  const { loading } = useSessions();
-
-
-  if (loading) return <LoadingData/>
 
   return (
       <motion.main {...page_transitions} className='page sessions' >
@@ -34,7 +29,7 @@ function Sessions() {
             <Button
                 label="Create New Session"
                 styles="primary"
-                icon={PiPlusBold}
+                icon={TbCirclePlus}
                 action={() => navigate('/sessions/new')}
             />
           </header>
@@ -51,21 +46,29 @@ function Sessions() {
                 }
               </ul> :
               <div className="no_content">
-                <PiCoffee className='icon'/>
-                <p className='sm bold'>No Teams Created</p>
+                <TbError404 className='icon'/>
+                <p className='sm bold'>No Sessions Created</p>
               </div>
               }
 
             </section>
             <section className='list_items'>
               <span className='section_label xs bold'>{joinedSessions.length} Session{joinedSessions.length === 1 ? null : 's'} attending</span>
-              <ul>
-                {
-                  joinedSessions.map(session => (
-                    <SessionItem session={session}/>
-                  ))
-                }
-              </ul>
+              {
+                joinedSessions.length > 0 ?
+                <ul>
+                  {
+                    joinedSessions.map(session => (
+                      <SessionItem session={session}/>
+                    ))
+                  }
+                </ul> :
+                <div className="no_content">
+                  <TbError404 className='icon'/>
+                  <p className='sm bold'>No Sessions Joined Yet</p>
+                </div>
+
+              }
             </section>
           </Scroll>
       </motion.main>

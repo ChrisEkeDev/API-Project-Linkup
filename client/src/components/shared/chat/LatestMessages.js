@@ -1,6 +1,6 @@
 import React from 'react'
 import ChatMessage from './ChatMessage'
-import { PiChatsCircle } from 'react-icons/pi'
+import { TbMessageCircle  } from 'react-icons/tb'
 
 function LatestMessages({entity}) {
   return (
@@ -22,7 +22,7 @@ function LatestMessages({entity}) {
                 }
             </ul> :
             <div className='no_content'>
-                <PiChatsCircle className='icon'/>
+                <TbMessageCircle  className='icon'/>
                 <p className='sm bold'>No Messages Yet</p>
             </div>
         }

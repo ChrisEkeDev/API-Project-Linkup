@@ -68,32 +68,4 @@ function UpdateTeam({team}) {
   )
 }
 
-
-function UpdateTeamWrapper() {
-    const { id } = useParams();
-    const { dispatch } = useApp();
-    const [loading, setLoading ] = useState(true);
-    const team = useSelector(state => state.teams.singleTeam);
-
-    useEffect(() => {
-        const getTeam = async () => {
-            try {
-                const res = await dispatch(thunkGetSingleTeam(id));
-                if (res.status === 200 && team) {
-                    setLoading(false);
-                }
-            } catch(e) {
-                console.log(e)
-            }
-        }
-        getTeam();
-    }, [dispatch, id])
-
-    if (loading) return <LoadingData/>
-
-    return (
-        <UpdateTeam team={team}/>
-    )
-}
-
-export default UpdateTeamWrapper;
+export default UpdateTeam;

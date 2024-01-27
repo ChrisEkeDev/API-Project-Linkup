@@ -94,10 +94,9 @@ router.get('/search/*', async(req, res) => {
 })
 
 
-// Get all Sessions created by the current players
+// Get all Sessions created or joined by the current players
 router.get('/current', requireAuth, async (req, res) => {
     const playerId = req.player.id;
-
     const sessions = await Session.findAll({
         where: {
             [Op.or]: [
@@ -105,25 +104,14 @@ router.get('/current', requireAuth, async (req, res) => {
                 { '$CheckIns.playerId$': playerId}
             ]
         },
-        attributes: {
-            include: [
-                'id',
-                'name',
-                'startDate',
-                'endDate',
-                'creatorId',
-                'address',
-                'lat',
-                'lng',
-                'private',
-                'createdAt',
-                'hostId',
-                [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
-            ],
-            exclude: ['CheckIn','updatedAt']
-        },
-        group: ['Session.id','creator.id', 'creator.name', 'creator.profileImage',
-        'Team.id', 'Team.name', 'captain.profileImage', 'captain.name'],
+        attributes: [
+            'id',
+            'name',
+            'startDate',
+            'address',
+            'private',
+            [fn('COUNT', col('CheckIns.id')), 'checkIns']
+        ],
         include: [
             {
                 model: Player,
@@ -136,14 +124,22 @@ router.get('/current', requireAuth, async (req, res) => {
             },
             {
                 model: Team,
-                include: {
-                    model: Player,
-                    as: 'captain',
-                    attributes: ['profileImage', 'name']
-                },
+                as: "host",
                 attributes: ['id', 'name']
             }
-        ]
+        ],
+        group: [
+            'Session.id',
+            'Session.name',
+            'Session.startDate',
+            'Session.address',
+            'Session.private',
+            'creator.id',
+            'creator.name',
+            'creator.profileImage',
+            'host.id',
+            'host.name'
+        ],
     });
 
 
@@ -163,25 +159,6 @@ router.get('/current', requireAuth, async (req, res) => {
 router.get('/:sessionId', async (req, res) => {
     const { sessionId } = req.params;
     const session = await Session.findByPk(sessionId, {
-        attributes: {
-            include: [
-                'id',
-                'name',
-                'startDate',
-                'endDate',
-                'creatorId',
-                'address',
-                'lat',
-                'lng',
-                'private',
-                'createdAt',
-                'hostId',
-                [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
-            ],
-            exclude: ['CheckIn','updatedAt']
-        },
-        group: ['Session.id','creator.id', 'creator.name', 'creator.profileImage',
-        'Team.id', 'Team.name', 'captain.profileImage', 'captain.name'],
         include: [
             {
                 model: Player,
@@ -197,12 +174,13 @@ router.get('/:sessionId', async (req, res) => {
             },
             {
                 model: Team,
-                include: {
+                as: 'host',
+                attributes: ['id', 'name'],
+                include: [{
                     model: Player,
                     as: 'captain',
                     attributes: ['profileImage', 'name']
-                },
-                attributes: ['id', 'name']
+                }]
             },
             {
                 model: SessionChat,
@@ -221,7 +199,7 @@ router.get('/:sessionId', async (req, res) => {
                         attributes: [] // empty array means do not fetch columns from the Likes table
                     }
                 ],
-                group: ['SessionChat.id'],
+                group: ['SessionChat.id', 'Player.name', 'Player.profileImage'],
                 order: [[literal("likes"), 'DESC']],
                 limit: 3
             }
@@ -239,6 +217,29 @@ router.get('/:sessionId', async (req, res) => {
         error: null
     })
 })
+
+////////////////////////////////////////
+
+// Checks users attendance status in the specified session
+
+////////////////////////////////////////
+
+router.get('/:sessionId/current', requireAuth, async (req, res) => {
+    const { sessionId } = req.params;
+    const playerId = req.player.id;
+    const checkIn = await CheckIn.findOne({
+        where: {playerId, sessionId }
+    })
+
+    return res.status(200).json({
+        status: 200,
+        message: null,
+        data: checkIn ? checkIn.status : false,
+        error: null
+    })
+
+})
+
 
 ////////////////////////////////////////////////////////////////////
 
@@ -710,7 +711,7 @@ router.delete('/:sessionId/check-out', requireAuth, async (req, res) => {
 })
 
 
-router.get('/:sessionId/chat-feed', async (req, res) => {
+router.get('/:sessionId/feed', async (req, res) => {
     const { sessionId } = req.params;
     const sessionFeed = await SessionChat.findAll({
         where: { sessionId },
@@ -729,7 +730,7 @@ router.get('/:sessionId/chat-feed', async (req, res) => {
                 attributes: [] // empty array means do not fetch columns from the Likes table
             }
         ],
-        group: ['SessionChat.id'],
+        group: ['SessionChat.id', 'Player.name', 'Player.profileImage'],
         order: [['createdAt', 'ASC']]
     })
     return res.status(200).json({
@@ -780,7 +781,7 @@ router.post('/:sessionId/chat-feed', requireAuth, async (req, res) => {
                 attributes: [] // empty array means do not fetch columns from the Likes table
             }
         ],
-        group: ['SessionChat.id']
+        group: ['SessionChat.id', 'Player.name', 'Player.profileImage'],
     })
 
     return res.status(201).json({

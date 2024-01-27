@@ -15,16 +15,6 @@ const REMOVE_LIKE = '/backcourts/chats/REMOVE_LIKE'
 
 // ACTIONS
 
-const actionGetTeamFeed = (teamFeed) => ({
-    type: GET_TEAM_FEED,
-    payload: teamFeed
-})
-
-const actionGetSessionFeed = (sessionFeed) => ({
-    type: GET_SESSION_FEED,
-    payload: sessionFeed
-})
-
 const actionCreateTeamChat = (teamChat) => ({
     type: CREATE_TEAM_CHAT,
     payload: teamChat
@@ -70,27 +60,6 @@ const actionRemoveLike = (like) => ({
 })
 
 // THUNK
-export const thunkGetTeamFeed = (teamId) => async dispatch => {
-    const res = await csrfFetch(`/api/teams/${teamId}/chat-feed`);
-    try {
-        const jsonResponse = await res.json();
-        await dispatch(actionGetTeamFeed(jsonResponse.data))
-        return jsonResponse
-    } catch(error) {
-        console.error(error)
-    }
-}
-
-export const thunkGetSessionFeed = (sessionId) => async dispatch => {
-    const res = await csrfFetch(`/api/sessions/${sessionId}/chat-feed`);
-    try {
-        const jsonResponse = await res.json();
-        await dispatch(actionGetSessionFeed(jsonResponse.data))
-        return jsonResponse
-    } catch(error) {
-        console.error(error)
-    }
-}
 
 export const thunkCreateTeamChat = (teamId, content) => async dispatch => {
     const res = await csrfFetch(`/api/teams/${teamId}/chat-feed`, {

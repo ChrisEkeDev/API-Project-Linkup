@@ -4,38 +4,36 @@ import { list_item_animations, slide_variants, child_variants } from '../../../c
 import ProfileImage from '../../../components/shared/profileImage'
 import IconButton from '../../../components/shared/button/IconButton'
 import { format, parseISO } from 'date-fns';
-import { PiCheckFatFill , PiArrowFatLineUpFill , PiSignOutBold, PiUserMinusBold , PiStarFill, PiStarBold } from 'react-icons/pi'
-import useMemberships from '../hooks/useMemberships';
+import { TbUserCheck  , TbUserUp , TbUserOff  } from 'react-icons/tb'
 
-function MemberItem({membership, isMember}) {
-    const { createdAt, status } = membership;
-    const { name } = membership.Player
-    const formatDate = format(parseISO(createdAt), 'MM/yyyy')
-    const isPlayerHost = isMember.status === 'host'
-    const isPlayerCoHost = isMember.status === 'co-host'
-    const isMemberHost = status === 'host';
-    const isMemberCoHost = status === 'co-host';
-    const isMemberPending = status === 'pending';
-    const isMemberMember = status === 'member';
+function MemberItem({member, status}) {
+    const { name } = member.Player
+    const formatDate = format(parseISO(member.createdAt), 'MM/yyyy')
+    const isPlayerHost = status === 'host'
+    const isPlayerCoHost = status === 'co-host'
+    const isMemberHost = member.status === 'host';
+    const isMemberCoHost = member.status === 'co-host';
+    const isMemberPending = member.status === 'pending';
+    const isMemberMember = member.status === 'member';
     const showStatus = isMemberHost || isMemberCoHost;
-    const { removeFromTeam, addToTeam, promoteToCoHost } = useMemberships();
+    // const { removeFromTeam, addToTeam, promoteToCoHost } = useMemberships();
 
 
     return (
 
     <motion.li  variants={child_variants} {...list_item_animations} className='member_item'>
         <div className='float_left'>
-        <ProfileImage player={membership.Player}/>
+        <ProfileImage player={member.Player}/>
         <div>
             <div className='flex'>
                 <p className='bold md'>{name}</p>
-                {
+                {/* {
                     showStatus &&
-                    <div className={`member_status member-${status}`}>
+                    <div className={`member_status member-${member.status}`}>
                     {isMemberHost ? <PiStarFill className='xs'/> : isMemberCoHost ? <PiStarBold className="xs"/> : null }
-                    {showStatus ? <p className='xxs bold'>{status}</p> : null}
+                    {showStatus ? <p className='xxs bold'>{member.status}</p> : null}
                     </div>
-                }
+                } */}
             </div>
             <p className='sm'>Joined {formatDate}</p>
         </div>
@@ -50,8 +48,8 @@ function MemberItem({membership, isMember}) {
                         isMemberPending ?
                         <IconButton
                             label='Approve Member'
-                            icon={PiCheckFatFill}
-                            action={() => addToTeam(membership.teamId, membership.Player.id)}
+                            icon={TbUserCheck}
+                            // action={() => addToTeam(member.teamId, member.Player.id)}
                         /> : null
                     }
                 </AnimatePresence>
@@ -62,8 +60,8 @@ function MemberItem({membership, isMember}) {
                         isMemberMember ?
                         <IconButton
                             label='Promote to Co-Host'
-                            icon={PiArrowFatLineUpFill}
-                            action={() => promoteToCoHost(membership.teamId, membership.Player.id)}
+                            icon={TbUserUp}
+                            // action={() => promoteToCoHost(member.teamId, member.Player.id)}
                         /> : null
                     }
                 </AnimatePresence>
@@ -75,8 +73,8 @@ function MemberItem({membership, isMember}) {
                         (!isMemberPending && isPlayerCoHost && !isMemberCoHost) ?
                         <IconButton
                             label='Kick off team'
-                            icon={PiUserMinusBold}
-                            action={() => removeFromTeam(membership.teamId, membership.Player.id)}
+                            icon={TbUserOff}
+                            // action={() => removeFromTeam(member.teamId, member.Player.id)}
                         /> : null
                     }
                 </AnimatePresence>

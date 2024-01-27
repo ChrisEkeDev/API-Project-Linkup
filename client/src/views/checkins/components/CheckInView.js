@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import IconButton from '../../../components/shared/button/IconButton';
-import { PiListBold, PiCalendarFill } from "react-icons/pi";
+import { TbList, TbCalendarDue } from "react-icons/tb";
 import { viewValues } from "../../../constants/constants";
 import '../styles.scss';
 
@@ -29,8 +29,8 @@ function CheckInView({view, setView}) {
             <span className="sorter_label">{viewValues[view]}</span>
             <IconButton
                 icon={
-                    view === "calendar" ? PiCalendarFill
-                    : PiListBold
+                    view === "calendar" ? TbCalendarDue
+                    : TbList
                 }
                 action={() => setMenu(!menu)}
             />

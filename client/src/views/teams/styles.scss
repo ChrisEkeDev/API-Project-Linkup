@@ -71,8 +71,14 @@
 
 .swipe_icon {
     color: var(--text);
-    font-size: 1.25rem;
-    flex-shrink: 0;
+    display: flex;
+    gap: .5rem;
+    // flex-direction: column;
+    // justify-content: center;
+    align-items: center;
+    .icon {
+        font-size: 1.25rem;
+    }
 }
 
 .members_list {

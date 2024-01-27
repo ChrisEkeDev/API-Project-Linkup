@@ -12,16 +12,6 @@ const REMOVE_FROM_TEAM = '/backcourts/memberships/REMOVE_FROM_TEAM'
 
 
 // ACTIONS
-const actionGetMyMemberships = (memberships) => ({
-    type: GET_MY_MEMBERSHIPS,
-    payload: memberships
-})
-
-const actionGetTeamMemberships = (memberships) => ({
-    type: GET_TEAM_MEMBERSHIPS,
-    payload: memberships
-})
-
 const actionJoinTeam = (membership) => ({
     type: JOIN_TEAM,
     payload: membership
@@ -49,28 +39,6 @@ const actionRemoveFromTeam = (membership) => ({
 
 
 // THUNKS
-export const thunkGetMyMemberships = () => async dispatch => {
-    const res = await csrfFetch('/api/memberships/current');
-    try {
-        const jsonResponse = await res.json();
-        await dispatch(actionGetMyMemberships(jsonResponse.data))
-        return jsonResponse
-    } catch(error) {
-        console.error(error)
-    }
-}
-
-export const thunkGetTeamMemberships = (teamId) => async dispatch => {
-    const res = await csrfFetch(`/api/teams/${teamId}/memberships`);
-    try {
-        const jsonResponse = await res.json();
-        await dispatch(actionGetTeamMemberships(jsonResponse.data))
-        return jsonResponse
-    } catch(error) {
-        console.error(error)
-    }
-}
-
 
 export const thunkJoinTeam = (teamId) => async dispatch => {
     const res = await csrfFetch(`/api/teams/${teamId}/join-team`, {

@@ -4,30 +4,25 @@ import './styles.scss';
 import TeamItem from './components/TeamItem';
 import * as ROUTE from '../../constants/routes';
 import Button from '../../components/shared/button';
-import IconButton from '../../components/shared/button/IconButton';
-import useTeams from './hooks/useTeams'
 import { useApp } from '../../context/AppContext';
-import useTeamSearch from './hooks/useTeamSearch';
 import Scroll from '../../components/shared/scroll';
-import { statusOrder } from '../../constants/constants'
 import { page_transitions } from '../../constants/animations';
-import { PiPlusBold, PiMagnifyingGlassBold, PiCoffee } from 'react-icons/pi';
+import { TbCirclePlus, TbError404  } from 'react-icons/tb';
 import LoadingData from '../../components/shared/loading'
+import { useQuery } from 'react-query';
+import { getMyTeams } from '../../store/auth';
 
 
 function Teams() {
-  const myTeams = useSelector(state => state.teams.myTeams);
-  const myTeamsArr = Object.values(myTeams)
-  const myMemberships = useSelector(state => state.memberships.myMemberships)
-  const myMembershipsArr = Object.values(myMemberships)
-  const hostTeams = myMembershipsArr.filter(membership => membership.status === 'host')
-  const joinedTeams = myMembershipsArr.filter(membership => membership.status !== 'host' && membership.status !== 'pending');
-  const pendingTeams = myMembershipsArr.filter(membership => membership.status === 'pending');
-  const { navigate, dispatch } = useApp();
-  const { loading } = useTeams();
+  const { auth, navigate } = useApp();
+  const { data: teams, error: teamsErr, isLoading: teamsLoading} = useQuery('my-teams', getMyTeams);
 
+  if (teamsLoading) return <LoadingData/>
+  if (teamsErr) return <div>Error getting your teams</div>
 
-  if (loading) return <LoadingData/>
+  const teamsCaptain = teams.filter(team => team.Memberships[0].status === 'host');
+  const teamsJoined = teams.filter(team => team.Memberships[0].status !== 'host' && team.Memberships[0].status !== 'pending');
+  const teamsPending = teams.filter(team => team.Memberships[0].status === 'pending');
 
   return (
       <motion.main {...page_transitions} className='page teams'>
@@ -36,57 +31,57 @@ function Teams() {
           <Button
               label="Create New Team"
               styles="primary"
-              icon={PiPlusBold}
+              icon={TbCirclePlus}
               action={() => navigate('/teams/new')}
           />
         </header>
         <Scroll>
           <section className='list_items'>
-            <span className='section_label xs bold'>{myTeamsArr.length} Team{myTeamsArr.length === 1 ? null : 's'} Created</span>
-            {hostTeams.length > 0 ?
+            <span className='section_label xs bold'>{teamsCaptain.length} Team{teamsCaptain.length === 1 ? null : 's'} Created</span>
+            {teamsCaptain.length > 0 ?
               <ul>
               {
-                hostTeams.map(membership => (
-                  <TeamItem team={membership.Team}/>
+                teamsCaptain.map(team => (
+                  <TeamItem team={team}/>
                 ))
               }
             </ul> :
             <div className="no_content">
-              <PiCoffee className='icon'/>
+              <TbError404  className='icon'/>
               <p className='sm bold'>No Teams Created</p>
             </div>
             }
           </section>
           <section className='joined_groups list_items'>
-            <span className='section_label xs bold'>{joinedTeams.length} Team{joinedTeams.length === 1 ? null : 's'} Joined</span>
+            <span className='section_label xs bold'>{teamsJoined.length} Team{teamsJoined.length === 1 ? null : 's'} Joined</span>
             {
-              joinedTeams.length > 0 ?
+              teamsJoined.length > 0 ?
               <ul>
                 {
-                  joinedTeams.map(membership => (
-                    <TeamItem team={membership.Team}/>
+                  teamsJoined.map(team => (
+                    <TeamItem team={team}/>
                   ))
                 }
               </ul> :
               <div className="no_content">
-                <PiCoffee className='icon'/>
+                <TbError404  className='icon'/>
                 <p className='sm bold'>No Teams Joined</p>
               </div>
             }
           </section>
           <section className='joined_groups list_items'>
-            <span className='section_label xs bold'>{pendingTeams.length} Team{pendingTeams.length === 1 ? null : 's'} Awaiting Approval</span>
+            <span className='section_label xs bold'>{teamsPending.length} Team{teamsPending.length === 1 ? null : 's'} Awaiting Approval</span>
             {
-              pendingTeams.length > 0 ?
+              teamsPending.length > 0 ?
               <ul>
                 {
-                  pendingTeams.map(membership => (
-                    <TeamItem team={membership.Team}/>
+                  teamsPending.map(team => (
+                    <TeamItem team={team}/>
                   ))
                 }
               </ul> :
               <div className="no_content">
-                <PiCoffee className='icon'/>
+                <TbError404  className='icon'/>
                 <p className='sm bold'>No Teams Awaiting Approval</p>
               </div>
             }

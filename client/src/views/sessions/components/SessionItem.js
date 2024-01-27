@@ -11,8 +11,6 @@ function SessionItem({session}) {
   const parsedDate = parseISO(session?.startDate);
   const formattedTime = format(parsedDate, 'MM/dd @ p');
 
-  if (!session) return <li>loading</li>
-
   const handleNavigate = () => {
     navigate(`/sessions/${session.id}`)
   }
