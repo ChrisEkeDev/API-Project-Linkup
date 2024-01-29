@@ -73,6 +73,45 @@ export const getTeamFeed = async (id) => {
     }
 }
 
+export const createTeam = async (data) => {
+    const res = await csrfFetch('/api/teams', {
+        method: 'POST',
+        body: JSON.stringify(data)
+    });
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const updateTeam = async (data, id) => {
+    const res = await csrfFetch(`/api/teams/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+    });
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const deleteTeam = async (id) => {
+    const res = await csrfFetch(`/api/teams/${id}`, {
+        method: 'DELETE'
+    })
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+
 
 const actionCreateTeam = (team) => ({
     type: CREATE_TEAM,

@@ -50,9 +50,9 @@ function Profile() {
                             <div onClick={toggleTheme} className='settings_toggle'>
                                 <p className='xs'>
                                     {
-                                    theme === 'light' ?
-                                    'Light Theme' :
-                                    'Dark Theme'
+                                        theme === 'light' ?
+                                        'Light Theme' :
+                                        'Dark Theme'
                                     }
                                 </p>
                                 <AnimatePresence>
@@ -68,10 +68,12 @@ function Profile() {
                                 </AnimatePresence>
                             </div>
                             <div onClick={toggleLocations} className='settings_toggle'>
-                                <p className='xs'>{
-                                    locations ?
-                                    'Location On' :
-                                    'Location Off'}
+                                <p className='xs'>
+                                    {
+                                        locations ?
+                                        'Location On' :
+                                        'Location Off'
+                                    }
                                 </p>
                                 <AnimatePresence>
                                     {
@@ -86,10 +88,12 @@ function Profile() {
                                 </AnimatePresence>
                             </div>
                             <div onClick={toggleNotifications} className='settings_toggle'>
-                                <p className='xs'>{
-                                    notifications ?
-                                    'Notifications On' :
-                                    'Notifications Off'}
+                                <p className='xs'>
+                                    {
+                                        notifications ?
+                                        'Notifications On' :
+                                        'Notifications Off'
+                                    }
                                 </p>
                                 <AnimatePresence>
                                     {

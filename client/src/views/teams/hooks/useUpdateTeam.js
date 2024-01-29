@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { useApp } from "../../../context/AppContext";
 import { teamAlerts } from '../../../constants/alerts';
-import { thunkUpdateTeam } from "../../../store/teams";
+import { useMutation, useQueryClient } from 'react-query';
+import { updateTeam } from "../../../store/teams"
 
 function useUpdateTeam(team) {
-    const { dispatch, navigate, setLoading, handleAlerts } = useApp();
+    const client = useQueryClient();
+    const { navigate, handleAlerts } = useApp();
     const { updateTeamSuccess, updateTeamError } = teamAlerts;
     const [ teamData, setTeamData ] = useState({
+        id: team.id,
         name: team.name,
         private: team.private
     });
@@ -20,27 +23,49 @@ function useUpdateTeam(team) {
         setTeamData((prev) => ({ ...prev, private: !teamData.private }));
     }
 
-    const updateTeam = async (e) => {
-        setLoading(true)
-        e.preventDefault();
-        try {
-            const data = await dispatch(thunkUpdateTeam(teamData, team.id));
-            handleAlerts(updateTeamSuccess)
-            navigate(`/teams/${data.data.id}`)
-        } catch (e) {
-            handleAlerts(updateTeamError)
-            console.error(e)
-        } finally {
-            setLoading(false)
-        }
+    const handleErrors = (newErrors) => {
+        const newState = { ...errors, ...newErrors };
+        handleAlerts(updateTeamError)
+        setErrors(newState)
     }
+
+    const handleSuccess = (data) => {
+        client.setQueryData(['team'], data.id)
+        client.invalidateQueries(['team'])
+        handleAlerts(updateTeamSuccess)
+        navigate(`/teams/${data.id}`)
+    }
+
+    const onUpdateTeam = async (e) => {
+        e.preventDefault();
+        handleSubmit(teamData, )
+    }
+
+    const {
+        mutate: handleSubmit,
+        isLoading: updateTeamLoading
+    } = useMutation({
+        mutationFn: updateTeam,
+        onError: handleErrors,
+        onSuccess: handleSuccess
+    })
+
+    useEffect(() => {
+        const errors = {};
+        const { name } = teamData;
+        if (name && name.trim().length < 3) {
+            errors.name = "Please enter a name for your team."
+        }
+        setErrors(errors)
+    }, [ teamData.name ])
 
     return {
         teamData,
         errors,
         handleInput,
         handleToggle,
-        updateTeam,
+        updateTeamLoading,
+        onUpdateTeam,
     };
 }
 

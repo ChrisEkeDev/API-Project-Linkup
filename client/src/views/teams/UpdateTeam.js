@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useSelector } from 'react-redux'
+import React from 'react';
+import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
-import { thunkGetSingleTeam } from '../../store/teams'
-import { useApp } from '../../context/AppContext'
+import { useQuery } from 'react-query';
 import useUpdateTeam from './hooks/useUpdateTeam';
 import Back from '../../components/shared/button/Back';
 import Input from '../../components/shared/inputs/textInput';
@@ -17,55 +15,66 @@ import PrivacyToggle from '../../components/shared/inputs/PrivacyToggle'
 import LoadingData from '../../components/shared/loading'
 import DeleteTeamModal from './components/DeleteTeamModal'
 
-function UpdateTeam({team}) {
+function UpdateTeam() {
+    const { id } = useParams();
+    const { data: team, error: teamErr, isLoading: teamLoading } = useQuery(['team', id], () => getTeam(id));
     const { isModalOpen, onOpenModal, onCloseModal } = useModal();
-    const { teamData, errors, handleInput, handleToggle, updateTeam } = useUpdateTeam(team);
+    const {
+        teamData,
+        errors,
+        handleInput,
+        handleToggle,
+        updateTeamLoading,
+        onUpdateTeam
+    } = useUpdateTeam(team);
 
-  return (
-    <motion.main {...page_transitions} className='page teams'>
-        <header className='header'>
-            <Back />
-            <Button
-                label="Update Team"
-                styles="primary"
-                icon={PiCalendarCheckFill}
-                action={updateTeam}
-                disabled={Object.keys(errors).length > 0}
-            />
-        </header>
-        <Scroll>
-            <form className='session_form'>
-                <header className='form_header'>
-                    <h2>Update Team</h2>
-                </header>
-                <Input
-                    label="What will you call your team"
-                    placeholder='BallHogs'
-                    value={teamData?.name}
-                    setValue={handleInput}
-                    name='name'
-                    error={errors?.name}
-                    disabled={false}
+    if (teamLoading || updateTeamLoading ) return <LoadingData />
+
+    return (
+        <motion.main {...page_transitions} className='page teams'>
+            <header className='header'>
+                <Back />
+                <Button
+                    label="Update Team"
+                    styles="primary"
+                    icon={PiCalendarCheckFill}
+                    action={onUpdateTeam}
+                    disabled={Object.keys(errors).length > 0}
                 />
-                <PrivacyToggle data={teamData} handleToggle={handleToggle} />
-                <footer className='form_caution'>
-                    <Button
-                        label="Delete Team"
-                        styles="tertiary"
-                        icon={PiTrashBold}
-                        action={onOpenModal}
+            </header>
+            <Scroll>
+                <form className='session_form'>
+                    <header className='form_header'>
+                        <h2>Update Team</h2>
+                    </header>
+                    <Input
+                        label="What will you call your team"
+                        placeholder='BallHogs'
+                        value={teamData?.name}
+                        setValue={handleInput}
+                        name='name'
+                        error={errors?.name}
+                        disabled={false}
                     />
-                </footer>
-            </form>
-        </Scroll>
-        <Modal
-            isModalOpen={isModalOpen}
-            onCloseModal={onCloseModal}
-        >
-            <DeleteTeamModal team={team} close={onCloseModal} />
-        </Modal>
-    </motion.main>
-  )
+                    <PrivacyToggle data={teamData} handleToggle={handleToggle} />
+                    <footer className='form_caution'>
+                        <Button
+                            label="Delete Team"
+                            styles="tertiary"
+                            icon={PiTrashBold}
+                            action={onOpenModal}
+                        />
+                    </footer>
+                </form>
+            </Scroll>
+            <Modal
+                isModalOpen={isModalOpen}
+                onCloseModal={onCloseModal}
+            >
+                <DeleteTeamModal team={team} close={onCloseModal} />
+            </Modal>
+        </motion.main>
+    )
 }
 
 export default UpdateTeam;

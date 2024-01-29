@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import useNewTeam from './hooks/useNewTeam';
+import LoadingData from '../../components/shared/loading';
 import Back from '../../components/shared/button/Back';
 import Input from '../../components/shared/inputs/textInput';
 import Button from '../../components/shared/button';
@@ -10,7 +11,16 @@ import { page_transitions } from '../../constants/animations';
 import PrivacyToggle from '../../components/shared/inputs/PrivacyToggle'
 
 function NewTeam() {
-    const { teamData,errors, handleInput, handleToggle, createTeam, } = useNewTeam();
+    const {
+        teamData,
+        errors,
+        handleInput,
+        handleToggle,
+        createTeamLoading,
+        onCreateTeam
+    } = useNewTeam();
+
+    if (createTeamLoading) return <LoadingData />
 
     return (
         <motion.main {...page_transitions} className='page teams'>
@@ -20,7 +30,7 @@ function NewTeam() {
                     label="Create Team"
                     styles="primary"
                     icon={PiCalendarPlusBold}
-                    action={createTeam}
+                    action={onCreateTeam}
                     disabled={Object.keys(errors).length > 0}
                 />
             </header>

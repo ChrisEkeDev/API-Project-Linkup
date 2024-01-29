@@ -1,29 +1,42 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { thunkDeleteTeam } from '../../../store/teams'
+import { deleteTeam } from '../../../store/teams'
 import { useApp } from '../../../context/AppContext';
+import { teamAlerts } from '../../../constants/alerts';
+import { useParams } from 'react-router-dom';
 
 function useDeleteTeam() {
-    const { dispatch, navigate, handleAlerts, setLoading } = useApp();
-    const teamId = useSelector(state => state.teams.singleTeam).id;
+    const { id } = useParams()
+    const { deleteTeamSuccess, deleteTeamError } = teamAlerts;
+    const { navigate, handleAlerts } = useApp();
 
-    const deleteTeam =  async () => {
-        setLoading(true);
-        try {
-            const res = await dispatch(thunkDeleteTeam(teamId))
-            handleAlerts(res)
-            navigate('/teams')
-            if ( res.status >= 400) {
-                throw new Error()
-            }
-        } catch(e) {
-            console.log(e)
-        } finally {
-            setLoading(false)
-        }
+    const handleErrors = (newErrors) => {
+        handleAlerts(deleteTeamError)
     }
 
-    return { deleteTeam }
+    const handleSuccess = (data) => {
+        client.setQueryData(['team'], null)
+        client.invalidateQueries(['team'])
+        handleAlerts(deleteTeamSuccess)
+        navigate(`/teams`)
+    }
+
+    const onDeleteTeam = async (e) => {
+        e.preventDefault();
+        handleSubmit(id)
+    }
+
+    const {
+        mutate: handleSubmit,
+        isLoading: deleteTeamLoading
+    } = useMutation({
+        mutationFn: deleteTeam,
+        onError: handleErrors,
+        onSuccess: handleSuccess
+    })
+
+
+
+    return { onDeleteTeam, deleteTeamLoading }
 }
 
 export default useDeleteTeam

@@ -335,7 +335,7 @@ router.delete('/:teamId', requireAuth, async (req, res) => {
     return res.status(200).json({
         status: 200,
         message: team.name + " was deleted successfully.",
-        data: team,
+        data: null,
         error: null,
     })
 })

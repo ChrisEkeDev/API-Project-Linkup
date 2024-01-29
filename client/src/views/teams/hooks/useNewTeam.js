@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useApp } from "../../../context/AppContext";
 import { teamAlerts } from '../../../constants/alerts';
-import { thunkCreateNewTeam } from "../../../store/teams";
-import { thunkUpdateTeam } from "../../../store/teams";
+import { useMutation, useQueryClient } from 'react-query';
+import { createTeam } from "../../../store/teams"
 
 function useNewTeam(team) {
-    const { dispatch, navigate, setLoading, handleAlerts } = useApp();
-    const { createTeamSuccess, createTeamError, updateTeamSuccess, updateTeamError  } = teamAlerts;
+    const client = useQueryClient();
+    const { navigate, handleAlerts } = useApp();
+    const { createTeamSuccess, createTeamError } = teamAlerts;
     const [ teamData, setTeamData ] = useState({
         name: team ? team?.name : '',
         private: team ? team?.private : false
@@ -21,20 +22,32 @@ function useNewTeam(team) {
         setTeamData((prev) => ({ ...prev, private: !teamData.private }));
     }
 
-    const createTeam = async (e) => {
-        setLoading(true)
-        e.preventDefault();
-        try {
-            const data = await dispatch(thunkCreateNewTeam(teamData));
-            handleAlerts(createTeamSuccess)
-            navigate(`/teams/${data.data.id}`)
-        } catch (e) {
-            handleAlerts(createTeamError)
-            console.error(e)
-        } finally {
-            setLoading(false)
-        }
+    const handleErrors = (newErrors) => {
+        const newState = { ...errors, ...newErrors };
+        handleAlerts(createTeamError)
+        setErrors(newState)
     }
+
+    const handleSuccess = (data) => {
+        client.setQueryData(['team'], data.id)
+        client.invalidateQueries(['team'])
+        handleAlerts(createTeamSuccess)
+        navigate(`/teams/${data.id}`)
+    }
+
+    const onCreateTeam = async (e) => {
+        e.preventDefault();
+        handleSubmit(teamData)
+    }
+
+    const {
+        mutate: handleSubmit,
+        isLoading: createTeamLoading
+    } = useMutation({
+        mutationFn: createTeam,
+        onError: handleErrors,
+        onSuccess: handleSuccess
+    })
 
     // Session form input validation error handler
     useEffect(() => {
@@ -51,7 +64,8 @@ function useNewTeam(team) {
         errors,
         handleInput,
         handleToggle,
-        createTeam,
+        createTeamLoading,
+        onCreateTeam,
     };
 }
 
