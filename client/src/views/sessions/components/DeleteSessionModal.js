@@ -4,7 +4,8 @@ import useDeleteSession from '../hooks/useDeleteSession'
 import Button from '../../../components/shared/button'
 
 function DeleteSessionModal({close}) {
-    const { deleteSession } = useDeleteSession();
+    const { onDeleteSession, deleteSessionLoading } = useDeleteSession();
+
     return (
         <div className='modal_container'>
             <h2 className='md modal_title'>
@@ -25,7 +26,7 @@ function DeleteSessionModal({close}) {
                     label="Delete Team"
                     styles="warning"
                     icon={PiTrashBold}
-                    action={deleteSession}
+                    action={onDeleteSession}
                 />
             </div>
         </div>

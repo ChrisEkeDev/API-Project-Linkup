@@ -1,7 +1,6 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import authReducer from './auth';
-import teamsReducer from './teams';
 import sessionsReducer from './sessions';
 import membershipsReducer from './memberships';
 import chatsReducer from './chats';
@@ -9,7 +8,6 @@ import checkInsReducer from './checkins';
 
 const rootReducer = combineReducers({
     auth: authReducer,
-    teams: teamsReducer,
     sessions: sessionsReducer,
     memberships: membershipsReducer,
     checkIns: checkInsReducer,

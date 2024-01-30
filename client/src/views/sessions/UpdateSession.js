@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Back from '../../components/shared/button/Back';
 import { AnimatePresence, motion } from 'framer-motion';
 import { page_transitions } from '../../constants/animations';
@@ -16,21 +16,27 @@ import SessionHosts from './components/SessionHosts';
 import Modal from '../../components/shared/modal';
 import useModal from '../../hooks/useModal';
 import DeleteSessionModal from './components/DeleteSessionModal'
+import { getSession } from '../../store/sessions';
+import { useQuery } from 'react-query';
+import { getMyMemberships } from '../../store/auth';
 
-function UpdateSession({session}) {
+function UpdateSession() {
+    const { id } = useParams();
+    const { data: session, error: sessionErr, isLoading: sessionLoading } = useQuery(['session', id], () => getSession(id));
+    const { data: myMemberships, error: myMembershipsErr, isLoading: myMembershipsLoading} = useQuery(['memberships'], getMyMemberships)
     const { isModalOpen, onOpenModal, onCloseModal } = useModal();
-    const teamMemberships = useSelector(state => state.memberships.myMemberships);
-    const teamMembershipsArr = Object.values(teamMemberships)
-    const teamsWithAuth = teamMembershipsArr.filter(membership => membership.status === 'host' || membership.status === 'co-host');
+    const teamsWithAuth = myMemberships?.filter(membership => membership.status === 'host' || membership.status === 'co-host');
 
     const  {
         sessionData,
         errors,
         handleInput,
         handleToggle,
-        handleHost,
-        updateSession,
+        updateSessionLoading,
+        onUpdateSession,
     } = useUpdateSession(session);
+
+    if (sessionLoading || updateSessionLoading || myMembershipsLoading ) return <LoadingData />
 
   return (
         <motion.main {...page_transitions} className='page sessions'>
@@ -40,7 +46,7 @@ function UpdateSession({session}) {
                     label="Update Session"
                     styles="primary"
                     icon={PiCalendarBold}
-                    action={updateSession}
+                    action={onUpdateSession}
                 />
             </header>
             <Scroll>

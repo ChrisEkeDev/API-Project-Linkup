@@ -1,44 +1,31 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { format, parseISO } from "date-fns";
 import { useApp } from "../../../context/AppContext";
+import { sessionsAlerts } from "../../../constants/alerts";
 import { getDateData } from "../../../helpers/dateHelpers";
-import { thunkUpdateSession } from "../../../store/sessions";
+import { useMutation, useQueryClient } from 'react-query';
+import { updateSession } from "../../../store/sessions";
 import { convertDateToUI, convertTimeToUI, getDuration } from "../../../helpers/dateTimeFormatters";
-import { geocodeAddress } from "../../../helpers/geocodeAddress";
 
 
 const useUpdateSession = (session) => {
-    const { dispatch, navigate, setLoading } = useApp();
+    const client = useQueryClient();
+    const { navigate, handleAlerts } = useApp();
+    const { updateSessionSuccess, updateSessionError } = sessionsAlerts;
     const [ errors, setErrors ] = useState({});
     const [ sessionData, setSessionData ] = useState({
-        name: session?.name ,
-        startDate: session?.startDate,
+        name: session.name ,
+        startDate: session.startDate,
         date: convertDateToUI(session.startDate),
         time: convertTimeToUI(session.startDate),
         duration: getDuration(session.startDate, session.endDate),
         hostId: session.hostId,
         private: session.private
     });
-    console.log(sessionData)
 
 
     // Handles the input of the Session Form
     const handleInput = (x) => {
         setSessionData((prev) => ({ ...prev, [x.target.id]: x.target.value }));
-    }
-
-    const updateSession = async (e) => {
-        setLoading(true)
-        e.preventDefault();
-        try {
-            const data = await dispatch(thunkUpdateSession(sessionData, session.id));
-            navigate(`/sessions/${data.data.id}`)
-        } catch (e) {
-            console.log(e)
-        } finally {
-            setLoading(false)
-        }
     }
 
     const handleToggle = () => {
@@ -48,6 +35,34 @@ const useUpdateSession = (session) => {
     const handleHost = (id) => {
         setSessionData((prev) => ({ ...prev, hostId: id }));
     }
+
+    const handleErrors = (newErrors) => {
+        const newState = { ...errors, ...newErrors };
+        handleAlerts(updateSessionError)
+        setErrors(newState)
+    }
+
+    const handleSuccess = (data) => {
+        client.setQueryData(['session'], data.id)
+        client.invalidateQueries(['session'])
+        handleAlerts(updateSessionSuccess)
+        navigate(`/sessions/${data.id}`)
+    }
+
+    const {
+        mutate: handleSubmit,
+        isLoading: updateSessionLoading
+    } = useMutation({
+        mutationFn: updateSession,
+        onError: handleErrors,
+        onSuccess: handleSuccess
+    })
+
+    const onUpdateSession = async (e) => {
+        e.preventDefault();
+        handleSubmit(sessionData)
+    }
+
 
 
     // Session form input validation error handler
@@ -82,7 +97,8 @@ const useUpdateSession = (session) => {
         handleInput,
         handleHost,
         handleToggle,
-        updateSession,
+        updateSessionLoading,
+        onUpdateSession,
     };
 }
 

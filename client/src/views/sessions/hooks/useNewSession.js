@@ -3,19 +3,19 @@ import axios from "axios";
 import { useApp } from "../../../context/AppContext";
 import { sessionsAlerts } from '../../../constants/alerts'
 import { getDateData } from "../../../helpers/dateHelpers";
-import { thunkCreateNewSession } from "../../../store/sessions";
+import { useMutation, useQueryClient } from 'react-query';
+import { createSession, getGooglePlaces } from "../../../store/sessions";
 import { convertDateToUI, convertTimeToUI } from "../../../helpers/dateTimeFormatters";
-import { addHours } from "date-fns";
+import useGetGooglePlaces from "./useGetGooglePlaces";
 
 function useNewSession() {
     const today = new Date().toISOString();
-    const { dispatch, navigate, setLoading, handleAlerts } = useApp();
-    const { createSessionSuccess,createSessionError  } = sessionsAlerts;
-    const [ query, setQuery ] = useState("");
-    const [ queryResults, setQueryResults ] = useState([]);
+    const { navigate, handleAlerts } = useApp();
+    const { placesLoading, getPlaces, queryResults } = useGetGooglePlaces();
+    const { createSessionSuccess, createSessionError  } = sessionsAlerts;
     const [ addressObject, setAddressObject ] = useState(null);
     const [ addressConfirmed, setAddressConfirmed ] = useState(false);
-    const [ status, setStatus ] = useState(null)
+
     const [ sessionData, setSessionData ] = useState({
         name: '',
         startDate: today,
@@ -27,19 +27,10 @@ function useNewSession() {
     });
     const [ errors, setErrors ] = useState({});
 
-    const getPlaces = async (e) => {
+    const onGetPlaces = async (e) => {
         e.preventDefault()
-        setStatus("loading");
         setAddressConfirmed(false);
-        try {
-            const response = await axios.post(`/api/places`, { query });
-            setQueryResults(response.data.data)
-            setStatus("success")
-        } catch(e) {
-            setStatus("fail")
-            console.log(e)
-        }
-
+        getPlaces(query)
     }
 
     const handleToggle = () => {
@@ -137,7 +128,7 @@ function useNewSession() {
         handleInput,
         handleHost,
         handleToggle,
-        getPlaces,
+        onGetPlaces,
         createSession,
     };
 }

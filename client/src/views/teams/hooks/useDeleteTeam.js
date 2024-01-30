@@ -2,10 +2,12 @@ import React from 'react'
 import { deleteTeam } from '../../../store/teams'
 import { useApp } from '../../../context/AppContext';
 import { teamAlerts } from '../../../constants/alerts';
+import { useMutation, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 
 function useDeleteTeam() {
-    const { id } = useParams()
+    const client = useQueryClient();
+    const { id } = useParams();
     const { deleteTeamSuccess, deleteTeamError } = teamAlerts;
     const { navigate, handleAlerts } = useApp();
 
@@ -14,7 +16,7 @@ function useDeleteTeam() {
     }
 
     const handleSuccess = (data) => {
-        client.setQueryData(['team'], null)
+        client.setQueryData(['team'], data)
         client.invalidateQueries(['team'])
         handleAlerts(deleteTeamSuccess)
         navigate(`/teams`)

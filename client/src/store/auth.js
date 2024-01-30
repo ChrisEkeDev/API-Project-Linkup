@@ -133,15 +133,6 @@ export const getMyLikes = async () => {
     }
 }
 
-export const actionSetAuthPlayer = (player) => ({
-    type: SET_AUTH,
-    payload: player
-})
-
-const actionRemoveAuthPlayer = () => ({
-    type: REMOVE_AUTH
-})
-
 const actionChangeThemePreference = (settings) => ({
     type: CHANGE_THEME_PREFERENCE,
     payload: settings
@@ -167,49 +158,6 @@ export const googleAuthSignIn = () => async dispatch => {
     }
 }
 
-
-// THUNKS
-
-export const thunkSignInPlayer = (playerData) => async dispatch => {
-    const res = await csrfFetch('/api/auth', {
-        method: 'POST',
-        body: JSON.stringify(playerData)
-    });
-    try {
-        const jsonResponse = await res.json();
-        await dispatch(actionSetAuthPlayer(jsonResponse.data));
-        return jsonResponse;
-    } catch(error) {
-        console.error(error)
-    }
-}
-
-export const thunkSignOutPlayer = () => async dispatch => {
-    const res = await csrfFetch('/api/auth', { method: 'DELETE'});
-
-    try {
-        const jsonResponse = await res.json();
-        dispatch(actionRemoveAuthPlayer());
-        return jsonResponse;
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-export const thunkSignUpPlayer = (playerData) => async dispatch => {
-    const res = await csrfFetch('/api/players', {
-        method: 'POST',
-        body: JSON.stringify(playerData)
-    })
-
-    try {
-        const jsonResponse = await res.json();
-        dispatch(actionSetAuthPlayer(jsonResponse.data))
-        return jsonResponse;
-    } catch(error) {
-        console.error(error);
-    }
-}
 
 export const thunkChangeThemePreference = (value) => async dispatch => {
     const res = await csrfFetch('/api/settings/theme', {

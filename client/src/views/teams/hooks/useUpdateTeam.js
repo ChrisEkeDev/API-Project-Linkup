@@ -8,12 +8,12 @@ function useUpdateTeam(team) {
     const client = useQueryClient();
     const { navigate, handleAlerts } = useApp();
     const { updateTeamSuccess, updateTeamError } = teamAlerts;
+    const [ errors, setErrors ] = useState({});
     const [ teamData, setTeamData ] = useState({
         id: team.id,
         name: team.name,
         private: team.private
     });
-    const [ errors, setErrors ] = useState({});
 
     const handleInput = (x) => {
         setTeamData((prev) => ({ ...prev, [x.target.id]: x.target.value }));
@@ -38,7 +38,7 @@ function useUpdateTeam(team) {
 
     const onUpdateTeam = async (e) => {
         e.preventDefault();
-        handleSubmit(teamData, )
+        handleSubmit(teamData)
     }
 
     const {

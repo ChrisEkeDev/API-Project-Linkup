@@ -1,29 +1,42 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { thunkDeleteSession } from '../../../store/sessions'
+import { deleteSession } from '../../../store/sessions'
+import { sessionsAlerts } from '../../../constants/alerts';
+import { useMutation, useQueryClient } from 'react-query';
+import { useParams } from 'react-router-dom';
 import { useApp } from '../../../context/AppContext';
 
 function useDeleteSession() {
-    const { dispatch, navigate, handleAlerts, setLoading } = useApp();
-    const sessionId = useSelector(state => state.sessions.singleSession).id;
+    const client = useQueryClient();
+    const { id } = useParams()
+    const { deleteSessionSuccess, deleteSessionError } = sessionsAlerts;
+    const { navigate, handleAlerts } = useApp();
 
-    const deleteSession =  async () => {
-        setLoading(true);
-        try {
-            const res = await dispatch(thunkDeleteSession(sessionId))
-            handleAlerts(res)
-            navigate('/sessions')
-            if ( res.status >= 400) {
-                throw new Error()
-            }
-        } catch(e) {
-            console.log(e)
-        } finally {
-            setLoading(false)
-        }
+    const handleErrors = (newErrors) => {
+        handleAlerts(deleteSessionError)
     }
 
-    return { deleteSession }
+    const handleSuccess = (data) => {
+        client.setQueryData(['session'], data)
+        client.invalidateQueries(['session'])
+        handleAlerts(deleteSessionSuccess)
+        navigate(`/sessions`)
+    }
+
+    const onDeleteSession = async (e) => {
+        e.preventDefault();
+        handleSubmit(id)
+    }
+
+    const {
+        mutate: handleSubmit,
+        isLoading: deleteSessionLoading
+    } = useMutation({
+        mutationFn: deleteSession,
+        onError: handleErrors,
+        onSuccess: handleSuccess
+    })
+
+    return { onDeleteSession, deleteSessionLoading }
 }
 
 export default useDeleteSession
