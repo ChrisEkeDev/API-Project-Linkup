@@ -4,8 +4,8 @@ import { csrfFetch } from './csrf';
 
 export const getGooglePlaces = async (query) => {
     const res = await csrfFetch(`/api/places`, {
-        ethod: 'POST',
-        body: JSON.stringify(query)
+        method: 'POST',
+        body: JSON.stringify({query})
     })
     try {
         const json = await res.json();

@@ -311,6 +311,7 @@ router.post('/', requireAuth, uploadMedia, validateCreateSession, async (req, re
             },
             {
                 model: Team,
+                as: 'host',
                 include: {
                     model: Player,
                     as: 'captain',
@@ -402,6 +403,7 @@ router.put('/:sessionId', requireAuth, validateEditSession, async (req, res) => 
             },
             {
                 model: Team,
+                as: 'host',
                 attributes: ['id', 'name']
             }
         ]

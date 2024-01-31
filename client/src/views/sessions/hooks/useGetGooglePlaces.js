@@ -6,7 +6,6 @@ function useGetGooglePlaces() {
     const [ query, setQuery ] = useState("");
     const [ queryResults, setQueryResults ] = useState([]);
 
-    const [ status, setStatus ] = useState(null)
 
 
     const handleErrors = (newErrors) => {
@@ -29,7 +28,7 @@ function useGetGooglePlaces() {
 
 
 
-    return { placesLoading, getPlaces, queryResults }
+    return { query, setQuery, placesLoading, getPlaces, queryResults }
 }
 
 export default useGetGooglePlaces

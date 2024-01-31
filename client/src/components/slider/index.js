@@ -14,9 +14,9 @@ const Slider = ({router: Router, map: Map}) => {
                 <Router />
                 <SlidingBar ref={ref} layout="horizontal" />
             </div>
-            <div className="section_contents map_bg">
+            {/* <div className="section_contents map_bg">
                 <Map />
-            </div>
+            </div> */}
         </section>
     )
 }

@@ -13,12 +13,12 @@ import LoadingData from '../../../components/shared/loading';
 import { PiChatsCircle } from 'react-icons/pi'
 import { getSessionFeed } from '../../../store/sessions';
 
-function SessionFeed() {
+function SessionFeed({session}) {
     const { id } = useParams();
     const { auth } = useApp();
-    const { socket, room } = useSessionChatWebSocket();
+    const { socket, room } = useSessionChatWebSocket(session);
     const { data: feed, error: feedErr, isLoading: feedLoading } = useQuery(['session-feed', id], () => getSessionFeed(id));
-    const { handleInput, content, createSessionChat } = useNewSessionChat({socket, room});
+    const { handleInput, content, createSessionChat } = useNewSessionChat({session, socket, room});
     const ref = useRef(null);
 
     useEffect(() => {

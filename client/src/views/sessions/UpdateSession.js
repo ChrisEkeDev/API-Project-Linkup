@@ -8,8 +8,6 @@ import useUpdateSession from './hooks/useUpdateSession';
 import Input from '../../components/shared/inputs/textInput';
 import Button from '../../components/shared/button';
 import { PiTrashBold, PiWarningBold, PiMagnifyingGlassBold, PiMapPinBold, PiCalendarBold, PiClockBold, PiCalendarPlusBold, PiCaretUpDownBold   } from 'react-icons/pi';
-import { useSelector } from 'react-redux';
-import { useApp } from '../../context/AppContext';
 import LoadingData from '../../components/shared/loading';
 import PrivacyToggle from '../../components/shared/inputs/PrivacyToggle'
 import SessionHosts from './components/SessionHosts';
@@ -18,27 +16,23 @@ import useModal from '../../hooks/useModal';
 import DeleteSessionModal from './components/DeleteSessionModal'
 import { getSession } from '../../store/sessions';
 import { useQuery } from 'react-query';
-import { getMyMemberships } from '../../store/auth';
 
-function UpdateSession() {
-    const { id } = useParams();
-    const { data: session, error: sessionErr, isLoading: sessionLoading } = useQuery(['session', id], () => getSession(id));
-    const { data: myMemberships, error: myMembershipsErr, isLoading: myMembershipsLoading} = useQuery(['memberships'], getMyMemberships)
+function UpdateSession({session}) {
     const { isModalOpen, onOpenModal, onCloseModal } = useModal();
-    const teamsWithAuth = myMemberships?.filter(membership => membership.status === 'host' || membership.status === 'co-host');
 
     const  {
         sessionData,
         errors,
         handleInput,
+        handleHost,
         handleToggle,
         updateSessionLoading,
         onUpdateSession,
     } = useUpdateSession(session);
 
-    if (sessionLoading || updateSessionLoading || myMembershipsLoading ) return <LoadingData />
+    if ( updateSessionLoading ) return <LoadingData />
 
-  return (
+    return (
         <motion.main {...page_transitions} className='page sessions'>
             <header className='header'>
                 <Back />
@@ -108,7 +102,7 @@ function UpdateSession() {
                             />
                         </div>
                         <PrivacyToggle data={sessionData} handleToggle={handleToggle} />
-                        <SessionHosts teams={teamsWithAuth} handleHost={handleHost} sessionData={sessionData} />
+                        <SessionHosts handleHost={handleHost} sessionData={sessionData} />
                         <footer className='form_caution'>
                             <Button
                                 label="Delete Session"
@@ -130,12 +124,20 @@ function UpdateSession() {
                 />
             </Modal>
         </motion.main>
-  )
+    )
+}
+
+function UpdateSessionWrapper() {
+    const { id } = useParams();
+    const { data: session, error: sessionErr, isLoading: sessionLoading } = useQuery(['session', id], () => getSession(id));
+
+    if ( sessionLoading ) return <LoadingData />
+
+    return <UpdateSession session={session}/>
 }
 
 
 
 
 
-
-export default UpdateSession
+export default UpdateSessionWrapper

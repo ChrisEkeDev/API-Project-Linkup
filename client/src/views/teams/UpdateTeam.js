@@ -1,4 +1,5 @@
 import React from 'react';
+import { getTeam } from '../../store/teams';
 import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';

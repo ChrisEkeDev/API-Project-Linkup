@@ -20,7 +20,7 @@ router.post('/', async(req, res) => {
         return res.status(404).json({
             status: 404,
             message: "There was an error getting data",
-            data: null,
+            data: [],
             errors: { error: e }
         })
     }

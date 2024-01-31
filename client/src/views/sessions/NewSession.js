@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import useNewSession from './hooks/useNewSession';
 import Back from '../../components/shared/button/Back';
@@ -12,12 +11,11 @@ import { page_transitions } from '../../constants/animations';
 import SessionPlaceResults from './components/SessionPlaceResults';
 import PrivacyToggle from '../../components/shared/inputs/PrivacyToggle'
 import SessionHosts from './components/SessionHosts';
+import LoadingData from '../../components/shared/loading';
 
 
 function NewSession() {
-  const teamMemberships = useSelector(state => state.memberships.myMemberships);
-  const teamMembershipsArr = Object.values(teamMemberships)
-  const teamsWithAuth = teamMembershipsArr.filter(membership => membership.status === 'host' || membership.status === 'co-host');
+
 
   const {
     sessionData,
@@ -30,9 +28,12 @@ function NewSession() {
     handleInput,
     handleToggle,
     handleHost,
-    getPlaces,
-    createSession
+    onGetPlaces,
+    createSessionLoading,
+    onCreateSession,
   } = useNewSession();
+
+  if ( createSessionLoading) return <LoadingData />
 
 
   return (
@@ -43,7 +44,7 @@ function NewSession() {
             label="Create Session"
             styles="primary"
             icon={PiCalendarPlusBold}
-            action={createSession}
+            action={onCreateSession}
             disabled={Object.keys(errors).length > 0}
           />
         </header>
@@ -90,18 +91,18 @@ function NewSession() {
                   : status === "fail" ? PiWarningBold
                   : PiMagnifyingGlassBold
               }
-              loading={status === "loading"}
-              action={getPlaces}
+              loading={ status === "loading" }
+              action={ onGetPlaces }
             />
           </div>
-          <SessionPlaceResults {...{queryResults, addressConfirmed, handleAddressObject}} />
+          <SessionPlaceResults { ...{ queryResults, addressConfirmed, handleAddressObject } } />
           {
             addressObject ?
             <div className='form_verification'>
               <PiMapPinBold className="icon"/>
               <div className='details'>
                 <p className='xs bold'>Verified Address</p>
-                <p className='sm'>{addressObject.address}</p>
+                <p className='sm'>{ addressObject.address }</p>
               </div>
             </div> :
             null
@@ -141,7 +142,7 @@ function NewSession() {
             />
           </div>
           <PrivacyToggle data={sessionData} handleToggle={handleToggle} />
-          <SessionHosts teams={teamsWithAuth} handleHost={handleHost} sessionData={sessionData} />
+          <SessionHosts handleHost={handleHost} sessionData={sessionData} />
         </form>
         </Scroll>
     </motion.main>

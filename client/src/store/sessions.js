@@ -50,7 +50,7 @@ export const getSessionFeed = async (id) => {
     }
 }
 
-export const createSession = async () => {
+export const createSession = async (data) => {
     const res = await csrfFetch('/api/sessions', {
         method: 'POST',
         body: JSON.stringify(data)

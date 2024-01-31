@@ -17,13 +17,13 @@ function DeleteSessionModal({close}) {
             </p>
             <div className='modal_actions'>
                 <Button
-                    label="Keep Team"
+                    label="Keep Session"
                     styles="tertiary"
                     icon={PiXBold}
                     action={close}
                 />
                 <Button
-                    label="Delete Team"
+                    label="Delete Session"
                     styles="warning"
                     icon={PiTrashBold}
                     action={onDeleteSession}

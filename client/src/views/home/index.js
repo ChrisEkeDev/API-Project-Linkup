@@ -1,5 +1,5 @@
 import React from 'react';
-import MapWrapper from '../map';
+// import MapWrapper from '../map';
 import Slider from '../../components/slider'
 import NavigationBar from '../../components/navbar';
 import './styles.scss';
@@ -12,7 +12,7 @@ function Home() {
             <section className='main'>
                 <Slider
                     router={AppRouter}
-                    map={MapWrapper}
+                    // map={null}
                 />
             </section>
         </main>

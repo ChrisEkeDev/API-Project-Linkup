@@ -3,12 +3,11 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import useLoading from "../hooks/useLoading";
 import useLocationServices from "../hooks/useLocationServices";
-import { thunkRestoreAuth, thunkSignOutPlayer, thunkGetSettings } from "../store/auth";
+import { getAuth, getMySettings } from "../store/auth";
 import useAppClock from "../hooks/useAppClock";
 import useAlerts from "../hooks/useAlerts";
 import LoadingData from "../components/shared/loading";
 import Alerts from "../components/alerts";
-import { getAuth } from '../store/auth';
 import { useQuery } from 'react-query';
 
 
@@ -51,22 +50,6 @@ function AppProvider({children}) {
     else setTheme('light')
   }
 
-
-  const signOut = async () => {
-    try {
-        const res = await dispatch(thunkSignOutPlayer())
-        handleAlerts(res)
-        if (res.status >= 400) {
-          throw new Error()
-        } else {
-          navigate('/sign-in')
-        }
-    } catch(e) {
-        console.log(e)
-    }
-  }
-
-
   return (
       <AppContext.Provider
         value={{
@@ -83,7 +66,6 @@ function AppProvider({children}) {
           dispatch,
           setLoading,
           auth,
-          signOut,
           goBack
         }}
         >

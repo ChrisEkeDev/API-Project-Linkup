@@ -1,19 +1,17 @@
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
-import { useApp } from '../../../context/AppContext';
+// import { useEffect, useState } from 'react'
+// import { useSelector } from 'react-redux';
+// import { useApp } from '../../../context/AppContext';
 
-function useMap() {
-    const { locationServices, currentLocation, setCurrentLocation } = useApp();
-    const sessionData = useSelector(state => state.sessions.allSessions);
-    const markers = Object.values(sessionData)
+// function useMap() {
+//     const { locationServices, currentLocation, setCurrentLocation } = useApp();
 
 
-    // useEffect(() => {
-    //   initMap()
-    // }, [currentLocation])
+//     // useEffect(() => {
+//     //   initMap()
+//     // }, [currentLocation])
 
 
-  return { markers }
-}
+//   return null
+// }
 
-export default useMap
+// export default useMap

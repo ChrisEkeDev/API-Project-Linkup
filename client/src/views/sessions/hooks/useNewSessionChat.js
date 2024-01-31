@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { useApp} from '../../../context/AppContext'
+import React, { useState } from 'react'
 import { thunkCreateSessionChat, thunkGetSessionFeed } from '../../../store/chats'
 
-function useNewSessionChat({socket, room}) {
-  const session = useSelector(state => state.sessions.singleSession)
-  const { dispatch } = useApp()
+function useNewSessionChat({session, socket, room}) {
   const [ content, setContent ] = useState('')
 
   const handleInput = (x) => {
@@ -13,15 +9,15 @@ function useNewSessionChat({socket, room}) {
   }
 
   const createSessionChat = async () => {
-    try {
-      const res = await dispatch(thunkCreateSessionChat(session.id, content));
-      console.log(socket)
-      socket.emit('new_message', room)
-    } catch (e) {
-        console.error(e)
-    } finally {
-      setContent("")
-    }
+    // try {
+    //   const res = await dispatch(thunkCreateSessionChat(session.id, content));
+    //   console.log(socket)
+    //   socket.emit('new_message', room)
+    // } catch (e) {
+    //     console.error(e)
+    // } finally {
+    //   setContent("")
+    // }
   }
 
   return { handleInput, content, createSessionChat }

@@ -9,13 +9,15 @@ import { convertDateToUI, convertTimeToUI } from "../../../helpers/dateTimeForma
 import useGetGooglePlaces from "./useGetGooglePlaces";
 
 function useNewSession() {
+    const client = useQueryClient();
     const today = new Date().toISOString();
     const { navigate, handleAlerts } = useApp();
-    const { placesLoading, getPlaces, queryResults } = useGetGooglePlaces();
+    const { query, setQuery, placesLoading, getPlaces, queryResults } = useGetGooglePlaces();
     const { createSessionSuccess, createSessionError  } = sessionsAlerts;
     const [ addressObject, setAddressObject ] = useState(null);
     const [ addressConfirmed, setAddressConfirmed ] = useState(false);
-
+    const [ status, setStatus ] = useState(null)
+    const [ errors, setErrors ] = useState({});
     const [ sessionData, setSessionData ] = useState({
         name: '',
         startDate: today,
@@ -25,7 +27,6 @@ function useNewSession() {
         address: null,
         private: false
     });
-    const [ errors, setErrors ] = useState({});
 
     const onGetPlaces = async (e) => {
         e.preventDefault()
@@ -50,21 +51,31 @@ function useNewSession() {
         }
     }
 
-    const createSession = async (e) => {
-        setLoading(true)
+    const handleErrors = (newErrors) => {
+        handleAlerts(createSessionError)
+    }
+
+    const handleSuccess = (data) => {
+        handleAlerts(createSessionSuccess)
+        client.setQueryData(['session'], data)
+        client.invalidateQueries(['session'])
+        navigate(`/sessions/${data.id}`)
+    }
+
+    const {
+        mutate: handleSubmit,
+        isLoading: createSessionLoading
+    } = useMutation({
+        mutationFn: createSession,
+        onError: handleErrors,
+        onSuccess: handleSuccess
+    })
+
+    const onCreateSession = async (e) => {
         e.preventDefault();
-        try {
-            const session = { ...sessionData }
-            session.address = addressObject;
-            const data = await dispatch(thunkCreateNewSession(session));
-            handleAlerts(createSessionSuccess)
-            navigate(`/sessions/${data.data.id}`)
-        } catch (e) {
-            handleAlerts(createSessionError)
-            console.error(e)
-        } finally {
-            setLoading(false)
-        }
+        const session = { ...sessionData }
+        session.address = addressObject;
+        handleSubmit(session)
     }
 
     const handleAddressObject = (rawData) => {
@@ -105,7 +116,6 @@ function useNewSession() {
     // Resets the address verification if the address changes
     useEffect(() => {
         setAddressConfirmed(false);
-        setQueryResults([])
         setStatus(null)
     }, [query])
 
@@ -128,8 +138,9 @@ function useNewSession() {
         handleInput,
         handleHost,
         handleToggle,
+        createSessionLoading,
         onGetPlaces,
-        createSession,
+        onCreateSession,
     };
 }
 

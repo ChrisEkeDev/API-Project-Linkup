@@ -47,7 +47,7 @@ function SingleSession() {
                                 styles='secondary'
                                 label="Edit Session"
                                 icon={TbEditCircle}
-                                // action={() => navigate(`/sessions/${session.id}/update`)}
+                                action={() => navigate(`/sessions/${session.id}/update`)}
                             /> :
                             <Button
                                 styles={
@@ -91,7 +91,7 @@ function SingleSession() {
                     tabView === 'details' ?
                     <SessionDetails session={session} /> :
                     tabView === 'feed' ?
-                    <SessionFeed /> :
+                    <SessionFeed session={session} /> :
                     <SessionCheckins status={checkIn} isCreator={isCreator} />
                 }
             </motion.section>

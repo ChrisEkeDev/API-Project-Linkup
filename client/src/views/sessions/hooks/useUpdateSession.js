@@ -13,6 +13,7 @@ const useUpdateSession = (session) => {
     const { updateSessionSuccess, updateSessionError } = sessionsAlerts;
     const [ errors, setErrors ] = useState({});
     const [ sessionData, setSessionData ] = useState({
+        id: session.id,
         name: session.name ,
         startDate: session.startDate,
         date: convertDateToUI(session.startDate),

@@ -3,14 +3,14 @@ import SessionPlaceResult from './SessionPlaceResult'
 import { AnimatePresence } from 'framer-motion';
 
 function SessionPlaceResults(props) {
-    const {queryResults, addressConfirmed, handleAddressObject} = props;
+    const { queryResults, addressConfirmed, handleAddressObject } = props;
 
     return (
         <AnimatePresence>
             <div className='results_container'>
             <div className='fade_overlay'></div>
             {
-                queryResults.length > 0 && !addressConfirmed ?
+                queryResults?.length > 0 && !addressConfirmed ?
                 <ul className='results_list'>
 
                     {queryResults.map((result, i) => (
