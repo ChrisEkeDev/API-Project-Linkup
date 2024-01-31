@@ -4,7 +4,7 @@ import useDeleteSession from '../hooks/useDeleteSession'
 import Button from '../../../components/shared/button'
 
 function DeleteSessionModal({close}) {
-    const { onDeleteSession, deleteSessionLoading } = useDeleteSession();
+    const { onDeleteSession } = useDeleteSession();
 
     return (
         <div className='modal_container'>

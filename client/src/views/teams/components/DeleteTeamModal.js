@@ -4,7 +4,7 @@ import useDeleteTeam from '../hooks/useDeleteTeam'
 import Button from '../../../components/shared/button'
 
 function DeleteTeamModal({close}) {
-    const { onDeleteTeam, deleteTeamLoading } = useDeleteTeam();
+    const { onDeleteTeam } = useDeleteTeam();
 
     return (
         <div className='modal_container'>

@@ -29,7 +29,6 @@ function useDeleteTeam() {
 
     const {
         mutate: handleSubmit,
-        isLoading: deleteTeamLoading
     } = useMutation({
         mutationFn: deleteTeam,
         onError: handleErrors,
@@ -38,7 +37,7 @@ function useDeleteTeam() {
 
 
 
-    return { onDeleteTeam, deleteTeamLoading }
+    return { onDeleteTeam }
 }
 
 export default useDeleteTeam

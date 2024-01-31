@@ -16,9 +16,7 @@ import PrivacyToggle from '../../components/shared/inputs/PrivacyToggle'
 import LoadingData from '../../components/shared/loading'
 import DeleteTeamModal from './components/DeleteTeamModal'
 
-function UpdateTeam() {
-    const { id } = useParams();
-    const { data: team, error: teamErr, isLoading: teamLoading } = useQuery(['team', id], () => getTeam(id));
+function UpdateTeam({team}) {
     const { isModalOpen, onOpenModal, onCloseModal } = useModal();
     const {
         teamData,
@@ -29,7 +27,7 @@ function UpdateTeam() {
         onUpdateTeam
     } = useUpdateTeam(team);
 
-    if (teamLoading || updateTeamLoading ) return <LoadingData />
+    if ( updateTeamLoading ) return <LoadingData />
 
     return (
         <motion.main {...page_transitions} className='page teams'>
@@ -78,4 +76,14 @@ function UpdateTeam() {
     )
 }
 
-export default UpdateTeam;
+function UpdateTeamWrapper() {
+    const { id } = useParams();
+    const { data: team, error: teamErr, isLoading: teamLoading } = useQuery(['team', id], () => getTeam(id));
+
+    if (teamLoading) return <LoadingData />
+
+    return <UpdateTeam team={team} />
+
+}
+
+export default UpdateTeamWrapper;

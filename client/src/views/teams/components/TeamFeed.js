@@ -13,12 +13,12 @@ import { PiChatsCircle } from 'react-icons/pi'
 import { getTeamFeed } from '../../../store/teams';
 import { useApp } from '../../../context/AppContext'
 
-function TeamFeed() {
+function TeamFeed({team}) {
     const { id } = useParams();
     const { auth } = useApp();
-    const { socket, room } = useTeamChatWebSocket();
+    const { socket, room } = useTeamChatWebSocket(team);
     const { data: feed, error: feedErr, isLoading: feedLoading } = useQuery(['team-feed', id], () => getTeamFeed(id));
-    const { handleInput, content, createTeamChat } = useNewTeamChat({socket, room});
+    const { handleInput, content, createTeamChat } = useNewTeamChat({team, socket, room});
     const ref = useRef(null)
 
     useEffect(() => {

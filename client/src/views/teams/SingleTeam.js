@@ -86,9 +86,9 @@ function SingleTeam() {
                 <motion.section variants={parent_variants} {...base_animations} className='section scroll'>
                     {
                         tabView === 'details' ?
-                        <TeamDetails /> :
+                        <TeamDetails team={team} /> :
                         tabView === 'feed' ?
-                        <TeamFeed /> :
+                        <TeamFeed team={team} /> :
                         <TeamMembers membership={membership} />
                     }
                 </motion.section>

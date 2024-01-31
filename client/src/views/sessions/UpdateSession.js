@@ -19,7 +19,6 @@ import { useQuery } from 'react-query';
 
 function UpdateSession({session}) {
     const { isModalOpen, onOpenModal, onCloseModal } = useModal();
-
     const  {
         sessionData,
         errors,

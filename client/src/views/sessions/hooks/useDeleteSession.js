@@ -29,14 +29,13 @@ function useDeleteSession() {
 
     const {
         mutate: handleSubmit,
-        isLoading: deleteSessionLoading
     } = useMutation({
         mutationFn: deleteSession,
         onError: handleErrors,
         onSuccess: handleSuccess
     })
 
-    return { onDeleteSession, deleteSessionLoading }
+    return { onDeleteSession }
 }
 
 export default useDeleteSession
