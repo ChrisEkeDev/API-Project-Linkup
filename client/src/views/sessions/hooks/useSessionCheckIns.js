@@ -8,8 +8,8 @@ import { checkInAlerts } from '../../../constants/alerts';
 function useSessionCheckIns() {
     const { id } = useParams();
     const client = useQueryClient();
-    const { addToSessionSuccess, removeFromSessionSuccess, addToSessionError, removeFromSessionError } = checkInAlerts;
     const { handleAlerts } = useApp();
+    const { addToSessionSuccess, removeFromSessionSuccess, addToSessionError, removeFromSessionError } = checkInAlerts;
 
     const handleRemoveFromSessionSuccess = () => {
         handleAlerts(removeFromSessionSuccess)

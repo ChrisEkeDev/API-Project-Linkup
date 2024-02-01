@@ -78,7 +78,7 @@ function useTeamMemberships() {
         handleRemoveFromTeam(data)
     }
 
-  return { onAddToTeam, onPromoteToCoHost, onRemoveFromTeam}
+  return { onAddToTeam, onPromoteToCoHost, onRemoveFromTeam }
 }
 
 export default useTeamMemberships
