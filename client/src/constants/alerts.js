@@ -162,26 +162,56 @@ export const teamAlerts = {
 }
 
 export const membershipAlerts = {
-    playerMembershipDeleteSuccess: {
+    requestToJoinTeamSuccess: {
         status: 'success',
         title: 'Success',
-        message: 'Player removed from the team successfully'
+        message: 'Request to join team was successfull'
     },
-    playerMembershipDeleteError: {
+    requestToJoinTeamError: {
         status: 'fail',
         title: 'Error',
-        message: 'There was a problem removing the player. Try again.'
+        message: 'There was a problem requesting to join the team.'
     },
-    authMembershipDeleteSuccess: {
+    requestToLeaveTeamSuccess: {
         status: 'success',
         title: 'Success',
-        message: 'You were removed from the team successfully'
+        message: 'You have left the team'
     },
-    authMembershipDeleteError: {
+    requestToLeaveTeamError: {
         status: 'fail',
         title: 'Error',
-        message: 'There was a problem removing you from the team. Try again.'
-    }
+        message: 'There was a problem removing you from the team.'
+    },
+    addToTeamSuccess: {
+        status: 'success',
+        title: 'Success',
+        message: 'Player has been added to team.'
+    },
+    addToTeamError: {
+        status: 'fail',
+        title: 'Error',
+        message: 'There was a problem adding player to team.'
+    },
+    promoteToCoHostSuccess: {
+        status: 'success',
+        title: 'Success',
+        message: 'Player has been promoted'
+    },
+    promoteToCoHostError: {
+        status: 'fail',
+        title: 'Error',
+        message: 'There was a problem promoting the player.'
+    },
+    removeFromTeamSuccess: {
+        status: 'success',
+        title: 'Success',
+        message: 'Player removed from team'
+    },
+    removeFromTeamError: {
+        status: 'fail',
+        title: 'Error',
+        message: 'There was a problem removing player from team.'
+    },
 }
 
 export const commentsAlerts = {
@@ -238,5 +268,25 @@ export const checkInAlerts = {
         status: 'fail',
         title: 'Error',
         message: 'There was a problem checking you out.'
+    },
+    addToSessionSuccess: {
+        status: 'success',
+        title: 'Success',
+        message: 'Player was added to the session.'
+    },
+    removeFromSessionSuccess: {
+        status: 'success',
+        title: 'Success',
+        message: 'Player was removed from the session.'
+    },
+    addToSessionError: {
+        status: 'fail',
+        title: 'Error',
+        message: 'There was a problem adding the player to the session.'
+    },
+    removeFromSessionError: {
+        status: 'fail',
+        title: 'Error',
+        message: 'There was a problem removing the player from the session.'
     }
 }

@@ -12,7 +12,7 @@ function CheckInItem({checkIn, isCreator}) {
     const formatDate = format(parseISO(createdAt), 'MM/yyyy')
     const isPlayerPending = status === 'pending';
     const isPlayerAttending = status === 'attending';
-    // const { addToSession, removeFromSession, } = useCheckIns()
+    const { onAddToSession, onRemoveFromSession } = useCheckIns()
 
   return (
     <motion.li  variants={child_variants} {...list_item_animations} className='member_item'>
@@ -36,7 +36,7 @@ function CheckInItem({checkIn, isCreator}) {
                             <IconButton
                                 label='Approve Player'
                                 icon={TbUserCheck}
-                                // action={() => addToSession(sessionId, playerId)}
+                                action={() => onAddToSession(playerId)}
                             /> : null
                         }
                     </AnimatePresence>
@@ -48,7 +48,7 @@ function CheckInItem({checkIn, isCreator}) {
                             <IconButton
                                 label='Remove Player'
                                 icon={TbUserOff}
-                                // action={() => removeFromSession(sessionId, playerId)}
+                                action={() => onRemoveFromSession(playerId)}
                             /> : null
                         }
                     </AnimatePresence>

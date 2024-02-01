@@ -78,6 +78,7 @@ function useNewSession() {
         handleSubmit(session)
     }
 
+    // Gets the address object from the list of Google places
     const handleAddressObject = (rawData) => {
         const addressObject = {
             place_id: rawData.place_id,

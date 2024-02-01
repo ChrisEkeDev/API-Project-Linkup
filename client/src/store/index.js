@@ -3,12 +3,10 @@ import thunk from 'redux-thunk';
 import authReducer from './auth';
 import membershipsReducer from './memberships';
 import chatsReducer from './chats';
-import checkInsReducer from './checkins';
 
 const rootReducer = combineReducers({
     auth: authReducer,
     memberships: membershipsReducer,
-    checkIns: checkInsReducer,
     chats: chatsReducer,
 })
 

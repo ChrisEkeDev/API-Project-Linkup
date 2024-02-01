@@ -100,3 +100,67 @@ export const deleteTeam = async (id) => {
         console.error(error)
     }
 }
+
+
+export const requestToJoinTeam = async (id) => {
+    const res = await csrfFetch(`/api/teams/${id}/join-team`, {
+        method: 'POST'
+    });
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const requestToLeaveTeam = async (id) => {
+    const res = await csrfFetch(`/api/teams/${id}/leave-team`, {
+        method: 'DELETE',
+    });
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const addToTeam = async (data) => {
+    const res = await csrfFetch(`/api/teams/${data.teamId}/add-to-team`, {
+        method: 'PUT',
+        body: JSON.stringify({playerId: data.playerId})
+    });
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const removeFromTeam = async (data) => {
+    const res = await csrfFetch(`/api/teams/${data.teamId}/remove-from-team`, {
+        method: 'DELETE',
+        body: JSON.stringify({playerId: data.playerId})
+    });
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const promoteToCoHost = async (data) => {
+    const res = await csrfFetch(`/api/teams/${data.teamId}/promote-to-co-host`, {
+        method: 'PUT',
+        body: JSON.stringify({playerId: data.playerId})
+    });
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}

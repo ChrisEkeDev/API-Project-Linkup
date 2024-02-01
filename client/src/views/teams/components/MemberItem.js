@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { list_item_animations, slide_variants, child_variants } from '../../../constants/animations';
 import ProfileImage from '../../../components/shared/profileImage'
 import IconButton from '../../../components/shared/button/IconButton'
+import useTeamMemberships from '../hooks/useTeamMemberships';
 import { format, parseISO } from 'date-fns';
 import { TbUserCheck  , TbUserUp , TbUserOff  } from 'react-icons/tb'
 
@@ -16,7 +17,7 @@ function MemberItem({member, status}) {
     const isMemberPending = member.status === 'pending';
     const isMemberMember = member.status === 'member';
     const showStatus = isMemberHost || isMemberCoHost;
-    // const { removeFromTeam, addToTeam, promoteToCoHost } = useMemberships();
+    const { onAddToTeam, onPromoteToCoHost, onRemoveFromTeam }= useTeamMemberships();
 
 
     return (
@@ -49,7 +50,7 @@ function MemberItem({member, status}) {
                         <IconButton
                             label='Approve Member'
                             icon={TbUserCheck}
-                            // action={() => addToTeam(member.teamId, member.Player.id)}
+                            action={() => onAddToTeam(member.Player.id)}
                         /> : null
                     }
                 </AnimatePresence>
@@ -61,7 +62,7 @@ function MemberItem({member, status}) {
                         <IconButton
                             label='Promote to Co-Host'
                             icon={TbUserUp}
-                            // action={() => promoteToCoHost(member.teamId, member.Player.id)}
+                            action={() => onPromoteToCoHost(member.Player.id)}
                         /> : null
                     }
                 </AnimatePresence>
@@ -74,7 +75,7 @@ function MemberItem({member, status}) {
                         <IconButton
                             label='Kick off team'
                             icon={TbUserOff}
-                            // action={() => removeFromTeam(member.teamId, member.Player.id)}
+                            action={() => onRemoveFromTeam(member.Player.id)}
                         /> : null
                     }
                 </AnimatePresence>

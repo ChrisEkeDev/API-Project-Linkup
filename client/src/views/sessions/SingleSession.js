@@ -14,6 +14,7 @@ import { base_animations, child_variants, parent_variants } from '../../constant
 import CountDown from '../../components/countdown';
 import { CgSpinner } from 'react-icons/cg';
 import { TbUserMinus, TbUserPlus, TbEditCircle, TbLock, TbLockOpen } from 'react-icons/tb';
+import useCheckIn from './hooks/useCheckIn';
 
 
 function SingleSession() {
@@ -22,6 +23,7 @@ function SingleSession() {
     const { auth, navigate } = useApp();
     const { data: session, error: sessionErr, isLoading: sessionLoading } = useQuery(['sessions', id], () => getSession(id));
     const { data: checkIn, isLoading: checkInLoading } = useQuery(['check-in-status'], () => getSessionCheckInStatus(id))
+    const { onCheckIn, onCheckOut } = useCheckIn()
     const isCreator = auth?.id === session?.creator.id;
 
     if (sessionLoading) return <LoadingData />
@@ -70,7 +72,7 @@ function SingleSession() {
                                     : 'Leave Session'
                                     : 'Join Session'
                                 }
-                                // action={checkIn ? () => console.log('checkout') : () =>  console.log('checkIn')}
+                                action={checkIn ? onCheckOut : onCheckIn }
                                 loading={checkIn === 'pending'}
                             />
                         )

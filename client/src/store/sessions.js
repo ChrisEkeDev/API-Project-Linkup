@@ -87,3 +87,53 @@ export const deleteSession = async (id) => {
         console.error(error)
     }
 }
+
+export const addToSession = async (data) => {
+    const res = await csrfFetch(`/api/sessions/${data.sessionId}/add-to-session`, {
+        method: 'PUT',
+        body: JSON.stringify({playerId: data.playerId})
+    });
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const removeFromSession = async (data) => {
+    const res = await csrfFetch(`/api/sessions/${data.sessionId}/remove-from-session`, {
+        method: 'DELETE',
+        body: JSON.stringify({playerId: data.playerId})
+    });
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const checkInToSession = async (id) => {
+    const res = await csrfFetch(`/api/sessions/${id}/check-in`, {
+        method: 'POST'
+    })
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const checkOutOfSession = async (id) => {
+    const res = await csrfFetch(`/api/sessions/${id}/check-out`, {
+        method: 'DELETE'
+    })
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}

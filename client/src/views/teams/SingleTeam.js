@@ -13,11 +13,13 @@ import { TbLogout, TbLogin2, TbLockOpen, TbLock, TbEditCircle } from 'react-icon
 import { base_animations, child_variants, parent_variants } from '../../constants/animations';
 import TeamDetails from './components/TeamDetails';
 import TeamFeed from './components/TeamFeed'
+import useMembership from './hooks/useMembership';
 
 function SingleTeam() {
     const { id } = useParams();
     const [ tabView, setTabView ] = useState('details')
     const { auth, navigate } = useApp();
+    const { onRequestToJoinTeam, onRequestToLeaveTeam } = useMembership();
     const { data: team, error: teamErr, isLoading: teamLoading } = useQuery(['team', id], () => getTeam(id));
     const { data: membership, isLoading: membershipLoading } = useQuery(['membership-status'], () => getTeamMembershipStatus(id))
     const isHost = auth?.id === team?.captain.id
@@ -61,13 +63,13 @@ function SingleTeam() {
                                     "Awaiting Approval" :
                                     "Leave Team"
                                 }
-                                // action={() => leaveTeam(team.id)}
+                                action={() => onRequestToLeaveTeam(team.id)}
                             /> :
                             <Button
                                 styles='tertiary'
                                 icon={TbLogin2}
                                 label="Join Team"
-                                // action={() => joinTeam(team.id)}
+                                action={() => onRequestToJoinTeam(team.id)}
                             />
                         }
                         </>
