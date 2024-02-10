@@ -15,8 +15,9 @@ const establishWebSocket = (server) => {
     sessionChat.on('connection', (socket) => {
         console.log(`User online - Sessions ${socket.id}`)
 
-        socket.on('join_room', (room) => {
-            socket.join(room)
+        socket.on('join_room', (data) => {
+            console.log(`${data.player} has joined the ${data.room} chat`)
+            socket.join(data.room)
         })
 
         socket.on('new_message', (room) => {
@@ -31,8 +32,13 @@ const establishWebSocket = (server) => {
             sessionChat.to(room).emit("update_feed")
         })
 
+        socket.on('leave_room', (data) => {
+            console.log(`${data.player} has left the ${data.room} chat`)
+        })
+
         socket.on('disconnect', (room) => {
             socket.broadcast.to(room).emit('offline')
+            console.log(`User offline - Sessions ${socket.id}`)
         });
     })
 
@@ -57,6 +63,7 @@ const establishWebSocket = (server) => {
 
         socket.on('disconnect', (room) => {
             socket.broadcast.to(room).emit('offline')
+            console.log(`User offline - Teams ${socket.id}`)
         });
     })
 }

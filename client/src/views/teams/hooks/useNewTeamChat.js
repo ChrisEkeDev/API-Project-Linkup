@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { thunkCreateTeamChat, thunkGetTeamFeed } from '../../../store/chats'
 
 function useNewTeamChat({socket, room}) {
   const [ content, setContent ] = useState('')

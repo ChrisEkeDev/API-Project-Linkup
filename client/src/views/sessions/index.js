@@ -41,7 +41,7 @@ function Sessions() {
                 <ul>
                 {
                   createdSessions.map(session => (
-                    <SessionItem session={session}/>
+                    <SessionItem key={session.id} session={session}/>
                   ))
                 }
               </ul> :
@@ -59,7 +59,7 @@ function Sessions() {
                 <ul>
                   {
                     joinedSessions.map(session => (
-                      <SessionItem session={session}/>
+                      <SessionItem key={session.id} session={session}/>
                     ))
                   }
                 </ul> :

@@ -1,12 +1,17 @@
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import useCheckIns from '../hooks/useCheckIns';
 import { list_item_animations, slide_variants, child_variants } from '../../../constants/animations';
 import ProfileImage from '../../../components/shared/profileImage'
 import IconButton from '../../../components/shared/button/IconButton'
 import { format, parseISO } from 'date-fns';
+import Modal from '../../../components/shared/modal';
+import useModal from '../../../hooks/useModal';
+import DeleteCheckInModal from './DeleteCheckInModal';
 import { TbUserCheck, TbUserOff  } from 'react-icons/tb'
 
 function CheckInItem({checkIn, isCreator}) {
+    const { isModalOpen, onOpenModal, onCloseModal } = useModal();
     const { status, player, createdAt, sessionId, playerId } = checkIn;
     const isPlayerCreator = checkIn.session.creatorId === playerId
     const formatDate = format(parseISO(createdAt), 'MM/yyyy')
@@ -15,6 +20,7 @@ function CheckInItem({checkIn, isCreator}) {
     const { onAddToSession, onRemoveFromSession } = useCheckIns()
 
   return (
+    <>
     <motion.li  variants={child_variants} {...list_item_animations} className='member_item'>
         <div className='float_left'>
         <ProfileImage player={player}/>
@@ -48,7 +54,7 @@ function CheckInItem({checkIn, isCreator}) {
                             <IconButton
                                 label='Remove Player'
                                 icon={TbUserOff}
-                                action={() => onRemoveFromSession(playerId)}
+                                action={onOpenModal}
                             /> : null
                         }
                     </AnimatePresence>
@@ -57,6 +63,17 @@ function CheckInItem({checkIn, isCreator}) {
             null
         }
     </motion.li>
+    <Modal
+        isModalOpen={isModalOpen}
+        onCloseModal={onCloseModal}
+    >
+        <DeleteCheckInModal
+            checkIn={checkIn}
+            deleteCheckIn={() => onRemoveFromSession(playerId)}
+            close={onCloseModal}
+        />
+    </Modal>
+    </>
   )
 }
 

@@ -17,7 +17,7 @@ function useSessionChatWebSocket(session) {
 
         if (auth) {
             socket?.on('connect', () => {
-                socket.emit('join_room', room)
+                socket.emit('join_room', { player: auth.name, room: room })
                 console.log(`${auth.name} has joined the chat`)
             });
 
@@ -25,7 +25,8 @@ function useSessionChatWebSocket(session) {
                 // await dispatch(thunkGetSessionFeed(sessionId))
             });
 
-            socket?.on('offline', () => {
+            socket?.on('disconnect', () => {
+                socket.emit('leave_room', { player: auth.name, room: room })
                 console.log(`${auth.name} has left the chat`)
             })
         }

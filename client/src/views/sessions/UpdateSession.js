@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { page_transitions } from '../../constants/animations';
 import { useParams } from 'react-router-dom';
 import Scroll from '../../components/shared/scroll'
-import useUpdateSession from './hooks/useUpdateSession';
 import Input from '../../components/shared/inputs/textInput';
 import Button from '../../components/shared/button';
 import { PiTrashBold, PiWarningBold, PiMagnifyingGlassBold, PiMapPinBold, PiCalendarBold, PiClockBold, PiCalendarPlusBold, PiCaretUpDownBold   } from 'react-icons/pi';
@@ -16,6 +15,7 @@ import useModal from '../../hooks/useModal';
 import DeleteSessionModal from './components/DeleteSessionModal'
 import { getSession } from '../../store/sessions';
 import { useQuery } from 'react-query';
+import useSession from './hooks/useSession';
 
 function UpdateSession({session}) {
     const { isModalOpen, onOpenModal, onCloseModal } = useModal();
@@ -27,7 +27,9 @@ function UpdateSession({session}) {
         handleToggle,
         updateSessionLoading,
         onUpdateSession,
-    } = useUpdateSession(session);
+        onDeleteSession
+    } = useSession({session});
+    console.log(errors)
 
     if ( updateSessionLoading ) return <LoadingData />
 
@@ -40,6 +42,7 @@ function UpdateSession({session}) {
                     styles="primary"
                     icon={PiCalendarBold}
                     action={onUpdateSession}
+                    disabled={Object.keys(errors).length > 0}
                 />
             </header>
             <Scroll>
@@ -119,6 +122,7 @@ function UpdateSession({session}) {
                 onCloseModal={onCloseModal}
             >
                 <DeleteSessionModal
+                    deleteSession={onDeleteSession}
                     close={onCloseModal}
                 />
             </Modal>

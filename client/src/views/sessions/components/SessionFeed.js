@@ -4,21 +4,22 @@ import { parent_variants, base_animations } from '../../../constants/animations'
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { useApp } from '../../../context/AppContext'
-import useNewSessionChat from '../hooks/useNewSessionChat';
+import useSessionChat from '../hooks/useSessionChat';
 import useSessionChatWebSocket from '../hooks/useSessionChatWebSocket'
 import SessionChat from './SessionChat'
 import ChatInput from '../../../components/shared/inputs/ChatInput'
 import Scroll from '../../../components/shared/scroll';
 import LoadingData from '../../../components/shared/loading';
 import { PiChatsCircle } from 'react-icons/pi'
-import { getSessionFeed } from '../../../store/sessions';
+import { getSessionFeed, getSessionCheckInStatus } from '../../../store/sessions';
 
 function SessionFeed({session}) {
     const { id } = useParams();
     const { auth } = useApp();
     const { socket, room } = useSessionChatWebSocket(session);
     const { data: feed, error: feedErr, isLoading: feedLoading } = useQuery(['session-feed', id], () => getSessionFeed(id));
-    const { handleInput, content, createSessionChat } = useNewSessionChat({session, socket, room});
+    const { data: checkIn } = useQuery(['check-in-status'], () => getSessionCheckInStatus(id))
+    const { handleInput, content, onCreateSessionChat } = useSessionChat({socket, room})
     const ref = useRef(null);
 
     useEffect(() => {
@@ -60,11 +61,11 @@ function SessionFeed({session}) {
                 }
 
             </section>
-            { auth ?
+            { checkIn && checkIn !== 'pending' ?
                 <ChatInput
                     handleInput={handleInput}
                     content={content}
-                    create={createSessionChat}
+                    create={onCreateSessionChat}
                 /> :
                 null
             }

@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import useLoading from "../hooks/useLoading";
 import useLocationServices from "../hooks/useLocationServices";
 import { getAuth, getMySettings } from "../store/auth";
@@ -31,7 +30,6 @@ function AppProvider({children}) {
   const { alerts, handleAlerts, removeAlerts } = useAlerts();
   const [ theme, setTheme ] = useState('light');
   const { currentTime } = useAppClock();
-  const dispatch = useDispatch();
   const { loading, setLoading } = useLoading();
 
   const goBack = (route) => {
@@ -63,7 +61,6 @@ function AppProvider({children}) {
           handleTheme,
           setLocationServices,
           navigate,
-          dispatch,
           setLoading,
           auth,
           goBack

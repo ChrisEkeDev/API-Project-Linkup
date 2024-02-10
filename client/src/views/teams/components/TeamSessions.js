@@ -26,7 +26,7 @@ function TeamSessions() {
             <ul className='team_session_list'>
                 {
                     sessions.map(session => (
-                        <li onClick={() => navigate(`/sessions/${session.id}`)} className='team_session_item'>
+                        <li key={session.id} onClick={() => navigate(`/sessions/${session.id}`)} className='team_session_item'>
                             <div className="float_left">
                                 <ProfileImage
                                     player={session.creator}

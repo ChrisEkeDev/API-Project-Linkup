@@ -5,13 +5,9 @@ import { format, parseISO, isSameDay } from 'date-fns';
 import { PiHeartBold, PiHeartFill } from 'react-icons/pi'
 import ProfileImage from '../profileImage';
 import './styles.scss'
-import { useSelector } from 'react-redux';
 
 function ChatMessage({chat}) {
     const { auth } = useApp();
-    const myLikes = useSelector(state => state.chats.myLikes)
-    const myLikesArr = Object.values(myLikes)
-    const chatLiked = myLikesArr.find(like => like.playerId === auth.id && chat.id === like.entityId)
     const today = new Date();
     const createdToday = isSameDay(parseISO(chat.createdAt), today);
     const chatDateFormat = createdToday ? 'p' : 'MM/dd  •  p';
@@ -31,10 +27,10 @@ function ChatMessage({chat}) {
             </div>
             <textarea className="chat_textarea" disabled={true} value={chat.content}></textarea>
         </div>
-        <div className='chat_likes'>
+        {/* <div className='chat_likes'>
           { chatLiked ? <PiHeartFill className="icon"/> : <PiHeartBold className='icon'/> }
           <p className='xs bold'>{chat.likes}</p>
-        </div>
+        </div> */}
     </li>
   )
 }

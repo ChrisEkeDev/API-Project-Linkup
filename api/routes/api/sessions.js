@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { CheckIn, Session, Player, Team, SessionImage, SessionChat, Like, sequelize } = require('../../db/models');
-const { Sequelize, Op, fn, col, literal } = require('sequelize');
+const { CheckIn, Session, Player, Team, SessionImage, SessionChat, Like } = require('../../db/models');
+const { sequelize, Op, fn, col, literal } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
 const { uploadMedia, deleteMedia } = require('../../utils/aws');
 const { validateCreateSession, validateEditSession } = require('./validation/expressValidations')
@@ -181,27 +181,6 @@ router.get('/:sessionId', async (req, res) => {
                     as: 'captain',
                     attributes: ['profileImage', 'name']
                 }]
-            },
-            {
-                model: SessionChat,
-                attributes: {
-                    include: [
-                        [fn('COUNT', col('Likes.id')), 'likes']
-                    ]
-                },
-                include: [
-                    {
-                        model: Player,
-                        attributes: ['name', 'profileImage']
-                    },
-                    {
-                        model: Like,
-                        attributes: [] // empty array means do not fetch columns from the Likes table
-                    }
-                ],
-                group: ['SessionChat.id', 'Player.name', 'Player.profileImage'],
-                order: [[literal("likes"), 'DESC']],
-                limit: 3
             }
         ]
     })
@@ -243,7 +222,7 @@ router.get('/:sessionId/current', requireAuth, async (req, res) => {
 
 ////////////////////////////////////////////////////////////////////
 
-// Create an Session
+// Create a Session
 
 ////////////////////
 router.post('/', requireAuth, uploadMedia, validateCreateSession, async (req, res) => {
@@ -344,15 +323,10 @@ router.put('/:sessionId', requireAuth, validateEditSession, async (req, res) => 
     const playerId = req.player.id;
     const { name, startDate, endDate, hostId, private } = req.body;
     const session = await Session.findByPk(sessionId);
-    const team = await Team.findByPk(hostId)
     console.log(session , hostId)
 
     if (!session) {
         return res.status(404).json(sessionNotFound)
-    }
-
-    if (!team) {
-        return res.status(404).json(teamNotFound)
     }
 
     const isAuthorized = playerId == session.creatorId;
@@ -729,7 +703,7 @@ router.get('/:sessionId/feed', async (req, res) => {
             },
             {
                 model: Like,
-                attributes: [] // empty array means do not fetch columns from the Likes table
+                attributes: []
             }
         ],
         group: ['SessionChat.id', 'Player.name', 'Player.profileImage'],
@@ -741,6 +715,40 @@ router.get('/:sessionId/feed', async (req, res) => {
         data: sessionFeed,
         error: null
     })
+})
+
+router.get('/:sessionId/feed/top-comments', async (req, res) => {
+    const { sessionId } = req.params;
+
+    const sessionFeed = await SessionChat.findAll({
+        where: { sessionId },
+        include: [
+            {
+                model: Player,
+                attributes: ['name', 'profileImage']
+            },
+            {
+                model: Like,
+                attributes: [],
+            }
+        ],
+        attributes: {
+            include: [
+                [fn('COUNT', col('Likes.id')), 'likes']
+            ]
+        },
+        group: ['SessionChat.id', 'Player.name', 'Player.profileImage'],
+        order: [[literal("likes"), 'DESC']],
+        limit: 3
+    })
+
+    return res.status(200).json({
+        status: 200,
+        message: null,
+        data: sessionFeed,
+        error: null
+    })
+
 })
 
 

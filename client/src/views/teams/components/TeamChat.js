@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
 import { base_animations, child_variants } from '../../../constants/animations';
 import IconButton from '../../../components/shared/button/IconButton'

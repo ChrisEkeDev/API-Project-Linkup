@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import useNewSession from './hooks/useNewSession';
+import useSession from './hooks/useSession';
 import Back from '../../components/shared/button/Back';
 import Input from '../../components/shared/inputs/textInput';
 import Button from '../../components/shared/button';
@@ -16,7 +16,6 @@ import LoadingData from '../../components/shared/loading';
 
 function NewSession() {
 
-
   const {
     sessionData,
     addressObject,
@@ -31,7 +30,7 @@ function NewSession() {
     onGetPlaces,
     createSessionLoading,
     onCreateSession,
-  } = useNewSession();
+  } = useSession({});
 
   if ( createSessionLoading) return <LoadingData />
 
@@ -75,20 +74,20 @@ function NewSession() {
             <Button
               label={
                 status === "loading" ? "Searching..."
-                : status === "success" ? "Success"
-                : status === 'fail' ? 'Try Again'
+                : status === "success" && addressConfirmed ? "Success"
+                : status === 'error' ? 'Try Again'
                 : "Search"
               }
               styles={`input_button ${
                 status === "loading" ? "reply"
                 : status === "success" ? "tertiary"
-                : status === 'fail' ? 'warning'
+                : status === 'error' ? 'warning'
                 : "tertiary"
               }`}
               icon={
                   status === "loading" ? CgSpinner
-                  : status === "success" ? PiCheckCircleBold
-                  : status === "fail" ? PiWarningBold
+                  : status === "success" && addressConfirmed ? PiCheckCircleBold
+                  : status === "error" ? PiWarningBold
                   : PiMagnifyingGlassBold
               }
               loading={ status === "loading" }

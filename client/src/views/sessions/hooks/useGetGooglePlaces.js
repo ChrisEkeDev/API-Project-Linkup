@@ -4,9 +4,17 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 function useGetGooglePlaces() {
     const [ query, setQuery ] = useState("");
+    const [ addressConfirmed, setAddressConfirmed ] = useState(false)
     const [ queryResults, setQueryResults ] = useState([]);
 
 
+    const resetConfirmation = () => {
+        setAddressConfirmed(false)
+    }
+
+    const handleConfirmation = (bool) => {
+        setAddressConfirmed(bool)
+    }
 
     const handleErrors = (newErrors) => {
         // handleAlerts(deleteTeamError)
@@ -19,16 +27,17 @@ function useGetGooglePlaces() {
 
     const {
         mutate: getPlaces,
-        isLoading: placesLoading
+        status
     } = useMutation({
         mutationFn: getGooglePlaces,
+        onMutate: resetConfirmation,
         onError: handleErrors,
         onSuccess: handleSuccess
     })
 
 
 
-    return { query, setQuery, placesLoading, getPlaces, queryResults }
+    return { query, setQuery, status, getPlaces, queryResults, addressConfirmed, handleConfirmation }
 }
 
 export default useGetGooglePlaces

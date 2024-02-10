@@ -2,12 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import Scroll from '../../../components/shared/scroll';
 import PlayerCheckins from './PlayerCheckins';
-import LatestMessages from '../../../components/shared/chat/LatestMessages';
+import SessionTopComments from './SessionTopComments';
 import { format, parseISO } from 'date-fns';
 import ProfileImage from '../../../components/shared/profileImage';
 
 function SessionDetails({session}) {
     const formatTime = format(parseISO(session.startDate), 'MMM dd, yyyy @ p')
+    const id = session.host?.id
 
     return (
         <Scroll>
@@ -18,7 +19,7 @@ function SessionDetails({session}) {
                 />
                 <div className='flex_column'>
                     {
-                        session.host.id ?
+                        id ?
                         <p className='sm'>Hosted by
                             <Link className="bold" to={`/teams/${session.host.id}`}>
                                 {session.host.name}
@@ -33,10 +34,7 @@ function SessionDetails({session}) {
                 </div>
             </div>
             <PlayerCheckins />
-            <LatestMessages
-                entity={session}
-            />
-
+            {/* <SessionTopComments /> */}
         </Scroll>
     )
 }

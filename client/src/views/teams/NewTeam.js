@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import useNewTeam from './hooks/useNewTeam';
+import useTeam from './hooks/useTeam';
 import LoadingData from '../../components/shared/loading';
 import Back from '../../components/shared/button/Back';
 import Input from '../../components/shared/inputs/textInput';
@@ -18,7 +18,7 @@ function NewTeam() {
         handleToggle,
         createTeamLoading,
         onCreateTeam
-    } = useNewTeam();
+    } = useTeam();
 
     if (createTeamLoading) return <LoadingData />
 

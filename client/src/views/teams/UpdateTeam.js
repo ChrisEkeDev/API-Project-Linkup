@@ -3,7 +3,7 @@ import { getTeam } from '../../store/teams';
 import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import useUpdateTeam from './hooks/useUpdateTeam';
+import useTeam from './hooks/useTeam';
 import Back from '../../components/shared/button/Back';
 import Input from '../../components/shared/inputs/textInput';
 import Button from '../../components/shared/button';
@@ -25,7 +25,7 @@ function UpdateTeam({team}) {
         handleToggle,
         updateTeamLoading,
         onUpdateTeam
-    } = useUpdateTeam(team);
+    } = useTeam({team});
 
     if ( updateTeamLoading ) return <LoadingData />
 
@@ -70,7 +70,10 @@ function UpdateTeam({team}) {
                 isModalOpen={isModalOpen}
                 onCloseModal={onCloseModal}
             >
-                <DeleteTeamModal team={team} close={onCloseModal} />
+                <DeleteTeamModal
+                    deleteTeam={onDeleteTeam}
+                    close={onCloseModal}
+                />
             </Modal>
         </motion.main>
     )

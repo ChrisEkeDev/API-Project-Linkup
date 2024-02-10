@@ -1,11 +1,8 @@
 import React from 'react'
 import { PiXBold, PiTrashBold} from 'react-icons/pi';
-import useDeleteSession from '../hooks/useDeleteSession'
 import Button from '../../../components/shared/button'
 
-function DeleteSessionModal({close}) {
-    const { onDeleteSession } = useDeleteSession();
-
+function DeleteSessionModal({close, deleteSession}) {
     return (
         <div className='modal_container'>
             <h2 className='md modal_title'>
@@ -26,7 +23,7 @@ function DeleteSessionModal({close}) {
                     label="Delete Session"
                     styles="warning"
                     icon={PiTrashBold}
-                    action={onDeleteSession}
+                    action={deleteSession}
                 />
             </div>
         </div>

@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import './styles.scss';
 import TeamItem from './components/TeamItem';

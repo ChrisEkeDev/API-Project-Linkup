@@ -10,8 +10,8 @@ export const searchSessions = async (query, sortBy) => {
     }
 }
 
-export const getSession = async (id) => {
-    const res = await csrfFetch(`/api/sessions/${id}`);
+export const getSession = async (sessionId) => {
+    const res = await csrfFetch(`/api/sessions/${sessionId}`);
     try {
         const json = await res.json();
         return json.data
@@ -20,8 +20,8 @@ export const getSession = async (id) => {
     }
 }
 
-export const getSessionCheckInStatus = async (id) => {
-    const res = await csrfFetch(`/api/sessions/${id}/current`);
+export const getSessionCheckInStatus = async (sessionId) => {
+    const res = await csrfFetch(`/api/sessions/${sessionId}/current`);
     try {
         const json = await res.json();
         return json.data
@@ -30,8 +30,8 @@ export const getSessionCheckInStatus = async (id) => {
     }
 }
 
-export const getSessionCheckIns = async (id) => {
-    const res = await csrfFetch(`/api/sessions/${id}/check-ins`)
+export const getSessionCheckIns = async (sessionId) => {
+    const res = await csrfFetch(`/api/sessions/${sessionId}/check-ins`)
     try {
         const json = await res.json();
         return json.data
@@ -40,8 +40,18 @@ export const getSessionCheckIns = async (id) => {
     }
 }
 
-export const getSessionFeed = async (id) => {
-    const res = await csrfFetch(`/api/sessions/${id}/feed`);
+export const getSessionFeed = async (sessionId) => {
+    const res = await csrfFetch(`/api/sessions/${sessionId}/feed`);
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const getSessionFeedTopComments = async (sessionId) => {
+    const res = await csrfFetch(`/api/sessions/${sessionId}/feed/top-comments`);
     try {
         const json = await res.json();
         return json.data
@@ -76,8 +86,8 @@ export const updateSession = async (data) => {
     }
 }
 
-export const deleteSession = async (id) => {
-    const res = await csrfFetch(`/api/sessions/${id}`, {
+export const deleteSession = async (sessionId) => {
+    const res = await csrfFetch(`/api/sessions/${sessionId}`, {
         method: 'DELETE'
     })
     try {
@@ -114,8 +124,8 @@ export const removeFromSession = async (data) => {
     }
 }
 
-export const checkInToSession = async (id) => {
-    const res = await csrfFetch(`/api/sessions/${id}/check-in`, {
+export const checkInToSession = async (sessionId) => {
+    const res = await csrfFetch(`/api/sessions/${sessionId}/check-in`, {
         method: 'POST'
     })
     try {
@@ -126,8 +136,46 @@ export const checkInToSession = async (id) => {
     }
 }
 
-export const checkOutOfSession = async (id) => {
-    const res = await csrfFetch(`/api/sessions/${id}/check-out`, {
+export const checkOutOfSession = async (sessionId) => {
+    const res = await csrfFetch(`/api/sessions/${sessionId}/check-out`, {
+        method: 'DELETE'
+    })
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const createSessionChat = async (data) => {
+    const res = await csrfFetch(`/api/sessions/${data.sessionId}/chat-feed`, {
+        method: 'POST',
+        body: JSON.stringify({content: data.content})
+    });
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const updateSessionChat = async (data) => {
+    const res = await csrfFetch(`/api/session-chats/${data.chatId}`, {
+        method: 'PUT',
+        body: JSON.stringify({content: data.content})
+    })
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const deleteSessionChat = async (chatId) => {
+    const res = await csrfFetch(`/api/session-chats/${chatId}`, {
         method: 'DELETE'
     })
     try {

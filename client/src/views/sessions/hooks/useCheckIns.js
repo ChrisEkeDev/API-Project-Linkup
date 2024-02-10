@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { addToSession, removeFromSession } from '../../../store/sessions';
 import { checkInAlerts } from '../../../constants/alerts';
 
-function useSessionCheckIns() {
+function useCheckIns() {
     const { id } = useParams();
     const client = useQueryClient();
     const { handleAlerts } = useApp();
@@ -48,16 +48,16 @@ function useSessionCheckIns() {
 
     const onRemoveFromSession = async (playerId) => {
         const data = { sessionId: id, playerId }
-        handleRemoveFromSession(id)
+        handleRemoveFromSession(data)
     }
 
     const onAddToSession = async (playerId) => {
         const data = { sessionId: id, playerId }
-        handleAddToSession(id)
+        handleAddToSession(data)
     }
 
     return { onRemoveFromSession, onAddToSession }
 }
 
 
-export default useSessionCheckIns;
+export default useCheckIns;

@@ -164,3 +164,41 @@ export const promoteToCoHost = async (data) => {
         console.error(error)
     }
 }
+
+export const createTeamChat = async (data) => {
+    const res = await csrfFetch(`/api/teams/${data.teamId}/chat-feed`, {
+        method: 'POST',
+        body: JSON.stringify({content: data.content})
+    });
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const updateTeamChat = async (data) => {
+    const res = await csrfFetch(`/api/team-chats/${data.id}`, {
+        method: 'PUT',
+        body: JSON.stringify({content: data.content})
+    })
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const deleteTeamChat = async (id) => {
+    const res = await csrfFetch(`/api/team-chats/${id}`, {
+        method: 'DELETE'
+    })
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}

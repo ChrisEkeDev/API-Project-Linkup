@@ -1,10 +1,8 @@
 import React from 'react'
 import { PiXBold, PiTrashBold} from 'react-icons/pi';
-import useDeleteTeam from '../hooks/useDeleteTeam'
 import Button from '../../../components/shared/button'
 
-function DeleteTeamModal({close}) {
-    const { onDeleteTeam } = useDeleteTeam();
+function DeleteTeamModal({close, deleteTeam}) {
 
     return (
         <div className='modal_container'>
@@ -26,7 +24,7 @@ function DeleteTeamModal({close}) {
                     label="Delete Team"
                     styles="warning"
                     icon={PiTrashBold}
-                    action={onDeleteTeam}
+                    action={deleteTeam}
                 />
             </div>
         </div>

@@ -1,14 +1,5 @@
 import { csrfFetch } from "./csrf";
 
-// TYPES
-
-const SET_AUTH = '/backcourts/auth/SET_AUTH';
-const REMOVE_AUTH = '/backcourts/auth/REMOVE_AUTH';
-const GET_AUTH = '/backcourts/auth/GET_AUTH';
-const GET_SETTINGS = '/backcourts/auth/GET_SETTINGS'
-const CHANGE_THEME_PREFERENCE = '/backcourts/auth/CHANGE_THEME_PREFERENCE'
-const CHANGE_LOCATION_PREFERENCE = '/backcourts/auth/CHANGE_LOCATION_PREFERENCE'
-const CHANGE_NOTIFICATION_PREFERENCE = '/backcourts/auth/CHANGE_NOTIFICATION_PREFERENCE'
 
 export const signIn = async (playerData) => {
     const res = await csrfFetch('/api/auth', {
@@ -133,18 +124,70 @@ export const getMyLikes = async () => {
     }
 }
 
-const actionChangeThemePreference = (settings) => ({
-    type: CHANGE_THEME_PREFERENCE,
-    payload: settings
-})
-const actionChangeLocationPreference = (settings) => ({
-    type: CHANGE_LOCATION_PREFERENCE,
-    payload: settings
-})
-const actionChangeNotificationPreference = (settings) => ({
-    type: CHANGE_NOTIFICATION_PREFERENCE,
-    payload: settings
-})
+export const addLike = async (data) => {
+    const res = await csrfFetch(`/api/likes`, {
+        method: 'POST',
+        body: JSON.stringify(data)
+    });
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const removeLike = async (data) => {
+    const res = await csrfFetch(`/api/likes`, {
+        method: 'DELETE',
+        body: JSON.stringify(data)
+    });
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const changeTheme = async (value) => {
+    const res = await csrfFetch('/api/settings/theme', {
+        method: 'PUT',
+        body: JSON.stringify({value})
+    })
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const changeLocation = async (value) => {
+    const res = await csrfFetch('/api/settings/locations', {
+        method: 'PUT',
+        body: JSON.stringify({value})
+    })
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const changeNotifications = async (value) => {
+    const res = await csrfFetch('/api/settings/notifications', {
+        method: 'PUT',
+        body: JSON.stringify({value})
+    })
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
 
 // GOOGLE
 export const googleAuthSignIn = () => async dispatch => {
@@ -157,80 +200,3 @@ export const googleAuthSignIn = () => async dispatch => {
         console.error(error)
     }
 }
-
-
-export const thunkChangeThemePreference = (value) => async dispatch => {
-    const res = await csrfFetch('/api/settings/theme', {
-        method: 'PUT',
-        body: JSON.stringify({value})
-    })
-    try {
-        const jsonResponse = await res.json();
-        dispatch(actionChangeThemePreference(jsonResponse.data))
-        return jsonResponse;
-    } catch(error) {
-        console.error(error);
-    }
-}
-
-export const thunkChangeLocationPreference = (value) => async dispatch => {
-    const res = await csrfFetch('/api/settings/locations', {
-        method: 'PUT',
-        body: JSON.stringify({value})
-    })
-    try {
-        const jsonResponse = await res.json();
-        dispatch(actionChangeLocationPreference(jsonResponse.data))
-        return jsonResponse;
-    } catch(error) {
-        console.error(error);
-    }
-}
-
-export const thunkChangeNotificationPreference = (value) => async dispatch => {
-    const res = await csrfFetch('/api/settings/notifications', {
-        method: 'PUT',
-        body: JSON.stringify({value})
-    })
-    try {
-        const jsonResponse = await res.json();
-        dispatch(actionChangeNotificationPreference(jsonResponse.data))
-        return jsonResponse;
-    } catch(error) {
-        console.error(error);
-    }
-}
-
-
-
-// REDUCER
-
-const initialState = { player: null, settings: {} };
-
-const authReducer = (state = initialState, action) => {
-    switch(action.type) {
-        case SET_AUTH:
-        case GET_AUTH: {
-            const newState = { ...state };
-            newState.player = action.payload;
-            return newState
-        };
-        case REMOVE_AUTH: {
-            const newState = { ...state };
-            newState.player = null;
-            return newState
-        };
-        case GET_SETTINGS:
-        case CHANGE_THEME_PREFERENCE:
-        case CHANGE_LOCATION_PREFERENCE:
-        case CHANGE_NOTIFICATION_PREFERENCE: {
-            const newState = { ...state };
-            newState.settings = action.payload;
-            return newState
-        }
-        default:
-            return state;
-    }
-}
-
-export default authReducer;

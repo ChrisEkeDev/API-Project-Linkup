@@ -21,9 +21,9 @@ function SingleSession() {
     const { id } = useParams();
     const [tabView, setTabView ] = useState('details')
     const { auth, navigate } = useApp();
-    const { data: session, error: sessionErr, isLoading: sessionLoading } = useQuery(['sessions', id], () => getSession(id));
-    const { data: checkIn, isLoading: checkInLoading } = useQuery(['check-in-status'], () => getSessionCheckInStatus(id))
-    const { onCheckIn, onCheckOut } = useCheckIn()
+    const { data: session, error: sessionErr, isLoading: sessionLoading } = useQuery(['session', id], () => getSession(id));
+    const { data: checkIn, isLoading: checkInStatusLoading } = useQuery(['check-in-status'], () => getSessionCheckInStatus(id))
+    const { onCheckIn, onCheckOut, checkInLoading, checkOutLoading } = useCheckIn()
     const isCreator = auth?.id === session?.creator.id;
 
     if (sessionLoading) return <LoadingData />
@@ -60,20 +60,27 @@ function SingleSession() {
                                     : 'primary'
                                 }
                                 icon={
+                                    checkInLoading || checkOutLoading ?
+                                    CgSpinner :
                                     checkIn ?
-                                    checkIn === 'pending'
-                                    ? CgSpinner
-                                    : TbUserMinus
-                                    : TbUserPlus
+                                    checkIn === 'pending' ?
+                                    CgSpinner :
+                                    TbUserMinus :
+                                    TbUserPlus
                                   }
-                                label={checkIn ?
-                                    checkIn === 'pending'
-                                    ? 'Awaiting Approval'
-                                    : 'Leave Session'
-                                    : 'Join Session'
+                                label={
+                                    checkInLoading ?
+                                    'Checking In...' :
+                                    checkOutLoading ?
+                                    'Checking Out...' :
+                                    checkIn ?
+                                    checkIn === 'pending' ?
+                                    'Awaiting Approval' :
+                                    'Leave Session':
+                                    'Join Session'
                                 }
                                 action={checkIn ? onCheckOut : onCheckIn }
-                                loading={checkIn === 'pending'}
+                                loading={checkIn === 'pending' || checkInLoading || checkOutLoading }
                             />
                         )
                     }
@@ -100,41 +107,5 @@ function SingleSession() {
     </motion.main>
     )
 }
-
-
-// function SingleSessionWrapper() {
-//     const { id } = useParams();
-//     const { dispatch } = useApp();
-//     const [ loading, setLoading ] = useState(true);
-//     const singleSession = useSelector(state => state.sessions.singleSession);
-//     const sessionCheckIns = useSelector(state => state.checkIns.sessionCheckIns)
-//     const sessionFeed = useSelector(state => state.chats.sessionFeed)
-
-//     useEffect(() => {
-//         const loadSession = async () => {
-//             try {
-//                 const singleSessionData = await dispatch(thunkGetSingleSession(id));
-//                 const sessionCheckInData = await dispatch(thunkGetSessionCheckIns(id))
-//                 const sessionFeedData = await dispatch(thunkGetSessionFeed(id))
-//                 if (
-//                     singleSessionData.status === 200 && singleSession
-//                     && sessionCheckInData.status === 200 && sessionCheckIns
-//                     && sessionFeedData.status === 200 && sessionFeed) {
-//                     setLoading(false);
-//                 }
-//             } catch(e) {
-//                 console.log(e)
-//             }
-//         }
-//         loadSession();
-
-//     }, [dispatch, id])
-
-//     if (loading) return <LoadingData/>
-
-//     return (
-//         <SingleSession session={singleSession} checkIns={sessionCheckIns} feed={sessionFeed}/>
-//     )
-// }
 
 export default SingleSession
