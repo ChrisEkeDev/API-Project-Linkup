@@ -1,88 +1,191 @@
-// import React, { useState, useEffect, useRef } from 'react'
-// import { useApp } from '../../../context/AppContext'
-// import { thunkUpdateTeamChat, thunkDeleteTeamChat, thunkGetTeamFeed, thunkGetMyLikes, thunkAddLike, thunkRemoveLike } from "../../../store/chats";
-// import { useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef } from 'react'
+import { useMutation, useQueryClient } from 'react-query'
+import { useApp } from '../../../context/AppContext';
+import { useParams } from 'react-router-dom';
+import { addLike, removeLike } from '../../../store/auth';
+import { createTeamChat, updateTeamChat, deleteTeamChat } from '../../../store/teams';
 
-// function useTeamChat(props) {
-//     const teamId = useSelector(state => state.teams.singleTeam).id;
-//     const {chat, socket, room} = props;
-//     const { dispatch } = useApp();
-//     const [content, setContent] = useState(chat.content);
-//     const [editing, setEditing] = useState(false);
-//     const ref = useRef(null);
 
-//     const handleClickOutside = (e) => {
-//         if (ref.current && !ref.current.contains(e.target)) {
-//             setEditing(false)
-//         }
-//     }
+function useTeamChat(props) {
+    const ref = useRef(null);
+    const client = useQueryClient();
+    const { id } = useParams();
+    const { handleAlerts } = useApp();
+    const { chat, socket, room } = props;
+    const [ content, setContent ] = useState(chat?.content || '');
+    const [ editing, setEditing ] = useState(false);
 
-//     const handleInput = async (x) => {
-//         setContent(x.target.value)
-//     }
+    const handleClickOutside = (e) => {
+        if (ref.current && !ref.current.contains(e.target)) {
+            setEditing(false)
+        }
+    }
 
-//     const updateTeamChat = async () => {
-//         try {
-//             const response = await dispatch(thunkUpdateTeamChat(chat.id, content));
-//             socket.emit('update_message', room);
-//             setEditing(false)
-//             if (response.status >= 400) {
-//                 throw new Error(response.error)
-//             }
-//         } catch(error) {
-//             console.log(error)
-//         }
-//     }
+    const handleInput = async (x) => {
+        setContent(x.target.value)
+    }
 
-//     const deleteTeamChat = async () => {
-//         try {
-//             const response = await dispatch(thunkDeleteTeamChat(chat.id));
-//             socket.emit('delete_message', room);
-//             setEditing(false)
-//             if (response.status >= 400) {
-//                 throw new Error(response.error)
-//             }
-//         } catch(error) {
-//             console.log(error)
-//         }
-//     }
 
-//     const addLike = async () => {
-//         const data = { entityId: chat.id, entityType: 'team-chat'}
-//         try {
-//             const response = await dispatch(thunkAddLike(data));
-//             await dispatch(thunkGetMyLikes())
-//             await dispatch(thunkGetTeamFeed(teamId))
-//             if (response.status >= 400) {
-//                 throw new Error(response.error)
-//             }
-//         } catch(error) {
-//             console.log(error)
-//         }
-//     }
+    const handleCreateTeamChatSuccess = () => {
+        client.invalidateQueries(['team-feed'])
+    }
 
-//     const removeLike = async () => {
-//         const data = { entityId: chat.id }
-//         try {
-//             const response = await dispatch(thunkRemoveLike(data));
-//             await dispatch(thunkGetMyLikes())
-//             await dispatch(thunkGetTeamFeed(teamId))
-//             if (response.status >= 400) {
-//                 throw new Error(response.error)
-//             }
-//         } catch(error) {
-//             console.log(error)
-//         }
-//     }
+    const handleCreateTeamChatError = () => {
+        handleAlerts({})
+    }
 
-//     useEffect(() => {
-//         document.addEventListener('click', handleClickOutside, true)
-//         return () => {
-//             document.removeEventListener('click', handleClickOutside, true)
-//         }
-//     }, [])
+    const {
+        mutate: handleCreateTeamChat,
+        isLoading: createTeamChatLoading
+    } = useMutation({
+        mutationFn: createTeamChat,
+        onError: handleCreateTeamChatError,
+        onSuccess: handleCreateTeamChatSuccess,
 
-//     return { ref, content, handleInput, updateTeamChat, deleteTeamChat, editing, setEditing, addLike, removeLike  }
-// }
+    })
 
-// export default useTeamChat
+    const onCreateTeamChat = async () => {
+        try {
+            const data = { teamId: id, content }
+            handleCreateTeamChat(data)
+            socket.emit('new_message', room);
+            setContent("")
+        } catch(e) {
+            console.error(e)
+        }
+    }
+
+    const handleUpdateTeamChatSuccess = () => {
+        client.invalidateQueries(['team-feed'])
+    }
+
+    const handleUpdateTeamChatError = () => {
+        handleAlerts({})
+    }
+
+    const {
+        mutate: handleUpdateTeamChat,
+        isLoading: updateTeamChatLoading
+    } = useMutation({
+        mutationFn: updateTeamChat,
+        onError: handleUpdateTeamChatError,
+        onSuccess: handleUpdateTeamChatSuccess,
+
+    })
+
+    const onUpdateTeamChat = async () => {
+        try {
+            const data = {chatId: chat.id, content }
+            handleUpdateTeamChat(data);
+            socket.emit('update_message', room);
+            setEditing(false)
+        } catch(e) {
+            console.error(e)
+        }
+    }
+
+    const handleDeleteTeamChatSuccess = () => {
+        client.invalidateQueries(['team-feed'])
+    }
+
+    const handleDeleteTeamChatError = () => {
+        handleAlerts({})
+    }
+
+    const {
+        mutate: handleDeleteTeamChat,
+        isLoading: deleteTeamChatLoading
+    } = useMutation({
+        mutationFn: deleteTeamChat,
+        onError: handleDeleteTeamChatError,
+        onSuccess: handleDeleteTeamChatSuccess,
+
+    })
+
+    const onDeleteTeamChat = async () => {
+        try {
+            handleDeleteTeamChat(chat.id)
+            socket.emit('delete_message', room);
+            setEditing(false)
+        } catch(e) {
+            console.error(e)
+        }
+    }
+
+    const handleAddTeamChatLikeSuccess = () => {
+        client.invalidateQueries(['team-feed'])
+        client.invalidateQueries(['my-likes'])
+    }
+
+    const handleAddTeamChatLikeError = () => {
+        handleAlerts({})
+    }
+
+    const {
+        mutate: handleAddTeamChatLike
+    } = useMutation({
+        mutationFn: addLike,
+        onError: handleAddTeamChatLikeError,
+        onSuccess: handleAddTeamChatLikeSuccess,
+
+    })
+
+    const onAddTeamChatLike = async () => {
+        try {
+            const data = { entityId: chat.id, entityType: 'team-chat'}
+            handleAddTeamChatLike(data)
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    const handleRemoveTeamChatLikeSuccess = () => {
+        client.invalidateQueries(['team-feed'])
+        client.invalidateQueries(['my-likes'])
+    }
+
+    const handleRemoveTeamChatLikeError = () => {
+        handleAlerts({})
+    }
+
+    const {
+        mutate: handleRemoveTeamChatLike
+    } = useMutation({
+        mutationFn: removeLike,
+        onError: handleRemoveTeamChatLikeError,
+        onSuccess: handleRemoveTeamChatLikeSuccess,
+
+    })
+
+    const onRemoveTeamChatLike = async () => {
+        try {
+            const data = { entityId: chat.id }
+            handleRemoveTeamChatLike(data)
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside, true)
+        return () => {
+            document.removeEventListener('click', handleClickOutside, true)
+        }
+    }, [])
+
+    return {
+        ref,
+        content,
+        handleInput,
+        editing,
+        setEditing,
+        onUpdateTeamChat,
+        onCreateTeamChat,
+        onDeleteTeamChat,
+        onAddTeamChatLike,
+        onRemoveTeamChatLike
+    }
+
+}
+
+export default useTeamChat

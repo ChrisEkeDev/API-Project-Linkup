@@ -4,16 +4,20 @@ import { base_animations, child_variants } from '../../../constants/animations';
 import IconButton from '../../../components/shared/button/IconButton'
 import { useApp } from '../../../context/AppContext'
 import { format , parseISO, isSameDay } from 'date-fns'
+import Modal from '../../../components/shared/modal';
+import useModal from '../../../hooks/useModal';
 import useSessionChat from "../hooks/useSessionChat"
 import ProfileImage from '../../../components/shared/profileImage'
 import { PiHeartBold, PiHeartFill, PiPencilSimpleLineFill, PiXBold, PiCheckFatFill, PiTrashBold  } from "react-icons/pi";
 import { useQuery } from 'react-query';
 import { getMyLikes } from '../../../store/auth';
+import DeleteSessionChatModal from './DeleteSessionChatModal';
 
 function SessionChat(props) {
     const { auth } = useApp();
     const { chat, room, socket } = props;
     const { data: myLikes } = useQuery(['my-likes'], getMyLikes);
+    const { isModalOpen, onOpenModal, onCloseModal } = useModal();
     const chatLiked = myLikes?.find(like => like.playerId === auth.id && chat.id === like.entityId)
     const isAuth = auth.id === chat.playerId
     const today = new Date();
@@ -40,6 +44,7 @@ function SessionChat(props) {
     }, [content]);
 
     return (
+        <>
         <motion.li
             variants={child_variants}
             {...base_animations}
@@ -90,7 +95,7 @@ function SessionChat(props) {
                         />
                         <IconButton
                             icon={PiTrashBold}
-                            action={onDeleteSessionChat}
+                            action={onOpenModal}
                             styles="small_button"
                         />
                     </>
@@ -102,6 +107,17 @@ function SessionChat(props) {
                 <p className='xs bold'>{chat.likes}</p>
             </div>
         </motion.li>
+        <Modal
+            isModalOpen={isModalOpen}
+            onCloseModal={onCloseModal}
+        >
+            <DeleteSessionChatModal
+                chat={chat}
+                deleteChat={onDeleteSessionChat}
+                close={onCloseModal}
+            />
+        </Modal>
+        </>
     )
 }
 

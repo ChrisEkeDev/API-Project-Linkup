@@ -4,6 +4,8 @@ import { list_item_animations, slide_variants, child_variants } from '../../../c
 import ProfileImage from '../../../components/shared/profileImage'
 import IconButton from '../../../components/shared/button/IconButton'
 import useTeamMemberships from '../hooks/useTeamMemberships';
+import Modal from '../../../components/shared/modal';
+import useModal from '../../../hooks/useModal';
 import { format, parseISO } from 'date-fns';
 import { TbUserCheck  , TbUserUp , TbUserOff  } from 'react-icons/tb'
 
@@ -21,7 +23,7 @@ function MemberItem({member, status}) {
 
 
     return (
-
+        <>
     <motion.li  variants={child_variants} {...list_item_animations} className='member_item'>
         <div className='float_left'>
         <ProfileImage player={member.Player}/>
@@ -84,7 +86,18 @@ function MemberItem({member, status}) {
         </div> :
         null
         }
-    </motion.li>
+        </motion.li>
+        <Modal
+            isModalOpen={isModalOpen}
+            onCloseModal={onCloseModal}
+        >
+        <DeleteMembershipModal
+            member={member}
+            deleteMembership={() => onRemoveFromTeam(member.Player.id)}
+            close={onCloseModal}
+        />
+        </Modal>
+        </>
     )
 }
 

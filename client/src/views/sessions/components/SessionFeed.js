@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { parent_variants, base_animations } from '../../../constants/animations';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
-import { useApp } from '../../../context/AppContext'
 import useSessionChat from '../hooks/useSessionChat';
 import useSessionChatWebSocket from '../hooks/useSessionChatWebSocket'
 import SessionChat from './SessionChat'
@@ -15,7 +14,6 @@ import { getSessionFeed, getSessionCheckInStatus } from '../../../store/sessions
 
 function SessionFeed({session}) {
     const { id } = useParams();
-    const { auth } = useApp();
     const { socket, room } = useSessionChatWebSocket(session);
     const { data: feed, error: feedErr, isLoading: feedLoading } = useQuery(['session-feed', id], () => getSessionFeed(id));
     const { data: checkIn } = useQuery(['check-in-status'], () => getSessionCheckInStatus(id))

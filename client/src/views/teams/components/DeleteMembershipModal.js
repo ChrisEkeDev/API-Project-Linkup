@@ -1,17 +1,18 @@
 import React from 'react'
-import { PiXBold, PiTrashBold} from 'react-icons/pi';
 import Button from '../../../components/shared/button'
+import { format, parseISO } from 'date-fns';
+import ProfileImage from '../../../components/shared/profileImage'
 
-function DeleteTeamModal({close, deleteTeam}) {
-
+function DeleteMembershipModal({close, member, deleteMembership}) {
+    const { name } = member.Player
+    const formatDate = format(parseISO(member.createdAt), 'MM/yyyy')
     return (
         <div className='modal_container'>
             <h2 className='md modal_title'>
-                Are you sure you want to delete this team?
+                Are you sure you want to remove {name} from this team?
             </h2>
-            <p className='sm modal_body'>
-                This cannot be undone. All messages and data shared in the team will
-                be deleted. Forever. Do you still want to do it?
+            <p className="sm modal_body">
+                This cant be undone and {name} will have to join the team again.
             </p>
             <div className='float_left'>
                 <ProfileImage player={member.Player}/>
@@ -31,13 +32,13 @@ function DeleteTeamModal({close, deleteTeam}) {
             </div>
             <div className='modal_actions'>
                 <Button
-                    label="Keep Team"
+                    label="Keep on Team"
                     styles="tertiary"
                     icon={PiXBold}
                     action={close}
                 />
                 <Button
-                    label="Delete Team"
+                    label="Remove from Team"
                     styles="warning"
                     icon={PiTrashBold}
                     action={deleteTeam}
@@ -47,4 +48,4 @@ function DeleteTeamModal({close, deleteTeam}) {
     )
 }
 
-export default DeleteTeamModal
+export default DeleteMembershipModal

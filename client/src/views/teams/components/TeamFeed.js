@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { parent_variants, base_animations } from '../../../constants/animations';
-import useNewTeamChat from '../hooks/useNewTeamChat';
+import useTeamChat from '../hooks/useTeamChat';
 import useTeamChatWebSocket from '../hooks/useTeamChatWebSocket'
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -10,15 +10,14 @@ import ChatInput from '../../../components/shared/inputs/ChatInput'
 import Scroll from '../../../components/shared/scroll';
 import LoadingData from '../../../components/shared/loading';
 import { PiChatsCircle } from 'react-icons/pi'
-import { getTeamFeed } from '../../../store/teams';
-import { useApp } from '../../../context/AppContext'
+import { getTeamFeed, getTeamMembershipStatus } from '../../../store/teams';
 
 function TeamFeed({team}) {
     const { id } = useParams();
-    const { auth } = useApp();
     const { socket, room } = useTeamChatWebSocket(team);
     const { data: feed, error: feedErr, isLoading: feedLoading } = useQuery(['team-feed', id], () => getTeamFeed(id));
-    const { handleInput, content, createTeamChat } = useNewTeamChat({team, socket, room});
+    const { data: membership } = useQuery(['membership-status'], () => getTeamMembershipStatus(id))
+    const { handleInput, content, onCreateTeamChat } = useTeamChat({socket, room})
     const ref = useRef(null)
 
     useEffect(() => {
@@ -61,11 +60,11 @@ function TeamFeed({team}) {
 
             </section>
             {
-                auth ?
+                membership && membership !== 'pending' ?
                 <ChatInput
                     handleInput={handleInput}
                     content={content}
-                    create={createTeamChat}
+                    create={onCreateTeamChat}
                 /> :
                 null
             }

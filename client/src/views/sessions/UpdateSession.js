@@ -29,7 +29,6 @@ function UpdateSession({session}) {
         onUpdateSession,
         onDeleteSession
     } = useSession({session});
-    console.log(errors)
 
     if ( updateSessionLoading ) return <LoadingData />
 
