@@ -18,8 +18,8 @@ function SessionChat(props) {
     const { chat, room, socket } = props;
     const { data: myLikes } = useQuery(['my-likes'], getMyLikes);
     const { isModalOpen, onOpenModal, onCloseModal } = useModal();
-    const chatLiked = myLikes?.find(like => like.playerId === auth.id && chat.id === like.entityId)
-    const isAuth = auth.id === chat.playerId
+    const chatLiked = myLikes?.find(like => like.playerId === auth?.id && chat.id === like.entityId)
+    const isAuth = auth?.id === chat.playerId
     const today = new Date();
     const createdToday = isSameDay(parseISO(chat.createdAt), today);
     const chatDateFormat = createdToday ? 'p' : 'MM/dd  •  p';

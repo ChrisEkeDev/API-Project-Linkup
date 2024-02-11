@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { list_item_animations, slide_variants, child_variants } from '../../../constants/animations';
 import ProfileImage from '../../../components/shared/profileImage'
 import IconButton from '../../../components/shared/button/IconButton'
+import DeleteMembershipModal from './DeleteMembershipModal';
 import useTeamMemberships from '../hooks/useTeamMemberships';
 import Modal from '../../../components/shared/modal';
 import useModal from '../../../hooks/useModal';
@@ -19,6 +20,7 @@ function MemberItem({member, status}) {
     const isMemberPending = member.status === 'pending';
     const isMemberMember = member.status === 'member';
     const showStatus = isMemberHost || isMemberCoHost;
+    const { isModalOpen, onOpenModal, onCloseModal } = useModal();
     const { onAddToTeam, onPromoteToCoHost, onRemoveFromTeam }= useTeamMemberships();
 
 

@@ -55,6 +55,13 @@ const playerNotAuthorized = {
     error: "You are not authorized to make this request"
 }
 
+const playerNotFound = {
+    status: 403,
+    message: "not authorized",
+    data: null,
+    error: "The 'playerId' is not recognized as a valid entity"
+}
+
 const teamNotFound = {
     status: 404,
     message: "Team couldn't be found",
@@ -91,6 +98,7 @@ module.exports = {
     sessionNotFound,
     teamNotFound,
     chatNotFound,
+    playerNotFound,
     cantDeleteMembership,
     membershipNotFound,
     membershipAlreadyExists,

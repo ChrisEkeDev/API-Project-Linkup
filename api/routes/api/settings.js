@@ -24,14 +24,13 @@ router.get('/current', requireAuth, async(req, res) => {
 
 router.put('/theme', requireAuth, async(req, res) => {
     const playerId = req.player.id
-    const { value } = req.body;
     const settings = await PlayerSettings.findOne({
         where: { playerId }
     })
     if (!settings) {
         return res.status(404).json(settingsNotFound)
     }
-    settings.set({theme: value})
+    settings.set({theme: settings.theme ? false : true})
     settings.save();
     return res.status(200).json({
         status: 200,
@@ -43,14 +42,13 @@ router.put('/theme', requireAuth, async(req, res) => {
 
 router.put('/locations', requireAuth, async(req, res) => {
     const playerId = req.player.id
-    const { value } = req.body;
     const settings = await PlayerSettings.findOne({
         where: { playerId }
     })
     if (!settings) {
         return res.status(404).json(settingsNotFound)
     }
-    settings.set({locations: value})
+    settings.set({locations: settings.locations ? false : true})
     settings.save();
     return res.status(200).json({
         status: 200,
@@ -62,11 +60,10 @@ router.put('/locations', requireAuth, async(req, res) => {
 
 router.put('/notifications', requireAuth, async(req, res) => {
     const playerId = req.player.id
-    const { value } = req.body;
     const settings = await PlayerSettings.findOne({
         where: { playerId }
     })
-    settings.set({notifications: value})
+    settings.set({notifications: settings.notifications ? false : true})
     settings.save();
     return res.status(200).json({
         status: 200,

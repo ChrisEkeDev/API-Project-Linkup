@@ -1,4 +1,3 @@
-import React from 'react'
 import { useApp } from '../../../context/AppContext';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQueryClient } from 'react-query';

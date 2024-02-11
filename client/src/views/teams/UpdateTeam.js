@@ -24,7 +24,8 @@ function UpdateTeam({team}) {
         handleInput,
         handleToggle,
         updateTeamLoading,
-        onUpdateTeam
+        onUpdateTeam,
+        onDeleteTeam
     } = useTeam({team});
 
     if ( updateTeamLoading ) return <LoadingData />

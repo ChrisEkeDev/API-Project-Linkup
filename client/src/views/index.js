@@ -5,9 +5,14 @@ export { default as PageNotFound } from './pageNotFound'
 export { default as Home } from './home'
 export { default as CheckIns } from './checkins'
 export { default as AppRouter } from '../routers/AppRouter'
+export { default as Search } from './search'
+
 export { default as ProfileRouter } from '../routers/ProfileRouter'
 export { default as Profile } from './profile'
-export { default as Search } from './search'
+export { default as UpdateProfile } from './profile/UpdateProfile'
+
+export { default as SettingsRouter } from '../routers/SettingsRouter'
+export { default as Settings } from './settings'
 
 export { default as SessionsRouter } from '../routers/SessionsRouter'
 export { default as Sessions } from './sessions'

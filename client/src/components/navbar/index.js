@@ -2,38 +2,23 @@ import React from 'react'
 import { NavLink } from 'react-router-dom';
 import './styles.scss';
 import * as ROUTES from '../../constants/routes';
+import SignOutModal from './components/SignOutModal';
 import IconButton from '../shared/button/IconButton'
 import ProfileImage from '../shared/profileImage';
 import { useApp } from '../../context/AppContext';
+import useAuth from '../../views/auth/hooks/useAuth';
 import { RiBasketballFill } from "react-icons/ri";
+import Modal from '../shared/modal'
+import useModal from '../../hooks/useModal'
 import { TbSearch,TbUsersGroup , TbSettings, TbCalendarDue, TbBallBasketball, TbLogin2, TbLogout   } from "react-icons/tb";
-import { signOut } from '../../store/auth';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 function NavBar() {
-    const client = useQueryClient();
+    const { onSignOut } = useAuth()
+    const { onOpenModal, onCloseModal, isModalOpen } = useModal();
     const { auth, navigate } = useApp();
 
-    const handleSuccess = (data) => {
-        client.setQueryData(['auth'], data)
-        client.invalidateQueries(['auth'], { exact: true })
-        navigate('/sign-in')
-    }
-
-    const handleErrors = () => {
-        // handleAlerts
-    }
-
-    const {
-        mutate: handleSignOut,
-        isLoading: signOutLoading
-    } = useMutation({
-        mutationFn: signOut,
-        onError: handleErrors,
-        onSuccess: handleSuccess,
-    })
-
     return (
+        <>
         <nav>
             <div className='app_nav'>
                 <div className='app_nav_top'>
@@ -76,12 +61,12 @@ function NavBar() {
                             </NavLink>
                         </div>
                         <div title="My Settings" className='app_link'>
-                            <NavLink to={ROUTES.PROFILE} className="nav_link" activeClassName="active_link">
+                            <NavLink to={ROUTES.SETTINGS} className="nav_link" activeClassName="active_link">
                                 <TbSettings className='nav_icon'/>
                             </NavLink>
                         </div>
                         <div title="Sign Out" className='app_link'>
-                            <div onClick={handleSignOut} className="nav_link" activeClassName="active_link">
+                            <div onClick={onOpenModal} className="nav_link" activeClassName="active_link">
                                 <TbLogout className='nav_icon'/>
                             </div>
                         </div>
@@ -96,6 +81,16 @@ function NavBar() {
                 </div>
             </div>
         </nav>
+        <Modal
+            isModalOpen={isModalOpen}
+            onCloseModal={onCloseModal}
+        >
+            <SignOutModal
+                signOut={onSignOut}
+                close={onCloseModal}
+            />
+        </Modal>
+        </>
     )
 }
 

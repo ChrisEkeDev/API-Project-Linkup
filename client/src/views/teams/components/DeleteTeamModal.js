@@ -1,8 +1,13 @@
 import React from 'react'
 import { PiXBold, PiTrashBold} from 'react-icons/pi';
 import Button from '../../../components/shared/button'
+import ProfileImage from '../../../components/shared/profileImage';
+import { format, parseISO } from 'date-fns';
 
-function DeleteTeamModal({close, deleteTeam}) {
+
+function DeleteTeamModal({close, deleteTeam, member}) {
+    const { name } = member.Player;
+    const formatDate = format(parseISO(member.createdAt), 'MM/yyyy')
 
     return (
         <div className='modal_container'>

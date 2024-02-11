@@ -61,7 +61,7 @@ export const getAuth = async () => {
     }
 }
 
-export const getMyTeams= async (id) => {
+export const getMyTeams = async (id) => {
     const res = await csrfFetch(`/api/teams/current`);
     try {
         const json = await res.json();
@@ -150,7 +150,7 @@ export const removeLike = async (data) => {
     }
 }
 
-export const changeTheme = async (value) => {
+export const toggleThemes = async (value) => {
     const res = await csrfFetch('/api/settings/theme', {
         method: 'PUT',
         body: JSON.stringify({value})
@@ -163,7 +163,7 @@ export const changeTheme = async (value) => {
     }
 }
 
-export const changeLocation = async (value) => {
+export const toggleLocations = async (value) => {
     const res = await csrfFetch('/api/settings/locations', {
         method: 'PUT',
         body: JSON.stringify({value})
@@ -176,7 +176,7 @@ export const changeLocation = async (value) => {
     }
 }
 
-export const changeNotifications = async (value) => {
+export const toggleNotifications = async (value) => {
     const res = await csrfFetch('/api/settings/notifications', {
         method: 'PUT',
         body: JSON.stringify({value})

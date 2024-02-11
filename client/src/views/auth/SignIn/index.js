@@ -24,7 +24,6 @@ function SignIn() {
         onSignInGuest
     } = useSignIn();
 
-    if (auth !== null) return <Redirect to='/search'></Redirect>
     if (signInLoading || signInGuestLoading) return <LoadingData/>
 
     return (

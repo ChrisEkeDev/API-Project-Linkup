@@ -1,5 +1,6 @@
 import React from 'react'
 import Button from '../../../components/shared/button'
+import { PiXBold, PiTrashBold } from 'react-icons/pi'
 
 function DeleteTeamChatModal({chat, deleteChat, close}) {
   return (

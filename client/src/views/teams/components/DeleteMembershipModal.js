@@ -2,10 +2,12 @@ import React from 'react'
 import Button from '../../../components/shared/button'
 import { format, parseISO } from 'date-fns';
 import ProfileImage from '../../../components/shared/profileImage'
+import { PiXBold, PiTrashBold} from 'react-icons/pi';
 
 function DeleteMembershipModal({close, member, deleteMembership}) {
     const { name } = member.Player
     const formatDate = format(parseISO(member.createdAt), 'MM/yyyy')
+
     return (
         <div className='modal_container'>
             <h2 className='md modal_title'>
@@ -41,7 +43,7 @@ function DeleteMembershipModal({close, member, deleteMembership}) {
                     label="Remove from Team"
                     styles="warning"
                     icon={PiTrashBold}
-                    action={deleteTeam}
+                    action={deleteMembership}
                 />
             </div>
         </div>

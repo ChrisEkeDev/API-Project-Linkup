@@ -1,8 +1,8 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import useLoading from "../hooks/useLoading";
 import useLocationServices from "../hooks/useLocationServices";
-import { getAuth, getMySettings } from "../store/auth";
+import { getAuth } from "../store/auth";
 import useAppClock from "../hooks/useAppClock";
 import useAlerts from "../hooks/useAlerts";
 import LoadingData from "../components/shared/loading";
@@ -28,7 +28,6 @@ function AppProvider({children}) {
   });
 
   const { alerts, handleAlerts, removeAlerts } = useAlerts();
-  const [ theme, setTheme ] = useState('light');
   const { currentTime } = useAppClock();
   const { loading, setLoading } = useLoading();
 
@@ -38,28 +37,18 @@ function AppProvider({children}) {
   }
   const {
       currentLocation,
-      setCurrentLocation,
-      locationServices,
-      setLocationServices
+      setCurrentLocation
   } = useLocationServices();
 
-  const handleTheme = () => {
-    if (theme === 'light') setTheme('dark')
-    else setTheme('light')
-  }
 
   return (
       <AppContext.Provider
         value={{
           authLoading,
-          theme,
           currentTime,
           currentLocation,
           setCurrentLocation,
-          locationServices,
           handleAlerts,
-          handleTheme,
-          setLocationServices,
           navigate,
           setLoading,
           auth,

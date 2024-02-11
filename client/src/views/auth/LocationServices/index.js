@@ -4,10 +4,10 @@ import { Redirect } from 'react-router-dom'
 import Button from '../../../components/shared/button';
 import { useApp } from '../../../context/AppContext';
 import { TbMapPinCheck, TbMapPinOff } from 'react-icons/tb';
-import useSettings from '../../profile/hooks/useSettings'
+import useSettings from '../../settings/hooks/useSettings'
 
 function LocationServices() {
-    const { navigate, setLocationServices } = useApp();
+    const { navigate } = useApp();
     const { locations, toggleLocations } = useSettings();
 
     const handleLocationServices = () => {

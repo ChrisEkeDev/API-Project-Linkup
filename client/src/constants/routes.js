@@ -3,11 +3,15 @@ export const HOME = '/*';
 export const SIGN_IN = '/sign-in';
 export const SIGN_UP = '/sign-up';
 export const LOCATION_SERVICES = '/enable-location'
+export const CHECKINS = '/check-ins'
+export const SEARCH = '/search'
+
 export const PROFILE_ROUTER = '/profile*'
 export const PROFILE = '/profile'
 export const UPDATE_PROFILE = '/profile/update'
-export const CHECKINS = '/check-ins'
-export const SEARCH = '/search'
+
+export const SETTINGS_ROUTER = '/settings*'
+export const SETTINGS = '/settings'
 
 export const SESSIONS_ROUTER = '/sessions*'
 export const SESSIONS = '/sessions';

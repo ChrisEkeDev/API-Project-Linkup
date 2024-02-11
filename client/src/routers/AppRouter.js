@@ -34,6 +34,11 @@ function AppRouter() {
                     path={ROUTES.PROFILE_ROUTER}
                     component={view.ProfileRouter}
                 />
+                <Route
+                    exact
+                    path={ROUTES.SETTINGS_ROUTER}
+                    component={view.SettingsRouter}
+                />
                 {/* <Route
                     component={view.PageNotFound}
                 /> */}

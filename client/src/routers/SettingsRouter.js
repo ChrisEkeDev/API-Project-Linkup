@@ -5,7 +5,8 @@ import { Switch, Route } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import * as view from '../views';
 
-function ProfileRouter() {
+
+function SettingsRouter() {
     const location = useLocation()
 
     return (
@@ -14,13 +15,8 @@ function ProfileRouter() {
                 <Switch location={location} key={location.pathname}>
                     <Route
                         exact
-                        path={ROUTES.PROFILE}
-                        component={view.Profile}
-                    />
-                    <Route
-                        exact
-                        path={ROUTES.UPDATE_PROFILE}
-                        component={view.UpdateProfile}
+                        path={ROUTES.SETTINGS}
+                        component={view.Settings}
                     />
                 </Switch>
             </AnimatePresence>
@@ -28,4 +24,4 @@ function ProfileRouter() {
     )
 }
 
-export default ProfileRouter
+export default SettingsRouter

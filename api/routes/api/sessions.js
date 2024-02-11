@@ -570,8 +570,8 @@ router.put('/:sessionId/add-to-session', requireAuth, async (req, res) => {
         return res.status(403).json(playerNotAuthorized)
     }
 
-    checkIn.set({status: 'attending'})
-    checkIn.save();
+    await checkIn.set({status: 'attending'})
+    await checkIn.save();
 
     const updatedCheckIn = await CheckIn.findByPk(checkIn.id, {
         include: [
