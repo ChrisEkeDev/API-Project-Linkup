@@ -2,7 +2,6 @@ import { AnimatePresence, motion } from "framer-motion"
 import { page_transitions } from '../../constants/animations';
 import Scroll from '../../components/shared/scroll';
 import  useSettings from './hooks/useSettings';
-import { useQuery } from 'react-query';
 import { TbMapPin, TbMapPinOff, TbBellRinging, TbBellOff, TbSun, TbMoon } from "react-icons/tb";
 import './styles.scss';
 import LoadingData from "../../components/shared/loading";

@@ -48,6 +48,11 @@ router.get('/search/*', async(req, res) => {
             {
                 model: Team,
                 as: "host",
+                include: {
+                    model: Player,
+                    as: 'captain',
+                    attributes: ['profileImage', 'name']
+                },
                 attributes: ['id', 'name']
             }
         ],
@@ -260,24 +265,14 @@ router.post('/', requireAuth, uploadMedia, validateCreateSession, async (req, re
     }
 
     const newSession = await Session.findByPk(session.id, {
-        attributes: {
-            include: [
-                'id',
-                'name',
-                'startDate',
-                'endDate',
-                'creatorId',
-                'address',
-                'lat',
-                'lng',
-                'private',
-                'createdAt',
-                'hostId',
-                [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
-            ],
-            exclude: ['CheckIn','updatedAt']
-        },
-        group: ['Session.id'],
+        attributes: [
+            'id',
+            'name',
+            'startDate',
+            'address',
+            'private',
+            [fn('COUNT', col('CheckIns.id')), 'checkIns']
+        ],
         include: [
             {
                 model: Player,
@@ -298,7 +293,19 @@ router.post('/', requireAuth, uploadMedia, validateCreateSession, async (req, re
                 },
                 attributes: ['id', 'name']
             }
-        ]
+        ],
+        group: [
+            'Session.id',
+            'Session.name',
+            'Session.startDate',
+            'Session.address',
+            'Session.private',
+            'creator.id',
+            'creator.name',
+            'creator.profileImage',
+            'host.id',
+            'host.name'
+        ],
     });
 
 
@@ -347,24 +354,14 @@ router.put('/:sessionId', requireAuth, validateEditSession, async (req, res) => 
 
 
     const updatedSession = await Session.findByPk(session.id, {
-        attributes: {
-            include: [
-                'id',
-                'name',
-                'startDate',
-                'endDate',
-                'creatorId',
-                'address',
-                'lat',
-                'lng',
-                'private',
-                'createdAt',
-                'hostId',
-                [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
-            ],
-            exclude: ['CheckIn', 'updatedAt']
-        },
-        group: ['Session.id'],
+        attributes: [
+            'id',
+            'name',
+            'startDate',
+            'address',
+            'private',
+            [fn('COUNT', col('CheckIns.id')), 'checkIns']
+        ],
         include: [
             {
                 model: Player,
@@ -378,9 +375,26 @@ router.put('/:sessionId', requireAuth, validateEditSession, async (req, res) => 
             {
                 model: Team,
                 as: 'host',
+                include: {
+                    model: Player,
+                    as: 'captain',
+                    attributes: ['profileImage', 'name']
+                },
                 attributes: ['id', 'name']
             }
-        ]
+        ],
+        group: [
+            'Session.id',
+            'Session.name',
+            'Session.startDate',
+            'Session.address',
+            'Session.private',
+            'creator.id',
+            'creator.name',
+            'creator.profileImage',
+            'host.id',
+            'host.name'
+        ],
     });
 
     return res.status(200).json({
@@ -699,14 +713,19 @@ router.get('/:sessionId/feed', async (req, res) => {
         include: [
             {
                 model: Player,
-                attributes: ['name', 'profileImage']
+                attributes: ['id', 'name', 'profileImage']
             },
             {
                 model: Like,
                 attributes: []
             }
         ],
-        group: ['SessionChat.id', 'Player.name', 'Player.profileImage'],
+        group: [
+            'SessionChat.id',
+            'Player.id',
+            'Player.name',
+            'Player.profileImage'
+        ],
         order: [['createdAt', 'ASC']]
     })
     return res.status(200).json({

@@ -16,7 +16,6 @@ router.get('/search/*', async (req, res) => {
             include: [[fn('COUNT', col('Memberships.id')), 'members']],
             exclude: ['updatedAt']
         },
-        group: ['Team.id'],
         include: [
             {
                 model: Membership,
@@ -30,6 +29,12 @@ router.get('/search/*', async (req, res) => {
         ],
         order: [
             [sortBy ? sortBy : 'createdAt', sortBy === 'startDate' ? 'ASC' : 'DESC']
+        ],
+        group: [
+            'Team.id',
+            'captain.id',
+            'captain.name',
+            'captain.profileImage'
         ]
     })
 
@@ -70,16 +75,22 @@ router.get('/current', requireAuth, async (req, res) => {
             include: [[fn('COUNT', col('Memberships.id')), 'members']],
             exclude: ['updatedAt']
         },
-        group: ['Team.id'],
         include: [
             {
                 model: Membership,
+                attributes: []
             },
             {
                 as: "captain",
                 model: Player,
                 attributes: ['id', 'name', 'profileImage']
             },
+        ],
+        group: [
+            'Team.id',
+            'captain.id',
+            'captain.name',
+            'captain.profileImage'
         ]
     })
 
@@ -108,17 +119,23 @@ router.get('/:teamId/sessions', async(req, res) => {
             ],
             exclude: ['CheckIn','updatedAt']
         },
-        group: ['Session.id'],
         include: [
             {
                 model: Player,
-                as: 'creator'
+                as: 'creator',
+                attributes: ['id', 'name', 'profileImage']
             },
             {
                 model: CheckIn,
                 attributes: []
             }
-        ]
+        ],
+        group: [
+            'Session.id',
+            'creator.id',
+            'creator.name',
+            'creator.profileImage',
+        ],
     })
 
     return res.status(200).json({
@@ -592,14 +609,19 @@ router.get('/:teamId/feed', async (req, res) => {
         include: [
             {
                 model: Player,
-                attributes: ['name', 'profileImage']
+                attributes: ['id', 'name', 'profileImage']
             },
             {
                 model: Like,
                 attributes: [] // empty array means do not fetch columns from the Likes table
             }
         ],
-        group: ['TeamChat.id'],
+        group: [
+            'TeamChat.id',
+            'Player.id',
+            'Player.name',
+            'Player.profileImage'
+        ],
         order: [['createdAt', 'ASC']]
     })
 
