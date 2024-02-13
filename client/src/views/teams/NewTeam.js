@@ -18,7 +18,7 @@ function NewTeam() {
         handleToggle,
         createTeamLoading,
         onCreateTeam
-    } = useTeam();
+    } = useTeam({});
 
     if (createTeamLoading) return <LoadingData />
 
