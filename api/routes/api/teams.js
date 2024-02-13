@@ -34,7 +34,8 @@ router.get('/search/*', async (req, res) => {
             'Team.id',
             'captain.id',
             'captain.name',
-            'captain.profileImage'
+            'captain.profileImage',
+            'Membership.id'
         ]
     })
 
@@ -90,7 +91,8 @@ router.get('/current', requireAuth, async (req, res) => {
             'Team.id',
             'captain.id',
             'captain.name',
-            'captain.profileImage'
+            'captain.profileImage',
+            'Membership.id'
         ]
     })
 
@@ -117,7 +119,7 @@ router.get('/:teamId/sessions', async(req, res) => {
             include: [
                 [fn('COUNT', col('CheckIns.id')), 'checkInCount' ]
             ],
-            exclude: ['CheckIn','updatedAt']
+            exclude: ['updatedAt']
         },
         include: [
             {
@@ -135,6 +137,7 @@ router.get('/:teamId/sessions', async(req, res) => {
             'creator.id',
             'creator.name',
             'creator.profileImage',
+            'CheckIn.id'
         ],
     })
 
@@ -185,7 +188,12 @@ router.get('/:teamId', async (req, res) => {
                         attributes: [] // empty array means do not fetch columns from the Likes table
                     }
                 ],
-                group: ['TeamChat.id', 'Player.name', 'Player.profileImage'],
+                group: [
+                    'TeamChat.id',
+                    'Player.name',
+                    'Player.profileImage',
+                    'Like.id'
+                ],
                 order: [[literal("likes"), 'DESC']],
                 limit: 3
             }
@@ -620,7 +628,8 @@ router.get('/:teamId/feed', async (req, res) => {
             'TeamChat.id',
             'Player.id',
             'Player.name',
-            'Player.profileImage'
+            'Player.profileImage',
+            'Like.id'
         ],
         order: [['createdAt', 'ASC']]
     })

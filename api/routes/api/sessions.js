@@ -51,7 +51,7 @@ router.get('/search/*', async(req, res) => {
                 include: {
                     model: Player,
                     as: 'captain',
-                    attributes: ['profileImage', 'name']
+                    attributes: ['id', 'profileImage', 'name']
                 },
                 attributes: ['id', 'name']
             }
@@ -66,7 +66,10 @@ router.get('/search/*', async(req, res) => {
             'creator.name',
             'creator.profileImage',
             'host.id',
-            'host.name'
+            'host.name',
+            'host.captain.id',
+            'host.captain.profileImage',
+            'host.captain.name'
         ],
     })
 
@@ -130,6 +133,11 @@ router.get('/current', requireAuth, async (req, res) => {
             {
                 model: Team,
                 as: "host",
+                include: {
+                    model: Player,
+                    as: 'captain',
+                    attributes: ['id', 'profileImage', 'name']
+                },
                 attributes: ['id', 'name']
             }
         ],
@@ -143,7 +151,10 @@ router.get('/current', requireAuth, async (req, res) => {
             'creator.name',
             'creator.profileImage',
             'host.id',
-            'host.name'
+            'host.name',
+            'host.captain.id',
+            'host.captain.profileImage',
+            'host.captain.name'
         ],
     });
 
@@ -289,7 +300,7 @@ router.post('/', requireAuth, uploadMedia, validateCreateSession, async (req, re
                 include: {
                     model: Player,
                     as: 'captain',
-                    attributes: ['profileImage', 'name']
+                    attributes: ['id', 'profileImage', 'name']
                 },
                 attributes: ['id', 'name']
             }
@@ -304,7 +315,10 @@ router.post('/', requireAuth, uploadMedia, validateCreateSession, async (req, re
             'creator.name',
             'creator.profileImage',
             'host.id',
-            'host.name'
+            'host.name',
+            'host.captain.id',
+            'host.captain.profileImage',
+            'host.captain.name'
         ],
     });
 
@@ -378,7 +392,7 @@ router.put('/:sessionId', requireAuth, validateEditSession, async (req, res) => 
                 include: {
                     model: Player,
                     as: 'captain',
-                    attributes: ['profileImage', 'name']
+                    attributes: ['id', 'profileImage', 'name']
                 },
                 attributes: ['id', 'name']
             }
@@ -393,7 +407,10 @@ router.put('/:sessionId', requireAuth, validateEditSession, async (req, res) => 
             'creator.name',
             'creator.profileImage',
             'host.id',
-            'host.name'
+            'host.name',
+            'host.captain.id',
+            'host.captain.profileImage',
+            'host.captain.name'
         ],
     });
 
@@ -724,7 +741,8 @@ router.get('/:sessionId/feed', async (req, res) => {
             'SessionChat.id',
             'Player.id',
             'Player.name',
-            'Player.profileImage'
+            'Player.profileImage',
+            'Like.id'
         ],
         order: [['createdAt', 'ASC']]
     })
@@ -756,7 +774,13 @@ router.get('/:sessionId/feed/top-comments', async (req, res) => {
                 [fn('COUNT', col('Likes.id')), 'likes']
             ]
         },
-        group: ['SessionChat.id', 'Player.name', 'Player.profileImage'],
+        group: [
+            'SessionChat.id',
+            'Player.id',
+            'Player.name',
+            'Player.profileImage',
+            'Like.id'
+        ],
         order: [[literal("likes"), 'DESC']],
         limit: 3
     })
@@ -797,7 +821,7 @@ router.post('/:sessionId/chat-feed', requireAuth, async (req, res) => {
     const chat = await SessionChat.findByPk(sessionChat.id, {
         attributes: {
             include: [
-                [Sequelize.fn('COUNT', Sequelize.col('Likes.id')), 'likes']
+                [fn('COUNT', col('Likes.id')), 'likes']
             ]
         },
         include: [
@@ -810,7 +834,13 @@ router.post('/:sessionId/chat-feed', requireAuth, async (req, res) => {
                 attributes: [] // empty array means do not fetch columns from the Likes table
             }
         ],
-        group: ['SessionChat.id', 'Player.name', 'Player.profileImage'],
+        group: [
+            'SessionChat.id',
+            'Player.id',
+            'Player.name',
+            'Player.profileImage',
+            'Like.id'
+        ],
     })
 
     return res.status(201).json({
