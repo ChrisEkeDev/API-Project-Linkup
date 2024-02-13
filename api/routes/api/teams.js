@@ -78,7 +78,7 @@ router.get('/current', requireAuth, async (req, res) => {
         include: [
             {
                 model: Membership,
-                attributes: ['status']
+                attributes: ['id', 'status']
             },
             {
                 as: "captain",
@@ -90,7 +90,9 @@ router.get('/current', requireAuth, async (req, res) => {
             'Team.id',
             'captain.id',
             'captain.name',
-            'captain.profileImage'
+            'captain.profileImage',
+            'Memberships.id',
+            'Memberships.status'
         ]
     })
 
