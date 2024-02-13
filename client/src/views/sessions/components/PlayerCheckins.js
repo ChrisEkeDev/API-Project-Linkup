@@ -16,10 +16,12 @@ function PlayerCheckIns() {
   if (checkInsLoading) return <div>Loading..</div>
   if (checkInsErr) return <div>Error</div>
 
+  let filteredCheckIns = checkIns.filter(x => x.status !== 'pending')
+
   return (
-    <ClickDragScroll title={`${checkIns.length} Player${checkIns.length !== 1  ? 's' : ''} checked in`}>
+    <ClickDragScroll title={`${filteredCheckIns.length} Player${filteredCheckIns.length !== 1  ? 's' : ''} checked in`}>
       {
-        checkIns.map((checkIn) => {
+        filteredCheckIns.map((checkIn) => {
           return <SessionPlayer key={checkIn.id} checkIn={checkIn}/>
         })
       }

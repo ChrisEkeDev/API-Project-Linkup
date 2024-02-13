@@ -25,7 +25,7 @@ router.put('/:chatId', requireAuth, validateCreateChat,  async(req, res) => {
     })
     teamChat.save();
 
-    const chat = await TeamChat.findByPk(sessionChat.id, {
+    const chat = await TeamChat.findByPk(teamChat.id, {
         include: {
             model: Player,
             attributes: ['name', 'profileImage']

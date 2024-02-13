@@ -19,6 +19,22 @@
         width: auto;
         position: relative;
 
+        .modal_container {
+            position: relative;
+            background-color: var(--background);
+            width: 600px;
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            flex-direction: column;
+            border-radius: 1.5rem;
+        }
+
+        .modal_header {
+            padding-left: 1rem;
+            padding-right: 4rem;
+        }
+
         .modal_close {
             position: absolute;
             right: 3rem;
@@ -30,6 +46,7 @@
             justify-content: center;
             align-items: center;
             gap: 4rem;
+            margin-top: 1rem;
         }
 
         .modal_body {

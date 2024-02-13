@@ -4,7 +4,7 @@ import { list_item_animations, slide_variants, child_variants } from '../../../c
 import ProfileImage from '../../../components/shared/profileImage'
 import IconButton from '../../../components/shared/button/IconButton'
 import DeleteMembershipModal from './DeleteMembershipModal';
-import useTeamMemberships from '../hooks/useTeamMemberships';
+import useMemberships from '../hooks/useMemberships';
 import Modal from '../../../components/shared/modal';
 import useModal from '../../../hooks/useModal';
 import { format, parseISO } from 'date-fns';
@@ -21,7 +21,7 @@ function MemberItem({member, status}) {
     const isMemberMember = member.status === 'member';
     const showStatus = isMemberHost || isMemberCoHost;
     const { isModalOpen, onOpenModal, onCloseModal } = useModal();
-    const { onAddToTeam, onPromoteToCoHost, onRemoveFromTeam }= useTeamMemberships();
+    const { onAddToTeam, onPromoteToCoHost, onRemoveFromTeam }= useMemberships();
 
 
     return (
@@ -79,7 +79,7 @@ function MemberItem({member, status}) {
                         <IconButton
                             label='Kick off team'
                             icon={TbUserOff}
-                            action={() => onRemoveFromTeam(member.Player.id)}
+                            action={onOpenModal}
                         /> : null
                     }
                 </AnimatePresence>

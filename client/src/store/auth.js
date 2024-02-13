@@ -7,11 +7,23 @@ export const signIn = async (playerData) => {
         body: JSON.stringify(playerData)
     });
     try {
+        // const res = await csrfFetch('/api/auth', {
+        //     method: 'POST',
+        //     body: JSON.stringify(playerData)
+        // });
         const json = await res.json();
-        return json.data
+        return json
     } catch(error) {
         console.error(error)
     }
+    // if (res.status === 201) {
+    //     const json = await res.json();
+    //     return json.data
+    // } else {
+    //     const json = await res.json();
+    //     console.log(json)
+    //     throw json.data
+    // }
 }
 
 export const signInGuest = async () => {

@@ -9,7 +9,7 @@ function TeamDetails({team}) {
     return (
         <Scroll>
             <PlayerMemberships />
-            <LatestMessages entity={team} />
+            {/* <LatestMessages entity={team} /> */}
             <TeamSessions />
         </Scroll>
     )

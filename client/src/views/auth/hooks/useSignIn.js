@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 import { useApp } from '../../../context/AppContext';
 import { useMutation, useQueryClient } from 'react-query';
 import { signIn, signInGuest } from '../../../store/auth';
+import { signInAlerts } from '../../../constants/alerts';
 
 
 const useSignIn = () => {
     const client = useQueryClient();
-    const { navigate } = useApp();
+    const { signInSuccess, signInFailure } = signInAlerts;
+    const { navigate, handleAlerts } = useApp();
     const [ formData, setFormData ] = useState({
         email: "",
         password: "",
@@ -18,19 +20,25 @@ const useSignIn = () => {
         setFormData((prev) => ({ ...prev, [x.target.id]: x.target.value }));
     }
 
-    const handleErrors = (newErrors) => {
-        const newState = { ...errors, ...newErrors };
-        setErrors(newState)
+    const handleErrors = (error) => {
+        console.log('Handling Error', error)
+        // const newState = { ...errors, ...newErrors };
+        // setErrors(newState)
+        // if (Object.keys(newErrors).length > 0) {
+        //     handleAlerts(signInFailure)
+        // }
     }
 
     const handleSuccess = (data) => {
-        client.setQueryData(['auth'], data);
-        client.invalidateQueries(['auth'], { exact: true })
-        navigate('/search')
+        console.log('Handling success', data)
+        // client.setQueryData(['auth'], data);
+        // client.invalidateQueries(['auth'], { exact: true })
+        // navigate('/search')
+        // handleAlerts(signInSuccess)
     }
 
     const {
-        mutate: handleSignIn,
+        mutateAsync: handleSignIn,
         isLoading: signInLoading,
     } = useMutation({
         mutationFn: signIn,
@@ -49,7 +57,8 @@ const useSignIn = () => {
 
     const onSignIn = async (e) => {
         e.preventDefault();
-        handleSignIn(formData)
+        const res = await handleSignIn(formData)
+        console.log(res)
     }
 
     const onSignInGuest = async (e) => {

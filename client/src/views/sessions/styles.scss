@@ -279,24 +279,8 @@
     bottom: 2rem;
 }
 
-.modal_container {
-    position: relative;
-    background-color: var(--background);
-    width: 600px;
-    padding: 2rem;
-    box-shadow: var(--box-shadow);
-    display: flex;
-    flex-direction: column;
-    border-radius: 1.5rem;
-
-    .modal_title {
-        padding-left: 1rem;
-        padding-right: 4rem;
-    }
-
-    .session_creator {
-        padding-right: 4rem;
-    }
+.session_creator {
+    padding-right: 4rem;
 }
 
 .results_container {

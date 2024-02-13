@@ -21,9 +21,9 @@ function Teams() {
 
   console.log(teams)
 
-  const teamsCaptain = teams.filter(team => team.Memberships[0]?.status === 'host');
-  const teamsJoined = teams.filter(team => team.Memberships[0]?.status !== 'host' && team?.Memberships[0].status !== 'pending');
-  const teamsPending = teams.filter(team => team.Memberships[0]?.status === 'pending');
+  const teamsCaptain = teams.filter(team => team.Memberships[0].status === 'host');
+  const teamsJoined = teams.filter(team => team.Memberships[0].status !== 'host' && team?.Memberships[0].status !== 'pending');
+  const teamsPending = teams.filter(team => team.Memberships[0].status === 'pending');
 
   return (
       <motion.main {...page_transitions} className='page teams'>
@@ -43,7 +43,7 @@ function Teams() {
               <ul>
               {
                 teamsCaptain.map(team => (
-                  <TeamItem team={team}/>
+                  <TeamItem key={team.id} team={team}/>
                 ))
               }
             </ul> :
@@ -60,7 +60,7 @@ function Teams() {
               <ul>
                 {
                   teamsJoined.map(team => (
-                    <TeamItem team={team}/>
+                    <TeamItem key={team.id}  team={team}/>
                   ))
                 }
               </ul> :
@@ -77,7 +77,7 @@ function Teams() {
               <ul>
                 {
                   teamsPending.map(team => (
-                    <TeamItem team={team}/>
+                    <TeamItem key={team.id}  team={team}/>
                   ))
                 }
               </ul> :

@@ -78,6 +78,7 @@ router.get('/current', requireAuth, async (req, res) => {
         include: [
             {
                 model: Membership,
+                where: { playerId },
                 attributes: ['id', 'status']
             },
             {

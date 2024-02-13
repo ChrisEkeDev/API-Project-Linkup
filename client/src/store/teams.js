@@ -189,7 +189,7 @@ export const createTeamChat = async (data) => {
 }
 
 export const updateTeamChat = async (data) => {
-    const res = await csrfFetch(`/api/team-chats/${data.id}`, {
+    const res = await csrfFetch(`/api/team-chats/${data.chatId}`, {
         method: 'PUT',
         body: JSON.stringify({content: data.content})
     })
@@ -201,8 +201,8 @@ export const updateTeamChat = async (data) => {
     }
 }
 
-export const deleteTeamChat = async (id) => {
-    const res = await csrfFetch(`/api/team-chats/${id}`, {
+export const deleteTeamChat = async (chatId) => {
+    const res = await csrfFetch(`/api/team-chats/${chatId}`, {
         method: 'DELETE'
     })
     try {

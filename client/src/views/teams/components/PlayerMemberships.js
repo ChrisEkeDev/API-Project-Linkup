@@ -16,10 +16,12 @@ function PlayerMemberships() {
     if (membershipsLoading) return <div>Loading..</div>
     if (membershipsErr) return <div>Error</div>
 
+    let filteredMemberships = memberships.filter(x => x.status !== 'pending')
+
     return (
-        <ClickDragScroll title={`${memberships.length} Member${memberships.length === 1 ? null : 's'}`}>
+        <ClickDragScroll title={`${filteredMemberships.length} Member${filteredMemberships.length === 1 ? null : 's'}`}>
             {
-                memberships.map((membership) => {
+                filteredMemberships.map((membership) => {
                     return <TeamMember key={membership.id} membership={membership}/>
                 })
             }

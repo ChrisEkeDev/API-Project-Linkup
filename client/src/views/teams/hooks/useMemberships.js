@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { addToTeam, removeFromTeam, promoteToCoHost } from '../../../store/teams';
 import { membershipAlerts } from '../../../constants/alerts';
 
-function useTeamMemberships() {
+function useMemberships() {
     const { id } = useParams();
     const client = useQueryClient();
     const { handleAlerts } = useApp();
@@ -13,17 +13,17 @@ function useTeamMemberships() {
 
     const handleAddToTeamSuccess = () => {
         handleAlerts(addToTeamSuccess)
-        client.invalidateQueries(['team-memberships'])
+        client.invalidateQueries(['team-memberships', id])
     }
 
     const handlePromoteToCoHostSuccess = () => {
         handleAlerts(promoteToCoHostSuccess);
-        client.invalidateQueries(['team-memberships'])
+        client.invalidateQueries(['team-memberships', id])
     }
 
     const handleRemoveFromTeamSuccess = () => {
         handleAlerts(removeFromTeamSuccess);
-        client.invalidateQueries(['team-memberships'])
+        client.invalidateQueries(['team-memberships', id])
     }
 
     const handleAddToTeamError = () => {
@@ -81,4 +81,4 @@ function useTeamMemberships() {
   return { onAddToTeam, onPromoteToCoHost, onRemoveFromTeam }
 }
 
-export default useTeamMemberships
+export default useMemberships

@@ -10,9 +10,13 @@ import Scroll from '../../../components/shared/scroll';
 
 function TeamMembers({membership}) {
     const { id } = useParams();
-    const { data: memberships, error: membershipsErr, isLoading: membershipsLoading } = useQuery(['team-memberships', id], () => getTeamMemberships(id))
-    const isPlayerHost = membership === 'host'
-    const isPlayerCoHost = membership === 'co-host'
+    const {
+        data: memberships,
+        error: membershipsErr,
+        isLoading: membershipsLoading
+    } = useQuery(['team-memberships', id], () => getTeamMemberships(id))
+
+    const isPlayerAuth = membership === 'host' || membership === 'co-host'
 
     if (membershipsLoading) return <LoadingData />
     if (membershipsErr) return <div>Error</div>
@@ -22,7 +26,7 @@ function TeamMembers({membership}) {
     })
 
     let filteredMemberships = sortedMemberships;
-    if (!isPlayerHost || !isPlayerCoHost) {
+    if (!isPlayerAuth) {
         filteredMemberships = sortedMemberships.filter(x => x.status !== 'pending')
     }
 

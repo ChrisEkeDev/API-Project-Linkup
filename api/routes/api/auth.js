@@ -65,8 +65,8 @@ router.post('/', validateLogin, async (req, res, _next) => {
 
     await setTokenCookie(res, playerPublic);
 
-    return res.status(200).json({
-        status: 200,
+    return res.status(201).json({
+        status: 201,
         message: "You've been signed in successfully",
         data: playerPublic,
         error: null
