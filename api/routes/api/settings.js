@@ -30,7 +30,7 @@ router.put('/theme', requireAuth, async(req, res) => {
     if (!settings) {
         return res.status(404).json(settingsNotFound)
     }
-    settings.set({theme: settings.theme ? false : true})
+    settings.set({theme: settings.theme === 'light' ? 'dark' : 'light'})
     settings.save();
     return res.status(200).json({
         status: 200,

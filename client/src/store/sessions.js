@@ -41,7 +41,7 @@ export const getSessionCheckIns = async (sessionId) => {
 }
 
 export const getSessionFeed = async (sessionId) => {
-    const res = await csrfFetch(`/api/sessions/${sessionId}/feed`);
+    const res = await csrfFetch(`/api/sessions/${sessionId}/chat-feed`);
     try {
         const json = await res.json();
         return json.data
@@ -51,7 +51,7 @@ export const getSessionFeed = async (sessionId) => {
 }
 
 export const getSessionFeedTopComments = async (sessionId) => {
-    const res = await csrfFetch(`/api/sessions/${sessionId}/feed/top-comments`);
+    const res = await csrfFetch(`/api/sessions/${sessionId}/chat-feed/top-comments`);
     try {
         const json = await res.json();
         return json.data

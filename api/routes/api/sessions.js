@@ -195,7 +195,7 @@ router.get('/:sessionId', async (req, res) => {
                 include: [{
                     model: Player,
                     as: 'captain',
-                    attributes: ['profileImage', 'name']
+                    attributes: ['id', 'profileImage', 'name']
                 }]
             }
         ]
@@ -553,7 +553,7 @@ router.post('/:sessionId/check-in', requireAuth, async (req, res) => {
                         {
                             as: "captain",
                             model: Player,
-                            attributes: ['name', 'profileImage']
+                            attributes: ['id', 'name', 'profileImage']
                         }
                     ]
                 }
@@ -825,7 +825,7 @@ router.post('/:sessionId/chat-feed', requireAuth, async (req, res) => {
         include: [
             {
                 model: Player,
-                attributes: ['name', 'profileImage']
+                attributes: ['id', 'name', 'profileImage']
             },
             {
                 model: Like,

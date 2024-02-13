@@ -78,7 +78,7 @@ router.get('/current', requireAuth, async (req, res) => {
         include: [
             {
                 model: Membership,
-                attributes: []
+                attributes: ['status']
             },
             {
                 as: "captain",
@@ -90,7 +90,7 @@ router.get('/current', requireAuth, async (req, res) => {
             'Team.id',
             'captain.id',
             'captain.name',
-            'captain.profileImage',
+            'captain.profileImage'
         ]
     })
 
@@ -248,13 +248,13 @@ router.post('/', requireAuth, validateCreateTeam, async (req, res) => {
                 through: {
                     model: Membership
                 },
-                attributes: ['name', 'profileImage']
+                attributes: ['id', 'name', 'profileImage']
             },
             {
                 model: TeamChat,
                 include: {
                     model: Player,
-                    attributes: ['name', 'profileImage']
+                    attributes: ['id', 'name', 'profileImage']
                 },
                 order: [['createdAt', 'DESC']],
                 limit: 3
@@ -311,13 +311,13 @@ router.put('/:teamId', requireAuth, validateEditTeam, async (req, res) => {
                 through: {
                     model: Membership
                 },
-                attributes: ['name', 'profileImage']
+                attributes: ['id', 'name', 'profileImage']
             },
             {
                 model: TeamChat,
                 include: {
                     model: Player,
-                    attributes: ['name', 'profileImage']
+                    attributes: ['id', 'name', 'profileImage']
                 },
                 order: [['createdAt', 'DESC']],
                 limit: 3
@@ -706,7 +706,7 @@ router.post('/:teamId/chat-feed', requireAuth, async (req, res) => {
     const chat = await TeamChat.findByPk(teamChat.id, {
         include: {
             model: Player,
-            attributes: ['name', 'profileImage']
+            attributes: ['id', 'name', 'profileImage']
         }
     })
 

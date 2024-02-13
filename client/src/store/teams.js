@@ -54,7 +54,17 @@ export const getTeamSessions = async (id) => {
 }
 
 export const getTeamFeed = async (id) => {
-    const res = await csrfFetch(`/api/teams/${id}/feed`);
+    const res = await csrfFetch(`/api/teams/${id}/chat-feed`);
+    try {
+        const json = await res.json();
+        return json.data
+    } catch(error) {
+        console.error(error)
+    }
+}
+
+export const getTeamFeedTopComments = async (teamId) => {
+    const res = await csrfFetch(`/api/teams/${teamId}/chat-feed/top-comments`);
     try {
         const json = await res.json();
         return json.data
