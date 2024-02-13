@@ -718,7 +718,7 @@ router.delete('/:sessionId/check-out', requireAuth, async (req, res) => {
 })
 
 
-router.get('/:sessionId/feed', async (req, res) => {
+router.get('/:sessionId/chat-feed', async (req, res) => {
     const { sessionId } = req.params;
     const sessionFeed = await SessionChat.findAll({
         where: { sessionId },
@@ -742,7 +742,6 @@ router.get('/:sessionId/feed', async (req, res) => {
             'Player.id',
             'Player.name',
             'Player.profileImage',
-            'Like.id'
         ],
         order: [['createdAt', 'ASC']]
     })
@@ -754,7 +753,7 @@ router.get('/:sessionId/feed', async (req, res) => {
     })
 })
 
-router.get('/:sessionId/feed/top-comments', async (req, res) => {
+router.get('/:sessionId/chat-feed/top-comments', async (req, res) => {
     const { sessionId } = req.params;
 
     const sessionFeed = await SessionChat.findAll({
@@ -762,7 +761,7 @@ router.get('/:sessionId/feed/top-comments', async (req, res) => {
         include: [
             {
                 model: Player,
-                attributes: ['name', 'profileImage']
+                attributes: ['id', 'name', 'profileImage']
             },
             {
                 model: Like,
@@ -779,7 +778,6 @@ router.get('/:sessionId/feed/top-comments', async (req, res) => {
             'Player.id',
             'Player.name',
             'Player.profileImage',
-            'Like.id'
         ],
         order: [[literal("likes"), 'DESC']],
         limit: 3
@@ -839,7 +837,6 @@ router.post('/:sessionId/chat-feed', requireAuth, async (req, res) => {
             'Player.id',
             'Player.name',
             'Player.profileImage',
-            'Like.id'
         ],
     })
 

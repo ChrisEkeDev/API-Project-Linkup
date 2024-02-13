@@ -91,7 +91,6 @@ router.get('/current', requireAuth, async (req, res) => {
             'captain.id',
             'captain.name',
             'captain.profileImage',
-            'Membership.id'
         ]
     })
 
@@ -136,7 +135,6 @@ router.get('/:teamId/sessions', async(req, res) => {
             'creator.id',
             'creator.name',
             'creator.profileImage',
-            'CheckIn.id'
         ],
     })
 
@@ -180,7 +178,7 @@ router.get('/:teamId', async (req, res) => {
                 include: [
                     {
                         model: Player,
-                        attributes: ['name', 'profileImage']
+                        attributes: ['id', 'name', 'profileImage']
                     },
                     {
                         model: Like,
@@ -189,9 +187,9 @@ router.get('/:teamId', async (req, res) => {
                 ],
                 group: [
                     'TeamChat.id',
+                    'Player.id',
                     'Player.name',
-                    'Player.profileImage',
-                    'Like.id'
+                    'Player.profileImage'
                 ],
                 order: [[literal("likes"), 'DESC']],
                 limit: 3
@@ -603,7 +601,7 @@ router.delete('/:teamId/remove-from-team', requireAuth, async (req, res) => {
 })
 
 
-router.get('/:teamId/feed', async (req, res) => {
+router.get('/:teamId/chat-feed', async (req, res) => {
     const { teamId } = req.params;
 
     const teamFeed = await TeamChat.findAll({
@@ -627,8 +625,7 @@ router.get('/:teamId/feed', async (req, res) => {
             'TeamChat.id',
             'Player.id',
             'Player.name',
-            'Player.profileImage',
-            'Like.id'
+            'Player.profileImage'
         ],
         order: [['createdAt', 'ASC']]
     })
@@ -642,8 +639,48 @@ router.get('/:teamId/feed', async (req, res) => {
 })
 
 
+router.get('/:teamId/chat-feed/top-comments', async (req, res) => {
+    const { teamId } = req.params;
 
-router.post('/:teamId/feed', requireAuth, async (req, res) => {
+    const teamFeed = await TeamChat.findAll({
+        where: { teamId },
+        include: [
+            {
+                model: Player,
+                attributes: ['id', 'name', 'profileImage']
+            },
+            {
+                model: Like,
+                attributes: [],
+            }
+        ],
+        attributes: {
+            include: [
+                [fn('COUNT', col('Likes.id')), 'likes']
+            ]
+        },
+        group: [
+            'TeamChat.id',
+            'Player.id',
+            'Player.name',
+            'Player.profileImage',
+        ],
+        order: [[literal("likes"), 'DESC']],
+        limit: 3
+    })
+
+    return res.status(200).json({
+        status: 200,
+        message: null,
+        data: teamFeed,
+        error: null
+    })
+
+})
+
+
+
+router.post('/:teamId/chat-feed', requireAuth, async (req, res) => {
     const playerId = req.player.id;
     const { teamId } = req.params;
     const { content } = req.body;
