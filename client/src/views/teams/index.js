@@ -21,9 +21,9 @@ function Teams() {
 
   console.log(teams)
 
-  const teamsCaptain = teams.filter(team => team.Memberships[0].status === 'host');
-  const teamsJoined = teams.filter(team => team.Memberships[0].status !== 'host' && team?.Memberships[0].status !== 'pending');
-  const teamsPending = teams.filter(team => team.Memberships[0].status === 'pending');
+  const teamsCaptain = teams.filter(team => team.Memberships[0]?.status === 'host');
+  const teamsJoined = teams.filter(team => team.Memberships[0]?.status !== 'host' && team?.Memberships[0].status !== 'pending');
+  const teamsPending = teams.filter(team => team.Memberships[0]?.status === 'pending');
 
   return (
       <motion.main {...page_transitions} className='page teams'>
