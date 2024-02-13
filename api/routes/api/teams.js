@@ -34,8 +34,7 @@ router.get('/search/*', async (req, res) => {
             'Team.id',
             'captain.id',
             'captain.name',
-            'captain.profileImage',
-            'Membership.id'
+            'captain.profileImage'
         ]
     })
 
