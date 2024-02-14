@@ -10,8 +10,13 @@ export async function csrfFetch(url, options = {}) {
     }
 
     const response = await window.fetch(url, options);
+    const responseData = await response.json(); // Assuming JSON response
 
-    return response
+    if (response.status >= 400) {
+        throw responseData
+    }
+
+    return responseData
  }
 
  export function restoreCSRF() {

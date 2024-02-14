@@ -13,11 +13,9 @@ import { useQuery } from 'react-query';
 function CheckIns() {
     const [ view, setView ] = useState('calendar');
     const { data: checkIns, error: checkInsErr, isLoading: checkInsLoading} = useQuery('my-check-ins', getMyCheckIns);
-
-    console.log(checkIns)
-
     if (checkInsLoading) return <LoadingData/>
     if (checkInsErr) return <div>Error getting your sessions</div>
+    const checkInsData = checkIns.data
 
     return (
         <motion.main {...page_transitions} className='page checkins'>
@@ -29,8 +27,8 @@ function CheckIns() {
                 <AnimatePresence>
                     {
                         view === "calendar" ?
-                        <CheckInCalendar checkIns={checkIns} /> :
-                        <CheckInList checkIns={checkIns}/>
+                        <CheckInCalendar checkIns={checkInsData} /> :
+                        <CheckInList checkIns={checkInsData}/>
                     }
                 </AnimatePresence>
             </Scroll>

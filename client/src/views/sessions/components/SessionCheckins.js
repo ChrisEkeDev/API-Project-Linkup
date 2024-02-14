@@ -15,7 +15,9 @@ function SessionCheckIns({status, isCreator}) {
     if (checkInsLoading) return <LoadingData />
     if (checkInsErr) return <div>Error</div>
 
-    const sortedCheckIns = checkIns.sort((a, b) => {
+    const checkInsData = checkIns.data
+
+    const sortedCheckIns = checkInsData.sort((a, b) => {
         return statusOrderAttendance[a.status] - statusOrderAttendance[b.status]
     })
 

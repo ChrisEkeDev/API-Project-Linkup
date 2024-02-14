@@ -132,10 +132,9 @@ function UpdateSession({session}) {
 function UpdateSessionWrapper() {
     const { id } = useParams();
     const { data: session, error: sessionErr, isLoading: sessionLoading } = useQuery(['session', id], () => getSession(id));
-
     if ( sessionLoading ) return <LoadingData />
-
-    return <UpdateSession session={session}/>
+    const sessionData = session?.data;
+    return <UpdateSession session={sessionData}/>
 }
 
 

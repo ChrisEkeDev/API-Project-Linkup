@@ -16,7 +16,9 @@ function PlayerCheckIns() {
   if (checkInsLoading) return <div>Loading..</div>
   if (checkInsErr) return <div>Error</div>
 
-  let filteredCheckIns = checkIns.filter(x => x.status !== 'pending')
+  const checkInsData = checkIns.data;
+
+  let filteredCheckIns = checkInsData.filter(x => x.status !== 'pending')
 
   return (
     <ClickDragScroll title={`${filteredCheckIns.length} Player${filteredCheckIns.length !== 1  ? 's' : ''} checked in`}>

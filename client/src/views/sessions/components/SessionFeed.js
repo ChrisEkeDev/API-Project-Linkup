@@ -32,16 +32,19 @@ function SessionFeed({session}) {
     if (socket === null || feedLoading) return <LoadingData />
     if (feedErr) return <div>Error.</div>
 
+    const feedData = feed?.data;
+    const checkInData = checkIn?.data;
+
     return (
         <Scroll ref={ref}>
             <section className="team_feed container_border">
                 <span className='section_label xs bold'>Showing all messages for this session</span>
                 {
-                    feed.length > 0 ?
+                    feedData.length > 0 ?
                     <motion.ul variants={parent_variants} {...base_animations} className="feed_list">
                         <AnimatePresence>
                         {
-                            feed.map(chat => (
+                            feedData.map(chat => (
                                 <SessionChat
                                     socket={socket}
                                     room={room}
@@ -59,7 +62,7 @@ function SessionFeed({session}) {
                 }
 
             </section>
-            { checkIn && checkIn !== 'pending' ?
+            { checkInData && checkInData !== 'pending' ?
                 <ChatInput
                     handleInput={handleInput}
                     content={content}

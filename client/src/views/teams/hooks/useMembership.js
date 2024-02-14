@@ -8,7 +8,12 @@ function useMembership() {
     const { id } = useParams();
     const client = useQueryClient();
     const { handleAlerts } = useApp();
-    const { requestToJoinTeamSuccess, requestToJoinTeamError, requestToLeaveTeamSuccess, requestToLeaveTeamError } = membershipAlerts;
+    const {
+        requestToJoinTeamSuccess,
+        requestToJoinTeamError,
+        requestToLeaveTeamSuccess,
+        requestToLeaveTeamError
+    } = membershipAlerts;
 
     const handleJoinTeamSuccess = () => {
         handleAlerts(requestToJoinTeamSuccess)
@@ -46,11 +51,19 @@ function useMembership() {
     })
 
     const onRequestToJoinTeam = async () => {
-        handleJoinTeam(id)
+        try {
+            handleJoinTeam(id)
+        } catch(e) {
+            console.error(e)
+        }
     }
 
     const onRequestToLeaveTeam = async () => {
-        handleLeaveTeam(id)
+        try {
+            handleLeaveTeam(id)
+        } catch(e) {
+            console.error(e)
+        }
     }
 
     return { onRequestToJoinTeam, onRequestToLeaveTeam }

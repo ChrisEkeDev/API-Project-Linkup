@@ -10,16 +10,19 @@ function SessionTopComments() {
     const { id } = useParams();
     const { data: topComments, error: topCommentsErr, isLoading: topCommentsLoading } = useQuery(['session-feed-top-comments', id], () => getSessionFeedTopComments(id));
 
-    if (topCommentsLoading) return <LoadingData />
+    if (topCommentsLoading) return <div>Loading...</div>
+    if (topCommentsErr) return <div>Error!</div>
+
+    const topCommentsData = topComments.data;
 
     return (
         <section className="container_border">
                 <span className='section_label xs bold'>Top Comments</span>
                 {
-                    topComments?.length > 0 || topCommentsErr ?
+                    topCommentsData?.length > 0 || topCommentsErr ?
                     <ul className="chat_preview">
                         {
-                            topComments.map(chat => (
+                            topCommentsData.map(chat => (
                                 <ChatMessage key={chat.id} chat={chat}/>
                             ))
                         }

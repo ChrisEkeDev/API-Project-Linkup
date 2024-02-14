@@ -16,13 +16,12 @@ function useGetGooglePlaces() {
         setAddressConfirmed(bool)
     }
 
-    const handleErrors = (newErrors) => {
-        // handleAlerts(deleteTeamError)
-        console.log(newErrors)
+    const handleErrors = (error) => {
+        console.error(error)
     }
 
     const handleSuccess = (data) => {
-        setQueryResults(data)
+        setQueryResults(data.data)
     }
 
     const {

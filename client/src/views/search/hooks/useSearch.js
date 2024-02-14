@@ -4,9 +4,9 @@ import { thunkSearchSessions } from '../../../store/sessions'
 import { thunkSearchTeams } from '../../../store/teams'
 
 
-const useSearch = () => {
+const useSearch = ({tab}) => {
     const [ query, setQuery ] = useState('')
-    const [ sortBy, setSortBy ] = useState('startDate');
+    const [ sortBy, setSortBy ] = useState(tab === 'sessions' ? 'startDate' : 'createdAt');
 
     const handleSort = (sort) => {
         setSortBy(sort)

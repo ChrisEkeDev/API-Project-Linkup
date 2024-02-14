@@ -21,7 +21,9 @@ function TeamMembers({membership}) {
     if (membershipsLoading) return <LoadingData />
     if (membershipsErr) return <div>Error</div>
 
-    const sortedMemberships = memberships?.sort((a, b) => {
+    const membershipsData = memberships.data;
+
+    const sortedMemberships = membershipsData?.sort((a, b) => {
         return statusOrderMembership[a.status] - statusOrderMembership[b.status]
     })
 

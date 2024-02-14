@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
 
     return res.status(200).json({
             status: 200,
-            message: "You've been signed in successfully.",
+            message: "Session restored successfully.",
             data: playerPublic,
             error: null
         })
@@ -49,9 +49,9 @@ router.post('/', validateLogin, async (req, res, _next) => {
     if (!player || !bcrypt.compareSync(password, player.hashedPassword.toString())) {
         return res.status(401).json({
             status: 401,
-            message: "Invalid credentials",
+            message: "Check your email address or password.",
             data: null,
-            error: "Check your email address or password."
+            error: "Invalid credentials"
         })
     }
 

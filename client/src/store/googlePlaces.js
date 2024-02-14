@@ -7,10 +7,5 @@ export const getGooglePlaces = async (query) => {
         method: 'POST',
         body: JSON.stringify({query})
     })
-    try {
-        const json = await res.json();
-        return json.data
-    } catch(error) {
-        console.error(error)
-    }
+    return res
 }

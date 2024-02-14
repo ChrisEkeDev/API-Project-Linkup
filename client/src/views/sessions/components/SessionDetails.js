@@ -20,14 +20,14 @@ function SessionDetails({session}) {
                 <div className='flex_column'>
                     {
                         id ?
-                        <p className='sm'>Hosted by
+                        <p className='sm'>
                             <Link className="bold" to={`/teams/${session.host.id}`}>
-                                {session.host.name}
-                            </Link>
-                            and created by
-                            <strong>{session.host.captain.name}</strong>
+                               Hosted by {session.host.name}
+                            </Link> | Created by <strong>{session.creator.name}</strong>
                         </p> :
-                        null
+                        <p className='sm'>
+                            <strong>{session.creator.name}</strong>
+                        </p>
                     }
                     <p className='sm bold'>{session.address}</p>
                     <p className='bold md'>{formatTime}</p>

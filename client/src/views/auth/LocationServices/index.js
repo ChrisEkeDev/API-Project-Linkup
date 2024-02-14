@@ -8,10 +8,10 @@ import useSettings from '../../settings/hooks/useSettings'
 
 function LocationServices() {
     const { navigate } = useApp();
-    const { locations, toggleLocations } = useSettings();
+    const { locations, onToggleLocations } = useSettings();
 
     const handleLocationServices = () => {
-        toggleLocations();
+        onToggleLocations();
         navigate('/search')
     }
 

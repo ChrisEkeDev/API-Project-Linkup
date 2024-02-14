@@ -9,7 +9,14 @@ function useMemberships() {
     const { id } = useParams();
     const client = useQueryClient();
     const { handleAlerts } = useApp();
-    const { addToTeamError, addToTeamSuccess, promoteToCoHostError, promoteToCoHostSuccess, removeFromTeamError, removeFromTeamSuccess } = membershipAlerts;
+    const {
+        addToTeamError,
+        addToTeamSuccess,
+        promoteToCoHostError,
+        promoteToCoHostSuccess,
+        removeFromTeamError,
+        removeFromTeamSuccess
+    } = membershipAlerts;
 
     const handleAddToTeamSuccess = () => {
         handleAlerts(addToTeamSuccess)
@@ -64,18 +71,30 @@ function useMemberships() {
     })
 
     const onAddToTeam = async (playerId) => {
-        const data = { teamId: id, playerId}
-        handleAddToTeam(data)
+        try {
+            const data = { teamId: id, playerId}
+            handleAddToTeam(data)
+        } catch(e) {
+            console.error(e)
+        }
     }
 
     const onPromoteToCoHost = async (playerId) => {
-        const data = { teamId: id, playerId}
-        handlePromoteToCoHost(data)
+        try {
+            const data = { teamId: id, playerId}
+            handlePromoteToCoHost(data)
+        } catch(e) {
+            console.error(e)
+        }
     }
 
     const onRemoveFromTeam = async (playerId) => {
-        const data = { teamId: id, playerId}
-        handleRemoveFromTeam(data)
+        try {
+            const data = { teamId: id, playerId}
+            handleRemoveFromTeam(data)
+        } catch(e) {
+            console.error(e)
+        }
     }
 
   return { onAddToTeam, onPromoteToCoHost, onRemoveFromTeam }

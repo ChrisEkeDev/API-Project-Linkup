@@ -7,7 +7,7 @@
     left: 0%;
     right: 0%;
     background-color: rgba(0,0,0,.5);
-    z-index: 100;
+    z-index: 500;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -54,7 +54,7 @@
         }
 
         .modal_content {
-            padding: 1rem 1rem 2rem 1rem;
+            padding: 1rem 0;
         }
     }
 }

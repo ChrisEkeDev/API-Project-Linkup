@@ -15,9 +15,11 @@ import './styles.scss';
 
 function Search() {
     const [ tab, setTab ] = useState('sessions')
-    const { query, sortBy, handleSort, handleInput } = useSearch()
+    const { query, sortBy, handleSort, handleInput } = useSearch({tab})
     const { data: sessions, error: sessionsErr, isLoading: sessionsLoading } = useQuery(['sessions', query, sortBy], () => searchSessions(query, sortBy));
     const { data: teams, error: teamsErr, isLoading: teamsLoading } = useQuery(['teams', query, sortBy], () => searchTeams(query, sortBy));
+    const sessionsData = sessions?.data;
+    const teamsData = teams?.data;
 
     return (
         <motion.main className='page search'>
@@ -58,7 +60,7 @@ function Search() {
                                     variants={parent_variants}
                                     {...base_animations}
                                     className='result_list'>
-                                        {teams?.map(team => (
+                                        {teamsData?.map(team => (
                                             <TeamItem team={team} />
                                         ))}
                                     </motion.ul>
@@ -77,7 +79,7 @@ function Search() {
                                         variants={parent_variants}
                                         {...base_animations}
                                         className='result_list'>
-                                            {sessions?.map(session => (
+                                            {sessionsData?.map(session => (
                                                 <SessionItem session={session} />
                                             ))}
                                     </motion.ul>

@@ -1,34 +1,31 @@
-import React from 'react'
 import { useApp } from '../../../context/AppContext';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQueryClient } from 'react-query';
-import { checkInAlerts } from '../../../constants/alerts';
 import { checkInToSession, checkOutOfSession } from '../../../store/sessions';
 
 function useCheckIn() {
     const { id } = useParams();
     const client = useQueryClient();
     const { handleAlerts } = useApp();
-    const { checkOutError, checkInError, checkOutSuccess, checkInSuccess } = checkInAlerts;
 
-    const handleCheckInSuccess = () => {
-        handleAlerts(checkInSuccess)
+    const handleCheckInSuccess = (data) => {
+        handleAlerts(data)
         client.invalidateQueries(['check-in-status'])
         client.invalidateQueries(['session-checkIns'])
     }
 
-    const handleCheckOutSuccess = () => {
-        handleAlerts(checkOutSuccess)
+    const handleCheckOutSuccess = (data) => {
+        handleAlerts(data)
         client.invalidateQueries(['check-in-status'])
         client.invalidateQueries(['session-checkIns'])
     }
 
-    const handleCheckInError = () => {
-        handleAlerts(checkInError)
+    const handleCheckInError = (error) => {
+        handleAlerts(error)
     }
 
-    const handleCheckOutError = () => {
-        handleAlerts(checkOutError)
+    const handleCheckOutError = (error) => {
+        handleAlerts(error)
     }
 
 
@@ -51,11 +48,19 @@ function useCheckIn() {
     })
 
     const onCheckIn = async () => {
-        handleCheckIn(id)
+        try {
+            handleCheckIn(id)
+        } catch (e) {
+            console.error(e)
+        }
     }
 
     const onCheckOut = async () => {
-        handleCheckOut(id)
+        try {
+            handleCheckOut(id)
+        } catch (e) {
+            console.error(e)
+        }
     }
 
 

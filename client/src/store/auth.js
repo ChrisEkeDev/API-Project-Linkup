@@ -6,24 +6,7 @@ export const signIn = async (playerData) => {
         method: 'POST',
         body: JSON.stringify(playerData)
     });
-    try {
-        // const res = await csrfFetch('/api/auth', {
-        //     method: 'POST',
-        //     body: JSON.stringify(playerData)
-        // });
-        const json = await res.json();
-        return json
-    } catch(error) {
-        console.error(error)
-    }
-    // if (res.status === 201) {
-    //     const json = await res.json();
-    //     return json.data
-    // } else {
-    //     const json = await res.json();
-    //     console.log(json)
-    //     throw json.data
-    // }
+    return res
 }
 
 export const signInGuest = async () => {
@@ -32,22 +15,12 @@ export const signInGuest = async () => {
         method: 'POST',
         body: JSON.stringify(playerData)
     });
-    try {
-        const json = await res.json();
-        return json.data
-    } catch(error) {
-        console.error(error)
-    }
+    return res
 }
 
 export const signOut = async () => {
     const res = await csrfFetch('/api/auth', { method: 'DELETE'});
-    try {
-        const json = await res.json();
-        return json.data
-    } catch(error) {
-        console.error(error)
-    }
+    return res
 }
 
 export const signUp = async (playerData) => {
@@ -55,85 +28,43 @@ export const signUp = async (playerData) => {
         method: 'POST',
         body: JSON.stringify(playerData)
     });
-    try {
-        const json = await res.json();
-        return json.data
-    } catch(error) {
-        console.error(error)
-    }
+    return res
 }
 
 export const getAuth = async () => {
     const res = await csrfFetch(`/api/auth`);
-    try {
-        const json = await res.json();
-        return json.data
-    } catch(error) {
-        console.error(error)
-    }
+    return res
 }
 
 export const getMyTeams = async (id) => {
     const res = await csrfFetch(`/api/teams/current`);
-    try {
-        const json = await res.json();
-        return json.data
-    } catch(error) {
-        console.error(error)
-    }
+    return res
 }
-
-
 
 export const getMySessions = async () => {
     const res = await csrfFetch(`/api/sessions/current`);
-    try {
-        const json = await res.json();
-        return json.data
-    } catch(error) {
-        console.error(error)
-    }
+    return res
 }
 
 export const getMyCheckIns = async (id) => {
     const res = await csrfFetch(`/api/check-ins/current`)
-    try {
-        const json = await res.json();
-        return json.data
-    } catch(error) {
-        console.error(error)
-    }
+    return res
 }
 
 export const getMyMemberships = async () => {
     const res = await csrfFetch(`/api/memberships/current`)
-    try {
-        const json = await res.json();
-        return json.data
-    } catch(error) {
-        console.error(error)
-    }
+    return res
 }
 
 
 export const getMySettings = async () => {
     const res = await csrfFetch('/api/settings/current')
-    try {
-        const json = await res.json();
-        return json.data
-    } catch(error) {
-        console.error(error)
-    }
+    return res
 }
 
 export const getMyLikes = async () => {
     const res = await csrfFetch(`/api/likes/current`);
-    try {
-        const json = await res.json();
-        return json.data
-    } catch(error) {
-        console.error(error)
-    }
+    return res
 }
 
 export const addLike = async (data) => {
@@ -141,12 +72,7 @@ export const addLike = async (data) => {
         method: 'POST',
         body: JSON.stringify(data)
     });
-    try {
-        const json = await res.json();
-        return json.data
-    } catch(error) {
-        console.error(error)
-    }
+    return res
 }
 
 export const removeLike = async (data) => {
@@ -154,12 +80,7 @@ export const removeLike = async (data) => {
         method: 'DELETE',
         body: JSON.stringify(data)
     });
-    try {
-        const json = await res.json();
-        return json.data
-    } catch(error) {
-        console.error(error)
-    }
+    return res
 }
 
 export const toggleThemes = async (value) => {
@@ -167,12 +88,7 @@ export const toggleThemes = async (value) => {
         method: 'PUT',
         body: JSON.stringify({value})
     })
-    try {
-        const json = await res.json();
-        return json.data
-    } catch(error) {
-        console.error(error)
-    }
+    return res
 }
 
 export const toggleLocations = async (value) => {
@@ -180,12 +96,7 @@ export const toggleLocations = async (value) => {
         method: 'PUT',
         body: JSON.stringify({value})
     })
-    try {
-        const json = await res.json();
-        return json.data
-    } catch(error) {
-        console.error(error)
-    }
+    return res
 }
 
 export const toggleNotifications = async (value) => {
@@ -193,22 +104,17 @@ export const toggleNotifications = async (value) => {
         method: 'PUT',
         body: JSON.stringify({value})
     })
-    try {
-        const json = await res.json();
-        return json.data
-    } catch(error) {
-        console.error(error)
-    }
+    return res
 }
 
 // GOOGLE
-export const googleAuthSignIn = () => async dispatch => {
+export const googleAuthSignIn = async () => {
     const res = await csrfFetch('/api/auth/google')
-    console.log('GOOOOO')
-    try {
-        const jsonResponse = await res.json();
-        console.log(jsonResponse)
-    } catch(error) {
-        console.error(error)
-    }
+    return res
+    // try {
+    //     const jsonResponse = await res.json();
+    //     console.log(jsonResponse)
+    // } catch(error) {
+    //     console.error(error)
+    // }
 }

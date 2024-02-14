@@ -19,8 +19,10 @@ function Sessions() {
   if (sessionsLoading) return <LoadingData/>
   if (sessionsErr) return <div>Error getting your sessions</div>
 
-  const createdSessions = sessions.filter(session => session.creator.id === auth.id)
-  const joinedSessions = sessions.filter(session => session.creator.id !== auth.id)
+  const sessionsData = sessions.data;
+
+  const createdSessions = sessionsData.filter(session => session.creator.id === auth.id)
+  const joinedSessions = sessionsData.filter(session => session.creator.id !== auth.id)
 
   return (
       <motion.main {...page_transitions} className='page sessions' >

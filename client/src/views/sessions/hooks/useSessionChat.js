@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
-import { useApp } from '../../../context/AppContext';
 import { useParams } from 'react-router-dom';
 import { addLike, removeLike } from '../../../store/auth';
 import { createSessionChat, updateSessionChat, deleteSessionChat } from '../../../store/sessions';
@@ -10,7 +9,6 @@ function useSessionChat(props) {
     const ref = useRef(null);
     const client = useQueryClient();
     const { id } = useParams();
-    const { handleAlerts } = useApp();
     const { chat, socket, room } = props;
     const [ content, setContent ] = useState(chat?.content || '');
     const [ editing, setEditing ] = useState(false);
@@ -30,13 +28,12 @@ function useSessionChat(props) {
         client.invalidateQueries(['session-feed'])
     }
 
-    const handleCreateSessionChatError = () => {
-        handleAlerts({})
+    const handleCreateSessionChatError = (error) => {
+        console.error(error)
     }
 
     const {
-        mutate: handleCreateSessionChat,
-        isLoading: createSessionChatLoading
+        mutate: handleCreateSessionChat
     } = useMutation({
         mutationFn: createSessionChat,
         onError: handleCreateSessionChatError,
@@ -59,13 +56,12 @@ function useSessionChat(props) {
         client.invalidateQueries(['session-feed'])
     }
 
-    const handleUpdateSessionChatError = () => {
-        handleAlerts({})
+    const handleUpdateSessionChatError = (error) => {
+        console.error(error)
     }
 
     const {
-        mutate: handleUpdateSessionChat,
-        isLoading: updateSessionChatLoading
+        mutate: handleUpdateSessionChat
     } = useMutation({
         mutationFn: updateSessionChat,
         onError: handleUpdateSessionChatError,
@@ -88,13 +84,12 @@ function useSessionChat(props) {
         client.invalidateQueries(['session-feed'])
     }
 
-    const handleDeleteSessionChatError = () => {
-        handleAlerts({})
+    const handleDeleteSessionChatError = (error) => {
+        console.error(error)
     }
 
     const {
-        mutate: handleDeleteSessionChat,
-        isLoading: deleteSessionChatLoading
+        mutate: handleDeleteSessionChat
     } = useMutation({
         mutationFn: deleteSessionChat,
         onError: handleDeleteSessionChatError,
@@ -117,8 +112,8 @@ function useSessionChat(props) {
         client.invalidateQueries(['my-likes'])
     }
 
-    const handleAddSessionChatLikeError = () => {
-        handleAlerts({})
+    const handleAddSessionChatLikeError = (error) => {
+        console.error(error)
     }
 
     const {
@@ -144,8 +139,8 @@ function useSessionChat(props) {
         client.invalidateQueries(['my-likes'])
     }
 
-    const handleRemoveSessionChatLikeError = () => {
-        handleAlerts({})
+    const handleRemoveSessionChatLikeError = (error) => {
+        console.error(error)
     }
 
     const {

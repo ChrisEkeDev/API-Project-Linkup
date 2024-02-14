@@ -17,12 +17,12 @@ function OAuth({title}) {
                 action={googleAuth}
                 styles="auth_form_button secondary"
             />
-            <Button
+            {/* <Button
                 label={`${title} using your Apple account`}
                 icon={IoLogoApple}
                 action={appleAuth}
                 styles="auth_form_button secondary"
-            />
+            /> */}
         </div>
     )
 }

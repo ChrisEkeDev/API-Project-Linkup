@@ -32,16 +32,19 @@ function TeamFeed({team}) {
     if (socket === null || feedLoading) return <LoadingData />
     if (feedErr) return <div>Error.</div>
 
+    const feedData = feed?.data;
+    const membershipData = membership?.data;
+
     return (
         <Scroll ref={ref}>
             <section className="team_feed container_border">
             <span className='section_label xs bold'>Showing all messages for past 30 days</span>
                 {
-                    feed.length > 0 ?
+                    feedData.length > 0 ?
                     <motion.ul variants={parent_variants} {...base_animations} className="feed_list">
                         <AnimatePresence>
                         {
-                            feed.map(chat => (
+                            feedData.map(chat => (
                                 <TeamChat
                                     socket={socket}
                                     room={room}
@@ -60,7 +63,7 @@ function TeamFeed({team}) {
 
             </section>
             {
-                membership && membership !== 'pending' ?
+                membershipData && membershipData !== 'pending' ?
                 <ChatInput
                     handleInput={handleInput}
                     content={content}

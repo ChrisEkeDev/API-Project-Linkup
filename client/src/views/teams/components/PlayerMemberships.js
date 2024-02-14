@@ -16,7 +16,9 @@ function PlayerMemberships() {
     if (membershipsLoading) return <div>Loading..</div>
     if (membershipsErr) return <div>Error</div>
 
-    let filteredMemberships = memberships.filter(x => x.status !== 'pending')
+    const membershipsData = memberships.data;
+
+    let filteredMemberships = membershipsData.filter(x => x.status !== 'pending')
 
     return (
         <ClickDragScroll title={`${filteredMemberships.length} Member${filteredMemberships.length === 1 ? null : 's'}`}>

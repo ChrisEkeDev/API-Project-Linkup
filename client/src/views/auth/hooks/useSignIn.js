@@ -2,12 +2,10 @@ import { useEffect, useState } from 'react'
 import { useApp } from '../../../context/AppContext';
 import { useMutation, useQueryClient } from 'react-query';
 import { signIn, signInGuest } from '../../../store/auth';
-import { signInAlerts } from '../../../constants/alerts';
 
 
 const useSignIn = () => {
     const client = useQueryClient();
-    const { signInSuccess, signInFailure } = signInAlerts;
     const { navigate, handleAlerts } = useApp();
     const [ formData, setFormData ] = useState({
         email: "",
@@ -21,24 +19,18 @@ const useSignIn = () => {
     }
 
     const handleErrors = (error) => {
-        console.log('Handling Error', error)
-        // const newState = { ...errors, ...newErrors };
-        // setErrors(newState)
-        // if (Object.keys(newErrors).length > 0) {
-        //     handleAlerts(signInFailure)
-        // }
+        handleAlerts(error)
     }
 
     const handleSuccess = (data) => {
-        console.log('Handling success', data)
-        // client.setQueryData(['auth'], data);
-        // client.invalidateQueries(['auth'], { exact: true })
-        // navigate('/search')
-        // handleAlerts(signInSuccess)
+        client.setQueryData(['auth'], data.data);
+        client.invalidateQueries(['auth'], { exact: true })
+        navigate('/search')
+        handleAlerts(data)
     }
 
     const {
-        mutateAsync: handleSignIn,
+        mutate: handleSignIn,
         isLoading: signInLoading,
     } = useMutation({
         mutationFn: signIn,
@@ -57,13 +49,21 @@ const useSignIn = () => {
 
     const onSignIn = async (e) => {
         e.preventDefault();
-        const res = await handleSignIn(formData)
-        console.log(res)
+        try {
+            handleSignIn(formData)
+        } catch(e) {
+            console.error(e)
+        }
     }
 
     const onSignInGuest = async (e) => {
         e.preventDefault();
-        handleSignInGuest()
+        try {
+            handleSignInGuest()
+        } catch(e) {
+            console.error(e)
+        }
+
     }
 
     useEffect(() => {

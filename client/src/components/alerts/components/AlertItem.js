@@ -18,7 +18,7 @@ function AlertItem(props) {
             onClick={() => removeAlerts(alert)}
         >
             {
-                alert.status === "fail" ?
+                alert.status >= 400 ?
                 <TbAlertCircleFilled className='icon'/> :
                 <TbCircleCheckFilled className='icon'/>
             }

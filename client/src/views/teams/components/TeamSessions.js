@@ -18,39 +18,41 @@ function TeamSessions() {
     if (sessionsLoading) return <div>Loading..</div>
     if (sessiosErr) return <div>Error</div>
 
-  return (
-    <div className='container_border team_sessions'>
-        <span className='section_label xs bold'>Sessions hosted by Team</span>
-        {
-            sessions.length > 0 ?
-            <ul className='team_session_list'>
-                {
-                    sessions.map(session => (
-                        <li key={session.id} onClick={() => navigate(`/sessions/${session.id}`)} className='team_session_item'>
-                            <div className="float_left">
-                                <ProfileImage
-                                    player={session.creator}
-                                />
-                                <div>
-                                    <p className='sm'>{session.name} by <strong>{session.creator.name}</strong></p>
-                                    <p className='sm bold'>{session.address}</p>
-                                    <p className='md bold'>{format(parseISO(session.startDate), 'MM/dd @ p')}</p>
-                                </div>
-                                </div>
-                                <div className='player_count'>
-                                    <h2 className='count accent'>{session.checkInCount}</h2>
-                                    <small>Players</small>
-                                </div>
-                        </li>
-                    ))
-                }
-            </ul> :
-            <div className='no_content'>
+    const sessionsData = sessions?.data;
 
-            </div>
-        }
-    </div>
-  )
+    return (
+        <div className='container_border team_sessions'>
+            <span className='section_label xs bold'>Sessions hosted by Team</span>
+            {
+                sessionsData.length > 0 ?
+                <ul className='team_session_list'>
+                    {
+                        sessionsData.map(session => (
+                            <li key={session.id} onClick={() => navigate(`/sessions/${session.id}`)} className='team_session_item'>
+                                <div className="float_left">
+                                    <ProfileImage
+                                        player={session.creator}
+                                    />
+                                    <div>
+                                        <p className='sm'>{session.name} by <strong>{session.creator.name}</strong></p>
+                                        <p className='sm bold'>{session.address}</p>
+                                        <p className='md bold'>{format(parseISO(session.startDate), 'MM/dd @ p')}</p>
+                                    </div>
+                                    </div>
+                                    <div className='player_count'>
+                                        <h2 className='count accent'>{session.checkInCount}</h2>
+                                        <small>Players</small>
+                                    </div>
+                            </li>
+                        ))
+                    }
+                </ul> :
+                <div className='no_content'>
+
+                </div>
+            }
+        </div>
+    )
 }
 
 export default TeamSessions

@@ -17,8 +17,9 @@ function SessionChat(props) {
     const { auth } = useApp();
     const { chat, room, socket } = props;
     const { data: myLikes } = useQuery(['my-likes'], getMyLikes);
+    const likesData = myLikes?.data;
     const { isModalOpen, onOpenModal, onCloseModal } = useModal();
-    const chatLiked = myLikes?.find(like => like.playerId === auth?.id && chat.id === like.entityId)
+    const chatLiked = likesData?.find(like => like.playerId === auth?.id && chat.id === like.entityId)
     const isAuth = auth?.id === chat.playerId
     const today = new Date();
     const createdToday = isSameDay(parseISO(chat.createdAt), today);
@@ -49,7 +50,7 @@ function SessionChat(props) {
             variants={child_variants}
             {...base_animations}
             ref={ref}
-            className="chat_item">
+            className={`chat_item ${editing && 'editing_chat'}`}>
             <ProfileImage
                 size={4}
                 player={chat.Player}

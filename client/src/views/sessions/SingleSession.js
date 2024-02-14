@@ -24,9 +24,12 @@ function SingleSession() {
     const { data: session, error: sessionErr, isLoading: sessionLoading } = useQuery(['session', id], () => getSession(id));
     const { data: checkIn, isLoading: checkInStatusLoading } = useQuery(['check-in-status'], () => getSessionCheckInStatus(id))
     const { onCheckIn, onCheckOut, checkInLoading, checkOutLoading } = useCheckIn()
-    const isCreator = auth?.id === session?.creator.id;
 
     if (sessionLoading) return <LoadingData />
+
+    const sessionData = session?.data;
+    const checkInData = checkIn?.data;
+    const isCreator = auth?.id === sessionData?.creator.id;
 
     return (
         <motion.main {...base_animations} className='page sessions'>
@@ -34,14 +37,14 @@ function SingleSession() {
                 <div className="flex">
                     <Back />
                     {
-                        session?.private ?
+                        sessionData?.private ?
                         <TbLock title='Private' className='team_privacy_icon'/> :
                         <TbLockOpen title='Public' className='team_privacy_icon'/>
                     }
-                    <p className="lg bold">{session?.name}</p>
+                    <p className="lg bold">{sessionData?.name}</p>
                 </div>
                 <div className='actions'>
-                    <CountDown endTime={session.startDate} expires={session.endDate} />
+                    <CountDown endTime={sessionData.startDate} expires={sessionData.endDate} />
                     {
                         auth && (
                             isCreator ?
@@ -49,12 +52,12 @@ function SingleSession() {
                                 styles='secondary'
                                 label="Edit Session"
                                 icon={TbEditCircle}
-                                action={() => navigate(`/sessions/${session.id}/update`)}
+                                action={() => navigate(`/sessions/${sessionData.id}/update`)}
                             /> :
                             <Button
                                 styles={
-                                    checkIn ?
-                                    checkIn === 'pending'
+                                    checkInData ?
+                                    checkInData === 'pending'
                                     ? 'secondary'
                                     : 'secondary'
                                     : 'primary'
@@ -62,8 +65,8 @@ function SingleSession() {
                                 icon={
                                     checkInLoading || checkOutLoading ?
                                     CgSpinner :
-                                    checkIn ?
-                                    checkIn === 'pending' ?
+                                    checkInData ?
+                                    checkInData === 'pending' ?
                                     CgSpinner :
                                     TbUserMinus :
                                     TbUserPlus
@@ -73,14 +76,14 @@ function SingleSession() {
                                     'Checking In...' :
                                     checkOutLoading ?
                                     'Checking Out...' :
-                                    checkIn ?
-                                    checkIn === 'pending' ?
+                                    checkInData ?
+                                    checkInData === 'pending' ?
                                     'Awaiting Approval' :
                                     'Leave Session':
                                     'Join Session'
                                 }
-                                action={checkIn ? onCheckOut : onCheckIn }
-                                loading={checkIn === 'pending' || checkInLoading || checkOutLoading }
+                                action={checkInData ? onCheckOut : onCheckIn }
+                                loading={checkInData === 'pending' || checkInLoading || checkOutLoading }
                             />
                         )
                     }
@@ -98,10 +101,10 @@ function SingleSession() {
             <motion.section variants={parent_variants} {...base_animations} className='section scroll'>
                 {
                     tabView === 'details' ?
-                    <SessionDetails session={session} /> :
+                    <SessionDetails session={sessionData} /> :
                     tabView === 'feed' ?
-                    <SessionFeed session={session} /> :
-                    <SessionCheckins status={checkIn} isCreator={isCreator} />
+                    <SessionFeed session={sessionData} /> :
+                    <SessionCheckins status={checkInData} isCreator={isCreator} />
                 }
             </motion.section>
     </motion.main>

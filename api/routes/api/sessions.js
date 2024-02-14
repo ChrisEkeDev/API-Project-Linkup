@@ -325,7 +325,7 @@ router.post('/', requireAuth, uploadMedia, validateCreateSession, async (req, re
 
     return res.status(201).json({
         status: 201,
-        message: null,
+        message: "Your session was created successfully.",
         data: newSession,
         error: null
     })
@@ -416,7 +416,7 @@ router.put('/:sessionId', requireAuth, validateEditSession, async (req, res) => 
 
     return res.status(200).json({
         status: 200,
-        message: null,
+        message: "Your session was updated successfully.",
         data: updatedSession,
         error: null
     })
@@ -449,7 +449,7 @@ router.delete('/:sessionId', requireAuth, async (req, res) => {
 
     return res.status(200).json({
         status: 200,
-        message: null,
+        message: "Your session was deleted successfully.",
         data: session,
         error: null
     })
@@ -548,6 +548,7 @@ router.post('/:sessionId/check-in', requireAuth, async (req, res) => {
                 attributes: ['id', 'name', 'startDate', 'endDate', 'hostId'],
                 include: {
                     model: Team,
+                    as: 'host',
                     attributes: ['name'],
                     include: [
                         {
@@ -620,7 +621,7 @@ router.put('/:sessionId/add-to-session', requireAuth, async (req, res) => {
 
     return res.status(200).json({
         status: 200,
-        message: "You have been approved for the session",
+        message: "Player was approved for the session.",
         data: updatedCheckIn,
         error: null
     })
@@ -662,7 +663,7 @@ router.delete('/:sessionId/remove-from-session', requireAuth, async (req, res) =
 
     return res.status(200).json({
         status: 200,
-        message: "Membership deleted successfully",
+        message: "Player was removed from the session.",
         data: checkIn,
         error: null
     })
@@ -829,7 +830,7 @@ router.post('/:sessionId/chat-feed', requireAuth, async (req, res) => {
             },
             {
                 model: Like,
-                attributes: [] // empty array means do not fetch columns from the Likes table
+                attributes: []
             }
         ],
         group: [

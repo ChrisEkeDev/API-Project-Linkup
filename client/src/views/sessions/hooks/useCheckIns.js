@@ -1,32 +1,29 @@
-import React from 'react'
 import { useApp } from '../../../context/AppContext';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQueryClient } from 'react-query';
 import { addToSession, removeFromSession } from '../../../store/sessions';
-import { checkInAlerts } from '../../../constants/alerts';
 
 function useCheckIns() {
     const { id } = useParams();
     const client = useQueryClient();
     const { handleAlerts } = useApp();
-    const { addToSessionSuccess, removeFromSessionSuccess, addToSessionError, removeFromSessionError } = checkInAlerts;
 
-    const handleRemoveFromSessionSuccess = () => {
-        handleAlerts(removeFromSessionSuccess)
+    const handleRemoveFromSessionSuccess = (data) => {
+        handleAlerts(data)
         client.invalidateQueries(['session-checkIns'])
     }
 
-    const handleAddToSessionSuccess = () => {
-        handleAlerts(addToSessionSuccess)
+    const handleAddToSessionSuccess = (data) => {
+        handleAlerts(data)
         client.invalidateQueries(['session-checkIns'])
     }
 
-    const handleAddToSessionError = () => {
-        handleAlerts(addToSessionError)
+    const handleAddToSessionError = (error) => {
+        handleAlerts(error)
     }
 
-    const handleRemoveFromSessionError = () => {
-        handleAlerts(removeFromSessionError)
+    const handleRemoveFromSessionError = (error) => {
+        handleAlerts(error)
     }
 
 
@@ -48,12 +45,21 @@ function useCheckIns() {
 
     const onRemoveFromSession = async (playerId) => {
         const data = { sessionId: id, playerId }
-        handleRemoveFromSession(data)
+        try {
+            handleRemoveFromSession(data)
+        } catch (e) {
+            console.error(e)
+        }
+
     }
 
     const onAddToSession = async (playerId) => {
         const data = { sessionId: id, playerId }
-        handleAddToSession(data)
+        try {
+            handleAddToSession(data)
+        } catch (e) {
+            console.error(e)
+        }
     }
 
     return { onRemoveFromSession, onAddToSession }

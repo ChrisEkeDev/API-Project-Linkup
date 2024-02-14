@@ -22,9 +22,12 @@ function SingleTeam() {
     const { onRequestToJoinTeam, onRequestToLeaveTeam } = useMembership();
     const { data: team, error: teamErr, isLoading: teamLoading } = useQuery(['team', id], () => getTeam(id));
     const { data: membership, isLoading: membershipLoading } = useQuery(['membership-status'], () => getTeamMembershipStatus(id))
-    const isHost = auth?.id === team?.captain.id
 
     if (teamLoading) return <LoadingData />
+
+    const teamData = team?.data;
+    const membershipData = membership?.data;
+    const isHost = auth?.id === teamData?.captain.id
 
     return (
         <motion.main {...base_animations} className='page teams'>
@@ -32,11 +35,11 @@ function SingleTeam() {
                 <div className="flex">
                     <Back />
                     {
-                        team?.private ?
+                        teamData?.private ?
                         <TbLock title='Private' className='team_privacy_icon'/> :
                         <TbLockOpen title='Public' className='team_privacy_icon'/>
                     }
-                    <p className="lg bold">{team?.name}</p>
+                    <p className="lg bold">{teamData?.name}</p>
                 </div>
                 <div className='actions'>
                     { auth && (
@@ -45,31 +48,31 @@ function SingleTeam() {
                             styles='secondary'
                             label="Edit Team"
                             icon={TbEditCircle}
-                            action={() => navigate(`/teams/${team.id}/update`)}
+                            action={() => navigate(`/teams/${teamData.id}/update`)}
                         />:
                         <>
                         {
-                            membership ?
+                            membershipData ?
                             <Button
                                 styles='tertiary'
-                                loading={membership === 'pending'}
+                                loading={membershipData === 'pending'}
                                 icon={
-                                    membership === 'pending' ?
+                                    membershipData === 'pending' ?
                                     CgSpinner :
                                     TbLogout
                                 }
                                 label={
-                                    membership === 'pending' ?
+                                    membershipData === 'pending' ?
                                     "Awaiting Approval" :
                                     "Leave Team"
                                 }
-                                action={() => onRequestToLeaveTeam(team.id)}
+                                action={() => onRequestToLeaveTeam(teamData.id)}
                             /> :
                             <Button
                                 styles='tertiary'
                                 icon={TbLogin2}
                                 label="Join Team"
-                                action={() => onRequestToJoinTeam(team.id)}
+                                action={() => onRequestToJoinTeam(teamData.id)}
                             />
                         }
                         </>
@@ -88,10 +91,10 @@ function SingleTeam() {
                 <motion.section variants={parent_variants} {...base_animations} className='section scroll'>
                     {
                         tabView === 'details' ?
-                        <TeamDetails team={team} /> :
+                        <TeamDetails team={teamData} /> :
                         tabView === 'feed' ?
-                        <TeamFeed team={team} /> :
-                        <TeamMembers membership={membership} />
+                        <TeamFeed team={teamData} /> :
+                        <TeamMembers membership={membershipData} />
                     }
                 </motion.section>
         </motion.main>

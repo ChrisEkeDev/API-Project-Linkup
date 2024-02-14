@@ -5,9 +5,15 @@ import { getMyMemberships } from '../../../store/auth'
 
 function SessionHosts(props) {
     const { data: memberships, error: membershipsError, isLoading: membershipsLoading } = useQuery(['my-memberships'], getMyMemberships)
-    const authTeams = memberships?.filter(membership => membership.status === 'host' || membership.status === 'co-host');
     const { handleHost, sessionData } = props;
     const currentHostId = sessionData.hostId;
+    console.log(sessionData)
+
+    if (membershipsLoading) return <div>Loading...</div>
+    if (membershipsError) return <div>Error!</div>
+
+    const membershipsData = memberships.data;
+    const authTeams = membershipsData?.filter(membership => membership.status === 'host' || membership.status === 'co-host');
 
     return (
         <>

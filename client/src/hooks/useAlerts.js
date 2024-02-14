@@ -10,7 +10,7 @@ function useAlerts() {
         const alert = {
             id,
             status: res.status,
-            message: res.status >= 400 ? res.error : res.message
+            message: res.message
         }
         if (alerts.length === 5) {
             newState.shift();

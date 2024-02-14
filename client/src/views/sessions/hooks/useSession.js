@@ -31,7 +31,8 @@ function useSession({session}) {
         duration: session ?
             getDuration(session?.startDate, session?.endDate) : 1,
         private: session ? session?.private : false,
-        address: null
+        address: null,
+        hostId: session ? session?.hostId : null
     });
 
     console.log(sessionData.startDate)
@@ -70,15 +71,14 @@ function useSession({session}) {
     //  Create Session
 
     const handleCreateSessionSuccess = (data) => {
-        handleAlerts(createSessionSuccess)
-        client.setQueryData(['session'], data)
+        handleAlerts(data)
+        client.setQueryData(['session'], data.data)
         client.invalidateQueries(['session'])
-        navigate(`/sessions/${data.id}`)
+        navigate(`/sessions/${data.data.id}`)
     }
 
-    const handleCreateSessionError = (data) => {
-        handleAlerts(createSessionError)
-        console.log(data)
+    const handleCreateSessionError = (error) => {
+        handleAlerts(error)
     }
 
     const onCreateSession = async (e) => {
@@ -107,15 +107,14 @@ function useSession({session}) {
     //  Update Session
 
     const handleUpdateSessionSuccess = (data) => {
-        client.setQueryData(['session'], id)
+        client.setQueryData(['session'], data.data)
         client.invalidateQueries(['session'])
-        handleAlerts(updateSessionSuccess)
-        navigate(`/sessions/${id}`)
+        handleAlerts(data)
+        navigate(`/sessions/${data.data.id}`)
     }
 
-    const handleUpdateSessionError = (data) => {
-        handleAlerts(updateSessionError)
-        console.log(data)
+    const handleUpdateSessionError = (error) => {
+        handleAlerts(error)
     }
 
     const onUpdateSession = async (e) => {
@@ -143,14 +142,13 @@ function useSession({session}) {
 
     const handleDeleteSessionSuccess = (data) => {
         navigate(`/sessions`)
-        client.setQueryData(['session'], data)
+        client.setQueryData(['session'], data.data)
         client.invalidateQueries(['session'])
-        handleAlerts(deleteSessionSuccess)
+        handleAlerts(data)
     }
 
-    const handleDeleteSessionError = (data) => {
-        handleAlerts(deleteSessionError)
-        console.log(data)
+    const handleDeleteSessionError = (error) => {
+        handleAlerts(error)
     }
 
     const onDeleteSession = async (e) => {

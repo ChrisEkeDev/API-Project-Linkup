@@ -28,7 +28,7 @@ router.get('/search/*', async (req, res) => {
             },
         ],
         order: [
-            [sortBy ? sortBy : 'createdAt', sortBy === 'startDate' ? 'ASC' : 'DESC']
+            [sortBy ? sortBy : 'createdAt', sortBy === 'createdAt' ? 'ASC' : 'DESC']
         ],
         group: [
             'Team.id',

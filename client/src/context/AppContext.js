@@ -15,21 +15,34 @@ const AppContext = createContext();
 export const useApp = () => useContext(AppContext);
 
 function AppProvider({children}) {
+  const { alerts, handleAlerts, removeAlerts } = useAlerts();
+  const { currentTime } = useAppClock();
+  const { loading, setLoading } = useLoading();
   const history = useHistory();
   const navigate = (route) => {
       history.push(route)
   }
 
+  const handleAuthError = () => {
+    navigate('/sign-in')
+  }
+
+  const handleAuthSuccess = (data) => {
+    handleAlerts(data)
+  }
+
   const {
-    data: auth,
+    data: authData,
     isLoading: authLoading
   } = useQuery(['auth'], {
     queryFn: getAuth,
+    retry: false,
+    onSuccess: handleAuthSuccess,
+    onError: handleAuthError
   });
 
-  const { alerts, handleAlerts, removeAlerts } = useAlerts();
-  const { currentTime } = useAppClock();
-  const { loading, setLoading } = useLoading();
+  const auth = authData?.data;
+
 
   const goBack = (route) => {
     if (route) history.push(route)

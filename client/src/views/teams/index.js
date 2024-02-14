@@ -19,11 +19,11 @@ function Teams() {
   if (teamsLoading) return <LoadingData/>
   if (teamsErr) return <div>Error getting your teams</div>
 
-  console.log(teams)
+  const teamsData = teams.data;
 
-  const teamsCaptain = teams.filter(team => team.Memberships[0].status === 'host');
-  const teamsJoined = teams.filter(team => team.Memberships[0].status !== 'host' && team?.Memberships[0].status !== 'pending');
-  const teamsPending = teams.filter(team => team.Memberships[0].status === 'pending');
+  const teamsCaptain = teamsData.filter(team => team.Memberships[0].status === 'host');
+  const teamsJoined = teamsData.filter(team => team.Memberships[0].status !== 'host' && team?.Memberships[0].status !== 'pending');
+  const teamsPending = teamsData.filter(team => team.Memberships[0].status === 'pending');
 
   return (
       <motion.main {...page_transitions} className='page teams'>

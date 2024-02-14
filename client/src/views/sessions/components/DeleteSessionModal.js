@@ -5,14 +5,16 @@ import Button from '../../../components/shared/button'
 function DeleteSessionModal({close, deleteSession}) {
     return (
         <div className='modal_container'>
-            <h2 className='md modal_title'>
-                Are you sure you want to delete this session?
-            </h2>
-            <p className="sm modal_body">
-                This cannot be undone. All messages and data shared in the
-                session will be deleted. Forever. Do you still want to delete it?
-            </p>
-            <div className='modal_actions'>
+            <header className='modal_header'>
+                <h2 className='md modal_title'>
+                    Are you sure you want to delete this session?
+                </h2>
+                <p className="sm modal_sub-title">
+                    This cannot be undone. All messages and data shared in the
+                    session will be deleted. Forever. Do you still want to delete it?
+                </p>
+            </header>
+            <footer className='modal_actions'>
                 <Button
                     label="Keep Session"
                     styles="tertiary"
@@ -25,7 +27,7 @@ function DeleteSessionModal({close, deleteSession}) {
                     icon={PiTrashBold}
                     action={deleteSession}
                 />
-            </div>
+            </footer>
         </div>
     )
 }

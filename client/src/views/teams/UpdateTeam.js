@@ -83,10 +83,9 @@ function UpdateTeam({team}) {
 function UpdateTeamWrapper() {
     const { id } = useParams();
     const { data: team, error: teamErr, isLoading: teamLoading } = useQuery(['team', id], () => getTeam(id));
-
     if (teamLoading) return <LoadingData />
-
-    return <UpdateTeam team={team} />
+    const teamData = team.data;
+    return <UpdateTeam team={teamData} />
 
 }
 

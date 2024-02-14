@@ -25,6 +25,8 @@ function Profile() {
     if (authLoading) return <LoadingData />
     if (authErr) return <Redirect to='/sign-in' />
 
+    const authData = auth.data;
+
     return (
         <motion.main {...page_transitions} className='page page_w_title'>
                 <header className='page_header'>
@@ -42,8 +44,8 @@ function Profile() {
                             size={5}
                         />
                         <div>
-                            <p className='md bold'>{auth.name}</p>
-                            <p className='sm'>Became a member {formatDistance(parseISO(auth?.createdAt), new Date())} ago</p>
+                            <p className='md bold'>{authData.name}</p>
+                            <p className='sm'>Became a member {formatDistance(parseISO(authData?.createdAt), new Date())} ago</p>
                         </div>
                     </div>
 
