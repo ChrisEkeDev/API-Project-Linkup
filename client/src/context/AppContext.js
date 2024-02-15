@@ -28,7 +28,7 @@ function AppProvider({children}) {
   }
 
   const handleAuthSuccess = (data) => {
-    handleAlerts(data)
+    // handleAlerts(data)
   }
 
   const {

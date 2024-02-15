@@ -1,26 +1,36 @@
 import React from 'react'
 import { useApp } from '../../../context/AppContext';
-import { signOut } from '../../../store/auth';
-import { useMutation, useQueryClient } from 'react-query';
+import { getAuth, signOut } from '../../../store/auth';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 
 function useAuth() {
     const client = useQueryClient();
     const { handleAlerts, navigate } = useApp();
 
+    const {
+        data: authData,
+        isLoading: authLoading
+      } = useQuery(['auth'], {
+        queryFn: getAuth,
+        retry: false
+      });
+
+      const auth = authData?.data;
+
     const handleSignOutSuccess = (data) => {
         navigate('/sign-in')
-        client.setQueryData(['auth'], data)
+        handleAlerts(data)
+        client.setQueryData(['auth'], data.data)
         client.invalidateQueries(['auth'], { exact: true })
     }
 
-    const handleSignOutError = () => {
-        handleAlerts({})
+    const handleSignOutError = (error) => {
+        handleAlerts(error)
     }
 
     const {
-        mutate: handleSignOut,
-        isLoading: signOutLoading
+        mutate: handleSignOut
     } = useMutation({
         mutationFn: signOut,
         onSuccess: handleSignOutSuccess,
@@ -35,7 +45,7 @@ function useAuth() {
         }
     }
 
-    return { onSignOut }
+    return { auth, authLoading, onSignOut }
 }
 
 export default useAuth

@@ -8,6 +8,7 @@ const { requireAuth } = require('../../utils/auth')
 const { validateSignUp } = require('./validation/expressValidations');
 const { v4: uuidv4 } = require('uuid');
 const { playerNotFound } = require('./constants/responseMessages');
+const { player1uuid } = require('../../db/seedUUIDs');
 
 // Create Player
 router.post('/', uploadMedia, validateSignUp, async (req, res) => {
@@ -69,10 +70,19 @@ router.post('/', uploadMedia, validateSignUp, async (req, res) => {
 router.put('/update-profile', requireAuth, async (req, res) => {
     const { name, email, password } = req.body;
     const playerId = req.player.id;
-    const player = await Player.findByPk(playerId)
+    const player = await Player.unscoped().findByPk(playerId)
 
     if (!player) {
         return res.status(404).json(playerNotFound)
+    }
+
+    if (player.email === 'pcartwirght@email.com') {
+        return res.status(403).json({
+            status: 403,
+            message: "Sorry, your not able to change the demo account.",
+            data: null,
+            error: 'Not Authorized'
+        })
     }
 
     await player.set({
@@ -98,7 +108,7 @@ router.put('/update-profile', requireAuth, async (req, res) => {
 
     return res.status(200).json({
         status: 200,
-        message: "Your profile has been updated",
+        message: "Your profile has been updated.",
         data: playerPublic,
         error: null
     })
@@ -110,17 +120,26 @@ router.put('/update-profile', requireAuth, async (req, res) => {
 // Delete Player
 router.delete('/delete-profile', requireAuth, async (req, res) => {
     const playerId = req.player.id;
-    const player = await Player.findByPk(playerId)
+    const player = await Player.unscoped().findByPk(playerId)
 
     if (!player) {
         return res.status(404).json(playerNotFound)
+    }
+
+    if (player.email === 'pcartwirght@email.com') {
+        return res.status(403).json({
+            status: 403,
+            message: "Sorry, your not able to delete the demo account.",
+            data: null,
+            error: 'Not Authorized'
+        })
     }
 
     await player.destroy();
 
     return res.status(200).json({
         status: 200,
-        message: "Your profile has been deleted",
+        message: "Your profile has been deleted.",
         data: null,
         error: null
     })

@@ -36,6 +36,22 @@ export const getAuth = async () => {
     return res
 }
 
+export const updateProfile = async (playerData) => {
+    const res = await csrfFetch(`/api/players/update-profile`, {
+        method: 'PUT',
+        body: JSON.stringify(playerData)
+    })
+    return res
+}
+
+export const deleteProfile = async () => {
+    const res = await csrfFetch(`/api/players/delete-profile`, {
+        method: 'DELETE',
+    })
+    return res
+}
+
+
 export const getMyTeams = async (id) => {
     const res = await csrfFetch(`/api/teams/current`);
     return res

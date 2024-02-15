@@ -33,11 +33,11 @@ function SignUp() {
 
   return (
     <main className='page auth'>
-      <IconButton
+      {/* <IconButton
         label="Back to Search"
         icon={RiBasketballFill}
         action={() => navigate('/search')}
-      />
+      /> */}
       <form className='auth_form'>
         <header className='auth_form--header'>
           <h1>Sign Up</h1>
@@ -57,7 +57,7 @@ function SignUp() {
           <Input
             label="Email"
             placeholder='joesmith@email.com'
-            type='text'
+            type='email'
             value={formData.email}
             setValue={handleInput}
             name='email'

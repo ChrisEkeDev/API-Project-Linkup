@@ -27,14 +27,18 @@ const useSignUp = () => {
     }
 
     const handleSuccess = (data) => {
-        client.setQueryData(['auth'], data)
+        client.setQueryData(['auth'], data.data)
         client.invalidateQueries(['auth'], { exact: true })
         navigate('/search')
     }
 
     const onSignUp = async (e) => {
         e.preventDefault();
-        handleSubmit(formData)
+        try {
+            handleSubmit(formData)
+        } catch (e) {
+            console.error(e)
+        }
     }
 
     const {
@@ -48,8 +52,8 @@ const useSignUp = () => {
 
     useEffect(() => {
         const errors = {};
-        if (name && name.trim().length === 0) {
-            errors.name = 'Please enter a Name';
+        if (name && name.trim().length < 3) {
+            errors.name = "Your name must be at least 3 characters."
         }
         if (email && (email.trim().length < 3 || email.trim().length > 256)) {
             errors.email = 'Email must be between 3 and 256 characters';

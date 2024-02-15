@@ -18,7 +18,9 @@ function Settings() {
 
     if (settingsLoading) return <LoadingData/>
 
-    const { theme, locations, notifications } = settings;
+    const settingsData = settings.data;
+
+    const { theme, locations, notifications } = settingsData;
 
     return (
         <motion.main {...page_transitions} className='page page_w_title'>

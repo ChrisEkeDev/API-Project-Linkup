@@ -12,18 +12,21 @@ function useSettings() {
       isLoading: settingsLoading
    } = useQuery(['settings'], getMySettings)
 
-   const handleToggleSettingsSuccess = () => {
+   const handleSuccess = (data) => {
+      handleAlerts(data)
       client.invalidateQueries(['settings'])
    }
 
-   const handleToggleSettingsError = () => {
-      handleAlerts({})
+   const handleError = (error) => {
+      handleAlerts(error)
    }
 
-   const { mutate: handleToggleThemes } = useMutation({
+   const {
+      mutate: handleToggleThemes
+   } = useMutation({
       mutationFn: toggleThemes,
-      onSuccess: handleToggleSettingsSuccess,
-      onError: handleToggleSettingsError
+      onSuccess: handleSuccess,
+      onError: handleError
    })
 
    const onToggleTheme = async () => {
@@ -34,10 +37,12 @@ function useSettings() {
       }
    }
 
-   const { mutate: handleToggleLocations } = useMutation({
+   const {
+      mutate: handleToggleLocations
+   } = useMutation({
       mutationFn: toggleLocations,
-      onSuccess: handleToggleSettingsSuccess,
-      onError: handleToggleSettingsError
+      onSuccess: handleSuccess,
+      onError: handleError
    })
 
    const onToggleLocations = async () => {
@@ -48,10 +53,12 @@ function useSettings() {
       }
    }
 
-   const { mutate: handleToggleNotifications } = useMutation({
+   const {
+      mutate: handleToggleNotifications
+   } = useMutation({
       mutationFn: toggleNotifications,
-      onSuccess: handleToggleSettingsSuccess,
-      onError: handleToggleSettingsError
+      onSuccess: handleSuccess,
+      onError: handleError
    })
 
    const onToggleNotifications = async () => {

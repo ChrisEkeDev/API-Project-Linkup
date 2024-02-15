@@ -28,12 +28,12 @@ function SignIn() {
 
     return (
         <main className='page auth'>
-            <IconButton
+            {/* <IconButton
                 styles="auth_icon"
                 label="Back to Search"
                 icon={RiBasketballFill}
                 action={() => navigate('/search')}
-            />
+            /> */}
             <form className='auth_form'>
                 <header className='auth_form--header'>
                     <h1>Sign in</h1>

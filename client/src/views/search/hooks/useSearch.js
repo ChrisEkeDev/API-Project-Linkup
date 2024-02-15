@@ -1,7 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import { useApp } from '../../../context/AppContext'
-import { thunkSearchSessions } from '../../../store/sessions'
-import { thunkSearchTeams } from '../../../store/teams'
+import { useState } from 'react'
 
 
 const useSearch = ({tab}) => {

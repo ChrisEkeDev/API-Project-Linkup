@@ -26,7 +26,7 @@ function useTeam({team}) {
 
 
     const handleSuccess = (data) => {
-        handleAlerts(createTeamSuccess)
+        handleAlerts(data)
         client.setQueryData(['team'], data.data)
         client.invalidateQueries(['team'])
         navigate(`/teams/${data.data.id}`)
@@ -78,7 +78,7 @@ function useTeam({team}) {
         navigate(`/teams`)
         client.setQueryData(['team'], data.data)
         client.invalidateQueries(['team'])
-        handleAlerts(deleteTeamSuccess)
+        handleAlerts(data)
     }
 
     const onDeleteTeam = async (e) => {
