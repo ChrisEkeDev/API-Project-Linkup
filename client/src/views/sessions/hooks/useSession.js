@@ -58,26 +58,14 @@ function useSession({session}) {
         }
     }
 
-    const {
-        createSessionSuccess,
-        createSessionError,
-        updateSessionSuccess,
-        updateSessionError,
-        deleteSessionSuccess,
-        deleteSessionError
-    } = sessionsAlerts;
-
-    /////////////////////////////////////////////////////////
-    //  Create Session
-
-    const handleCreateSessionSuccess = (data) => {
+    const handleSuccess = (data) => {
         handleAlerts(data)
         client.setQueryData(['session'], data.data)
         client.invalidateQueries(['session'])
         navigate(`/sessions/${data.data.id}`)
     }
 
-    const handleCreateSessionError = (error) => {
+    const handleError = (error) => {
         handleAlerts(error)
     }
 
@@ -97,25 +85,10 @@ function useSession({session}) {
         isLoading: createSessionLoading
     } = useMutation({
         mutationFn: createSession,
-        onSuccess: handleCreateSessionSuccess,
-        onError: handleCreateSessionError
+        onSuccess: handleSuccess,
+        onError: handleError
     })
 
-
-
-    /////////////////////////////////////////////////////////
-    //  Update Session
-
-    const handleUpdateSessionSuccess = (data) => {
-        client.setQueryData(['session'], data.data)
-        client.invalidateQueries(['session'])
-        handleAlerts(data)
-        navigate(`/sessions/${data.data.id}`)
-    }
-
-    const handleUpdateSessionError = (error) => {
-        handleAlerts(error)
-    }
 
     const onUpdateSession = async (e) => {
         e.preventDefault();
@@ -131,14 +104,9 @@ function useSession({session}) {
         isLoading: updateSessionLoading
     } = useMutation({
         mutationFn: updateSession,
-        onSuccess: handleUpdateSessionSuccess,
-        onError: handleUpdateSessionError
+        onSuccess: handleSuccess,
+        onError: handleError
     })
-
-
-
-    /////////////////////////////////////////////////////////
-    //  Delete Session
 
     const handleDeleteSessionSuccess = (data) => {
         navigate(`/sessions`)
@@ -147,9 +115,6 @@ function useSession({session}) {
         handleAlerts(data)
     }
 
-    const handleDeleteSessionError = (error) => {
-        handleAlerts(error)
-    }
 
     const onDeleteSession = async (e) => {
         e.preventDefault();
@@ -165,7 +130,7 @@ function useSession({session}) {
     } = useMutation({
         mutationFn: deleteSession,
         onSuccess: handleDeleteSessionSuccess,
-        onError: handleDeleteSessionError
+        onError: handleError
     })
 
 

@@ -9,40 +9,14 @@ function useMemberships() {
     const { id } = useParams();
     const client = useQueryClient();
     const { handleAlerts } = useApp();
-    const {
-        addToTeamError,
-        addToTeamSuccess,
-        promoteToCoHostError,
-        promoteToCoHostSuccess,
-        removeFromTeamError,
-        removeFromTeamSuccess
-    } = membershipAlerts;
 
-    const handleAddToTeamSuccess = () => {
-        handleAlerts(addToTeamSuccess)
+    const handleSuccess = (data) => {
+        handleAlerts(data)
         client.invalidateQueries(['team-memberships', id])
     }
 
-    const handlePromoteToCoHostSuccess = () => {
-        handleAlerts(promoteToCoHostSuccess);
-        client.invalidateQueries(['team-memberships', id])
-    }
-
-    const handleRemoveFromTeamSuccess = () => {
-        handleAlerts(removeFromTeamSuccess);
-        client.invalidateQueries(['team-memberships', id])
-    }
-
-    const handleAddToTeamError = () => {
-        handleAlerts(addToTeamError)
-    }
-
-    const handlePromoteToCoHostError = () => {
-        handleAlerts(promoteToCoHostError)
-    }
-
-    const handleRemoveFromTeamError = () => {
-        handleAlerts(removeFromTeamError)
+    const handleError = (error) => {
+        handleAlerts(error)
     }
 
 
@@ -50,24 +24,24 @@ function useMemberships() {
         mutate: handleAddToTeam
     } = useMutation({
         mutationFn: addToTeam,
-        onError: handleAddToTeamError,
-        onSuccess: handleAddToTeamSuccess
+        onSuccess: handleSuccess,
+        onError: handleError
     })
 
     const {
         mutate: handlePromoteToCoHost
     } = useMutation({
         mutationFn: promoteToCoHost,
-        onError: handlePromoteToCoHostError,
-        onSuccess: handlePromoteToCoHostSuccess
+        onSuccess: handleSuccess,
+        onError: handleError
     })
 
     const {
         mutate: handleRemoveFromTeam
     } = useMutation({
         mutationFn: removeFromTeam,
-        onError: handleRemoveFromTeamError,
-        onSuccess: handleRemoveFromTeamSuccess
+        onSuccess: handleSuccess,
+        onError: handleError
     })
 
     const onAddToTeam = async (playerId) => {

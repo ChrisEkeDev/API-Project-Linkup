@@ -24,28 +24,16 @@ function useTeam({team}) {
         setTeamData((prev) => ({ ...prev, private: !teamData.private }));
     }
 
-    const {
-        createTeamSuccess,
-        createTeamError,
-        updateTeamSuccess,
-        updateTeamError,
-        deleteTeamSuccess,
-        deleteTeamError
-    } = teamAlerts;
 
-        /////////////////////////////////////////////////////////
-    //  Create Team
-
-    const handleCreateTeamSuccess = (data) => {
+    const handleSuccess = (data) => {
         handleAlerts(createTeamSuccess)
-        client.setQueryData(['team'], data)
+        client.setQueryData(['team'], data.data)
         client.invalidateQueries(['team'])
-        navigate(`/teams/${data.id}`)
+        navigate(`/teams/${data.data.id}`)
     }
 
-    const handleCreateTeamError = (data) => {
-        handleAlerts(createTeamError)
-        console.log(data)
+    const handleError = (error) => {
+        handleAlerts(error)
     }
 
     const onCreateTeam = async (e) => {
@@ -62,26 +50,10 @@ function useTeam({team}) {
         isLoading: createTeamLoading
     } = useMutation({
         mutationFn: createTeam,
-        onSuccess: handleCreateTeamSuccess,
-        onError: handleCreateTeamError
+        onSuccess: handleSuccess,
+        onError: handleError
     })
 
-
-
-    /////////////////////////////////////////////////////////
-    //  Update Team
-
-    const handleUpdateTeamSuccess = (data) => {
-        client.setQueryData(['team'], id)
-        client.invalidateQueries(['team'])
-        handleAlerts(updateTeamSuccess)
-        navigate(`/teams/${id}`)
-    }
-
-    const handleUpdateTeamError = (data) => {
-        handleAlerts(updateTeamError)
-        console.log(data)
-    }
 
     const onUpdateTeam = async (e) => {
         e.preventDefault();
@@ -97,25 +69,16 @@ function useTeam({team}) {
         isLoading: updateTeamLoading
     } = useMutation({
         mutationFn: updateTeam,
-        onSuccess: handleUpdateTeamSuccess,
-        onError: handleUpdateTeamError
+        onSuccess: handleSuccess,
+        onError: handleError
     })
 
 
-
-    /////////////////////////////////////////////////////////
-    //  Delete Team
-
     const handleDeleteTeamSuccess = (data) => {
         navigate(`/teams`)
-        client.setQueryData(['team'], data)
+        client.setQueryData(['team'], data.data)
         client.invalidateQueries(['team'])
         handleAlerts(deleteTeamSuccess)
-    }
-
-    const handleDeleteTeamError = (data) => {
-        handleAlerts(deleteTeamError)
-        console.log(data)
     }
 
     const onDeleteTeam = async (e) => {
@@ -132,7 +95,7 @@ function useTeam({team}) {
     } = useMutation({
         mutationFn: deleteTeam,
         onSuccess: handleDeleteTeamSuccess,
-        onError: handleDeleteTeamError
+        onError: handleError
     })
 
 

@@ -93,11 +93,11 @@ function MemberItem({member, status}) {
             isModalOpen={isModalOpen}
             onCloseModal={onCloseModal}
         >
-        <DeleteMembershipModal
-            member={member}
-            deleteMembership={() => onRemoveFromTeam(member.Player.id)}
-            close={onCloseModal}
-        />
+            <DeleteMembershipModal
+                member={member}
+                deleteMembership={() => onRemoveFromTeam(member.Player.id)}
+                close={onCloseModal}
+            />
         </Modal>
         </>
     )

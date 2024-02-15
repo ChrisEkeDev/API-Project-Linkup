@@ -8,39 +8,29 @@ function useCheckIns() {
     const client = useQueryClient();
     const { handleAlerts } = useApp();
 
-    const handleRemoveFromSessionSuccess = (data) => {
+    const handleSuccess = (data) => {
         handleAlerts(data)
-        client.invalidateQueries(['session-checkIns'])
+        client.invalidateQueries(['session-checkIns', id])
     }
 
-    const handleAddToSessionSuccess = (data) => {
-        handleAlerts(data)
-        client.invalidateQueries(['session-checkIns'])
-    }
-
-    const handleAddToSessionError = (error) => {
+    const handleError = (error) => {
         handleAlerts(error)
     }
-
-    const handleRemoveFromSessionError = (error) => {
-        handleAlerts(error)
-    }
-
 
     const {
         mutate: handleAddToSession
     } = useMutation({
         mutationFn: addToSession,
-        onError: handleAddToSessionError,
-        onSuccess: handleAddToSessionSuccess
+        onSuccess: handleSuccess,
+        onError: handleError
     })
 
     const {
         mutate: handleRemoveFromSession
     } = useMutation({
         mutationFn: removeFromSession,
-        onError: handleRemoveFromSessionError,
-        onSuccess: handleRemoveFromSessionSuccess
+        onSuccess: handleSuccess,
+        onError: handleError
     })
 
     const onRemoveFromSession = async (playerId) => {

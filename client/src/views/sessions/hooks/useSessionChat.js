@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
+import { useApp } from '../../../context/AppContext';
 import { useParams } from 'react-router-dom';
 import { addLike, removeLike } from '../../../store/auth';
 import { createSessionChat, updateSessionChat, deleteSessionChat } from '../../../store/sessions';
@@ -8,6 +9,7 @@ import { createSessionChat, updateSessionChat, deleteSessionChat } from '../../.
 function useSessionChat(props) {
     const ref = useRef(null);
     const client = useQueryClient();
+    const { handleAlerts } = useApp();
     const { id } = useParams();
     const { chat, socket, room } = props;
     const [ content, setContent ] = useState(chat?.content || '');
@@ -23,22 +25,20 @@ function useSessionChat(props) {
         setContent(x.target.value)
     }
 
-
-    const handleCreateSessionChatSuccess = () => {
+    const handleSuccess = () => {
         client.invalidateQueries(['session-feed'])
     }
 
-    const handleCreateSessionChatError = (error) => {
-        console.error(error)
+    const handleError = (error) => {
+        handleAlerts(error)
     }
 
     const {
         mutate: handleCreateSessionChat
     } = useMutation({
         mutationFn: createSessionChat,
-        onError: handleCreateSessionChatError,
-        onSuccess: handleCreateSessionChatSuccess,
-
+        onSuccess: handleSuccess,
+        onError: handleError
     })
 
     const onCreateSessionChat = async () => {
@@ -52,21 +52,12 @@ function useSessionChat(props) {
         }
     }
 
-    const handleUpdateSessionChatSuccess = () => {
-        client.invalidateQueries(['session-feed'])
-    }
-
-    const handleUpdateSessionChatError = (error) => {
-        console.error(error)
-    }
-
     const {
         mutate: handleUpdateSessionChat
     } = useMutation({
         mutationFn: updateSessionChat,
-        onError: handleUpdateSessionChatError,
-        onSuccess: handleUpdateSessionChatSuccess,
-
+        onSuccess: handleSuccess,
+        onError: handleError
     })
 
     const onUpdateSessionChat = async () => {
@@ -80,21 +71,12 @@ function useSessionChat(props) {
         }
     }
 
-    const handleDeleteSessionChatSuccess = () => {
-        client.invalidateQueries(['session-feed'])
-    }
-
-    const handleDeleteSessionChatError = (error) => {
-        console.error(error)
-    }
-
     const {
         mutate: handleDeleteSessionChat
     } = useMutation({
         mutationFn: deleteSessionChat,
-        onError: handleDeleteSessionChatError,
-        onSuccess: handleDeleteSessionChatSuccess,
-
+        onSuccess: handleSuccess,
+        onError: handleError
     })
 
     const onDeleteSessionChat = async () => {
@@ -107,22 +89,21 @@ function useSessionChat(props) {
         }
     }
 
-    const handleAddSessionChatLikeSuccess = () => {
+    const handleLikeSuccess = () => {
         client.invalidateQueries(['session-feed'])
         client.invalidateQueries(['my-likes'])
     }
 
-    const handleAddSessionChatLikeError = (error) => {
-        console.error(error)
+    const handleLikeError = (error) => {
+        handleAlerts(error)
     }
 
     const {
         mutate: handleAddSessionChatLike
     } = useMutation({
         mutationFn: addLike,
-        onError: handleAddSessionChatLikeError,
-        onSuccess: handleAddSessionChatLikeSuccess,
-
+        onSuccess: handleLikeSuccess,
+        onError: handleLikeError
     })
 
     const onAddSessionChatLike = async () => {
@@ -134,22 +115,12 @@ function useSessionChat(props) {
         }
     }
 
-    const handleRemoveSessionChatLikeSuccess = () => {
-        client.invalidateQueries(['session-feed'])
-        client.invalidateQueries(['my-likes'])
-    }
-
-    const handleRemoveSessionChatLikeError = (error) => {
-        console.error(error)
-    }
-
     const {
         mutate: handleRemoveSessionChatLike
     } = useMutation({
         mutationFn: removeLike,
-        onError: handleRemoveSessionChatLikeError,
-        onSuccess: handleRemoveSessionChatLikeSuccess,
-
+        onSuccess: handleLikeSuccess,
+        onError: handleLikeError
     })
 
     const onRemoveSessionChatLike = async () => {

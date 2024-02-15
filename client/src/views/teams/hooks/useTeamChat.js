@@ -26,22 +26,20 @@ function useTeamChat(props) {
     }
 
 
-    const handleCreateTeamChatSuccess = () => {
+    const handleSuccess = () => {
         client.invalidateQueries(['team-feed'])
     }
 
-    const handleCreateTeamChatError = () => {
-        handleAlerts({})
+    const handleError = (error) => {
+        handleAlerts(error)
     }
 
     const {
-        mutate: handleCreateTeamChat,
-        isLoading: createTeamChatLoading
+        mutate: handleCreateTeamChat
     } = useMutation({
         mutationFn: createTeamChat,
-        onError: handleCreateTeamChatError,
-        onSuccess: handleCreateTeamChatSuccess,
-
+        onSuccess: handleSuccess,
+        onError: handleError
     })
 
     const onCreateTeamChat = async () => {
@@ -55,22 +53,13 @@ function useTeamChat(props) {
         }
     }
 
-    const handleUpdateTeamChatSuccess = () => {
-        client.invalidateQueries(['team-feed'])
-    }
-
-    const handleUpdateTeamChatError = () => {
-        handleAlerts({})
-    }
 
     const {
-        mutate: handleUpdateTeamChat,
-        isLoading: updateTeamChatLoading
+        mutate: handleUpdateTeamChat
     } = useMutation({
         mutationFn: updateTeamChat,
-        onError: handleUpdateTeamChatError,
-        onSuccess: handleUpdateTeamChatSuccess,
-
+        onSuccess: handleSuccess,
+        onError: handleError
     })
 
     const onUpdateTeamChat = async () => {
@@ -84,22 +73,12 @@ function useTeamChat(props) {
         }
     }
 
-    const handleDeleteTeamChatSuccess = () => {
-        client.invalidateQueries(['team-feed'])
-    }
-
-    const handleDeleteTeamChatError = () => {
-        handleAlerts({})
-    }
-
     const {
-        mutate: handleDeleteTeamChat,
-        isLoading: deleteTeamChatLoading
+        mutate: handleDeleteTeamChat
     } = useMutation({
         mutationFn: deleteTeamChat,
-        onError: handleDeleteTeamChatError,
-        onSuccess: handleDeleteTeamChatSuccess,
-
+        onSuccess: handleSuccess,
+        onError: handleError
     })
 
     const onDeleteTeamChat = async () => {
@@ -112,22 +91,21 @@ function useTeamChat(props) {
         }
     }
 
-    const handleAddTeamChatLikeSuccess = () => {
+    const handleLikeSuccess = () => {
         client.invalidateQueries(['team-feed'])
         client.invalidateQueries(['my-likes'])
     }
 
-    const handleAddTeamChatLikeError = () => {
-        handleAlerts({})
+    const handleLikeError = (error) => {
+        handleAlerts(error)
     }
 
     const {
         mutate: handleAddTeamChatLike
     } = useMutation({
         mutationFn: addLike,
-        onError: handleAddTeamChatLikeError,
-        onSuccess: handleAddTeamChatLikeSuccess,
-
+        onSuccess: handleLikeSuccess,
+        onError: handleLikeError
     })
 
     const onAddTeamChatLike = async () => {
@@ -139,22 +117,12 @@ function useTeamChat(props) {
         }
     }
 
-    const handleRemoveTeamChatLikeSuccess = () => {
-        client.invalidateQueries(['team-feed'])
-        client.invalidateQueries(['my-likes'])
-    }
-
-    const handleRemoveTeamChatLikeError = () => {
-        handleAlerts({})
-    }
-
     const {
         mutate: handleRemoveTeamChatLike
     } = useMutation({
         mutationFn: removeLike,
-        onError: handleRemoveTeamChatLikeError,
-        onSuccess: handleRemoveTeamChatLikeSuccess,
-
+        onSuccess: handleLikeSuccess,
+        onError: handleLikeError
     })
 
     const onRemoveTeamChatLike = async () => {

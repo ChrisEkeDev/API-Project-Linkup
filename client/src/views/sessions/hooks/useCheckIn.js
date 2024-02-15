@@ -8,34 +8,23 @@ function useCheckIn() {
     const client = useQueryClient();
     const { handleAlerts } = useApp();
 
-    const handleCheckInSuccess = (data) => {
+    const handleSuccess = (data) => {
         handleAlerts(data)
         client.invalidateQueries(['check-in-status'])
         client.invalidateQueries(['session-checkIns'])
     }
 
-    const handleCheckOutSuccess = (data) => {
-        handleAlerts(data)
-        client.invalidateQueries(['check-in-status'])
-        client.invalidateQueries(['session-checkIns'])
-    }
-
-    const handleCheckInError = (error) => {
+    const handleError = (error) => {
         handleAlerts(error)
     }
-
-    const handleCheckOutError = (error) => {
-        handleAlerts(error)
-    }
-
 
     const {
         mutate: handleCheckIn,
         isLoading: checkInLoading
     } = useMutation({
         mutationFn: checkInToSession,
-        onError: handleCheckInError,
-        onSuccess: handleCheckInSuccess
+        onSuccess: handleSuccess,
+        onError: handleError
     })
 
     const {
@@ -43,8 +32,8 @@ function useCheckIn() {
         isLoading: checkOutLoading
     } = useMutation({
         mutationFn: checkOutOfSession,
-        onError: handleCheckOutError,
-        onSuccess: handleCheckOutSuccess
+        onSuccess: handleSuccess,
+        onError: handleError
     })
 
     const onCheckIn = async () => {

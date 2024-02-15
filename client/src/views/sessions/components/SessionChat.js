@@ -40,8 +40,8 @@ function SessionChat(props) {
 
     useEffect(() => {
         const textarea = textareaRef.current;
-        textarea.style.height = 'auto'; // Reset height to recompute
-        textarea.style.height = `${textarea.scrollHeight}px`; // Set to scroll height
+        textarea.style.height = 'auto';
+        textarea.style.height = `${textarea.scrollHeight}px`;
     }, [content]);
 
     return (
