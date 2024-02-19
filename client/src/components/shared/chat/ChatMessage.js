@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { useApp } from '../../../context/AppContext'
 import { AnimatePresence, motion } from 'framer-motion';
 import { format, parseISO, isSameDay } from 'date-fns';
-import { PiHeartBold, PiHeartFill } from 'react-icons/pi'
+import { TbHeart, TbHeartFilled } from 'react-icons/tb';
 import ProfileImage from '../profileImage';
 import './styles.scss'
 
@@ -28,7 +28,7 @@ function ChatMessage({chat}) {
             <textarea className="chat_textarea" disabled={true} value={chat.content}></textarea>
         </div>
         {/* <div className='chat_likes'>
-          { chatLiked ? <PiHeartFill className="icon"/> : <PiHeartBold className='icon'/> }
+          { chatLiked ? <TbHeartFilled className="icon"/> : <TbHeart className='icon'/> }
           <p className='xs bold'>{chat.likes}</p>
         </div> */}
     </li>

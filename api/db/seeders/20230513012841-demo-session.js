@@ -30,8 +30,8 @@ module.exports = {
       lat: 33.4151843,
       lng: -111.8314724,
       private: false,
-      startDate: '2024-02-04T10:00:00.000Z',
-      endDate: '2024-02-04T15:00:00.000Z'
+      startDate: '2024-04-04T10:00:00.000Z',
+      endDate: '2024-04-04T15:00:00.000Z'
     },
     {
       id: session2uuid,
@@ -43,8 +43,8 @@ module.exports = {
       lat: 33.748752,
       lng: -84.38768449999999,
       private: false,
-      startDate: '2024-02-10T14:00:00.000Z',
-      endDate: '2024-02-10T16:00:00.000Z'
+      startDate: '2024-04-10T14:00:00.000Z',
+      endDate: '2024-04-10T16:00:00.000Z'
     },
     {
       id: session3uuid,
@@ -56,8 +56,8 @@ module.exports = {
       lat: 44.9428975,
       lng: -123.0350963,
       private: false,
-      startDate: '2024-01-25T12:00:00.000Z',
-      endDate: '2024-01-25T16:30:00.000Z'
+      startDate: '2024-03-25T12:00:00.000Z',
+      endDate: '2024-03-25T16:30:00.000Z'
     },
     {
       id: session4uuid,
@@ -69,8 +69,8 @@ module.exports = {
       lat: 30.267153,
       lng: -97.7430608,
       private: true,
-      startDate: '2024-03-11T22:00:00.000Z',
-      endDate: '2024-03-12T01:00:00.000Z'
+      startDate: '2024-05-11T22:00:00.000Z',
+      endDate: '2024-05-12T01:00:00.000Z'
     },
     {
       id: session5uuid,
@@ -82,8 +82,8 @@ module.exports = {
       lat: 33.4151843,
       lng: -111.8314724,
       private: false,
-      startDate: '2024-02-17T08:00:00.000Z',
-      endDate: '2024-02-17T12:00:00.000Z'
+      startDate: '2024-04-17T08:00:00.000Z',
+      endDate: '2024-04-17T12:00:00.000Z'
     },
    ])
   },

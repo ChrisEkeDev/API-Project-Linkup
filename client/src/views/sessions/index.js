@@ -36,42 +36,34 @@ function Sessions() {
             />
           </header>
           <Scroll>
-            <section className='list_items'>
-              <span className='section_label xs bold'>{createdSessions.length} Session{createdSessions.length === 1 ? null : 's'} created</span>
-              {
-                createdSessions.length > 0 ?
+            {
+              createdSessions.length > 0 ?
+              <section className='list_items'>
+                <span className='section_label xs bold'>{createdSessions.length} Session{createdSessions.length === 1 ? null : 's'} created</span>
                 <ul>
-                {
-                  createdSessions.map(session => (
-                    <SessionItem key={session.id} session={session}/>
-                  ))
-                }
-              </ul> :
-              <div className="no_content">
-                <TbError404 className='icon'/>
-                <p className='sm bold'>No Sessions Created</p>
-              </div>
-              }
-
-            </section>
-            <section className='list_items'>
-              <span className='section_label xs bold'>{joinedSessions.length} Session{joinedSessions.length === 1 ? null : 's'} attending</span>
-              {
-                joinedSessions.length > 0 ?
+                  {
+                    createdSessions.map(session => (
+                      <SessionItem key={session.id} session={session}/>
+                    ))
+                  }
+                </ul>
+              </section>
+              : null
+            }
+            {
+              joinedSessions.length > 0 ?
+              <section className='list_items'>
+                <span className='section_label xs bold'>{joinedSessions.length} Session{joinedSessions.length === 1 ? null : 's'} attending</span>
                 <ul>
                   {
                     joinedSessions.map(session => (
                       <SessionItem key={session.id} session={session}/>
                     ))
                   }
-                </ul> :
-                <div className="no_content">
-                  <TbError404 className='icon'/>
-                  <p className='sm bold'>No Sessions Joined Yet</p>
-                </div>
-
-              }
-            </section>
+                </ul>
+              </section>
+              : null
+            }
           </Scroll>
       </motion.main>
   )

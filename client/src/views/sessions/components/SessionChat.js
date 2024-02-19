@@ -8,7 +8,7 @@ import Modal from '../../../components/shared/modal';
 import useModal from '../../../hooks/useModal';
 import useSessionChat from "../hooks/useSessionChat"
 import ProfileImage from '../../../components/shared/profileImage'
-import { PiHeartBold, PiHeartFill, PiPencilSimpleLineFill, PiXBold, PiCheckFatFill, PiTrashBold  } from "react-icons/pi";
+import { TbHeart, TbHeartFilled, TbEdit, TbCheck, TbTrash, TbX } from 'react-icons/tb';
 import { useQuery } from 'react-query';
 import { getMyLikes } from '../../../store/auth';
 import DeleteSessionChatModal from './DeleteSessionChatModal';
@@ -70,43 +70,54 @@ function SessionChat(props) {
                 >
                 </textarea>
             </div>
-            {
-                isAuth &&
+
                 <div className="chat_controls">
+                {
+                isAuth &&
+                <>
                 {
                     editing ?
                     <>
                         <IconButton
-                            icon={PiXBold}
+                            icon={TbX}
                             action={() => setEditing(false)}
-                            styles="small_button"
+                            label='Cancel changes'
+                            styles='chat_icons'
                         />
                         <IconButton
-                            icon={PiCheckFatFill }
+                            icon={TbCheck}
                             action={onUpdateSessionChat}
-                            styles="small_button"
+                            label='Confirm changes'
+                            styles='chat_icons'
                         />
                     </>
                     :
                     <>
                         <IconButton
-                            icon={PiPencilSimpleLineFill}
+                            icon={TbEdit}
                             action={() => setEditing(true)}
-                            styles="small_button"
+                            label='Edit message'
+                            styles='chat_icons'
                         />
                         <IconButton
-                            icon={PiTrashBold}
+                            icon={TbTrash}
                             action={onOpenModal}
-                            styles="small_button"
+                            label='Delete message'
+                            styles='chat_icons'
                         />
                     </>
                 }
+                </>
+                }
+                {
+                    !editing &&
+                    <IconButton
+                        icon={chatLiked ? TbHeartFilled : TbHeart }
+                        action={chatLiked ? onRemoveSessionChatLike : onAddSessionChatLike}
+                        label={`${chat.likes} likes`}
+                    />
+                }
                 </div>
-            }
-            <div className='chat_likes' onClick={chatLiked ? onRemoveSessionChatLike : onAddSessionChatLike }>
-                { chatLiked ? <PiHeartFill className="icon"/> : <PiHeartBold className='icon'/> }
-                <p className='xs bold'>{chat.likes}</p>
-            </div>
         </motion.li>
         <Modal
             isModalOpen={isModalOpen}

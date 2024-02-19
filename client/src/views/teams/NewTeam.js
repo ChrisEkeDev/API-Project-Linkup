@@ -6,7 +6,7 @@ import Back from '../../components/shared/button/Back';
 import Input from '../../components/shared/inputs/textInput';
 import Button from '../../components/shared/button';
 import Scroll from '../../components/shared/scroll';
-import { PiCalendarPlusBold  } from 'react-icons/pi';
+import { TbCalendarPlus  } from 'react-icons/tb';
 import { page_transitions } from '../../constants/animations';
 import PrivacyToggle from '../../components/shared/inputs/PrivacyToggle'
 
@@ -29,7 +29,7 @@ function NewTeam() {
                 <Button
                     label="Create Team"
                     styles="primary"
-                    icon={PiCalendarPlusBold}
+                    icon={TbCalendarPlus}
                     action={onCreateTeam}
                     disabled={Object.keys(errors).length > 0}
                 />

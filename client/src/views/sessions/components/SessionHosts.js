@@ -1,5 +1,5 @@
 import React from 'react'
-import { PiCircleBold, PiCheckCircleFill  } from "react-icons/pi";
+import { TbCircle, TbCircleCheck } from 'react-icons/tb';
 import { useQuery } from 'react-query';
 import { getMyMemberships } from '../../../store/auth'
 
@@ -25,8 +25,8 @@ function SessionHosts(props) {
                     <li key={team.Team.id} className='session_host' onClick={() => handleHost(team.Team.id)}>
                     {
                         team.Team.id === currentHostId ?
-                        <PiCheckCircleFill className='lg' /> :
-                        <PiCircleBold className='lg'/>
+                        <TbCircleCheck className='lg' /> :
+                        <TbCircle className='lg'/>
                     }
                     <div>
                             <p className='md bold'>{team.Team.name}</p>

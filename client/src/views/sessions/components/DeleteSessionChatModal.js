@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from '../../../components/shared/button'
-import { PiXBold, PiTrashBold } from 'react-icons/pi'
+import { TbTrash, TbX } from 'react-icons/tb';
 import { format , parseISO, isSameDay } from 'date-fns'
 import ProfileImage from '../../../components/shared/profileImage'
 
@@ -45,13 +45,13 @@ function DeleteSessionChatModal({chat, deleteChat, close}) {
                 <Button
                     label="Keep Message"
                     styles="tertiary"
-                    icon={PiXBold}
+                    icon={TbX}
                     action={close}
                 />
                 <Button
                     label="Delete Message"
                     styles="warning"
-                    icon={PiTrashBold}
+                    icon={TbTrash}
                     action={deleteChat}
                 />
             </footer>

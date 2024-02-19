@@ -9,13 +9,18 @@
     transition: background .2s ease;
     &:hover {
         background: var(--hover);
-        .chat_controls {
+        .chat_icons {
             opacity: 1;
             pointer-events: unset;
         }
     }
 
 
+
+}
+
+.chat_icons {
+    opacity:0;
 }
 
 .editing_chat {
@@ -29,7 +34,7 @@
 
 .chat_textarea {
     border: none;
-    width: calc(100% - 6rem);
+    width: 100%;
     resize: none;
     overflow-y: 'hidden';
     padding: 0;
@@ -59,14 +64,10 @@
 
 
 .chat_controls {
-    transition: opacity .2s ease;
-    opacity: 0;
-    pointer-events: none;
     display: flex;
-    position: absolute;
-    gap: .5rem;
-    right: 1rem;
-    bottom: 1rem;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
 }
 
 .chat_likes {

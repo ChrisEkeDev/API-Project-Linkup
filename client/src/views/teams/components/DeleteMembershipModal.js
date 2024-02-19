@@ -2,7 +2,7 @@ import React from 'react'
 import Button from '../../../components/shared/button'
 import { format, parseISO } from 'date-fns';
 import ProfileImage from '../../../components/shared/profileImage'
-import { PiXBold, PiTrashBold} from 'react-icons/pi';
+import { TbX, TbTrash } from 'react-icons/tb'
 
 function DeleteMembershipModal({close, member, deleteMembership}) {
     const { name } = member.Player
@@ -36,13 +36,13 @@ function DeleteMembershipModal({close, member, deleteMembership}) {
                 <Button
                     label="Keep on Team"
                     styles="tertiary"
-                    icon={PiXBold}
+                    icon={TbX}
                     action={close}
                 />
                 <Button
                     label="Remove from Team"
                     styles="warning"
-                    icon={PiTrashBold}
+                    icon={TbTrash}
                     action={deleteMembership}
                 />
             </div>

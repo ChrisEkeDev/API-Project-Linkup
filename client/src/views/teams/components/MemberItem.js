@@ -47,7 +47,6 @@ function MemberItem({member, status}) {
         {
             isPlayerHost || isPlayerCoHost ?
             <div className='member_actions'>
-            <div>
                 <AnimatePresence>
                     {
                         isMemberPending ?
@@ -58,8 +57,6 @@ function MemberItem({member, status}) {
                         /> : null
                     }
                 </AnimatePresence>
-            </div>
-            <div>
                 <AnimatePresence>
                     {
                         isMemberMember ?
@@ -70,8 +67,6 @@ function MemberItem({member, status}) {
                         /> : null
                     }
                 </AnimatePresence>
-            </div>
-            <div>
                 <AnimatePresence>
                     {
                         (!isMemberPending && !isMemberHost && isPlayerHost) ||
@@ -83,8 +78,6 @@ function MemberItem({member, status}) {
                         /> : null
                     }
                 </AnimatePresence>
-            </div>
-
         </div> :
         null
         }

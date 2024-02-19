@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import IconButton from "../button/IconButton";
-import { PiXBold } from 'react-icons/pi'
+import { TbX } from 'react-icons/tb'
 import { base_variants, base_animations } from "../../../constants/animations";
 import './styles.scss';
 
@@ -19,7 +19,7 @@ const Modal = (props) => {
                     <div className="modal">
                         <IconButton
                             styles='modal_close'
-                            icon={PiXBold}
+                            icon={TbX}
                             action={onCloseModal}
                         />
                         {children}

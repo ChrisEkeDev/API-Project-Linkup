@@ -4,7 +4,7 @@ const { Team, Membership, Player, TeamChat, Session, CheckIn, Like } = require('
 const { requireAuth } = require('../../utils/auth');
 const {  Op, fn, col, literal } = require('sequelize');
 const { validateCreateTeam, validateEditTeam } = require('./validation/expressValidations')
-const { teamNotFound, playerNotAuthorized, membershipNotFound, membershipAlreadyExists } = require('./constants/responseMessages');
+const { teamNotFound, playerNotAuthorized, membershipNotFound, membershipAlreadyExists, playerNotFound } = require('./constants/responseMessages');
 const { v4: uuidv4 } = require('uuid');
 
 // Get all teams
@@ -426,7 +426,7 @@ router.post('/:teamId/join-team', requireAuth, async (req, res) => {
     }
 
     const membership = await Membership.findOne({
-        where: { teamId: team.id, playerId }
+        where: { teamId, playerId }
     })
 
     if (membership) {
@@ -434,7 +434,9 @@ router.post('/:teamId/join-team', requireAuth, async (req, res) => {
     }
 
     const newMembership = await Membership.create({
-        playerId, teamId: team.id,
+        id: uuidv4(),
+        playerId,
+        teamId,
         status: team.private ? 'pending' : 'member'
     })
 
@@ -449,7 +451,7 @@ router.post('/:teamId/join-team', requireAuth, async (req, res) => {
 
     return res.status(201).json({
         status: 201,
-        message: team.private ? "You request to join is pending" : "You have joined this team",
+        message: team.private ? "Your request to join is pending" : "You have joined this team",
         data: createdMembership,
         error: null
     })
@@ -461,6 +463,9 @@ router.put('/:teamId/promote-to-co-host', requireAuth, async (req, res) => {
     const { teamId } = req.params;
     const { playerId } = req.body;
     const authId = req.player.id;
+
+    const player = await Player.findByPk(playerId)
+    if (!player) return res.status(404).json(playerNotFound)
 
     const authMembership = await Membership.findOne({
         where: { teamId, playerId: authId, status: 'host' }
@@ -492,7 +497,7 @@ router.put('/:teamId/promote-to-co-host', requireAuth, async (req, res) => {
 
     return res.status(201).json({
         status: 201,
-        message: "",
+        message: player.name + " was promoted to Co-Host.",
         data: updatedMembership,
         error: null
     })
@@ -503,6 +508,12 @@ router.put('/:teamId/add-to-team', requireAuth, async (req, res) => {
     const { teamId } = req.params;
     const { playerId } = req.body;
     const authId = req.player.id;
+
+    const player = await Player.findByPk(playerId)
+    if (!player) return res.status(404).json(playerNotFound)
+
+    const team = await Team.findByPk(teamId)
+    if (!team) return res.status(404).json(teamNotFound)
 
     const authMembership = await Membership.findOne({
         where: { teamId, playerId: authId, status: {[Op.or]: ['host', 'co-host']}}
@@ -534,7 +545,7 @@ router.put('/:teamId/add-to-team', requireAuth, async (req, res) => {
 
     return res.status(201).json({
         status: 201,
-        message: "",
+        message: player.name + " was added to " + team.name,
         data: updatedMembership,
         error: null
     })
@@ -555,7 +566,7 @@ router.delete('/:teamId/leave-team', requireAuth, async (req, res) => {
     await membership.destroy()
     return res.status(200).json({
         status: 200,
-        message: "Membership deleted successfully",
+        message: "You have left " + team.name,
         data: membership,
         error: null
     })
@@ -566,6 +577,12 @@ router.delete('/:teamId/remove-from-team', requireAuth, async (req, res) => {
     const { teamId } = req.params;
     const { playerId } = req.body;
     const authId = req.player.id;
+
+    const player = await Player.findByPk(playerId)
+    if (!player) return res.status(404).json(playerNotFound)
+
+    const team = await Team.findByPk(teamId)
+    if (!team) return res.status(404).json(teamNotFound)
 
     const requestMembership = await Membership.findOne({
         where: { playerId: authId, teamId }
@@ -596,7 +613,7 @@ router.delete('/:teamId/remove-from-team', requireAuth, async (req, res) => {
 
     return res.status(200).json({
         status: 200,
-        message: "Membership deleted successfully",
+        message: player.name + " was removed from the Team.",
         data: membership,
         error: null
     })

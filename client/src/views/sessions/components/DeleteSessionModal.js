@@ -1,5 +1,5 @@
 import React from 'react'
-import { PiXBold, PiTrashBold} from 'react-icons/pi';
+import { TbTrash, TbX } from 'react-icons/tb';
 import Button from '../../../components/shared/button'
 
 function DeleteSessionModal({close, deleteSession}) {
@@ -18,13 +18,13 @@ function DeleteSessionModal({close, deleteSession}) {
                 <Button
                     label="Keep Session"
                     styles="tertiary"
-                    icon={PiXBold}
+                    icon={TbX}
                     action={close}
                 />
                 <Button
                     label="Delete Session"
                     styles="warning"
-                    icon={PiTrashBold}
+                    icon={TbTrash}
                     action={deleteSession}
                 />
             </footer>

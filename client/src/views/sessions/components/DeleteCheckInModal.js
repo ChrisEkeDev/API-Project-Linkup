@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from '../../../components/shared/button'
-import { PiTrashBold, PiXBold  } from 'react-icons/pi'
+import { TbTrash, TbX } from 'react-icons/tb';
 import { format, parseISO } from 'date-fns';
 import ProfileImage from '../../../components/shared/profileImage'
 
@@ -31,13 +31,13 @@ function DeleteCheckInModal({close, checkIn, deleteCheckIn}) {
                 <Button
                     label="Keep in Session"
                     styles="tertiary"
-                    icon={PiXBold}
+                    icon={TbX}
                     action={close}
                 />
                 <Button
                     label="Remove from Session"
                     styles="warning"
-                    icon={PiTrashBold}
+                    icon={TbTrash}
                     action={deleteCheckIn}
                 />
             </footer>

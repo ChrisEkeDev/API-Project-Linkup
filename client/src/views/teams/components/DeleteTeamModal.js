@@ -1,5 +1,5 @@
 import React from 'react'
-import { PiXBold, PiTrashBold} from 'react-icons/pi';
+import { TbX, TbTrash } from 'react-icons/tb';
 import Button from '../../../components/shared/button'
 
 
@@ -17,13 +17,13 @@ function DeleteTeamModal({close, deleteTeam}) {
                 <Button
                     label="Keep Team"
                     styles="tertiary"
-                    icon={PiXBold}
+                    icon={TbX}
                     action={close}
                 />
                 <Button
                     label="Delete Team"
                     styles="warning"
-                    icon={PiTrashBold}
+                    icon={TbTrash}
                     action={deleteTeam}
                 />
             </div>

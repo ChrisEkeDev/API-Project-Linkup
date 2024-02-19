@@ -98,7 +98,7 @@
     width: 100%;
     padding: 0 1rem;
     border-radius: 5rem;
-    box-shadow: var(--box-shadow);
+    outline: var(--border);
     background-color: var(--background);
     color: var(--white);
     &:focus, &:hover  {

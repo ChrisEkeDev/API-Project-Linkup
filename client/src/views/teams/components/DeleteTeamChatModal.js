@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from '../../../components/shared/button'
-import { PiXBold, PiTrashBold } from 'react-icons/pi'
+import { TbX, TbTrash } from 'react-icons/tb'
 
 function DeleteTeamChatModal({chat, deleteChat, close}) {
   return (
@@ -16,13 +16,13 @@ function DeleteTeamChatModal({chat, deleteChat, close}) {
                 <Button
                     label="Keep Message"
                     styles="tertiary"
-                    icon={PiXBold}
+                    icon={TbX}
                     action={close}
                 />
                 <Button
                     label="Delete Message"
                     styles="warning"
-                    icon={PiTrashBold}
+                    icon={TbTrash}
                     action={deleteChat}
                 />
             </div>

@@ -9,7 +9,7 @@ import TeamChat from './TeamChat'
 import ChatInput from '../../../components/shared/inputs/ChatInput'
 import Scroll from '../../../components/shared/scroll';
 import LoadingData from '../../../components/shared/loading';
-import { PiChatsCircle } from 'react-icons/pi'
+import { TbMessage2 } from 'react-icons/tb';
 import { getTeamFeed, getTeamMembershipStatus } from '../../../store/teams';
 
 function TeamFeed({team}) {
@@ -56,7 +56,7 @@ function TeamFeed({team}) {
                         </AnimatePresence>
                     </motion.ul> :
                     <div className="no_content">
-                        <PiChatsCircle className='icon'/>
+                        <TbMessage2 className='icon'/>
                         <p className='sm bold'>No Messages Yet</p>
                     </div>
                 }

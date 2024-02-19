@@ -5,7 +5,7 @@ import Back from '../../components/shared/button/Back';
 import Input from '../../components/shared/inputs/textInput';
 import Button from '../../components/shared/button';
 import Scroll from '../../components/shared/scroll'
-import { PiCheckCircleBold, PiWarningBold, PiMagnifyingGlassBold, PiMapPinBold, PiCalendarBold, PiClockBold, PiCalendarPlusBold, PiCaretUpDownBold   } from 'react-icons/pi';
+import { TbCheck, TbAlertCircle, TbSearch, TbMapPin, TbCalendar, TbClock, TbCalendarPlus, TbDirection } from 'react-icons/tb';
 import { CgSpinner } from 'react-icons/cg';
 import { page_transitions } from '../../constants/animations';
 import SessionPlaceResults from './components/SessionPlaceResults';
@@ -42,7 +42,7 @@ function NewSession() {
           <Button
             label="Create Session"
             styles="primary"
-            icon={PiCalendarPlusBold}
+            icon={TbCalendarPlus}
             action={onCreateSession}
             disabled={Object.keys(errors).length > 0}
           />
@@ -86,9 +86,9 @@ function NewSession() {
               }`}
               icon={
                   status === "loading" ? CgSpinner
-                  : status === "success" && addressConfirmed ? PiCheckCircleBold
-                  : status === "error" ? PiWarningBold
-                  : PiMagnifyingGlassBold
+                  : status === "success" && addressConfirmed ? TbCheck
+                  : status === "error" ? TbAlertCircle
+                  : TbSearch
               }
               loading={ status === "loading" }
               action={ onGetPlaces }
@@ -98,7 +98,7 @@ function NewSession() {
           {
             addressObject ?
             <div className='form_verification'>
-              <PiMapPinBold className="icon"/>
+              <TbMapPin className="icon"/>
               <div className='details'>
                 <p className='xs bold'>Verified Address</p>
                 <p className='sm'>{ addressObject.address }</p>
@@ -111,7 +111,7 @@ function NewSession() {
               label="Date"
               name="date"
               type="date"
-              iconRight={<PiCalendarBold className='input_icon'/>}
+              iconRight={<TbCalendar className='input_icon'/>}
               value={sessionData?.date}
               setValue={handleInput}
               error={errors?.date}
@@ -121,7 +121,7 @@ function NewSession() {
               label="Time"
               name="time"
               type="time"
-              iconRight={<PiClockBold className='input_icon'/>}
+              iconRight={<TbClock className='input_icon'/>}
               value={sessionData?.time}
               setValue={handleInput}
               error={errors?.time}
@@ -133,7 +133,7 @@ function NewSession() {
               type="number"
               min={1}
               max={6}
-              iconRight={<PiCaretUpDownBold className='input_icon'/>}
+              iconRight={<TbDirection className='input_icon'/>}
               value={sessionData?.duration}
               setValue={handleInput}
               error={errors?.duration}

@@ -37,56 +37,48 @@ function Teams() {
           />
         </header>
         <Scroll>
-          <section className='list_items'>
-            <span className='section_label xs bold'>{teamsCaptain.length} Team{teamsCaptain.length === 1 ? null : 's'} Created</span>
-            {teamsCaptain.length > 0 ?
+          {
+            teamsCaptain.length > 0 ?
+            <section className='list_items'>
+              <span className='section_label xs bold'>{teamsCaptain.length} Team{teamsCaptain.length === 1 ? null : 's'} Created</span>
               <ul>
-              {
-                teamsCaptain.map(team => (
-                  <TeamItem key={team.id} team={team}/>
-                ))
-              }
-            </ul> :
-            <div className="no_content">
-              <TbError404  className='icon'/>
-              <p className='sm bold'>No Teams Created</p>
-            </div>
-            }
-          </section>
-          <section className='joined_groups list_items'>
-            <span className='section_label xs bold'>{teamsJoined.length} Team{teamsJoined.length === 1 ? null : 's'} Joined</span>
-            {
-              teamsJoined.length > 0 ?
+                {
+                  teamsCaptain.map(team => (
+                    <TeamItem key={team.id} team={team}/>
+                  ))
+                }
+              </ul>
+            </section>
+            : null
+          }
+          {
+            teamsJoined.length > 0 ?
+            <section className='joined_groups list_items'>
+              <span className='section_label xs bold'>{teamsJoined.length} Team{teamsJoined.length === 1 ? null : 's'} Joined</span>
               <ul>
                 {
                   teamsJoined.map(team => (
                     <TeamItem key={team.id}  team={team}/>
                   ))
                 }
-              </ul> :
-              <div className="no_content">
-                <TbError404  className='icon'/>
-                <p className='sm bold'>No Teams Joined</p>
-              </div>
-            }
-          </section>
-          <section className='joined_groups list_items'>
-            <span className='section_label xs bold'>{teamsPending.length} Team{teamsPending.length === 1 ? null : 's'} Awaiting Approval</span>
-            {
-              teamsPending.length > 0 ?
+              </ul>
+            </section>
+            : null
+          }
+          {
+            teamsPending.length > 0 ?
+            <section className='joined_groups list_items'>
+              <span className='section_label xs bold'>{teamsPending.length} Team{teamsPending.length === 1 ? null : 's'} Awaiting Approval</span>
               <ul>
                 {
                   teamsPending.map(team => (
                     <TeamItem key={team.id}  team={team}/>
                   ))
                 }
-              </ul> :
-              <div className="no_content">
-                <TbError404  className='icon'/>
-                <p className='sm bold'>No Teams Awaiting Approval</p>
-              </div>
-            }
-          </section>
+              </ul>
+            </section>
+            : null
+          }
         </Scroll>
       </motion.main>
   )

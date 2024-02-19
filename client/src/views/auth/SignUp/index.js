@@ -28,7 +28,7 @@ function SignUp() {
     onSignInGuest
   } = useSignIn();
 
-  if (auth !== null) return <Redirect to='/search'></Redirect>
+  if (auth) return <Redirect to='/search'></Redirect>
   if (signUpLoading) return <LoadingData/>
 
   return (

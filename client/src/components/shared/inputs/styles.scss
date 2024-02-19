@@ -15,7 +15,7 @@
         font-size: 1rem;
         border: none;
         border-radius: 1.5rem;
-        box-shadow: var(--box-shadow);
+        outline: var(--border);
         background-color: var(--background);
         color: var(--white);
         &:hover,
@@ -31,8 +31,8 @@
     .icon {
         position: absolute;
         right: 1rem;
-        font-size: 1.25rem;
-        top: .90rem;
+        font-size: 1rem;
+        top: 1rem;
         cursor: pointer;
         color: var(--white);
 
@@ -95,9 +95,10 @@ input[type="number"]::-webkit-inner-spin-button
         height: 6rem;
         resize: none;
         border-radius: 1.5rem;
-        box-shadow: var(--box-shadow);
+        outline: var(--border);
         &:focus, &:hover {
-            outline: transparent
+            outline: var(--border);
+            background-color: var(--hover);
         }
     }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { PiLockFill, PiLockOpen   } from 'react-icons/pi';
+import { TbLockOpen, TbLock } from 'react-icons/tb'
 
 function PrivacyToggle(props) {
     const { data, handleToggle } = props;
@@ -16,8 +16,8 @@ function PrivacyToggle(props) {
             <div className='tip'>
                 {
                     data.private ?
-                    <PiLockFill className='tip_icon'/> :
-                    <PiLockOpen className='tip_icon'/>
+                    <TbLock className='tip_icon'/> :
+                    <TbLockOpen className='tip_icon'/>
                 }
                 <p className='sm bold'>
                 {

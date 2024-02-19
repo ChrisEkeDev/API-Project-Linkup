@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import './styles.scss';
 import { globalStyles } from '../../../constants/styles';
-import { PiWarningCircleBold, PiEyeBold, PiEyeSlashBold  } from 'react-icons/pi'
+import { TbAlertCircle, TbEye, TbEyeOff } from 'react-icons/tb';
 
 
 function Input(props) {
@@ -44,14 +44,14 @@ function Input(props) {
             {
                 type === 'password' ?
                 passwordHidden ?
-                    <PiEyeSlashBold onClick={disabled ? null : () => setPasswordHidden(false)} className='icon'/> :
-                    <PiEyeBold onClick={disabled ? null : () => setPasswordHidden(true)} className='icon'/> :
+                    <TbEyeOff onClick={disabled ? null : () => setPasswordHidden(false)} className='icon'/> :
+                    <TbEye onClick={disabled ? null : () => setPasswordHidden(true)} className='icon'/> :
                 null
             }
 
             {error &&
                 <div className='error'>
-                    <PiWarningCircleBold className='input_error__icon'/>
+                    <TbAlertCircle className='input_error__icon'/>
                     <span className='input_error__label'>{error}</span>
                 </div>
             }

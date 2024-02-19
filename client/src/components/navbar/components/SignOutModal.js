@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from '../../../components/shared/button'
-import { PiXBold, PiTrashBold} from 'react-icons/pi';
+import { TbX, TbTrash } from 'react-icons/tb'
 
 function SignOutModal({signOut, close}) {
   return (
@@ -13,13 +13,13 @@ function SignOutModal({signOut, close}) {
                 <Button
                     label="Stay signed in"
                     styles="tertiary"
-                    icon={PiXBold}
+                    icon={TbX}
                     action={close}
                 />
                 <Button
                     label="Sign out"
                     styles="warning"
-                    icon={PiTrashBold}
+                    icon={TbTrash}
                     action={signOut}
                 />
             </footer>

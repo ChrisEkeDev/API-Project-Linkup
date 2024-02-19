@@ -10,7 +10,7 @@ import Button from '../../components/shared/button';
 import Scroll from '../../components/shared/scroll';
 import Modal from '../../components/shared/modal';
 import useModal from '../../hooks/useModal';
-import { PiCalendarCheckFill, PiTrashBold  } from 'react-icons/pi';
+import { TbCalendarCheck, TbTrash } from 'react-icons/tb';
 import { page_transitions } from '../../constants/animations';
 import PrivacyToggle from '../../components/shared/inputs/PrivacyToggle'
 import LoadingData from '../../components/shared/loading'
@@ -37,7 +37,7 @@ function UpdateTeam({team}) {
                 <Button
                     label="Update Team"
                     styles="primary"
-                    icon={PiCalendarCheckFill}
+                    icon={TbCalendarCheck}
                     action={onUpdateTeam}
                     disabled={Object.keys(errors).length > 0}
                 />
@@ -61,7 +61,7 @@ function UpdateTeam({team}) {
                         <Button
                             label="Delete Team"
                             styles="tertiary"
-                            icon={PiTrashBold}
+                            icon={TbTrash}
                             action={onOpenModal}
                         />
                     </footer>
