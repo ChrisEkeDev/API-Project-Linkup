@@ -5,9 +5,9 @@ const bcrypt = require('bcryptjs')
 const { setTokenCookie } = require('../../utils/jwt')
 const { validateLogin } = require('./validation/expressValidations');
 const { Player } = require('../../db/models');
-const isProduction = process.env.NODEENV === 'production'
+const isProduction = process.env.NODE_ENV === 'production'
 const failRedirect = isProduction ? `https://linkup-api-jw4b.onrender.com/sign-in` : 'http://localhost:3000/sign-in'
-const successRedirect = isProduction ? `https://linkup-api-jw4b.onrender.com/enable-location` : 'http://localhost:3000/enable-location'
+const successRedirect = isProduction ? `https://linkup-api-jw4b.onrender.com/search` : 'http://localhost:3000/search'
 
 // Restore session
 router.get('/', (req, res) => {
