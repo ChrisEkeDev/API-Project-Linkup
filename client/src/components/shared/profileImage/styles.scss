@@ -6,12 +6,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--box-shadow);
 
     .initial {
         font-weight: 600;
         text-transform: uppercase;
-        color: var(--text);
     }
 
     .image {
@@ -19,7 +17,6 @@
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
-        background-color: var(--background);
     }
 
     .profile_circle {
@@ -27,7 +24,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: var(--hover);
     }
     .details {
         p {
@@ -36,6 +32,32 @@
     }
 }
 
-.border_profile {
-    outline: var(--main-border)
+.image_border-light {
+    box-shadow: var(--box-shadow-light);
+    .initial {
+        color: var(--body-light);
+    }
+
+    .image {
+        background-color: var(--background-light);
+    }
+
+    .profile_circle {
+        background-color: var(--hover-light);
+    }
+}
+
+.image_border-dark {
+    box-shadow: var(--box-shadow-dark);
+    .initial {
+        color: var(--body-dark);
+    }
+
+    .image {
+        background-color: var(--background-dark);
+    }
+
+    .profile_circle {
+        background-color: var(--hover-dark);
+    }
 }

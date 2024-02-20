@@ -1,27 +1,33 @@
 @import url('../../index.css');
 
-.search {
-    padding-top: 1rem;
-    padding-right: 1rem;
+
+
+
+.search_input {
+    height: 3rem;
+    border: none;
+    width: 100%;
+    padding: 0 1rem;
+    border-radius: 5rem;
+
 }
 
-.tab_header {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem 1.5rem 1rem 1rem;
+.search_input-light {
+    outline: var(--border-light);
+    background-color: var(--background-light);
+    color: var(--body-light);
+    &:focus, &:hover  {
+        background-color: var(--hover-light);
+        outline: transparent;
+    }
+}
 
-    .tabs {
-        gap: 3rem;
-        .tab {
-            color: var(--text);
-            opacity: .5;
-            padding: 1rem 0;
-           cursor: pointer;
-        }
-
-        .active-tab {
-            color: var(--main);
-            opacity: 1;
-        }
+.search_input-dark {
+    outline: var(--border-dark);
+    background-color: var(--background-dark);
+    color: var(--body-dark);
+    &:focus, &:hover  {
+        background-color: var(--hover-dark);
+        outline: transparent;
     }
 }

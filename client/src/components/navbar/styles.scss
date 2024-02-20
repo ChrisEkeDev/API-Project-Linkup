@@ -11,7 +11,6 @@
     left: 0;
     position: fixed;
     z-index: 50;
-    color: var(--border-color);
   }
 
   .app_nav_bottom,
@@ -51,4 +50,14 @@
     .nav_icon {
       font-size: 1.5rem;
     }
+  }
+
+  .app_nav-light {
+    background-color: var(--background-light);
+    color: var(--body-light);
+  }
+
+  .app_nav-dark {
+    background-color: var(--background-dark);
+    color: var(--body-dark);
   }

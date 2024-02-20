@@ -1,9 +1,14 @@
 import React, { useState, useRef } from 'react'
+import { useApp } from '../../../context/AppContext';
 import { AnimatePresence, motion } from 'framer-motion';
 import { TbHandFinger } from "react-icons/tb";
+import './styles.scss';
 
 function ClickDragScroll(props) {
     const { title, children} = props;
+    const { settings } = useApp();
+    const settingsData = settings?.data;
+    const { theme } = settingsData;
     const ref = useRef(null);
     const [isDragging, setIsDragging] = useState(false);
     const [startX, setStartX] = useState(0);
@@ -29,11 +34,11 @@ function ClickDragScroll(props) {
 
     return (
         <section
-            className='session_players'>
+            className={`click-drag_container click-drag_container-${theme}`}>
             <span className='section_label xs bold'>{title}</span>
-            <div className="members_overlay"></div>
+            <div className="click-drag_overlay"></div>
             <ul
-                className='details_members'
+                className='click-drag_list'
                 ref={ref}
                 onMouseDown={startDragging}
                 onMouseUp={stopDragging}

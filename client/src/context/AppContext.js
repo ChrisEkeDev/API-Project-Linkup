@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import useLoading from "../hooks/useLoading";
+import  useSettings from '../hooks/useSettings';
 import useLocationServices from "../hooks/useLocationServices";
 import { getAuth } from "../store/auth";
 import useAppClock from "../hooks/useAppClock";
@@ -15,7 +16,18 @@ const AppContext = createContext();
 export const useApp = () => useContext(AppContext);
 
 function AppProvider({children}) {
-  const { alerts, handleAlerts, removeAlerts } = useAlerts();
+  const {
+    alerts,
+    handleAlerts,
+    removeAlerts
+  } = useAlerts();
+  const {
+    settingsLoading,
+    settings,
+    onToggleTheme,
+    onToggleLocations,
+    onToggleNotifications
+  } = useSettings();
   const { currentTime } = useAppClock();
   const { loading, setLoading } = useLoading();
   const history = useHistory();
@@ -58,6 +70,11 @@ function AppProvider({children}) {
       <AppContext.Provider
         value={{
           authLoading,
+          settingsLoading,
+          settings,
+          onToggleTheme,
+          onToggleLocations,
+          onToggleNotifications,
           currentTime,
           currentLocation,
           setCurrentLocation,

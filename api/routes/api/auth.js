@@ -76,8 +76,8 @@ router.post('/', validateLogin, async (req, res, _next) => {
 // Sign out user
 router.delete('/', (_req, res) => {
     res.clearCookie('token');
-    return res.status(201).json({
-        status: 201,
+    return res.status(200).json({
+        status: 200,
         message: 'You\'ve been signed out successfully',
         data: null,
         error: null

@@ -1,0 +1,28 @@
+@import url('../../index.css');
+
+.settings_toggle {
+    cursor: pointer;
+    padding: 1rem 1.5rem;
+    display: flex;
+    border-radius: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    transition: background .2s ease;
+    position: relative;
+
+    .toggle_icon {
+        font-size: 1.25rem;
+    }
+}
+
+.settings_toggle-light {
+    &:hover {
+        background-color: var(--hover-light);
+    }
+}
+
+.settings_toggle-dark {
+    &:hover {
+        background-color: var(--hover-dark);
+    }
+}

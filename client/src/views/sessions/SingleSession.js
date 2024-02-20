@@ -20,13 +20,14 @@ import useCheckIn from './hooks/useCheckIn';
 function SingleSession() {
     const { id } = useParams();
     const [tabView, setTabView ] = useState('details')
-    const { auth, navigate } = useApp();
+    const { auth, navigate, settings } = useApp();
     const { data: session, error: sessionErr, isLoading: sessionLoading } = useQuery(['session', id], () => getSession(id));
     const { data: checkIn, isLoading: checkInStatusLoading } = useQuery(['check-in-status'], () => getSessionCheckInStatus(id))
     const { onCheckIn, onCheckOut, checkInLoading, checkOutLoading } = useCheckIn()
 
     if (sessionLoading) return <LoadingData />
-
+    const settingsData = settings?.data;
+    const { theme } = settingsData;
     const sessionData = session?.data;
     const checkInData = checkIn?.data;
     const isCreator = auth?.id === sessionData?.creator.id;
@@ -49,7 +50,7 @@ function SingleSession() {
                         auth && (
                             isCreator ?
                             <Button
-                                styles='secondary'
+                                styles={`secondary-${theme}`}
                                 label="Edit Session"
                                 icon={TbEditCircle}
                                 action={() => navigate(`/sessions/${sessionData.id}/update`)}
@@ -58,9 +59,9 @@ function SingleSession() {
                                 styles={
                                     checkInData ?
                                     checkInData === 'pending'
-                                    ? 'secondary'
-                                    : 'secondary'
-                                    : 'primary'
+                                    ? `secondary-${theme}`
+                                    : `secondary-${theme}`
+                                    : `primary-${theme}`
                                 }
                                 icon={
                                     checkInLoading || checkOutLoading ?
@@ -91,9 +92,9 @@ function SingleSession() {
             </motion.header>
             <header className='tab_header'>
                 <div className='float_left tabs'>
-                    <p className={`tab bold ${tabView === 'details' && 'active-tab'}`} onClick={() => setTabView('details')}>Details</p>
-                    <p className={`tab bold ${tabView === 'feed' && 'active-tab'}`} onClick={() => setTabView('feed')}>Live Chat</p>
-                    <p className={`tab bold ${tabView === 'attendees' && 'active-tab'}`} onClick={() => setTabView('attendees')}>Attendees</p>
+                    <p className={`tab tab-${theme} bold ${tabView === 'details' && 'active-tab'}`} onClick={() => setTabView('details')}>Details</p>
+                    <p className={`tab tab-${theme} bold ${tabView === 'feed' && 'active-tab'}`} onClick={() => setTabView('feed')}>Live Chat</p>
+                    <p className={`tab tab-${theme} bold ${tabView === 'attendees' && 'active-tab'}`} onClick={() => setTabView('attendees')}>Attendees</p>
                 </div>
                 <div className='float_right'>
                 </div>

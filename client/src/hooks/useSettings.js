@@ -1,11 +1,10 @@
 import React from 'react'
-import { useApp } from '../../../context/AppContext';
+import { useApp } from '../context/AppContext';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { toggleLocations, toggleNotifications, toggleThemes, getMySettings } from '../../../store/auth';
+import { toggleLocations, toggleNotifications, toggleThemes, getMySettings } from '../store/auth';
 
 function useSettings() {
    const client = useQueryClient();
-   const { handleAlerts } = useApp();
 
    const {
       data: settings,
@@ -13,12 +12,10 @@ function useSettings() {
    } = useQuery(['settings'], getMySettings)
 
    const handleSuccess = (data) => {
-      handleAlerts(data)
       client.invalidateQueries(['settings'])
    }
 
    const handleError = (error) => {
-      handleAlerts(error)
    }
 
    const {

@@ -15,12 +15,13 @@ import { TbSearch,TbUsersGroup , TbSettings, TbCalendarDue, TbBallBasketball, Tb
 function NavBar() {
     const { onSignOut } = useAuth()
     const { onOpenModal, onCloseModal, isModalOpen } = useModal();
-    const { auth, navigate } = useApp();
+    const { auth, navigate, settings } = useApp();
+    const { theme } = settings;
 
     return (
         <>
         <nav>
-            <div className='app_nav'>
+            <div className={`app_nav app_nav-${theme}`}>
                 <div className='app_nav_top'>
                     <div title="Search" className='app_link'>
                         <NavLink to={ROUTES.SEARCH} className="nav_link" activeClassName="active_link">

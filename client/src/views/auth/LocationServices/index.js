@@ -4,18 +4,16 @@ import { Redirect } from 'react-router-dom'
 import Button from '../../../components/shared/button';
 import { useApp } from '../../../context/AppContext';
 import { TbMapPinCheck, TbMapPinOff } from 'react-icons/tb';
-import useSettings from '../../settings/hooks/useSettings'
 
 function LocationServices() {
-    const { navigate } = useApp();
-    const { locations, onToggleLocations } = useSettings();
+    const { navigate, onToggleLocations } = useApp();
 
     const handleLocationServices = () => {
         onToggleLocations();
         navigate('/search')
     }
 
-    if ( locations ) return <Redirect to='/search'></Redirect>
+    // if ( locations ) return <Redirect to='/search'></Redirect>
 
     return (
         <main className='page location_services'>

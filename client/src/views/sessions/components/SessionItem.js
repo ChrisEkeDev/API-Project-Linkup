@@ -7,16 +7,18 @@ import { format, parseISO } from 'date-fns';
 import '../styles.scss';
 
 function SessionItem({session}) {
-  const { navigate, setCurrentLocation } = useApp();
+  const { navigate, settings } = useApp();
   const parsedDate = parseISO(session?.startDate);
   const formattedTime = format(parsedDate, 'MM/dd @ p');
+  const settingsData = settings?.data;
+  const { theme } = settingsData;
 
   const handleNavigate = () => {
     navigate(`/sessions/${session.id}`)
   }
 
   return (
-    <motion.li variants={child_variants} onClick={handleNavigate} className='session_item'>
+    <motion.li variants={child_variants} onClick={handleNavigate} className={`session_item session_item-${theme}`}>
       <div className='float_left'>
         <ProfileImage
           player={session.creator}

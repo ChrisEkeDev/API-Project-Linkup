@@ -7,12 +7,14 @@ import '../styles.scss';
 import { TbUsersGroup , TbLock  } from 'react-icons/tb';
 
 function TeamItem({team}) {
-    const { navigate } = useApp();
+    const { navigate, settings } = useApp();
+    const settingsData = settings?.data;
+    const { theme } = settingsData;
     return (
         <motion.li
             variants={child_variants}
             onClick={()=> navigate(`/teams/${team.id}`)}
-            className='team_item'>
+            className={`team_item team_item-${theme}`}>
             <div className='float_left'>
             <ProfileImage
                 player={team.captain}

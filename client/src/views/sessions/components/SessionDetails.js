@@ -12,7 +12,7 @@ function SessionDetails({session}) {
 
     return (
         <Scroll>
-            <div className='container_border session_specs'>
+            <section className='container_border session_specs'>
                 <span className='section_label xs bold'>Date, Time & Location</span>
                 <ProfileImage
                     player={session.creator}
@@ -32,7 +32,7 @@ function SessionDetails({session}) {
                     <p className='sm bold'>{session.address}</p>
                     <p className='bold md'>{formatTime}</p>
                 </div>
-            </div>
+            </section>
             <PlayerCheckins />
             {/* <SessionTopComments /> */}
         </Scroll>

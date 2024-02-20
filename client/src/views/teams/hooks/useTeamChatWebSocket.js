@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { useApp } from '../../../context/AppContext'
 import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
+import { useQueryClient } from 'react-query';
 const isProduction = process.env.NODE_ENV === 'production';
 // import { thunkGetTeamFeed } from "../../../store/chats";
 
 function useTeamChatWebSocket(team) {
+    const client = useQueryClient();
     const socketURL = isProduction ? 'https://linkup-api-jw4b.onrender.com/teams' : 'http://localhost:3030/teams';
     const { id } = useParams();
     const [socket, setSocket] = useState(null)
@@ -23,7 +25,7 @@ function useTeamChatWebSocket(team) {
             });
 
             socket?.on('update_feed', async () => {
-                // await dispatch(thunkGetTeamFeed(teamId))
+                client.invalidateQueries(['team-feed'])
             });
 
             socket?.on('offline', () => {

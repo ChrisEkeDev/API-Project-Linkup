@@ -1,7 +1,11 @@
 import React from 'react';
+import { useApp } from '../../../context/AppContext';
 import './styles.scss';
 
 function ProfileImage({player, size }) {
+    const { settings } = useApp();
+    const settingaData = settings?.data;
+    const { theme } = settingaData;
     const borderHeight = size ? size : 5;
     const imageHeight = size ? size : 5;
     const initialSize = borderHeight / 1.619;
@@ -9,7 +13,7 @@ function ProfileImage({player, size }) {
 
     return (
         <div
-            className='image_border'
+            className={`image_border image_border-${theme}`}
             style={{
                 height: `${borderHeight}rem`,
                 borderRadius: `${borderHeight}rem`

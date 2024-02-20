@@ -5,10 +5,12 @@ import { useApp } from './context/AppContext';
 import AuthRouter from './routers/AuthRouter';
 
 function App() {
-  const { authLoading } = useApp()
+  const { authLoading, settings } = useApp()
+  const settingsData = settings?.data;
+  const { theme } = settingsData;
 
   return (
-    <div id='app'>
+    <div id='app' className={`app-${theme}`}>
       {
         authLoading ?
         <Loading/> :

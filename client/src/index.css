@@ -1,17 +1,27 @@
 #root {
     --text: #606060;
-    --background: rgb(255, 255, 255);
-    --hover: #f2f2f2;
-    --main: black;
+    --background-light: rgb(255, 255, 255);
+    --background-dark: rgb(27, 28, 31);
+    --body-dark: #cccccc;
+    --body-light: #606060;
+    --hover-light: #f2f2f2;
+    --hover-dark: rgb(15, 15, 15);
+    --black: black;
+    --white: white;
     --main-hover: black;
+    --accent-dark: #0c8623;
+    --accent-light: #a32626;
     --reply: #1576a6;
     --success: #226e52;
     --warning: #dc9c26;
     --error: #b53a3a;
-    --border: 1px solid #eeeeee;
-    --border-color: #e3e3e3;
+    --border-light: 1px solid #eeeeee;
+    --border-dark: 1px solid #404040;
+    --border-color-light: #eeeeee;
+    --border-color-dark: #404040;
     --main-border: 2px solid var(--main);
-    --box-shadow: 1px 1px 3px 2px rgba(0, 0, 0, .05);
+    --box-shadow-light: 1px 1px 3px 2px rgba(0, 0, 0, .05);
+    --box-shadow-dark: 1px 1px 3px 2px rgba(0, 0, 0, .25);
     position: relative;
   }
 
@@ -33,8 +43,16 @@
     width: 100dvw;
     display: flex;
     flex-direction: column;
-    background-color: var(--background);
-    color: var(--text);
+  }
+
+  .app-light {
+    background-color: var(--background-light);
+    color: var(--body-light);
+  }
+
+  .app-dark {
+    background-color: var(--background-dark);
+    color: var(--body-dark);
   }
 
   .app_router {
@@ -186,12 +204,46 @@
     position: absolute;
     border-radius: 1rem;
     padding: .5rem;
-    box-shadow: var(--box-shadow);
-    background-color: var(--background);
     z-index: 10;
     display: flex;
     flex-direction: column;
     border-radius: 1.5rem;
+  }
+
+  .options_modal-light {
+    box-shadow: var(--box-shadow-light);
+    background-color: var(--background-light);
+
+
+    .modal_option {
+      &:hover {
+        background-color: var(--hover-light);
+      }
+      .node-active {
+        background-color: var(--main);
+      }
+
+      .node-inactive {
+        background-color: var(--border-color-light);
+      }
+    }
+  }
+
+  .options_modal-dark {
+    box-shadow: var(--box-shadow-dark);
+    background-color: var(--background-dark);
+    .modal_option {
+      &:hover {
+        background-color: var(--hover-dark);
+      }
+      .node-active {
+        background-color: var(--main);
+      }
+
+      .node-inactive {
+        background-color: var(--border-color-dark);
+      }
+    }
   }
 
   .modal_option {
@@ -200,9 +252,6 @@
     gap: .5rem;
     padding: .5rem;
     border-radius: 1.5rem;
-    &:hover {
-      background-color: var(--hover);
-    }
 
     .option_label {
       padding-right: .5rem;
@@ -218,13 +267,7 @@
       white-space: nowrap;
     }
 
-    .node-active {
-      background-color: var(--main);
-    }
 
-    .node-inactive {
-      background-color: var(--border-color);
-    }
   }
 
   .active_link {
@@ -294,6 +337,46 @@
       font-size: 2.5rem;
     }
   }
+
+
+  .tab_header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 1.5rem 1rem 1rem;
+  }
+
+  .tabs {
+    gap: 3rem;
+  }
+
+.tab {
+  color: var(--text);
+  opacity: .5;
+  padding: 1rem 0;
+  cursor: pointer;
+}
+
+.tab-light {
+  color: var(--body-light);
+}
+
+.tab-light .active-tab {
+  color: var(--body-dark);
+  opacity: 1;
+}
+
+.tab-dark {
+  color: var(--body-dark);
+}
+
+.tab-dark .active-tab {
+  color: var(--body-light);
+  opacity: 1;
+}
+
+.active-tab {
+  opacity: 1;
+}
 
 /* width */
 ::-webkit-scrollbar {

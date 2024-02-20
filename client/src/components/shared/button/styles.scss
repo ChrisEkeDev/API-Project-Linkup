@@ -72,17 +72,30 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: var(--box-shadow);
     border: none;
-    background-color: white;
     cursor: pointer;
-    color: var(--text);
-
     .icon {
         font-size: 1.25rem;
     }
+}
 
 
+.icon_button-light {
+    box-shadow: var(--box-shadow-light);
+    background-color: var(--background-light);
+    color: var(--body-light);
+    &:hover {
+        background-color: var(--hover-light);
+    }
+}
+
+.icon_button-dark {
+    box-shadow: var(--box-shadow-dark);
+    background-color: var(--background-dark);
+    color: var(--body-dark);
+    &:hover {
+        background-color: var(--hover-dark);
+    }
 }
 
 .arrow {
@@ -166,26 +179,48 @@
     align-self: flex-start;
 }
 
-.primary {
-    background-color: var(--main);
-    color: white;
+.primary-light {
+    background-color: var(--accent-light);
+    color: var(--body-light);
     &:hover {
-        background: var(--main-hover)
+        background: var(--hover-light)
     }
 }
 
 
-.secondary {
-    background-color: var(--background);
-    color: var(--main);
+.secondary-light {
+    background-color: var(--background-light);
+    color: var(--accent-light);
     &:hover {
-        background: var(--hover)
+        background: var(--hover-light)
     }
 }
 
-.tertiary {
-    background-color: var(--background);
-    color: var(--text);
+.tertiary-light {
+    background-color: var(--background-light);
+    color: var(--body-light);
+}
+
+.primary-dark {
+    background-color: var(--accent-dark);
+    color: var(--body-dark);
+    &:hover {
+        background: var(--hover-dark)
+    }
+}
+
+
+.secondary-dark {
+    background-color: var(--background-dark);
+    color: var(--accent-dark);
+    &:hover {
+        background: var(--hover-dark)
+    }
+}
+
+.tertiary-dark {
+    background-color: var(--background-dark);
+    color: var(--body-dark);
 }
 
 .reply {

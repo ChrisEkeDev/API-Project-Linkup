@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { useApp } from '../../../context/AppContext'
 import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
+import { useQueryClient } from 'react-query';
 const isProduction = process.env.NODE_ENV === 'production';
 
 function useSessionChatWebSocket(session) {
+    const client = useQueryClient();
     const socketURL = isProduction ? 'https://linkup-api-jw4b.onrender.com/sessions' : 'http://localhost:3030/sessions';
     const { id } = useParams();
     const [socket, setSocket] = useState(null)
@@ -22,7 +24,7 @@ function useSessionChatWebSocket(session) {
             });
 
             socket?.on('update_feed', async () => {
-                // await dispatch(thunkGetSessionFeed(sessionId))
+                client.invalidateQueries(['session-feed'])
             });
 
             socket?.on('disconnect', () => {

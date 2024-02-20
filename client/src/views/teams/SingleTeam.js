@@ -18,13 +18,15 @@ import useMembership from './hooks/useMembership';
 function SingleTeam() {
     const { id } = useParams();
     const [ tabView, setTabView ] = useState('details')
-    const { auth, navigate } = useApp();
+    const { auth, navigate, settings } = useApp();
     const { onRequestToJoinTeam, onRequestToLeaveTeam } = useMembership();
     const { data: team, error: teamErr, isLoading: teamLoading } = useQuery(['team', id], () => getTeam(id));
     const { data: membership, isLoading: membershipLoading } = useQuery(['membership-status'], () => getTeamMembershipStatus(id))
 
     if (teamLoading) return <LoadingData />
 
+    const settingsData = settings?.data;
+    const { theme } = settingsData;
     const teamData = team?.data;
     const membershipData = membership?.data;
     const isHost = auth?.id === teamData?.captain.id
@@ -81,9 +83,9 @@ function SingleTeam() {
             </motion.header>
             <header className='tab_header'>
                     <div className='float_left tabs'>
-                        <p className={`tab bold ${tabView === 'details' && 'active-tab'}`} onClick={() => setTabView('details')}>Details</p>
-                        <p className={`tab bold ${tabView === 'feed' && 'active-tab'}`} onClick={() => setTabView('feed')}>Live Chat</p>
-                        <p className={`tab bold ${tabView === 'members' && 'active-tab'}`} onClick={() => setTabView('members')}>Members</p>
+                        <p className={`tab tab-${theme} bold ${tabView === 'details' && 'active-tab'}`} onClick={() => setTabView('details')}>Details</p>
+                        <p className={`tab tab-${theme} bold ${tabView === 'feed' && 'active-tab'}`} onClick={() => setTabView('feed')}>Live Chat</p>
+                        <p className={`tab tab-${theme} bold ${tabView === 'members' && 'active-tab'}`} onClick={() => setTabView('members')}>Members</p>
                     </div>
                     <div className='float_right'>
                     </div>
