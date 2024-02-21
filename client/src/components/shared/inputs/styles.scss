@@ -15,17 +15,7 @@
         font-size: 1rem;
         border: none;
         border-radius: 1.5rem;
-        outline: var(--border);
-        background-color: var(--background);
-        color: var(--white);
-        &:hover,
-        &:focus {
-            background-color: var(--hover);
-            outline: transparent;
-            & + .label {
-                color: var(--main);
-            }
-        }
+
     }
 
     .icon {
@@ -34,8 +24,6 @@
         font-size: 1rem;
         top: 1rem;
         cursor: pointer;
-        color: var(--white);
-
     }
 
     .label {
@@ -45,8 +33,6 @@
         font-size: .8rem;
         padding: .25rem .5rem;
         border-radius: .5rem;
-        background-color: var(--background);
-        color: var(--label);
         font-weight: 600;
     }
 
@@ -58,6 +44,54 @@
         gap: .5rem;
         color: var(--error);
         font-size: .8rem;
+    }
+}
+
+.input-light {
+    input {
+        outline: var(--border-light);
+        background-color: var(--background-light);
+        color: var(--body-light);
+        &:hover,
+        &:focus {
+            background-color: var(--hover-light);
+            outline: transparent;
+            & + .label {
+                color: var(--main);
+            }
+        }
+    }
+    .icon {
+        color: var(--body-light);
+    }
+
+    .label {
+        background-color: var(--background-light);
+        color: var(--body-light);
+    }
+}
+
+.input-dark {
+    input {
+        outline: var(--border-dark);
+        background-color: var(--background-dark);
+        color: var(--body-dark);
+        &:hover,
+        &:focus {
+            background-color: var(--hover-dark);
+            outline: transparent;
+            & + .label {
+                color: var(--main);
+            }
+        }
+    }
+    .icon {
+        color: var(--body-dark);
+    }
+
+    .label {
+        background-color: var(--background-dark);
+        color: var(--body-dark);
     }
 }
 
@@ -80,11 +114,9 @@ input[type="number"]::-webkit-inner-spin-button
 }
 
 .chat_input {
-
-    padding: 2rem 1rem 2rem 7rem;
+    padding: 2rem 0rem 2rem 7rem;
     position: absolute;
     width: 100%;
-    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 60%);
     right: 1.5rem;
     bottom: 0;
 
@@ -95,11 +127,6 @@ input[type="number"]::-webkit-inner-spin-button
         height: 6rem;
         resize: none;
         border-radius: 1.5rem;
-        outline: var(--border);
-        &:focus, &:hover {
-            outline: var(--border);
-            background-color: var(--hover);
-        }
     }
 
     .chat_contents {
@@ -113,4 +140,98 @@ input[type="number"]::-webkit-inner-spin-button
         position: absolute;
         right: 1rem;
     }
+}
+
+.chat_input-light {
+    background: linear-gradient(180deg, rgba(var(--background-light),0) 0%, rgba(var(--background-light),1) 60%);
+    textarea {
+        color: var(--body-light);
+        outline: var(--border-light);
+        background-color: var(--background-light);
+        &:focus, &:hover {
+            outline: none;
+            background-color: var(--hover-light);
+        }
+    }
+}
+
+.chat_input-dark {
+    background: linear-gradient(180deg, rgba(var(--background-dark),0) 0%, rgba(var(--background-dark),1) 60%);
+    textarea {
+        color: var(--body-dark);
+        outline: var(--border-dark);
+        background-color: var(--background-dark);
+        &:focus, &:hover {
+            outline: none;
+            background-color: var(--hover-dark);
+        }
+    }
+}
+
+
+
+.toggle_container {
+    display: flex;
+    height: 3rem;
+    padding: 0 1rem;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+}
+
+.toggle_switch {
+    display: flex;
+    height: 1rem;
+    aspect-ratio: 2 / 1;
+    border-radius: 1rem;
+    position: relative;
+}
+
+.toggle_node {
+    height: 1rem;
+    border-radius: 1rem;
+    aspect-ratio: 1;
+    position: absolute;
+    left: 0;
+    transition: all .2s ease;
+}
+
+.tip {
+    margin: 1rem 0 1rem 0rem;
+    border-radius: 1.5rem;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+    .tip_icon {
+        flex-shrink: 0;
+        font-size: 1.5rem;
+    }
+}
+
+
+.toggle_container-light {
+    .toggle_switch {
+        background-color: var(--hover-light);
+    }
+    .toggle_node {
+        background-color: var(--body-light);
+    }
+}
+
+.toggle_container-dark {
+    .toggle_switch {
+        background-color: var(--hover-dark);
+    }
+    .toggle_node {
+        background-color: var(--body-dark);
+    }
+}
+
+.tip-light {
+    background-color: var(--hover-dark);
+}
+
+.tip-dark {
+    background-color: var(--hover-dark);
 }

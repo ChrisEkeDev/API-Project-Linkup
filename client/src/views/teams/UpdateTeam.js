@@ -1,6 +1,6 @@
 import React from 'react';
 import { getTeam } from '../../store/teams';
-import { motion } from 'framer-motion';
+import Form from '../../components/shared/layout/Form';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import useTeam from './hooks/useTeam';
@@ -11,10 +11,11 @@ import Scroll from '../../components/shared/scroll';
 import Modal from '../../components/shared/modal';
 import useModal from '../../hooks/useModal';
 import { TbCalendarCheck, TbTrash } from 'react-icons/tb';
-import { page_transitions } from '../../constants/animations';
 import PrivacyToggle from '../../components/shared/inputs/PrivacyToggle'
 import LoadingData from '../../components/shared/loading'
 import DeleteTeamModal from './components/DeleteTeamModal'
+import PageContainer from '../../components/shared/layout/PageContainer';
+import PageHeader from '../../components/shared/layout/PageHeader';
 
 function UpdateTeam({team}) {
     const { isModalOpen, onOpenModal, onCloseModal } = useModal();
@@ -31,22 +32,22 @@ function UpdateTeam({team}) {
     if ( updateTeamLoading ) return <LoadingData />
 
     return (
-        <motion.main {...page_transitions} className='page teams'>
-            <header className='header'>
-                <Back />
-                <Button
-                    label="Update Team"
-                    styles="primary"
-                    icon={TbCalendarCheck}
-                    action={onUpdateTeam}
-                    disabled={Object.keys(errors).length > 0}
-                />
-            </header>
+        <PageContainer>
+            <PageHeader>
+                <header className='float_full'>
+                    <Back />
+                    <Button
+                        label="Update Team"
+                        styles="primary"
+                        icon={TbCalendarCheck}
+                        action={onUpdateTeam}
+                        disabled={Object.keys(errors).length > 0}
+                    />
+                </header>
+            </PageHeader>
             <Scroll>
-                <form className='session_form'>
-                    <header className='form_header'>
-                        <h2>Update Team</h2>
-                    </header>
+                <Form title='Update Team'>
+                <div className='form_flex'>
                     <Input
                         label="What will you call your team"
                         placeholder='BallHogs'
@@ -56,16 +57,17 @@ function UpdateTeam({team}) {
                         error={errors?.name}
                         disabled={false}
                     />
-                    <PrivacyToggle data={teamData} handleToggle={handleToggle} />
-                    <footer className='form_caution'>
-                        <Button
-                            label="Delete Team"
-                            styles="tertiary"
-                            icon={TbTrash}
-                            action={onOpenModal}
-                        />
-                    </footer>
-                </form>
+                </div>
+                <PrivacyToggle data={teamData} handleToggle={handleToggle} />
+                <footer className='form_caution'>
+                    <Button
+                        label="Delete Team"
+                        styles="tertiary"
+                        icon={TbTrash}
+                        action={onOpenModal}
+                    />
+                </footer>
+                </Form>
             </Scroll>
             <Modal
                 isModalOpen={isModalOpen}
@@ -76,7 +78,7 @@ function UpdateTeam({team}) {
                     close={onCloseModal}
                 />
             </Modal>
-        </motion.main>
+        </PageContainer>
     )
 }
 

@@ -8,7 +8,6 @@
     position: relative;
     transition: background .2s ease;
     &:hover {
-        background: var(--hover);
         .chat_icons {
             opacity: 1;
             pointer-events: unset;
@@ -19,12 +18,30 @@
 
 }
 
+.chat_item-light {
+    color: var(--body-light);
+    &:hover {
+        background: var(--hover-light);
+    }
+}
+
+.chat_item-dark {
+    color: var(--body-dark);
+    &:hover {
+        background: var(--hover-dark);
+    }
+}
+
 .chat_icons {
     opacity:0;
 }
 
-.editing_chat {
-    outline: var(--border);
+.editing_chat-light {
+    outline: var(--border-light);
+}
+
+.editing_chat-dark {
+    outline: var(--border-dark);
 }
 
 .chat_details {
@@ -43,6 +60,14 @@
     &:focus {
         outline: transparent;
     }
+}
+
+.chat_textarea-light {
+    color: var(--body-light)
+}
+
+.chat_textarea-dark {
+    color: var(--body-dark)
 }
 
 .chat_preview {

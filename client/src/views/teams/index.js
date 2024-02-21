@@ -1,15 +1,15 @@
-import { motion } from 'framer-motion';
 import './styles.scss';
 import TeamItem from './components/TeamItem';
-import * as ROUTE from '../../constants/routes';
 import Button from '../../components/shared/button';
 import { useApp } from '../../context/AppContext';
 import Scroll from '../../components/shared/scroll';
-import { page_transitions } from '../../constants/animations';
-import { TbCirclePlus, TbError404  } from 'react-icons/tb';
+import { TbCirclePlus } from 'react-icons/tb';
 import LoadingData from '../../components/shared/loading'
 import { useQuery } from 'react-query';
 import { getMyTeams } from '../../store/auth';
+import PageContainer from '../../components/shared/layout/PageContainer';
+import PageHeader from '../../components/shared/layout/PageHeader';
+import SectionContainer from '../../components/shared/layout/SectionContainer';
 
 
 function Teams() {
@@ -20,14 +20,14 @@ function Teams() {
   if (teamsErr) return <div>Error getting your teams</div>
 
   const teamsData = teams.data;
-
   const teamsCaptain = teamsData.filter(team => team.Memberships[0].status === 'host');
   const teamsJoined = teamsData.filter(team => team.Memberships[0].status !== 'host' && team?.Memberships[0].status !== 'pending');
   const teamsPending = teamsData.filter(team => team.Memberships[0].status === 'pending');
 
   return (
-      <motion.main {...page_transitions} className='page teams'>
-        <header className='page_header'>
+    <PageContainer>
+      <PageHeader>
+        <header className='float_full'>
           <h2>My Teams</h2>
           <Button
               label="Create New Team"
@@ -36,51 +36,49 @@ function Teams() {
               action={() => navigate('/teams/new')}
           />
         </header>
-        <Scroll>
-          {
-            teamsCaptain.length > 0 ?
-            <section className='list_items'>
-              <span className='section_label xs bold'>{teamsCaptain.length} Team{teamsCaptain.length === 1 ? null : 's'} Created</span>
-              <ul>
-                {
-                  teamsCaptain.map(team => (
-                    <TeamItem key={team.id} team={team}/>
-                  ))
-                }
-              </ul>
-            </section>
-            : null
-          }
-          {
-            teamsJoined.length > 0 ?
-            <section className='joined_groups list_items'>
-              <span className='section_label xs bold'>{teamsJoined.length} Team{teamsJoined.length === 1 ? null : 's'} Joined</span>
-              <ul>
-                {
-                  teamsJoined.map(team => (
-                    <TeamItem key={team.id}  team={team}/>
-                  ))
-                }
-              </ul>
-            </section>
-            : null
-          }
-          {
-            teamsPending.length > 0 ?
-            <section className='joined_groups list_items'>
-              <span className='section_label xs bold'>{teamsPending.length} Team{teamsPending.length === 1 ? null : 's'} Awaiting Approval</span>
-              <ul>
-                {
-                  teamsPending.map(team => (
-                    <TeamItem key={team.id}  team={team}/>
-                  ))
-                }
-              </ul>
-            </section>
-            : null
-          }
-        </Scroll>
-      </motion.main>
+      </PageHeader>
+      <Scroll>
+        {
+          teamsCaptain.length > 0 ?
+          <SectionContainer title={`${teamsCaptain.length} Team${teamsCaptain.length === 1 ? '' : 's'} Created`}>
+            <ul>
+              {
+                teamsCaptain.map(team => (
+                  <TeamItem key={team.id} team={team}/>
+                ))
+              }
+            </ul>
+          </SectionContainer>
+          : null
+        }
+        {
+          teamsJoined.length > 0 ?
+          <SectionContainer title={`${teamsJoined.length} Team${teamsJoined.length === 1 ? '' : 's'} Joined`}>
+            <ul>
+              {
+                teamsJoined.map(team => (
+                  <TeamItem key={team.id}  team={team}/>
+                ))
+              }
+            </ul>
+          </SectionContainer>
+          : null
+        }
+        {
+          teamsPending.length > 0 ?
+          <SectionContainer title={`${teamsPending.length} Team${teamsPending.length === 1 ? '' : 's'} Awaiting Approval`}>
+            <ul>
+              {
+                teamsPending.map(team => (
+                  <TeamItem key={team.id}  team={team}/>
+                ))
+              }
+            </ul>
+          </SectionContainer>
+          : null
+        }
+      </Scroll>
+    </PageContainer>
   )
 }
 

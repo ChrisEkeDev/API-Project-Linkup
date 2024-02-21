@@ -14,7 +14,7 @@ import { getMyLikes } from '../../../store/auth';
 import DeleteSessionChatModal from './DeleteSessionChatModal';
 
 function SessionChat(props) {
-    const { auth } = useApp();
+    const { auth, settings } = useApp();
     const { chat, room, socket } = props;
     const { data: myLikes } = useQuery(['my-likes'], getMyLikes);
     const likesData = myLikes?.data;
@@ -25,6 +25,8 @@ function SessionChat(props) {
     const createdToday = isSameDay(parseISO(chat.createdAt), today);
     const chatDateFormat = createdToday ? 'p' : 'MM/dd  •  p';
     const formatDate = format(parseISO(chat.createdAt), chatDateFormat);
+    const settingsData = settings?.data;
+    const { theme } = settingsData;
     const textareaRef = useRef(null);
     const {
         ref,
@@ -50,7 +52,7 @@ function SessionChat(props) {
             variants={child_variants}
             {...base_animations}
             ref={ref}
-            className={`chat_item ${editing && 'editing_chat'}`}>
+            className={`chat_item chat_item-${theme} ${editing && `editing_chat-${theme}`}`}>
             <ProfileImage
                 size={4}
                 player={chat.Player}
@@ -63,7 +65,7 @@ function SessionChat(props) {
                 </div>
                 <textarea
                     ref={textareaRef}
-                    className="chat_textarea"
+                    className={`chat_textarea chat_textarea-${theme}`}
                     disabled={!editing}
                     defaultValue={chat.content}
                     onChange={handleInput}

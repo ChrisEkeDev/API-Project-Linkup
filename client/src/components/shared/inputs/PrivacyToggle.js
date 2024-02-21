@@ -1,19 +1,24 @@
 import React from 'react'
+import { useApp } from '../../../context/AppContext';
 import { TbLockOpen, TbLock } from 'react-icons/tb'
+import SectionContainer from '../layout/SectionContainer';
 
 function PrivacyToggle(props) {
     const { data, handleToggle } = props;
+    const { settings } = useApp();
+    const settingsData = settings?.data;
+    const { theme } = settingsData;
 
     return (
-        <>
-            <div className='toggle_container' onClick={handleToggle}>
+        <SectionContainer title='Public or Private'>
+            <div className={`toggle_container toggle_container-${theme}`} onClick={handleToggle}>
                 <p className={`sm ${!data.private && 'bold'}`}>Public</p>
                     <div className='toggle_switch'>
                         <div className={`toggle_node ${data.private && 'on_private'}`}></div>
                     </div>
                 <p className={`sm ${data.private && 'bold'}`}>Private</p>
             </div>
-            <div className='tip'>
+            <div className={`tip tip-${theme}`}>
                 {
                     data.private ?
                     <TbLock className='tip_icon'/> :
@@ -27,7 +32,7 @@ function PrivacyToggle(props) {
                 }
                 </p>
             </div>
-        </>
+        </SectionContainer>
     )
 }
 

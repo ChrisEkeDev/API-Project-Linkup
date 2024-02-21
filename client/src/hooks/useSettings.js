@@ -10,6 +10,7 @@ function useSettings() {
       data: settings,
       isLoading: settingsLoading
    } = useQuery(['settings'], getMySettings)
+   console.log(settings)
 
    const handleSuccess = (data) => {
       client.invalidateQueries(['settings'])

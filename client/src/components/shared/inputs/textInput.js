@@ -3,10 +3,14 @@ import { useState } from 'react';
 import './styles.scss';
 import { globalStyles } from '../../../constants/styles';
 import { TbAlertCircle, TbEye, TbEyeOff } from 'react-icons/tb';
+import { useApp } from '../../../context/AppContext'
 
 
 function Input(props) {
     const [passwordHidden, setPasswordHidden] = useState(true);
+    const { settings } = useApp();
+    const settingsData = settings?.data;
+    const { theme } = settingsData;
     const {
         name,
         label,
@@ -26,7 +30,7 @@ function Input(props) {
   return (
     <label
         htmlFor={name}
-        className='input'>
+        className={`input input-${theme}`}>
         {iconLeft}
             <input
                 id={name}

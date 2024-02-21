@@ -1,17 +1,22 @@
 import React from 'react'
+import { useApp } from '../../../context/AppContext';
 import { TbCircle, TbCircleCheck } from 'react-icons/tb';
 import { useQuery } from 'react-query';
 import { getMyMemberships } from '../../../store/auth'
+import SectionContainer from '../../../components/shared/layout/SectionContainer';
+import List from '../../../components/shared/layout/List';
 
 function SessionHosts(props) {
     const { data: memberships, error: membershipsError, isLoading: membershipsLoading } = useQuery(['my-memberships'], getMyMemberships)
     const { handleHost, sessionData } = props;
+    const { settings } = useApp();
     const currentHostId = sessionData.hostId;
-    console.log(sessionData)
 
     if (membershipsLoading) return <div>Loading...</div>
     if (membershipsError) return <div>Error!</div>
 
+    const settingsData = settings?.data;
+    const { theme } = settingsData;
     const membershipsData = memberships.data;
     const authTeams = membershipsData?.filter(membership => membership.status === 'host' || membership.status === 'co-host');
 
@@ -19,10 +24,10 @@ function SessionHosts(props) {
         <>
         {
             authTeams?.length > 0 ?
-            <ul className='container_border session_hosts'>
-                <span className='section_label xs bold'>Select a Team to Host this Session (Optional)</span>
+            <SectionContainer title='Select a Team to Host this Session (Optional)'>
+                <List>
                 {authTeams.map(team => (
-                    <li key={team.Team.id} className='session_host' onClick={() => handleHost(team.Team.id)}>
+                    <li key={team.Team.id} className={`session_host session_host-${theme}`} onClick={() => handleHost(team.Team.id)}>
                     {
                         team.Team.id === currentHostId ?
                         <TbCircleCheck className='lg' /> :
@@ -34,8 +39,9 @@ function SessionHosts(props) {
                     </div>
                     </li>
                 ))}
-            </ul> :
-            null
+                </List>
+            </SectionContainer>
+            : null
         }
         </>
 

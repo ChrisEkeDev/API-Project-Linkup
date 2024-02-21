@@ -6,9 +6,10 @@ import CheckInCalendar from './components/CheckInCalendar';
 import Scroll from '../../components/shared/scroll'
 import CheckInView from './components/CheckInView'
 import './styles.scss';
-import { page_transitions } from '../../constants/animations';
 import { getMyCheckIns } from '../../store/auth';
 import { useQuery } from 'react-query';
+import PageContainer from '../../components/shared/layout/PageContainer';
+import PageHeader from '../../components/shared/layout/PageHeader';
 
 function CheckIns() {
     const [ view, setView ] = useState('calendar');
@@ -18,11 +19,13 @@ function CheckIns() {
     const checkInsData = checkIns.data
 
     return (
-        <motion.main {...page_transitions} className='page checkins'>
-            <header className='page_header'>
-                <h2>My CheckIns</h2>
-                <CheckInView {...{ view, setView }} />
-            </header>
+        <PageContainer>
+            <PageHeader>
+                <div className='float_full'>
+                    <h2>My CheckIns</h2>
+                    <CheckInView {...{ view, setView }} />
+                </div>
+            </PageHeader>
             <Scroll>
                 <AnimatePresence>
                     {
@@ -32,7 +35,7 @@ function CheckIns() {
                     }
                 </AnimatePresence>
             </Scroll>
-        </motion.main>
+        </PageContainer>
     )
 }
 

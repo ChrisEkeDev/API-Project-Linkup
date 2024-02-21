@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { parent_variants, base_animations } from '../../../constants/animations';
+import List from '../../../components/shared/layout/List';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import useSessionChat from '../hooks/useSessionChat';
@@ -11,6 +10,7 @@ import Scroll from '../../../components/shared/scroll';
 import LoadingData from '../../../components/shared/loading';
 import { TbMessage2 } from 'react-icons/tb';
 import { getSessionFeed, getSessionCheckInStatus } from '../../../store/sessions';
+import SectionContainer from '../../../components/shared/layout/SectionContainer';
 
 function SessionFeed({session}) {
     const { id } = useParams();
@@ -37,12 +37,10 @@ function SessionFeed({session}) {
 
     return (
         <Scroll ref={ref}>
-            <section className="team_feed container_border">
-                <span className='section_label xs bold'>Showing all messages for this session</span>
+            <SectionContainer title="Showing all messages for this session">
                 {
                     feedData.length > 0 ?
-                    <motion.ul variants={parent_variants} {...base_animations} className="feed_list">
-                        <AnimatePresence>
+                    <List>
                         {
                             feedData.map(chat => (
                                 <SessionChat
@@ -53,15 +51,13 @@ function SessionFeed({session}) {
                                 />
                             ))
                         }
-                        </AnimatePresence>
-                    </motion.ul> :
+                    </List> :
                     <div className="no_content">
                         <TbMessage2 className='icon'/>
                         <p className='sm bold'>No Messages Yet</p>
                     </div>
                 }
-
-            </section>
+            </SectionContainer>
             { checkInData && checkInData !== 'pending' ?
                 <ChatInput
                     handleInput={handleInput}
@@ -70,7 +66,6 @@ function SessionFeed({session}) {
                 /> :
                 null
             }
-
         </Scroll>
     )
 }

@@ -12,6 +12,9 @@ import { parent_variants, base_animations } from '../../constants/animations';
 import { useState } from 'react';
 import LoadingData from '../../components/shared/loading';
 import './styles.scss';
+import SectionContainer from '../../components/shared/layout/SectionContainer';
+import PageContainer from '../../components/shared/layout/PageContainer';
+import PageHeader from '../../components/shared/layout/PageHeader';
 
 
 function Search() {
@@ -26,18 +29,17 @@ function Search() {
     const { theme } = settingsData;
 
     return (
-        <motion.main className='page page_w_title'>
-            <div className='page_header'>
-            <div className='float_right flex_full'>
-                <input
-                    value={query}
-                    onChange={handleInput}
-                    className={`search_input search_input-${theme}`}
-                    placeholder="Search by name or address"
-                />
-            </div>
-            </div>
-                <header className='tab_header'>
+        <PageContainer>
+            <PageHeader>
+                <div className='float_right flex_full'>
+                    <input
+                        value={query}
+                        onChange={handleInput}
+                        className={`search_input search_input-${theme}`}
+                        placeholder="Search by name or address"
+                    />
+                </div>
+                <header className='tab_header  flex_full'>
                     <div className='float_left tabs'>
                         <p className={`tab tab-${theme} bold ${tab === 'sessions' && 'active-tab'}`} onClick={() => setTab('sessions')}>Sessions</p>
                         <p className={`tab tab-${theme} bold ${tab === 'teams' && 'active-tab'}`} onClick={() => setTab('teams')}>Teams</p>
@@ -46,53 +48,51 @@ function Search() {
                         <Sorter {...{ sortBy, tab, handleSort}} />
                     </div>
                 </header>
-                <Scroll>
-                    <section className={`section section-${theme}`}>
-                        <span className='section_label xs bold'>
-                            {tab === 'teams' ? teams?.length : sessions?.length} {tab}
-                        </span>
-                        {tab === 'teams' ?
-                            <>
-                                {
-                                    teamsLoading ?
-                                    <LoadingData /> :
-                                    teamsErr ?
-                                    <div>
-                                        Error fetching teams
-                                    </div> :
-                                    <motion.ul
+            </PageHeader>
+            <Scroll>
+                <SectionContainer title={`${tab === 'teams' ? teams?.length : sessions?.length} ${tab}`}>
+                    {tab === 'teams' ?
+                        <>
+                            {
+                                teamsLoading ?
+                                <LoadingData /> :
+                                teamsErr ?
+                                <div>
+                                    Error fetching teams
+                                </div> :
+                                <motion.ul
+                                variants={parent_variants}
+                                {...base_animations}
+                                className='result_list'>
+                                    {teamsData?.map(team => (
+                                        <TeamItem team={team} />
+                                    ))}
+                                </motion.ul>
+                            }
+                        </>
+                        :
+                        <>
+                            {
+                                sessionsLoading ?
+                                <LoadingData /> :
+                                sessionsErr ?
+                                <div>
+                                    Error fetching sessions
+                                </div> :
+                                <motion.ul
                                     variants={parent_variants}
                                     {...base_animations}
                                     className='result_list'>
-                                        {teamsData?.map(team => (
-                                            <TeamItem team={team} />
+                                        {sessionsData?.map(session => (
+                                            <SessionItem session={session} />
                                         ))}
-                                    </motion.ul>
-                                }
-                            </>
-                            :
-                            <>
-                                {
-                                    sessionsLoading ?
-                                    <LoadingData /> :
-                                    sessionsErr ?
-                                    <div>
-                                        Error fetching sessions
-                                    </div> :
-                                    <motion.ul
-                                        variants={parent_variants}
-                                        {...base_animations}
-                                        className='result_list'>
-                                            {sessionsData?.map(session => (
-                                                <SessionItem session={session} />
-                                            ))}
-                                    </motion.ul>
-                                }
-                            </>
-                        }
-                    </section>
-                </Scroll>
-        </motion.main>
+                                </motion.ul>
+                            }
+                        </>
+                    }
+                </SectionContainer>
+            </Scroll>
+        </PageContainer>
     )
 }
 

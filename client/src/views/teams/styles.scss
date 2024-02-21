@@ -62,53 +62,11 @@
     padding: 1rem 0;
 }
 
-
-
-.toggle_container {
-    display: flex;
-    height: 3rem;
-    padding: 0 1rem;
-    align-items: center;
-    gap: 1rem;
-    cursor: pointer;
-}
-
-.toggle_switch {
-    display: flex;
-    height: 1rem;
-    aspect-ratio: 2 / 1;
-    border-radius: 1rem;
-    background-color: var(--hover);
-    position: relative;
-}
-
-.toggle_node {
-    height: 1rem;
-    border-radius: 1rem;
-    aspect-ratio: 1;
-    background-color: var(--text);
-    position: absolute;
-    left: 0;
-    transition: all .2s ease;
-}
-
 .on_private {
     left: calc(100% - 1rem);
 }
 
-.tip {
-    background-color: var(--hover);
-    margin: 1rem 0 1rem 1rem;
-    border-radius: 1.5rem;
-    display: flex;
-    align-items: center;
-    padding: 1rem;
-    gap: 1rem;
-    .tip_icon {
-        flex-shrink: 0;
-        font-size: 1.5rem;
-    }
-}
+
 
 
 .member_item {
@@ -198,14 +156,6 @@
     gap: .5rem;
     width: 100%;
 }
-
-
-
-.container_border {
-    border-top: var(--border);
-    position: relative;
-}
-
 
 
 .team_sessions {

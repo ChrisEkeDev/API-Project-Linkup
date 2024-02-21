@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { parent_variants, base_animations } from '../../../constants/animations';
+import List from '../../../components/shared/layout/List';
 import useTeamChat from '../hooks/useTeamChat';
 import useTeamChatWebSocket from '../hooks/useTeamChatWebSocket'
 import { useQuery } from 'react-query';
@@ -11,6 +10,7 @@ import Scroll from '../../../components/shared/scroll';
 import LoadingData from '../../../components/shared/loading';
 import { TbMessage2 } from 'react-icons/tb';
 import { getTeamFeed, getTeamMembershipStatus } from '../../../store/teams';
+import SectionContainer from '../../../components/shared/layout/SectionContainer';
 
 function TeamFeed({team}) {
     const { id } = useParams();
@@ -37,12 +37,10 @@ function TeamFeed({team}) {
 
     return (
         <Scroll ref={ref}>
-            <section className="team_feed container_border">
-            <span className='section_label xs bold'>Showing all messages for past 30 days</span>
+            <SectionContainer title='Showing all messages for past 30 days'>
                 {
                     feedData.length > 0 ?
-                    <motion.ul variants={parent_variants} {...base_animations} className="feed_list">
-                        <AnimatePresence>
+                    <List>
                         {
                             feedData.map(chat => (
                                 <TeamChat
@@ -53,15 +51,13 @@ function TeamFeed({team}) {
                                 />
                             ))
                         }
-                        </AnimatePresence>
-                    </motion.ul> :
+                    </List> :
                     <div className="no_content">
                         <TbMessage2 className='icon'/>
                         <p className='sm bold'>No Messages Yet</p>
                     </div>
                 }
-
-            </section>
+            </SectionContainer>
             {
                 membershipData && membershipData !== 'pending' ?
                 <ChatInput
@@ -71,7 +67,6 @@ function TeamFeed({team}) {
                 /> :
                 null
             }
-
         </Scroll>
     )
 }

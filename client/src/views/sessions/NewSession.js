@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import React from 'react';
 import useSession from './hooks/useSession';
 import Back from '../../components/shared/button/Back';
 import Input from '../../components/shared/inputs/textInput';
@@ -7,11 +6,13 @@ import Button from '../../components/shared/button';
 import Scroll from '../../components/shared/scroll'
 import { TbCheck, TbAlertCircle, TbSearch, TbMapPin, TbCalendar, TbClock, TbCalendarPlus, TbDirection } from 'react-icons/tb';
 import { CgSpinner } from 'react-icons/cg';
-import { page_transitions } from '../../constants/animations';
 import SessionPlaceResults from './components/SessionPlaceResults';
 import PrivacyToggle from '../../components/shared/inputs/PrivacyToggle'
 import SessionHosts from './components/SessionHosts';
 import LoadingData from '../../components/shared/loading';
+import PageContainer from '../../components/shared/layout/PageContainer';
+import PageHeader from '../../components/shared/layout/PageHeader';
+import Form from '../../components/shared/layout/Form';
 
 
 function NewSession() {
@@ -36,8 +37,9 @@ function NewSession() {
 
 
   return (
-    <motion.main {...page_transitions} className='page sessions'>
-        <header className='header'>
+    <PageContainer>
+      <PageHeader>
+        <header className='float_full'>
           <Back />
           <Button
             label="Create Session"
@@ -47,11 +49,9 @@ function NewSession() {
             disabled={Object.keys(errors).length > 0}
           />
         </header>
-        <Scroll>
-        <form className='session_form'>
-          <header className='form_header'>
-            <h2>Create New Session</h2>
-          </header>
+      </PageHeader>
+      <Scroll>
+        <Form title="Create New Session">
           <Input
             label="What will you call your session"
             placeholder='5 on 5 or Mini Tournament'
@@ -142,9 +142,9 @@ function NewSession() {
           </div>
           <PrivacyToggle data={sessionData} handleToggle={handleToggle} />
           <SessionHosts handleHost={handleHost} sessionData={sessionData} />
-        </form>
-        </Scroll>
-    </motion.main>
+        </Form>
+      </Scroll>
+    </PageContainer>
   )
 }
 

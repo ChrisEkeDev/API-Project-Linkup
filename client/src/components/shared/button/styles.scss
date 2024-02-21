@@ -153,7 +153,7 @@
 }
 
 
-.back--button {
+.back_button {
     border-radius: .5rem;
     display: flex;
     align-items: center;
@@ -181,7 +181,8 @@
 
 .primary-light {
     background-color: var(--accent-light);
-    color: var(--body-light);
+    color: var(--white);
+    box-shadow: var(--box-shadow-light);
     &:hover {
         background: var(--hover-light)
     }
@@ -190,7 +191,8 @@
 
 .secondary-light {
     background-color: var(--background-light);
-    color: var(--accent-light);
+    color: var(--body-light);
+    box-shadow: var(--box-shadow-light);
     &:hover {
         background: var(--hover-light)
     }
@@ -198,12 +200,14 @@
 
 .tertiary-light {
     background-color: var(--background-light);
+    box-shadow: var(--box-shadow-light);
     color: var(--body-light);
 }
 
 .primary-dark {
     background-color: var(--accent-dark);
-    color: var(--body-dark);
+    color: var(--white);
+    box-shadow: var(--box-shadow-dark);
     &:hover {
         background: var(--hover-dark)
     }
@@ -212,7 +216,8 @@
 
 .secondary-dark {
     background-color: var(--background-dark);
-    color: var(--accent-dark);
+    color: var(--body-dark);
+    box-shadow: var(--box-shadow-dark);
     &:hover {
         background: var(--hover-dark)
     }
@@ -220,6 +225,7 @@
 
 .tertiary-dark {
     background-color: var(--background-dark);
+    box-shadow: var(--box-shadow-dark);
     color: var(--body-dark);
 }
 

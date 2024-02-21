@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import Scroll from '../../../components/shared/scroll';
 import { statusOrderAttendance } from '../../../constants/constants'
 import LoadingData from '../../../components/shared/loading';
+import SectionContainer from '../../../components/shared/layout/SectionContainer';
 
 function SessionCheckIns({status, isCreator}) {
     const { id } = useParams();
@@ -16,7 +17,6 @@ function SessionCheckIns({status, isCreator}) {
     if (checkInsErr) return <div>Error</div>
 
     const checkInsData = checkIns.data
-
     const sortedCheckIns = checkInsData.sort((a, b) => {
         return statusOrderAttendance[a.status] - statusOrderAttendance[b.status]
     })
@@ -29,8 +29,8 @@ function SessionCheckIns({status, isCreator}) {
 
     return (
         <Scroll>
-            <motion.ul className='members_list container_border'>
-            <span className='section_label xs bold'>{filteredCheckIns.length} Player{filteredCheckIns.length === 1 ? '' : 's'} checked in</span>
+            <SectionContainer title={`${filteredCheckIns.length} Player${filteredCheckIns.length === 1 ? '' : 's'} checked in`}>
+                <ul>
                     <AnimatePresence>
                         {
                             filteredCheckIns.map(checkIn => (
@@ -42,7 +42,8 @@ function SessionCheckIns({status, isCreator}) {
                             ))
                         }
                     </AnimatePresence>
-            </motion.ul>
+                </ul>
+            </SectionContainer>
         </Scroll>
     )
 }

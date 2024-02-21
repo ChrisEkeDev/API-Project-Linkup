@@ -48,7 +48,12 @@ function useSession({session}) {
     }
 
     const handleHost = (id) => {
-        setSessionData((prev) => ({ ...prev, hostId: id }));
+        if (sessionData.hostId === id) {
+            setSessionData((prev) => ({ ...prev, hostId: null }));
+        } else {
+            setSessionData((prev) => ({ ...prev, hostId: id }));
+        }
+
     }
 
     const handleInput = (x) => {

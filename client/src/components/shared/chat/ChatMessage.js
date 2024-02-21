@@ -7,14 +7,16 @@ import ProfileImage from '../profileImage';
 import './styles.scss'
 
 function ChatMessage({chat}) {
-    const { auth } = useApp();
+    const { settings } = useApp();
+    const settingsData = settings?.data;
+    const { theme } = settingsData;
     const today = new Date();
     const createdToday = isSameDay(parseISO(chat.createdAt), today);
     const chatDateFormat = createdToday ? 'p' : 'MM/dd  •  p';
     const formatDate = format(parseISO(chat.createdAt), chatDateFormat);
 
   return (
-    <li key={chat.id} className="chat_item">
+    <li key={chat.id} className={`chat_item chat_item-${theme}`}>
         <ProfileImage
             size={4}
             player={chat.Player}

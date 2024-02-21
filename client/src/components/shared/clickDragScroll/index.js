@@ -4,8 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { TbHandFinger } from "react-icons/tb";
 import './styles.scss';
 
-function ClickDragScroll(props) {
-    const { title, children} = props;
+function ClickDragScroll({children, title}) {
     const { settings } = useApp();
     const settingsData = settings?.data;
     const { theme } = settingsData;

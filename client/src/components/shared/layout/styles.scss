@@ -1,0 +1,109 @@
+@import url('../../../index.css');
+
+.page {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.page_header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem 1.5rem 1rem 1rem;
+}
+
+.section {
+    position: relative;
+    padding: 1rem 0;
+}
+
+.section_label {
+    position: absolute;
+    padding: .5rem;
+    left: .5rem;
+    top: -1.15rem;
+    text-transform: capitalize;
+}
+
+.section-light {
+    border-top: var(--border-light);
+    .section_label {
+        background-color: var(--background-light);
+    }
+}
+
+.section-dark {
+    border-top: var(--border-dark);
+    .section_label {
+        background-color: var(--background-dark);
+    }
+}
+
+.list {
+    padding: 1rem 0 20rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    width: 100%;
+}
+
+.form {
+    height: calc(100% - 1rem);
+
+    h2 {
+        margin: 1rem 0;
+        padding: 1rem;
+    }
+    .form_input {
+        display: flex;
+        gap: 1rem;
+
+
+        .input_button {
+            margin-top: 1.5rem;
+        }
+    }
+
+    .input_icon {
+        position: absolute;
+        right: 1rem;
+        font-size: 1.25rem;
+        top: .75rem;
+        pointer-events: none;
+    }
+    .form_flex {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .form_verification {
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        border-radius: 1.5rem;
+        margin-bottom: 1rem;
+
+        .icon {
+            font-size: 1.5rem;
+        }
+    }
+}
+
+.form_actions {
+    padding: 3rem 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.form_caution {
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
+}

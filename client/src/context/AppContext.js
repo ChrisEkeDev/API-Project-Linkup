@@ -16,11 +16,13 @@ const AppContext = createContext();
 export const useApp = () => useContext(AppContext);
 
 function AppProvider({children}) {
+
   const {
     alerts,
     handleAlerts,
     removeAlerts
   } = useAlerts();
+
   const {
     settingsLoading,
     settings,
@@ -28,6 +30,7 @@ function AppProvider({children}) {
     onToggleLocations,
     onToggleNotifications
   } = useSettings();
+
   const { currentTime } = useAppClock();
   const { loading, setLoading } = useLoading();
   const history = useHistory();

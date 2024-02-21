@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { getTeamSessions } from '../../../store/teams';
 import { format, parseISO } from 'date-fns';
+import SectionContainer from '../../../components/shared/layout/SectionContainer';
 import ProfileImage from '../../../components/shared/profileImage'
 
 function TeamSessions() {
@@ -21,8 +22,7 @@ function TeamSessions() {
     const sessionsData = sessions?.data;
 
     return (
-        <div className='container_border team_sessions'>
-            <span className='section_label xs bold'>Sessions hosted by Team</span>
+        <SectionContainer title='Sessions hosted by Team'>
             {
                 sessionsData.length > 0 ?
                 <ul className='team_session_list'>
@@ -51,7 +51,7 @@ function TeamSessions() {
 
                 </div>
             }
-        </div>
+        </SectionContainer>
     )
 }
 

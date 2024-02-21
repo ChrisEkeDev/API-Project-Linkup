@@ -21,10 +21,8 @@
 
         .modal_container {
             position: relative;
-            background-color: var(--background);
             width: 600px;
             padding: 2rem;
-            box-shadow: var(--box-shadow);
             display: flex;
             flex-direction: column;
             border-radius: 1.5rem;
@@ -56,5 +54,19 @@
         .modal_content {
             padding: 1rem 0;
         }
+    }
+}
+
+.modal-light {
+    .modal_container {
+        background-color: var(--background-light);
+        box-shadow: var(--box-shadow-light);
+    }
+}
+
+.modal-dark {
+    .modal_container {
+        background-color: var(--background-dark);
+        box-shadow: var(--box-shadow-dark);
     }
 }
