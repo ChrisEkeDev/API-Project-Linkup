@@ -1,21 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useApp } from '../../../context/AppContext'
 import LoadingData from '../../../components/shared/loading'
-import { Redirect } from 'react-router-dom'
 import '../styles.scss';
 import Input from '../../../components/shared/inputs/textInput';
 import Button from '../../../components/shared/button';
-import IconButton from '../../../components/shared/button/IconButton';
 import { TbUserPlus, TbCode } from "react-icons/tb";
 import useSignUp from '../hooks/useSignUp';
 import useSignIn from '../hooks/useSignIn';
 import OAuth from '../components/OAuth'
-import { RiBasketballFill } from "react-icons/ri";
 
 function SignUp() {
-  const { auth, navigate } = useApp();
-
   const {
     errors,
     signUpLoading,
@@ -28,16 +22,10 @@ function SignUp() {
     onSignInGuest
   } = useSignIn();
 
-  if (auth) return <Redirect to='/search'></Redirect>
   if (signUpLoading) return <LoadingData/>
 
   return (
     <main className='page auth'>
-      {/* <IconButton
-        label="Back to Search"
-        icon={RiBasketballFill}
-        action={() => navigate('/search')}
-      /> */}
       <form className='auth_form'>
         <header className='auth_form--header'>
           <h1>Sign Up</h1>

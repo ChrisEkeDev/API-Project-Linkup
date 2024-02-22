@@ -3,7 +3,6 @@ import Button from '../../../components/shared/button';
 import useOAuth2 from '../hooks/useOAuth2'
 import { FcGoogle } from "react-icons/fc";
 import { IoLogoApple } from "react-icons/io5";
-import { TbArrowRight } from "react-icons/tb";
 
 function OAuth({title}) {
     const { googleAuth, appleAuth } = useOAuth2();
@@ -15,7 +14,7 @@ function OAuth({title}) {
                 label={`${title} using your Google account`}
                 icon={FcGoogle}
                 action={googleAuth}
-                styles="auth_form_button secondary"
+                styles="auth_form_button tertiary"
             />
             {/* <Button
                 label={`${title} using your Apple account`}
