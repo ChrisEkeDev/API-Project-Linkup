@@ -88,7 +88,7 @@
   .current {
       background-color: var(--border-color);
       &:hover {
-          background-color: var(--main);
+          background-color: var(--accent);
         }
         .number {
             color: var(--text);
@@ -96,7 +96,7 @@
     }
 
     .day_selected {
-        background-color: var(--main);
+        background-color: var(--accent);
         font-weight: 700;
         transition: all .2s;
         .calendar_item_node {

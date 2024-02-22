@@ -123,7 +123,7 @@
     padding: 2rem 1rem 3rem 1rem;
     .player_count {
         .count {
-            color: var(--mains)
+            color: var(--accents)
         }
     }
 }
@@ -178,14 +178,36 @@
         position: absolute;
         top: 1.5rem;
         right: 0rem;
-        color: var(--main);
+        color: var(--accent);
     }
     .player_status_co-host {
         font-size: 1.25rem;
         position: absolute;
         top: 1.5rem;
         right: 0rem;
-        // color: var(--main);
+        // color: var(--accent);
+    }
+}
+
+.player_item {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    .player_status_host {
+        font-size: 1.75rem;
+        position: absolute;
+        top: -.5rem;
+        right: -.5rem;
+        color: var(--accent);
+    }
+    .player_status_co-host {
+        font-size: 1.25rem;
+        position: absolute;
+        top: 1.5rem;
+        right: 0rem;
+        // color: var(--accent);
     }
 }
 

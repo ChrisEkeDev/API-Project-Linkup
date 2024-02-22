@@ -5,9 +5,7 @@ import IconButton from '../button/IconButton'
 import { TbSend  } from 'react-icons/tb'
 
 function ChatInput({content, handleInput, create}) {
-  const { settings } = useApp();
-  const settingsData = settings?.data;
-  const { theme } = settingsData;
+  const { theme } = useApp();
 
   return (
     <div className={`chat_input chat_input-${theme}`}>

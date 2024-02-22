@@ -4,9 +4,10 @@ import { getTeamMemberships } from '../../../store/teams';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { statusOrderMembership } from '../../../constants/constants'
-import React from 'react'
+import List from '../../../components/shared/layout/List'
 import LoadingData from '../../../components/shared/loading';
 import Scroll from '../../../components/shared/scroll';
+import SectionContainer from '../../../components/shared/layout/SectionContainer';
 
 function TeamMembers({membership}) {
     const { id } = useParams();
@@ -34,8 +35,8 @@ function TeamMembers({membership}) {
 
     return (
         <Scroll>
-            <motion.ul className='members_list container_border'>
-            <span className='section_label xs bold'>{filteredMemberships.length} Member{filteredMemberships.length === 1 ? '' : 's'}</span>
+            <SectionContainer title={`${filteredMemberships?.length} Member${filteredMemberships?.length === 1 ? '' : 's'}`}>
+                <List>
                     <AnimatePresence>
                         {
                             filteredMemberships.map(member => (
@@ -47,7 +48,8 @@ function TeamMembers({membership}) {
                             ))
                         }
                     </AnimatePresence>
-            </motion.ul>
+                </List>
+            </SectionContainer>
         </Scroll>
     )
 }

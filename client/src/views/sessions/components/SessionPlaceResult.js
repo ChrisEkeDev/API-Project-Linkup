@@ -3,9 +3,7 @@ import { useApp } from '../../../context/AppContext';
 import { TbCircle } from 'react-icons/tb'
 
 function SessionPlaceResult({result, onSelect}) {
-  const { settings } = useApp();
-    const settingsData = settings?.data;
-    const { theme } = settingsData;
+  const { theme } = useApp();
 
     return (
       <li className={`result_item result_item-${theme}`} onClick={() => onSelect(result)}>

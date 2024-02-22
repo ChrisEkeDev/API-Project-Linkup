@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { base_animations, child_variants } from '../../../constants/animations';
 import IconButton from '../../../components/shared/button/IconButton'
 import { useApp } from '../../../context/AppContext'
@@ -14,7 +14,7 @@ import { getMyLikes } from '../../../store/auth';
 import DeleteTeamChatModal from './DeleteTeamChatModal';
 
 function TeamChat(props) {
-    const { auth } = useApp();
+    const { auth, theme } = useApp();
     const { chat, room, socket } = props;
     const { data: myLikes } = useQuery(['my-likes'], getMyLikes);
     const likeData = myLikes?.data
@@ -51,7 +51,7 @@ function TeamChat(props) {
             variants={child_variants}
             {...base_animations}
             ref={ref}
-            className="chat_item">
+            className={`chat_item chat_item-${theme} ${editing && `editing_chat-${theme}`}`}>
             <ProfileImage
                 size={4}
                 player={chat.Player}
@@ -80,16 +80,16 @@ function TeamChat(props) {
                     editing ?
                     <>
                         <IconButton
-                            icon={TbX}
-                            action={() => setEditing(false)}
-                            label='Cancel changes'
-                            styles='chat_icons'
-                        />
-                        <IconButton
                             icon={TbCheck}
                             action={onUpdateTeamChat}
                             label='Confirm changes'
-                            styles='chat_icons'
+                            styles='chat_icons success'
+                        />
+                        <IconButton
+                            icon={TbX}
+                            action={() => setEditing(false)}
+                            label='Cancel changes'
+                            styles='chat_icons warning'
                         />
                     </>
                     :
@@ -104,7 +104,7 @@ function TeamChat(props) {
                             icon={TbTrash}
                             action={onOpenModal}
                             label='Delete message'
-                            styles='chat_icons'
+                            styles='chat_icons warning'
                         />
                     </>
                 }
@@ -116,6 +116,7 @@ function TeamChat(props) {
                         icon={chatLiked ? TbHeartFilled : TbHeart }
                         action={chatLiked ? onRemoveTeamChatLike : onAddTeamChatLike}
                         label={`${chat.likes} likes`}
+                        styles='accent'
                     />
                 }
                 </div>

@@ -122,7 +122,7 @@
 }
 
 .member-host {
-    background-color: var(--main);
+    background-color: var(--accent);
     color: var(--background)
 }
 
@@ -177,7 +177,17 @@
     padding: 1rem;
     border: 1.5rem;
     transition: background .2s;
+
+}
+
+.team_session_item-light {
     &:hover {
-        background-color: var(--hover);
+        background-color: var(--hover-light);
+    }
+}
+
+.team_session_item-dark {
+    &:hover {
+        background-color: var(--hover-dark);
     }
 }

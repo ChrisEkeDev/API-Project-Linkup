@@ -9,9 +9,7 @@ import '../styles.scss';
 
 const Sorter = ({tab, sortBy, handleSort}) => {
     const [ menu, setMenu ]= useState(false)
-    const { settings } = useApp();
-    const settingaData = settings?.data;
-    const { theme } = settingaData;
+    const { theme } = useApp();
     const ref = useRef(null)
 
     const values = tab === 'teams' ? teamSortValues : sessionSortValues;

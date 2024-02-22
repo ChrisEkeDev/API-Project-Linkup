@@ -8,7 +8,7 @@ import SectionContainer from '../../../components/shared/layout/SectionContainer
 import ProfileImage from '../../../components/shared/profileImage'
 
 function TeamSessions() {
-    const { navigate } = useApp();
+    const { navigate, theme } = useApp();
     const { id } = useParams();
     const {
         data: sessions,
@@ -28,7 +28,7 @@ function TeamSessions() {
                 <ul className='team_session_list'>
                     {
                         sessionsData.map(session => (
-                            <li key={session.id} onClick={() => navigate(`/sessions/${session.id}`)} className='team_session_item'>
+                            <li key={session.id} onClick={() => navigate(`/sessions/${session.id}`)} className={`team_session_item team_session_item-${theme}`}>
                                 <div className="float_left">
                                     <ProfileImage
                                         player={session.creator}

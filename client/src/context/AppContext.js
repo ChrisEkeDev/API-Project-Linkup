@@ -25,7 +25,7 @@ function AppProvider({children}) {
 
   const {
     settingsLoading,
-    settings,
+    theme, locations, notifications,
     onToggleTheme,
     onToggleLocations,
     onToggleNotifications
@@ -74,7 +74,7 @@ function AppProvider({children}) {
         value={{
           authLoading,
           settingsLoading,
-          settings,
+          theme, locations, notifications,
           onToggleTheme,
           onToggleLocations,
           onToggleNotifications,

@@ -57,7 +57,7 @@
             background-color: var(--hover-light);
             outline: transparent;
             & + .label {
-                color: var(--main);
+                color: var(--accent);
             }
         }
     }
@@ -81,7 +81,7 @@
             background-color: var(--hover-dark);
             outline: transparent;
             & + .label {
-                color: var(--main);
+                color: var(--accent);
             }
         }
     }
@@ -229,7 +229,7 @@ input[type="number"]::-webkit-inner-spin-button
 }
 
 .tip-light {
-    background-color: var(--hover-dark);
+    background-color: var(--hover-light);
 }
 
 .tip-dark {

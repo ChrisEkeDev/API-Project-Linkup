@@ -4,9 +4,7 @@ import { useApp } from '../../../context/AppContext';
 import { TbArrowLeft } from 'react-icons/tb';
 
 function Back({route, styles }) {
-    const { goBack, settings } = useApp();
-    const settingsData = settings?.data;
-  const { theme } = settingsData;
+    const { goBack, theme } = useApp();
 
   return (
     <div onClick={() => goBack(route)} className={`back_button back_button-${theme} ${styles}`}>

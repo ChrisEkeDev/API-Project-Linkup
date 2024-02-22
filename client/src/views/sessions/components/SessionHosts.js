@@ -9,14 +9,12 @@ import List from '../../../components/shared/layout/List';
 function SessionHosts(props) {
     const { data: memberships, error: membershipsError, isLoading: membershipsLoading } = useQuery(['my-memberships'], getMyMemberships)
     const { handleHost, sessionData } = props;
-    const { settings } = useApp();
+    const { theme } = useApp();
     const currentHostId = sessionData.hostId;
 
     if (membershipsLoading) return <div>Loading...</div>
     if (membershipsError) return <div>Error!</div>
 
-    const settingsData = settings?.data;
-    const { theme } = settingsData;
     const membershipsData = memberships.data;
     const authTeams = membershipsData?.filter(membership => membership.status === 'host' || membership.status === 'co-host');
 

@@ -20,15 +20,13 @@ import PageHeader from '../../components/shared/layout/PageHeader';
 function SingleTeam() {
     const { id } = useParams();
     const [ tabView, setTabView ] = useState('details')
-    const { auth, navigate, settings } = useApp();
+    const { auth, navigate, theme } = useApp();
     const { onRequestToJoinTeam, onRequestToLeaveTeam } = useMembership();
     const { data: team, error: teamErr, isLoading: teamLoading } = useQuery(['team', id], () => getTeam(id));
     const { data: membership, isLoading: membershipLoading } = useQuery(['membership-status'], () => getTeamMembershipStatus(id))
 
     if (teamLoading) return <LoadingData />
 
-    const settingsData = settings?.data;
-    const { theme } = settingsData;
     const teamData = team?.data;
     const membershipData = membership?.data;
     const isHost = auth?.id === teamData?.captain.id

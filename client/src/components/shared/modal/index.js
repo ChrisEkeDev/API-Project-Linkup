@@ -6,9 +6,7 @@ import { base_variants, base_animations } from "../../../constants/animations";
 import './styles.scss';
 
 const Modal = (props) => {
-    const { settings } = useApp()
-    const settingsData = settings?.data;
-    const { theme } = settingsData;
+    const { theme } = useApp()
     const {
         isModalOpen,
         onCloseModal,

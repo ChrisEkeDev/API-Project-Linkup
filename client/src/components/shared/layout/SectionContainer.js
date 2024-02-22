@@ -3,9 +3,7 @@ import { useApp } from '../../../context/AppContext'
 import './styles.scss'
 
 function SectionContainer({children, title}) {
-    const { settings } = useApp();
-    const settingsData = settings?.data;
-    const { theme } = settingsData;
+    const { theme } = useApp();
 
     return (
         <section className={`section section-${theme}`}>

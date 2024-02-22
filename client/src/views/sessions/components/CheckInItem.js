@@ -43,6 +43,7 @@ function CheckInItem({checkIn, isCreator}) {
                                 label='Approve Player'
                                 icon={TbUserCheck}
                                 action={() => onAddToSession(playerId)}
+                                styles='success'
                             /> : null
                         }
                     </AnimatePresence>
@@ -55,6 +56,7 @@ function CheckInItem({checkIn, isCreator}) {
                                 label='Remove Player'
                                 icon={TbUserOff}
                                 action={onOpenModal}
+                                styles='warning'
                             /> : null
                         }
                     </AnimatePresence>

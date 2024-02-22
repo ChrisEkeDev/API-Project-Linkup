@@ -7,9 +7,8 @@ import '../styles.scss';
 import { TbUsersGroup , TbLock  } from 'react-icons/tb';
 
 function TeamItem({team}) {
-    const { navigate, settings } = useApp();
-    const settingsData = settings?.data;
-    const { theme } = settingsData;
+    const { navigate, theme } = useApp();
+
     return (
         <motion.li
             variants={child_variants}

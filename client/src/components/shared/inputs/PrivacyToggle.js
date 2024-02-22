@@ -5,9 +5,7 @@ import SectionContainer from '../layout/SectionContainer';
 
 function PrivacyToggle(props) {
     const { data, handleToggle } = props;
-    const { settings } = useApp();
-    const settingsData = settings?.data;
-    const { theme } = settingsData;
+    const { theme } = useApp();
 
     return (
         <SectionContainer title='Public or Private'>

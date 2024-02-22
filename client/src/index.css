@@ -9,17 +9,16 @@
     --black: black;
     --white: white;
     --main-hover: black;
-    --accent-dark: rgb(12, 134, 35);
-    --accent-light: rgb(38, 163, 142);
+    --accent: rgb(38, 163, 142);
     --reply: rgb(21, 118, 166);
-    --success: rgb(34, 110, 82);
+    --success: rgb(41, 171, 123);
     --warning: rgb(220, 156, 38);
     --error: rgb(181, 58, 58);
     --border-light: 1px solid rgb(238, 238, 238);
     --border-dark: 1px solid rgb(64, 64, 64);
     --border-color-light: rgb(238, 238, 238);
     --border-color-dark: rgb(64, 64, 64);
-    --main-border: 2px solid var(--main);
+    --main-border: 2px solid var(--accent);
     --box-shadow-light: 1px 1px 3px 2px rgba(0, 0, 0, .05);
     --box-shadow-dark: 1px 1px 3px 2px rgba(0, 0, 0, .25);
     position: relative;
@@ -206,7 +205,7 @@
         background-color: var(--hover-light);
       }
       .node-active {
-        background-color: var(--main);
+        background-color: var(--accent);
       }
 
       .node-inactive {
@@ -223,7 +222,7 @@
         background-color: var(--hover-dark);
       }
       .node-active {
-        background-color: var(--main);
+        background-color: var(--accent);
       }
 
       .node-inactive {
@@ -257,7 +256,7 @@
   }
 
   .active_link {
-    color: var(--main);
+    color: var(--accent);
     opacity: 1;
   }
 
@@ -332,7 +331,10 @@
   }
 
   .accent {
-    color: var(--main);
+    .icon {
+      color: var(--accent);
+    }
+    color: var(--accent);
   }
 
   .deg45 {
@@ -366,7 +368,6 @@
   }
 
 .tab {
-  color: var(--text);
   opacity: .5;
   padding: 1rem 0;
   cursor: pointer;
@@ -376,21 +377,13 @@
   color: var(--body-light);
 }
 
-.tab-light .active-tab {
-  color: var(--body-dark);
-  opacity: 1;
-}
-
 .tab-dark {
   color: var(--body-dark);
 }
 
-.tab-dark .active-tab {
-  color: var(--body-light);
-  opacity: 1;
-}
 
 .active-tab {
+  color: var(--accent);
   opacity: 1;
 }
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import List from '../../../components/shared/layout/List'
 import { AnimatePresence, motion } from 'framer-motion'
 import CheckInItem from './CheckInItem'
 import { getSessionCheckIns } from '../../../store/sessions';
@@ -29,8 +29,8 @@ function SessionCheckIns({status, isCreator}) {
 
     return (
         <Scroll>
-            <SectionContainer title={`${filteredCheckIns.length} Player${filteredCheckIns.length === 1 ? '' : 's'} checked in`}>
-                <ul>
+            <SectionContainer title={`${filteredCheckIns?.length} Player${filteredCheckIns?.length === 1 ? '' : 's'} checked in`}>
+                <List>
                     <AnimatePresence>
                         {
                             filteredCheckIns.map(checkIn => (
@@ -42,7 +42,7 @@ function SessionCheckIns({status, isCreator}) {
                             ))
                         }
                     </AnimatePresence>
-                </ul>
+                </List>
             </SectionContainer>
         </Scroll>
     )

@@ -180,7 +180,7 @@
 }
 
 .primary-light {
-    background-color: var(--accent-light);
+    background-color: var(--accent);
     color: var(--white);
     box-shadow: var(--box-shadow-light);
     &:hover {
@@ -202,10 +202,13 @@
     background-color: var(--background-light);
     box-shadow: var(--box-shadow-light);
     color: var(--body-light);
+    &:hover {
+        background: var(--hover-light)
+    }
 }
 
 .primary-dark {
-    background-color: var(--accent-dark);
+    background-color: var(--accent);
     color: var(--white);
     box-shadow: var(--box-shadow-dark);
     &:hover {
@@ -227,6 +230,9 @@
     background-color: var(--background-dark);
     box-shadow: var(--box-shadow-dark);
     color: var(--body-dark);
+    &:hover {
+        background: var(--hover-dark)
+    }
 }
 
 .reply {
@@ -238,6 +244,21 @@
 }
 
 .warning {
+    color: var(--error)
+}
+
+.warning-light {
+    background-color: var(--background-light);
+    color: var(--error);
+    box-shadow: var(--box-shadow-light);
+    &:hover {
+        background: var(--hover-light)
+    }
+}
+
+.warning-dark {
+    background-color: var(--background-dark);
+    box-shadow: var(--box-shadow-dark);
     color: var(--error)
 }
 

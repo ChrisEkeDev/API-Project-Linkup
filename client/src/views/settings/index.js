@@ -12,16 +12,13 @@ import LoadingData from "../../components/shared/loading";
 function Settings() {
     const {
         settingsLoading,
-        settings,
+        theme, locations, notifications,
         onToggleTheme,
         onToggleLocations,
         onToggleNotifications
     } = useApp();
 
     if (settingsLoading) return <LoadingData/>
-
-    const settingsData = settings?.data;
-    const { theme, locations, notifications } = settingsData;
 
 
     return (

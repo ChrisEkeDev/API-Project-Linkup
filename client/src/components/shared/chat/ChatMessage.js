@@ -7,9 +7,7 @@ import ProfileImage from '../profileImage';
 import './styles.scss'
 
 function ChatMessage({chat}) {
-    const { settings } = useApp();
-    const settingsData = settings?.data;
-    const { theme } = settingsData;
+    const { theme } = useApp();
     const today = new Date();
     const createdToday = isSameDay(parseISO(chat.createdAt), today);
     const chatDateFormat = createdToday ? 'p' : 'MM/dd  •  p';

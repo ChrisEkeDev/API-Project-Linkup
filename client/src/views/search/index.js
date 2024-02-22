@@ -18,15 +18,13 @@ import PageHeader from '../../components/shared/layout/PageHeader';
 
 
 function Search() {
-    const { settings } = useApp()
+    const { theme } = useApp()
     const [ tab, setTab ] = useState('sessions')
     const { query, sortBy, handleSort, handleInput } = useSearch({tab})
     const { data: sessions, error: sessionsErr, isLoading: sessionsLoading } = useQuery(['sessions', query, sortBy], () => searchSessions(query, sortBy));
     const { data: teams, error: teamsErr, isLoading: teamsLoading } = useQuery(['teams', query, sortBy], () => searchTeams(query, sortBy));
     const sessionsData = sessions?.data;
     const teamsData = teams?.data;
-    const settingsData = settings?.data;
-    const { theme } = settingsData;
 
     return (
         <PageContainer>

@@ -15,8 +15,7 @@ import { TbSearch,TbUsersGroup , TbSettings, TbCalendarDue, TbBallBasketball, Tb
 function NavBar() {
     const { onSignOut } = useAuth()
     const { onOpenModal, onCloseModal, isModalOpen } = useModal();
-    const { auth, navigate, settings } = useApp();
-    const { theme } = settings;
+    const { auth, navigate, theme } = useApp();
 
     return (
         <>

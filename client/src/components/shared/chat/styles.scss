@@ -38,10 +38,12 @@
 
 .editing_chat-light {
     outline: var(--border-light);
+    background-color: var(--hover-light);
 }
 
 .editing_chat-dark {
     outline: var(--border-dark);
+    background-color: var(--hover-dark);
 }
 
 .chat_details {

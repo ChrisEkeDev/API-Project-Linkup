@@ -8,9 +8,7 @@ import { useApp } from '../../../context/AppContext'
 
 function Input(props) {
     const [passwordHidden, setPasswordHidden] = useState(true);
-    const { settings } = useApp();
-    const settingsData = settings?.data;
-    const { theme } = settingsData;
+    const { theme } = useApp();
     const {
         name,
         label,

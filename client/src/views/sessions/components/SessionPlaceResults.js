@@ -4,9 +4,7 @@ import SessionPlaceResult from './SessionPlaceResult'
 import { AnimatePresence } from 'framer-motion';
 
 function SessionPlaceResults(props) {
-    const { settings } = useApp();
-    const settingsData = settings?.data;
-    const { theme } = settingsData;
+    const { theme } = useApp();
     const { queryResults, addressConfirmed, handleAddressObject } = props;
 
     return (

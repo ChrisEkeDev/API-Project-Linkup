@@ -13,9 +13,7 @@ function Button(props) {
     disabled,
     loading
   } = props;
-  const { settings } = useApp();
-  const settingsData = settings?.data;
-  const { theme } = settingsData;
+  const { theme } = useApp();
 
   return (
       <button

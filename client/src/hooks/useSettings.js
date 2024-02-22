@@ -67,9 +67,12 @@ function useSettings() {
       }
    }
 
+   const settingsData = settings ? settings.data : {theme: 'light', notifications: false, locations: false};
+   const { theme, locations, notifications } = settingsData;
+
     return {
       settingsLoading,
-      settings,
+      theme, locations, notifications,
       onToggleTheme,
       onToggleLocations,
       onToggleNotifications

@@ -3,9 +3,7 @@ import { useApp } from '../../../context/AppContext';
 import './styles.scss';
 
 function ProfileImage({player, size }) {
-    const { settings } = useApp();
-    const settingaData = settings?.data;
-    const { theme } = settingaData;
+    const { theme } = useApp();
     const borderHeight = size ? size : 5;
     const imageHeight = size ? size : 5;
     const initialSize = borderHeight / 1.619;

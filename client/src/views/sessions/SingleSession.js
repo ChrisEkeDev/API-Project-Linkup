@@ -20,14 +20,12 @@ import PageHeader from '../../components/shared/layout/PageHeader';
 function SingleSession() {
     const { id } = useParams();
     const [tabView, setTabView ] = useState('details')
-    const { auth, navigate, settings } = useApp();
+    const { auth, navigate, theme } = useApp();
     const { data: session, error: sessionErr, isLoading: sessionLoading } = useQuery(['session', id], () => getSession(id));
     const { data: checkIn, isLoading: checkInStatusLoading } = useQuery(['check-in-status'], () => getSessionCheckInStatus(id))
     const { onCheckIn, onCheckOut, checkInLoading, checkOutLoading } = useCheckIn()
 
     if (sessionLoading) return <LoadingData />
-    const settingsData = settings?.data;
-    const { theme } = settingsData;
     const sessionData = session?.data;
     const checkInData = checkIn?.data;
     const isCreator = auth?.id === sessionData?.creator.id;

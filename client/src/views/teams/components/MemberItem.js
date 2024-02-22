@@ -8,7 +8,7 @@ import useMemberships from '../hooks/useMemberships';
 import Modal from '../../../components/shared/modal';
 import useModal from '../../../hooks/useModal';
 import { format, parseISO } from 'date-fns';
-import { TbUserCheck  , TbUserUp , TbUserOff  } from 'react-icons/tb'
+import { TbUserCheck  , TbUserUp , TbUserOff, TbCrown  } from 'react-icons/tb'
 
 function MemberItem({member, status}) {
     const { name } = member.Player
@@ -28,7 +28,14 @@ function MemberItem({member, status}) {
         <>
     <motion.li  variants={child_variants} {...list_item_animations} className='member_item'>
         <div className='float_left'>
-        <ProfileImage player={member.Player}/>
+            <div className='player_item'>
+                {
+                    isMemberHost ? <TbCrown className='player_status_host'/> :
+                    isMemberCoHost ? <TbCrown className='player_status_co-host'/>:
+                    null
+                }
+                <ProfileImage player={member.Player}/>
+            </div>
         <div>
             <div className='flex'>
                 <p className='bold md'>{name}</p>
@@ -54,6 +61,7 @@ function MemberItem({member, status}) {
                             label='Approve Member'
                             icon={TbUserCheck}
                             action={() => onAddToTeam(member.Player.id)}
+                            styles='success'
                         /> : null
                     }
                 </AnimatePresence>
@@ -64,6 +72,7 @@ function MemberItem({member, status}) {
                             label='Promote to Co-Host'
                             icon={TbUserUp}
                             action={() => onPromoteToCoHost(member.Player.id)}
+                            styles='accent'
                         /> : null
                     }
                 </AnimatePresence>
@@ -75,6 +84,7 @@ function MemberItem({member, status}) {
                             label='Kick off team'
                             icon={TbUserOff}
                             action={onOpenModal}
+                            styles='warning'
                         /> : null
                     }
                 </AnimatePresence>

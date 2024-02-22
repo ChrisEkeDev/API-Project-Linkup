@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { base_animations, child_variants } from '../../../constants/animations';
 import IconButton from '../../../components/shared/button/IconButton'
 import { useApp } from '../../../context/AppContext'
@@ -14,7 +14,7 @@ import { getMyLikes } from '../../../store/auth';
 import DeleteSessionChatModal from './DeleteSessionChatModal';
 
 function SessionChat(props) {
-    const { auth, settings } = useApp();
+    const { auth, theme } = useApp();
     const { chat, room, socket } = props;
     const { data: myLikes } = useQuery(['my-likes'], getMyLikes);
     const likesData = myLikes?.data;
@@ -25,8 +25,6 @@ function SessionChat(props) {
     const createdToday = isSameDay(parseISO(chat.createdAt), today);
     const chatDateFormat = createdToday ? 'p' : 'MM/dd  •  p';
     const formatDate = format(parseISO(chat.createdAt), chatDateFormat);
-    const settingsData = settings?.data;
-    const { theme } = settingsData;
     const textareaRef = useRef(null);
     const {
         ref,
@@ -81,16 +79,16 @@ function SessionChat(props) {
                     editing ?
                     <>
                         <IconButton
-                            icon={TbX}
-                            action={() => setEditing(false)}
-                            label='Cancel changes'
-                            styles='chat_icons'
-                        />
-                        <IconButton
                             icon={TbCheck}
                             action={onUpdateSessionChat}
                             label='Confirm changes'
-                            styles='chat_icons'
+                            styles='chat_icons success'
+                        />
+                        <IconButton
+                            icon={TbX}
+                            action={() => setEditing(false)}
+                            label='Cancel changes'
+                            styles='chat_icons warning'
                         />
                     </>
                     :
@@ -105,7 +103,7 @@ function SessionChat(props) {
                             icon={TbTrash}
                             action={onOpenModal}
                             label='Delete message'
-                            styles='chat_icons'
+                            styles='chat_icons warning'
                         />
                     </>
                 }
@@ -117,6 +115,7 @@ function SessionChat(props) {
                         icon={chatLiked ? TbHeartFilled : TbHeart }
                         action={chatLiked ? onRemoveSessionChatLike : onAddSessionChatLike}
                         label={`${chat.likes} likes`}
+                        styles='accent'
                     />
                 }
                 </div>

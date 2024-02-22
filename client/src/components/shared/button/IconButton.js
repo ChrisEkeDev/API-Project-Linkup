@@ -3,9 +3,7 @@ import { useApp } from '../../../context/AppContext';
 import './styles.scss';
 
 function IconButton({action, icon: Icon, styles , label}) {
-  const { settings } = useApp();
-  const settingsData = settings?.data;
-  const { theme } = settingsData;
+  const { theme } = useApp();
 
   return (
     <button title={label} onClick={action} className={`icon_button icon_button-${theme} ${styles}`}>

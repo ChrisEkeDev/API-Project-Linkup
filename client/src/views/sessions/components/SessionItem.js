@@ -7,11 +7,9 @@ import { format, parseISO } from 'date-fns';
 import '../styles.scss';
 
 function SessionItem({session}) {
-  const { navigate, settings } = useApp();
+  const { navigate, theme } = useApp();
   const parsedDate = parseISO(session?.startDate);
   const formattedTime = format(parsedDate, 'MM/dd @ p');
-  const settingsData = settings?.data;
-  const { theme } = settingsData;
 
   const handleNavigate = () => {
     navigate(`/sessions/${session.id}`)

@@ -5,9 +5,7 @@ import { TbHandFinger } from "react-icons/tb";
 import './styles.scss';
 
 function ClickDragScroll({children, title}) {
-    const { settings } = useApp();
-    const settingsData = settings?.data;
-    const { theme } = settingsData;
+    const { theme } = useApp();
     const ref = useRef(null);
     const [isDragging, setIsDragging] = useState(false);
     const [startX, setStartX] = useState(0);
