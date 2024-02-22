@@ -4,13 +4,14 @@ import SessionItem from './components/SessionItem';
 import Button from '../../components/shared/button';
 import { useApp } from '../../context/AppContext';
 import Scroll from '../../components/shared/scroll';
-import { TbCirclePlus } from 'react-icons/tb';
+import { TbCirclePlus, TbNoCopyright } from 'react-icons/tb';
 import LoadingData from '../../components/shared/loading';
 import SectionContainer from '../../components/shared/layout/SectionContainer';
 import PageContainer from '../../components/shared/layout/PageContainer';
 import PageHeader from '../../components/shared/layout/PageHeader';
 import { useQuery } from 'react-query';
 import { getMySessions } from '../../store/auth';
+import NoContent from '../../components/shared/noContent';
 
 
 function Sessions() {
@@ -49,7 +50,11 @@ function Sessions() {
               }
             </ul>
           </SectionContainer>
-          : null
+          :
+          <NoContent
+              icon={TbNoCopyright}
+              message="You haven't created any sessions yet."
+          />
         }
         {
           joinedSessions.length > 0 ?
@@ -62,7 +67,11 @@ function Sessions() {
               }
             </ul>
           </SectionContainer>
-          : null
+          :
+          <NoContent
+            icon={TbNoCopyright}
+            message="You haven't joined  any sessions yet."
+          />
         }
 
       </Scroll>

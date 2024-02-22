@@ -1,39 +1,45 @@
 import React from 'react'
+import SectionContainer from '../../../components/shared/layout/SectionContainer'
+import List from '../../../components/shared/layout/List'
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import ChatMessage from './ChatMessage'
 import { TbMessageCircle  } from 'react-icons/tb';
-import { getSessionFeedTopComments } from '../../../store/sessions';
+import { getTeamFeedTopComments } from '../../../store/teams';
+import NoContent from '../noContent';
 
-function LatestMessages({entity}) {
+function TeamTopComments() {
     const { id } = useParams();
-    const { data: topComments, error: topCommentsErr, isLoading: topCommentsLoading } = useQuery(['session-feed-top-comments', id], () => getSessionFeedTopComments(id));
+    const {
+        data: topComments,
+        error: topCommentsErr,
+        isLoading: topCommentsLoading
+    } = useQuery(['team-feed-top-comments', id], () => getTeamFeedTopComments(id));
+
+    if (topCommentsLoading) return <div>Loading...</div>
+    if (topCommentsErr) return <div>Error!</div>
+
+    const topCommentsData = topComments.data;
 
     return (
-        <section className="container_border">
-            <span className='section_label xs bold'>Top Comments</span>
+        <SectionContainer title='Top Comments'>
             {
-                entity?.TeamChats?.length > 0  ||
-                entity?.SessionChats?.length > 0
-                ?
-                <ul className="chat_preview">
-                    {
-                        entity.TeamChats ?
-                        entity.TeamChats.map(chat => (
-                            <ChatMessage key={chat.id} chat={chat}/>
-                        )) :
-                        entity.SessionChats.map(chat => (
-                            <ChatMessage key={chat.id} chat={chat}/>
-                        ))
-                    }
-                </ul> :
-                <div className='no_content'>
-                    <TbMessageCircle  className='icon'/>
-                    <p className='sm bold'>No Messages Yet</p>
-                </div>
+                topCommentsData?.length > 0 || topCommentsErr ?
+            <List>
+                {
+                    topCommentsData.map(chat => (
+                        <ChatMessage key={chat.id} chat={chat}/>
+                    ))
+                }
+            </List>
+             :
+             <NoContent
+                 icon={TbMessageCircle}
+                 message='No Messages Yet'
+             />
             }
-        </section>
+        </SectionContainer>
     )
 }
 
-export default LatestMessages
+export default TeamTopComments

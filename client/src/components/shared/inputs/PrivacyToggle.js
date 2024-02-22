@@ -10,11 +10,11 @@ function PrivacyToggle(props) {
     return (
         <SectionContainer title='Public or Private'>
             <div className={`toggle_container toggle_container-${theme}`} onClick={handleToggle}>
-                <p className={`sm ${!data.private && 'bold'}`}>Public</p>
+                <p className={`sm ${!data.private && 'bold accent'}`}>Public</p>
                     <div className='toggle_switch'>
                         <div className={`toggle_node ${data.private && 'on_private'}`}></div>
                     </div>
-                <p className={`sm ${data.private && 'bold'}`}>Private</p>
+                <p className={`sm ${data.private && 'bold accent'}`}>Private</p>
             </div>
             <div className={`tip tip-${theme}`}>
                 {

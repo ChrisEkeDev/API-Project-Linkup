@@ -62,7 +62,7 @@ function UpdateTeam({team}) {
                 <footer className='form_caution'>
                     <Button
                         label="Delete Team"
-                        styles="tertiary"
+                        styles="warning"
                         icon={TbTrash}
                         action={onOpenModal}
                     />

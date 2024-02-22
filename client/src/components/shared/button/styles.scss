@@ -191,7 +191,7 @@
 
 .secondary-light {
     background-color: var(--background-light);
-    color: var(--body-light);
+    color: var(--accent);
     box-shadow: var(--box-shadow-light);
     &:hover {
         background: var(--hover-light)
@@ -219,7 +219,7 @@
 
 .secondary-dark {
     background-color: var(--background-dark);
-    color: var(--body-dark);
+    color: var(--accent);
     box-shadow: var(--box-shadow-dark);
     &:hover {
         background: var(--hover-dark)
@@ -259,7 +259,10 @@
 .warning-dark {
     background-color: var(--background-dark);
     box-shadow: var(--box-shadow-dark);
-    color: var(--error)
+    color: var(--error);
+    &:hover {
+        background: var(--hover-dark)
+    }
 }
 
 .cancel {

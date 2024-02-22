@@ -36,7 +36,7 @@ function UpdateSession({session}) {
     return (
         <PageContainer>
            <PageHeader>
-            <header className='flaot_full'>
+            <header className='float_full'>
                     <Back />
                     <Button
                         label="Update Session"
@@ -59,7 +59,7 @@ function UpdateSession({session}) {
                         disabled={false}
                     />
                     <div className='form_verification'>
-                        <TbMapPin className="icon"/>
+                        <TbMapPin className="icon accent"/>
                         <div className='details'>
                             <p className='xs bold'>Address</p>
                             <p className='sm'>{session.address}</p>
@@ -70,7 +70,7 @@ function UpdateSession({session}) {
                             label="Date"
                             name="date"
                             type="date"
-                            iconRight={<TbCalendar className='input_icon'/>}
+                            iconRight={<TbCalendar className='input_icon accent'/>}
                             value={sessionData?.date}
                             setValue={handleInput}
                             error={errors?.date}
@@ -80,7 +80,7 @@ function UpdateSession({session}) {
                             label="Time"
                             name="time"
                             type="time"
-                            iconRight={<TbClock className='input_icon'/>}
+                            iconRight={<TbClock className='input_icon accent'/>}
                             value={sessionData?.time}
                             setValue={handleInput}
                             error={errors?.time}
@@ -92,7 +92,7 @@ function UpdateSession({session}) {
                             type="number"
                             min={1}
                             max={6}
-                            iconRight={<TbDirection className='input_icon'/>}
+                            iconRight={<TbDirection className='input_icon accent'/>}
                             value={sessionData?.duration}
                             setValue={handleInput}
                             error={errors?.duration}
@@ -104,7 +104,7 @@ function UpdateSession({session}) {
                     <footer className='form_caution'>
                         <Button
                             label="Delete Session"
-                            styles="tertiary"
+                            styles="warning"
                             icon={TbTrash}
                             action={onOpenModal}
                         />

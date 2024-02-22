@@ -34,6 +34,7 @@ function CheckInView({view, setView}) {
                         view === "calendar" ? TbCalendarDue
                         : TbList
                     }
+                    styles='accent'
                     action={() => setMenu(!menu)}
                 />
                 {

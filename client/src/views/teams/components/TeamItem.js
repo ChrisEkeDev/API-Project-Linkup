@@ -20,15 +20,15 @@ function TeamItem({team}) {
             />
             <div className='team_details'>
                 <p className='sm bold'>Created by {team.captain.name}</p>
-                <p className='md bold'>{team.name}</p>
+                <p className='md bold accent'>{team.name}</p>
                 <p className='sm bold'>{team.members} member{team.members === 1 ? null : 's'}</p>
             </div>
             </div>
             <div className='player_count'>
                 {
                     team.private ?
-                    <TbLock  className='team_privacy'/> :
-                    <TbUsersGroup  className='team_privacy'/>
+                    <TbLock  className='team_privacy accent'/> :
+                    <TbUsersGroup  className='team_privacy accent'/>
                 }
                 <small>{team.private ? 'Private' : 'Public'}</small>
             </div>

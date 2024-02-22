@@ -24,6 +24,7 @@
         font-size: 1rem;
         top: 1rem;
         cursor: pointer;
+        color: var(--accent);
     }
 
     .label {
@@ -61,9 +62,7 @@
             }
         }
     }
-    .icon {
-        color: var(--body-light);
-    }
+
 
     .label {
         background-color: var(--background-light);
@@ -84,9 +83,6 @@
                 color: var(--accent);
             }
         }
-    }
-    .icon {
-        color: var(--body-dark);
     }
 
     .label {
@@ -194,6 +190,7 @@ input[type="number"]::-webkit-inner-spin-button
     position: absolute;
     left: 0;
     transition: all .2s ease;
+    background-color: var(--accent);
 }
 
 .tip {
@@ -214,17 +211,11 @@ input[type="number"]::-webkit-inner-spin-button
     .toggle_switch {
         background-color: var(--hover-light);
     }
-    .toggle_node {
-        background-color: var(--body-light);
-    }
 }
 
 .toggle_container-dark {
     .toggle_switch {
         background-color: var(--hover-dark);
-    }
-    .toggle_node {
-        background-color: var(--body-dark);
     }
 }
 

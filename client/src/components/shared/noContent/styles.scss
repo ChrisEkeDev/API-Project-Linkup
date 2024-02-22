@@ -1,0 +1,25 @@
+@import url('../../../index.css');
+
+.no_content {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 0 2rem 0;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    opacity: .5;
+    border-radius: 2rem;
+    margin-bottom: 2rem;
+
+    .icon {
+      font-size: 2rem;
+    }
+  }
+
+  .no_content-light {
+    background-color: var(--hover-light);
+  }
+
+  .no_content-dark {
+    background-color: var(--hover-dark);
+  }

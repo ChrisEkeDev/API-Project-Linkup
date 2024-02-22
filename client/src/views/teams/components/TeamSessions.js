@@ -6,6 +6,8 @@ import { getTeamSessions } from '../../../store/teams';
 import { format, parseISO } from 'date-fns';
 import SectionContainer from '../../../components/shared/layout/SectionContainer';
 import ProfileImage from '../../../components/shared/profileImage'
+import NoContent from '../../../components/shared/noContent';
+import { Tb123 } from 'react-icons/tb';
 
 function TeamSessions() {
     const { navigate, theme } = useApp();
@@ -36,7 +38,7 @@ function TeamSessions() {
                                     <div>
                                         <p className='sm'>{session.name} by <strong>{session.creator.name}</strong></p>
                                         <p className='sm bold'>{session.address}</p>
-                                        <p className='md bold'>{format(parseISO(session.startDate), 'MM/dd @ p')}</p>
+                                        <p className='md bold accent'>{format(parseISO(session.startDate), 'MM/dd @ p')}</p>
                                     </div>
                                     </div>
                                     <div className='player_count'>
@@ -47,9 +49,10 @@ function TeamSessions() {
                         ))
                     }
                 </ul> :
-                <div className='no_content'>
-
-                </div>
+                <NoContent
+                    icon={Tb123}
+                    message='No current sessions'
+                />
             }
         </SectionContainer>
     )

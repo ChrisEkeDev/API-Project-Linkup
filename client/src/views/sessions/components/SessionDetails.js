@@ -31,7 +31,7 @@ function SessionDetails({session}) {
                             </p>
                         }
                         <p className='sm bold'>{session.address}</p>
-                        <p className='bold md'>{formatTime}</p>
+                        <p className='bold md accent'>{formatTime}</p>
                     </div>
                 </div>
             </SectionContainer>

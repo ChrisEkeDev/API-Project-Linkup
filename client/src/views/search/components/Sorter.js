@@ -43,7 +43,7 @@ const Sorter = ({tab, sortBy, handleSort}) => {
                     : sortBy === 'createdAt' ? TbStar
                     : TbUsersGroup
                 }
-                styles={`icon_button-${theme}`}
+                styles='accent'
                 action={() => setMenu(!menu)}
             />
             {

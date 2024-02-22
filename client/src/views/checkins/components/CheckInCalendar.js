@@ -10,6 +10,7 @@ import { TbChevronLeft , TbChevronRight, TbCalendarQuestion } from 'react-icons/
 import IconButton from '../../../components/shared/button/IconButton';
 import '../styles.scss';
 import Scroll from '../../../components/shared/scroll';
+import NoContent from '../../../components/shared/noContent';
 
 function CheckInCalendar({checkIns}) {
     const [ day, setDay ] = useState(new Date())
@@ -136,10 +137,10 @@ function CheckInCalendar({checkIns}) {
                 {
                     filteredCheckIns .length > 0 ?
                     <CheckInList checkIns={filteredCheckIns}/> :
-                    <motion.div className='no_content'>
-                        <TbCalendarQuestion className='icon'/>
-                        <span className='sm bold'>No CheckIns for {format(day, 'MM/dd/yyyy')} </span>
-                    </motion.div>
+                    <NoContent
+                        icon={TbCalendarQuestion}
+                        message={`No CheckIns for ${format(day, 'MM/dd/yyyy')}`}
+                    />
                 }
             </AnimatePresence>
         </>

@@ -1,14 +1,20 @@
 import React from 'react'
 import { useQuery } from 'react-query';
+import SectionContainer from '../../../components/shared/layout/SectionContainer'
+import List from '../../../components/shared/layout/List'
 import { useParams } from 'react-router-dom';
 import ChatMessage from '../../../components/shared/chat/ChatMessage'
 import { TbMessageCircle  } from 'react-icons/tb';
 import { getSessionFeedTopComments } from '../../../store/sessions';
-import LoadingData from '../../../components/shared/loading';
+import NoContent from '../../../components/shared/noContent';
 
 function SessionTopComments() {
     const { id } = useParams();
-    const { data: topComments, error: topCommentsErr, isLoading: topCommentsLoading } = useQuery(['session-feed-top-comments', id], () => getSessionFeedTopComments(id));
+    const {
+        data: topComments,
+        error: topCommentsErr,
+        isLoading: topCommentsLoading
+    } = useQuery(['session-feed-top-comments', id], () => getSessionFeedTopComments(id));
 
     if (topCommentsLoading) return <div>Loading...</div>
     if (topCommentsErr) return <div>Error!</div>
@@ -16,23 +22,22 @@ function SessionTopComments() {
     const topCommentsData = topComments.data;
 
     return (
-        <section className="container_border">
-                <span className='section_label xs bold'>Top Comments</span>
+        <SectionContainer title='Top Comments'>
                 {
                     topCommentsData?.length > 0 || topCommentsErr ?
-                    <ul className="chat_preview">
+                    <List>
                         {
                             topCommentsData.map(chat => (
                                 <ChatMessage key={chat.id} chat={chat}/>
                             ))
                         }
-                    </ul> :
-                    <div className='no_content'>
-                        <TbMessageCircle  className='icon'/>
-                        <p className='sm bold'>No Messages Yet</p>
-                    </div>
+                    </List> :
+                    <NoContent
+                        icon={TbMessageCircle}
+                        message='No Messages Yet'
+                    />
                 }
-            </section>
+            </SectionContainer>
     )
 }
 

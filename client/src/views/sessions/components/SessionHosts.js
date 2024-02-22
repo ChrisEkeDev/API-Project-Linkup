@@ -28,12 +28,12 @@ function SessionHosts(props) {
                     <li key={team.Team.id} className={`session_host session_host-${theme}`} onClick={() => handleHost(team.Team.id)}>
                     {
                         team.Team.id === currentHostId ?
-                        <TbCircleCheck className='lg' /> :
+                        <TbCircleCheck className='lg accent' /> :
                         <TbCircle className='lg'/>
                     }
                     <div>
-                            <p className='md bold'>{team.Team.name}</p>
-                            <p>{team.status}</p>
+                            <p className='md bold accent'>{team.Team.name}</p>
+                            <p className='xs bold caps'>{team.status}</p>
                     </div>
                     </li>
                 ))}

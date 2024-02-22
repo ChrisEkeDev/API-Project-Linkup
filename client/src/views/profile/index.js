@@ -54,14 +54,6 @@ function Profile() {
                         <p className='sm'>Became a member {authData && formatDistance(parseISO(authData?.createdAt), new Date())} ago</p>
                     </div>
                 </div>
-
-                <div className='profile_actions'>
-                    <Button
-                        label="Delete profile"
-                        styles="warning"
-                        icon={TbTrash}
-                    />
-                </div>
             </Scroll>
         </PageContainer>
     )

@@ -9,6 +9,7 @@ import ChatInput from '../../../components/shared/inputs/ChatInput'
 import Scroll from '../../../components/shared/scroll';
 import LoadingData from '../../../components/shared/loading';
 import { TbMessage2 } from 'react-icons/tb';
+import NoContent from '../../../components/shared/noContent';
 import { getTeamFeed, getTeamMembershipStatus } from '../../../store/teams';
 import SectionContainer from '../../../components/shared/layout/SectionContainer';
 
@@ -52,10 +53,10 @@ function TeamFeed({team}) {
                             ))
                         }
                     </List> :
-                    <div className="no_content">
-                        <TbMessage2 className='icon'/>
-                        <p className='sm bold'>No Messages Yet</p>
-                    </div>
+                    <NoContent
+                        icon={TbMessage2}
+                        message='No Messages Yet'
+                    />
                 }
             </SectionContainer>
             {

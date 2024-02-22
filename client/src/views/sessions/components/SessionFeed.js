@@ -11,6 +11,7 @@ import LoadingData from '../../../components/shared/loading';
 import { TbMessage2 } from 'react-icons/tb';
 import { getSessionFeed, getSessionCheckInStatus } from '../../../store/sessions';
 import SectionContainer from '../../../components/shared/layout/SectionContainer';
+import NoContent from '../../../components/shared/noContent';
 
 function SessionFeed({session}) {
     const { id } = useParams();
@@ -52,10 +53,10 @@ function SessionFeed({session}) {
                             ))
                         }
                     </List> :
-                    <div className="no_content">
-                        <TbMessage2 className='icon'/>
-                        <p className='sm bold'>No Messages Yet</p>
-                    </div>
+                    <NoContent
+                        icon={TbMessage2}
+                        message='No Messages Yet'
+                    />
                 }
             </SectionContainer>
             { checkInData && checkInData !== 'pending' ?

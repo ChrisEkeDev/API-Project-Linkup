@@ -3,13 +3,14 @@ import TeamItem from './components/TeamItem';
 import Button from '../../components/shared/button';
 import { useApp } from '../../context/AppContext';
 import Scroll from '../../components/shared/scroll';
-import { TbCirclePlus } from 'react-icons/tb';
+import { TbCirclePlus, TbNoCopyright } from 'react-icons/tb';
 import LoadingData from '../../components/shared/loading'
 import { useQuery } from 'react-query';
 import { getMyTeams } from '../../store/auth';
 import PageContainer from '../../components/shared/layout/PageContainer';
 import PageHeader from '../../components/shared/layout/PageHeader';
 import SectionContainer from '../../components/shared/layout/SectionContainer';
+import NoContent from '../../components/shared/noContent';
 
 
 function Teams() {
@@ -49,7 +50,11 @@ function Teams() {
               }
             </ul>
           </SectionContainer>
-          : null
+          :
+          <NoContent
+              icon={TbNoCopyright}
+              message="You haven't created any teams yet."
+          />
         }
         {
           teamsJoined.length > 0 ?
@@ -62,7 +67,11 @@ function Teams() {
               }
             </ul>
           </SectionContainer>
-          : null
+          :
+          <NoContent
+              icon={TbNoCopyright}
+              message="You haven't joined any teams yet."
+          />
         }
         {
           teamsPending.length > 0 ?
@@ -75,7 +84,11 @@ function Teams() {
               }
             </ul>
           </SectionContainer>
-          : null
+          :
+          <NoContent
+              icon={TbNoCopyright}
+              message="You haven't requested to join any sessions yet."
+          />
         }
       </Scroll>
     </PageContainer>

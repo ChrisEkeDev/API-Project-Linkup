@@ -9,7 +9,7 @@
     --black: black;
     --white: white;
     --main-hover: black;
-    --accent: rgb(38, 163, 142);
+    --accent: rgb(44, 132, 227);
     --reply: rgb(21, 118, 166);
     --success: rgb(41, 171, 123);
     --warning: rgb(220, 156, 38);
@@ -102,6 +102,10 @@
 
   .uppercase {
     text-transform: uppercase;
+  }
+
+  .caps {
+    text-transform: capitalize;
   }
 
   .header {
@@ -341,19 +345,6 @@
     transform: rotate(45deg);
   }
 
-  .no_content {
-    display: flex;
-    flex-direction: column;
-    padding: 2rem 0 2rem 0;
-    align-items: center;
-    justify-content: center;
-    gap: .5rem;
-    opacity: .5;
-
-    .icon {
-      font-size: 2.5rem;
-    }
-  }
 
 
   .tab_header {

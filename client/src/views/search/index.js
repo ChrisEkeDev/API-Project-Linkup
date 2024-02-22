@@ -48,7 +48,7 @@ function Search() {
                 </header>
             </PageHeader>
             <Scroll>
-                <SectionContainer title={`${tab === 'teams' ? teams?.length : sessions?.length} ${tab}`}>
+                <SectionContainer title={`${tab === 'teams' ? teamsData?.length : sessionsData?.length} ${tab}`}>
                     {tab === 'teams' ?
                         <>
                             {

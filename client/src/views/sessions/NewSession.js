@@ -79,8 +79,8 @@ function NewSession() {
                 : "Search"
               }
               styles={`input_button ${
-                status === "loading" ? "reply"
-                : status === "success" ? "tertiary"
+                status === "loading" ? "tertiary"
+                : status === "success" ? "success"
                 : status === 'error' ? 'warning'
                 : "tertiary"
               }`}
@@ -98,7 +98,7 @@ function NewSession() {
           {
             addressObject ?
             <div className='form_verification'>
-              <TbMapPin className="icon"/>
+              <TbMapPin className="icon accent"/>
               <div className='details'>
                 <p className='xs bold'>Verified Address</p>
                 <p className='sm'>{ addressObject.address }</p>
@@ -111,7 +111,7 @@ function NewSession() {
               label="Date"
               name="date"
               type="date"
-              iconRight={<TbCalendar className='input_icon'/>}
+              iconRight={<TbCalendar className='input_icon accent'/>}
               value={sessionData?.date}
               setValue={handleInput}
               error={errors?.date}
@@ -121,7 +121,7 @@ function NewSession() {
               label="Time"
               name="time"
               type="time"
-              iconRight={<TbClock className='input_icon'/>}
+              iconRight={<TbClock className='input_icon accent'/>}
               value={sessionData?.time}
               setValue={handleInput}
               error={errors?.time}
@@ -133,7 +133,7 @@ function NewSession() {
               type="number"
               min={1}
               max={6}
-              iconRight={<TbDirection className='input_icon'/>}
+              iconRight={<TbDirection className='input_icon accent'/>}
               value={sessionData?.duration}
               setValue={handleInput}
               error={errors?.duration}
