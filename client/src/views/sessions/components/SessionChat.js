@@ -57,7 +57,7 @@ function SessionChat(props) {
             />
             <div className="chat_details">
                 <div className="chat_flex">
-                    <p className="sm bold">{chat.Player.name}</p>
+                    <p className="sm bold accent">{chat.Player.name}</p>
                     <span>&#8226;</span>
                     <p className="xs bold">{formatDate}</p>
                 </div>

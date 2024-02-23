@@ -3,7 +3,7 @@ import TeamItem from './components/TeamItem';
 import Button from '../../components/shared/button';
 import { useApp } from '../../context/AppContext';
 import Scroll from '../../components/shared/scroll';
-import { TbCirclePlus, TbNoCopyright } from 'react-icons/tb';
+import { TbCirclePlus, TbHelpSmall } from 'react-icons/tb';
 import LoadingData from '../../components/shared/loading'
 import { useQuery } from 'react-query';
 import { getMyTeams } from '../../store/auth';
@@ -14,7 +14,7 @@ import NoContent from '../../components/shared/noContent';
 
 
 function Teams() {
-  const { auth, navigate } = useApp();
+  const { navigate } = useApp();
   const { data: teams, error: teamsErr, isLoading: teamsLoading} = useQuery('my-teams', getMyTeams);
 
   if (teamsLoading) return <LoadingData/>
@@ -52,7 +52,6 @@ function Teams() {
           </SectionContainer>
           :
           <NoContent
-              icon={TbNoCopyright}
               message="You haven't created any teams yet."
           />
         }
@@ -69,7 +68,6 @@ function Teams() {
           </SectionContainer>
           :
           <NoContent
-              icon={TbNoCopyright}
               message="You haven't joined any teams yet."
           />
         }
@@ -86,7 +84,6 @@ function Teams() {
           </SectionContainer>
           :
           <NoContent
-              icon={TbNoCopyright}
               message="You haven't requested to join any sessions yet."
           />
         }

@@ -1,5 +1,7 @@
 @import url('../../index.css');
 
+$accent: var(--accent);
+
 .checkins {
     padding-top: 1rem;
     padding-right: 1rem;
@@ -63,8 +65,7 @@
     position: relative;
     border-radius: 1rem;
     // outline: var(--border);
-    box-shadow: var(--box-shadow);
-    color: black;
+
     display: flex;
     padding: 1rem;
     gap: 5px;
@@ -80,43 +81,102 @@
       left: 1rem;
       bottom: 1rem;
       font-weight: 700;
-      color: var(--text);
+      opacity: .65;
+
+    }
+    .day_icon {
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+    }
+  }
+
+  .day_container-light {
+    box-shadow: var(--box-shadow-light);
+    color: var(--body-light);
+    &:hover {
+        background-color: var(--hover-light);
+      }
+    .number {
+        color: var(--body-light);
+    }
+  }
+
+  .day_container-dark {
+    box-shadow: var(--box-shadow-dark);
+    color: var(--body-dark);
+    &:hover {
+        background-color: var(--hover-dark);
+      }
+    .number {
+        color: var(--body-dark);
+
     }
   }
 
 
-  .current {
-      background-color: var(--border-color);
-      &:hover {
-          background-color: var(--accent);
-        }
-        .number {
-            color: var(--text);
-        }
+.current-light {
+    background-color: var(--background-light);
+    .number {
+        color: var(--accent);
+        opacity: 1;
     }
+}
 
-    .day_selected {
-        background-color: var(--accent);
-        font-weight: 700;
-        transition: all .2s;
-        .calendar_item_node {
-            color: var(--background);
-        }
-        .number {
-          color: var(--background);
-          transition: all .2s;
-        }
+.current-dark {
+    background-color: var(--background-dark);
+    .number {
+        color: var(--accent);;
+        opacity: 1;
     }
+}
+
+.day_selected {
+    font-weight: 700;
+    transition: all .2s;
+    box-shadow: none;
+    .calendar_item_node {
+        color: var(--background);
+    }
+    .number {
+        color: var(--accent);
+        transition: all .2s;
+        opacity: 1;
+    }
+}
+
+.day_selected-light {
+    background-color: var(--hover-light);
+}
+
+.day_selected-dark {
+    background-color: var(--hover-dark);
+}
 
 
 .off_month {
-    outline: transparent;
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+
+}
+
+.off_month-light {
     &:hover {
-        background-color: var(--background);
+        background-color: transparent;
     }
     .number {
-        color: var(--border-color);
-      }
+        color: var(--body-light);
+    }
+}
+
+.off_month-dark {
+    &:hover {
+        background-color: transparent;
+    }
+    .number {
+        color: var(--body-dark);
+    }
 }
 
 .row_grid {
@@ -174,7 +234,7 @@
     padding: 1rem 0 1rem 1rem;
 }
 .check_in_list_item {
-    padding: 1rem 0;
+    padding: 1rem;
 
 }
 

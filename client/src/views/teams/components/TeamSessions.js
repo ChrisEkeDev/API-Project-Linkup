@@ -7,7 +7,7 @@ import { format, parseISO } from 'date-fns';
 import SectionContainer from '../../../components/shared/layout/SectionContainer';
 import ProfileImage from '../../../components/shared/profileImage'
 import NoContent from '../../../components/shared/noContent';
-import { Tb123 } from 'react-icons/tb';
+import { TbDotsCircleHorizontal } from 'react-icons/tb';
 
 function TeamSessions() {
     const { navigate, theme } = useApp();
@@ -50,7 +50,7 @@ function TeamSessions() {
                     }
                 </ul> :
                 <NoContent
-                    icon={Tb123}
+                    icon={TbDotsCircleHorizontal}
                     message='No current sessions'
                 />
             }

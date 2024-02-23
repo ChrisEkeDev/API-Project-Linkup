@@ -1,14 +1,16 @@
 import React from 'react'
-import { AnimatePresence, motion } from 'framer-motion';
+import useAuth from '../../views/auth/hooks/useAuth'
 import './styles.scss';
 import { useApp } from '../../context/AppContext';
-import { page_transitions } from '../../constants/animations';
+import SignOutModal from '../../components/navbar/components/SignOutModal';
+import useModal from '../../hooks/useModal';
+import Modal from '../../components/shared/modal';
 import Scroll from '../../components/shared/scroll';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import ProfileImage from '../../components/shared/profileImage';
 import Button from '../../components/shared/button';
 import { formatDistance , parseISO } from 'date-fns';
-import { TbEdit, TbTrash } from "react-icons/tb";
+import { TbEdit, TbLogout } from "react-icons/tb";
 import PageContainer from "../../components/shared/layout/PageContainer"
 import PageHeader from "../../components/shared/layout/PageHeader"
 import { getAuth } from '../../store/auth';
@@ -17,6 +19,8 @@ import { Redirect } from 'react-router-dom';
 
 function Profile() {
     const { navigate } = useApp();
+    const { onSignOut } = useAuth()
+    const { onOpenModal, onCloseModal, isModalOpen } = useModal();
     const {
         data: auth,
         isLoading: authLoading,
@@ -54,7 +58,24 @@ function Profile() {
                         <p className='sm'>Became a member {authData && formatDistance(parseISO(authData?.createdAt), new Date())} ago</p>
                     </div>
                 </div>
+                <div className='profile_caution'>
+                    <Button
+                        label='Sign Out'
+                        styles="warning"
+                        icon={TbLogout}
+                        action={onOpenModal}
+                    />
+                </div>
             </Scroll>
+            <Modal
+                isModalOpen={isModalOpen}
+                onCloseModal={onCloseModal}
+            >
+                <SignOutModal
+                    signOut={onSignOut}
+                    close={onCloseModal}
+                />
+            </Modal>
         </PageContainer>
     )
 }

@@ -30,8 +30,8 @@ function MemberItem({member, status}) {
         <div className='float_left'>
             <div className='player_item'>
                 {
-                    isMemberHost ? <TbCrown className='player_status_host'/> :
-                    isMemberCoHost ? <TbCrown className='player_status_co-host'/>:
+                    isMemberHost ? <TbCrown className='player_status_host accent'/> :
+                    isMemberCoHost ? <TbCrown className='player_status_host'/>:
                     null
                 }
                 <ProfileImage player={member.Player}/>

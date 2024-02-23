@@ -10,9 +10,6 @@ export const PROFILE_ROUTER = '/profile*'
 export const PROFILE = '/profile'
 export const UPDATE_PROFILE = '/profile/update'
 
-export const SETTINGS_ROUTER = '/settings*'
-export const SETTINGS = '/settings'
-
 export const SESSIONS_ROUTER = '/sessions*'
 export const SESSIONS = '/sessions';
 export const NEW_SESSION = '/sessions/new';

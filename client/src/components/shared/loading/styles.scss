@@ -1,9 +1,10 @@
 @import url('../../../index.css');
 
 .loading {
-    width: 100%;
-    min-height: 100px;
-    max-height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     display: flex;
     align-items: center;
     justify-content: center;

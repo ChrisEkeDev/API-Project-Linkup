@@ -2,20 +2,14 @@ import React from 'react'
 import { NavLink } from 'react-router-dom';
 import './styles.scss';
 import * as ROUTES from '../../constants/routes';
-import SignOutModal from './components/SignOutModal';
 import IconButton from '../shared/button/IconButton'
 import ProfileImage from '../shared/profileImage';
 import { useApp } from '../../context/AppContext';
-import useAuth from '../../views/auth/hooks/useAuth';
 import { RiBasketballFill } from "react-icons/ri";
-import Modal from '../shared/modal'
-import useModal from '../../hooks/useModal'
-import { TbSearch,TbUsersGroup , TbSettings, TbCalendarDue, TbBallBasketball, TbLogin2, TbLogout   } from "react-icons/tb";
+import { TbSearch,TbUsersGroup , TbCalendarDue, TbBallBasketball, TbSun, TbMoon   } from "react-icons/tb";
 
 function NavBar() {
-    const { onSignOut } = useAuth()
-    const { onOpenModal, onCloseModal, isModalOpen } = useModal();
-    const { auth, navigate, theme } = useApp();
+    const { auth, navigate, theme, onToggleTheme } = useApp();
 
     return (
         <>
@@ -52,6 +46,15 @@ function NavBar() {
                 <div className='app_nav_bottom'>
                     { auth ?
                         <>
+                        <div title='Change Theme' className='app_link'>
+                            <div onClick={onToggleTheme} className="nav_link">
+                                {
+                                    theme === 'light' ?
+                                    <TbSun className='nav_icon'/> :
+                                    <TbMoon className='nav_icon'/>
+                                }
+                            </div>
+                        </div>
                         <div title="My Profile" className='app_link'>
                             <NavLink to={ROUTES.PROFILE} className="nav_link" activeClassName="active_link">
                                 <ProfileImage
@@ -59,16 +62,6 @@ function NavBar() {
                                     size={3}
                                 />
                             </NavLink>
-                        </div>
-                        <div title="My Settings" className='app_link'>
-                            <NavLink to={ROUTES.SETTINGS} className="nav_link" activeClassName="active_link">
-                                <TbSettings className='nav_icon'/>
-                            </NavLink>
-                        </div>
-                        <div title="Sign Out" className='app_link'>
-                            <div onClick={onOpenModal} className="nav_link" activeClassName="active_link">
-                                <TbLogout className='nav_icon'/>
-                            </div>
                         </div>
                         </> :
                         <IconButton
@@ -81,15 +74,6 @@ function NavBar() {
                 </div>
             </div>
         </nav>
-        <Modal
-            isModalOpen={isModalOpen}
-            onCloseModal={onCloseModal}
-        >
-            <SignOutModal
-                signOut={onSignOut}
-                close={onCloseModal}
-            />
-        </Modal>
         </>
     )
 }

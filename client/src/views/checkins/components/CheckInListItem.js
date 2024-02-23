@@ -13,9 +13,8 @@ function CheckInListItem({checkIn}) {
     return (
         <div className="check_in_list_item flex_spaced">
             <div>
-                <p className='sm'>{checkIn.session.name}</p>
-                <p className='sm bold'>{checkIn.session.address}</p>
-                <p className='md bold'>{formattedTime}</p>
+                <p className='md bold'>{checkIn.session.name}</p>
+                <p className='md bold accent'>{formattedTime}</p>
             </div>
             <Button
                 label="View Session"

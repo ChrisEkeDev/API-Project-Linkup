@@ -4,15 +4,15 @@ import { format, addMonths, subMonths,addDays, startOfWeek,
     getMonth, getTime, parseISO
 } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
-import CheckInCalendarItem from './CheckInCalendarItem';
 import CheckInList from './CheckInList';
-import { TbChevronLeft , TbChevronRight, TbCalendarQuestion } from 'react-icons/tb';
+import { TbChevronLeft , TbChevronRight, TbCalendarQuestion, TbDots } from 'react-icons/tb';
 import IconButton from '../../../components/shared/button/IconButton';
 import '../styles.scss';
-import Scroll from '../../../components/shared/scroll';
+import { useApp } from '../../../context/AppContext';
 import NoContent from '../../../components/shared/noContent';
 
 function CheckInCalendar({checkIns}) {
+    const { theme } = useApp();
     const [ day, setDay ] = useState(new Date())
     const [ month, setMonth ] = useState(startOfMonth(day))
     const monthDateFormat = "MMMM yyyy";
@@ -33,6 +33,11 @@ function CheckInCalendar({checkIns}) {
         return isSameDay(date, parseISO(checkIn.session.startDate))
     }
 
+    const dayHasCheckin = (day) => {
+     if (checkIns.filter(checkIn => checkInDate(day, checkIn)).length > 0) return true
+     else return false
+    };
+
     for (let i = 0; i < 7; i++) {
         weekDays.push(
           <div className="weekday_container" key={i}>
@@ -47,13 +52,13 @@ function CheckInCalendar({checkIns}) {
             const cloneDay = date;
             days.push(
             <div
-                className={`day_container ${
+                className={`day_container day_container-${theme} ${
                 isSameDay(date, new Date()) ?
-                'current'
+                `current-${theme}`
                 :!isSameMonth(date, monthStart)
-                ? "off_month"
+                ? `off_month off_month-${theme}`
                 : isSameDay(date, day)
-                ? "day_selected"
+                ? `day_selected day_selected-${theme}`
                 : ""
                 }`}
                 key={date}
@@ -65,14 +70,10 @@ function CheckInCalendar({checkIns}) {
                     : () => onNextMonthDateClick(toDate(cloneDay))
                 }
             >
-                {checkIns.filter(checkIn => checkInDate(cloneDay, checkIn)).sort((a,b) => {
-                    return new Date(a.session.startDate) - new Date(b.session.startDate)
-                }).map(checkIn => (
-                    <CheckInCalendarItem
-                        key={checkIn.id}
-                        checkIn={checkIn}
-                    />
-                ))}
+                {dayHasCheckin(cloneDay) ?
+                    <TbDots className='day_icon accent'/> :
+                null
+                }
                 <span className="number">
                     {formattedDate}
                 </span>

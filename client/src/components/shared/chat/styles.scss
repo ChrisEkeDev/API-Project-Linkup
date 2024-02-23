@@ -37,12 +37,12 @@
 }
 
 .editing_chat-light {
-    outline: var(--border-light);
+    outline: none;
     background-color: var(--hover-light);
 }
 
 .editing_chat-dark {
-    outline: var(--border-dark);
+    outline: none;
     background-color: var(--hover-dark);
 }
 

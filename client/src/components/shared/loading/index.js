@@ -10,7 +10,7 @@ function LoadingData({section}) {
   return (
     <AnimatePresence>
       <motion.div {...loading_transitions}
-        className={`laoding loading-${theme}`}>
+        className={`loading loading-${theme}`}>
           <CgSpinner className='spinner'/>
       </motion.div>
     </AnimatePresence>

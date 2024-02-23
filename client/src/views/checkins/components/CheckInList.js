@@ -1,12 +1,13 @@
 import React from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import CheckInListItem from './CheckInListItem'
+import SectionContainer from '../../../components/shared/layout/SectionContainer'
+import List from '../../../components/shared/layout/List'
 
 function CheckInList({checkIns}) {
   return (
-    <motion.section className='check_ins_list_wrapper'>
-        <span className='section_label xs bold'>{checkIns.length} Check Ins</span>
-        <ul className='check_ins_list'>
+    <SectionContainer title={`${checkIns.length} Check Ins`}>
+        <List>
             <AnimatePresence>
                 {
                     checkIns.map(checkIn => (
@@ -14,8 +15,8 @@ function CheckInList({checkIns}) {
                     ))
                 }
             </AnimatePresence>
-        </ul>
-    </motion.section>
+        </List>
+    </SectionContainer>
   )
 }
 

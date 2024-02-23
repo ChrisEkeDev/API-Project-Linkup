@@ -7,7 +7,7 @@ function NoContent({icon: Icon, message}) {
 
   return (
     <div className={`no_content no_content-${theme}`}>
-        <Icon className='icon'/>
+        {Icon && <Icon className='icon'/>}
         <p className='sm bold'>{message}</p>
     </div>
   )

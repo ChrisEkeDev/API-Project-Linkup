@@ -184,7 +184,7 @@
     color: var(--white);
     box-shadow: var(--box-shadow-light);
     &:hover {
-        background: var(--hover-light)
+        background: var(--accent-hover)
     }
 }
 
@@ -212,7 +212,7 @@
     color: var(--white);
     box-shadow: var(--box-shadow-dark);
     &:hover {
-        background: var(--hover-dark)
+        background: var(--accent-hover)
     }
 }
 
