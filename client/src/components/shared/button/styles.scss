@@ -159,20 +159,26 @@
     align-items: center;
     gap: .25rem;
     height: 2.5rem;
-    color: var(--text);
     border: none;
     cursor: pointer;
-    opacity: .75;
     margin-right: 1rem;
     .icon {
-        font-size: 1rem;
+        font-size: 1.5rem;
     }
     span {
         font-size: .8rem;
     }
     &:hover {
-        opacity: 1;
+        opacity: .5;
     }
+}
+
+.back_button-light {
+    color: var(--body-light)
+}
+
+.back_button-dark {
+    color: var(--body-dark)
 }
 
 .auth_back {

@@ -3,6 +3,7 @@ import TeamItem from './components/TeamItem';
 import Button from '../../components/shared/button';
 import { useApp } from '../../context/AppContext';
 import Scroll from '../../components/shared/scroll';
+import List from '../../components/shared/layout/List'
 import { TbCirclePlus, TbHelpSmall, TbUsersGroup  } from 'react-icons/tb';
 import LoadingData from '../../components/shared/loading'
 import { useQuery } from 'react-query';
@@ -42,13 +43,13 @@ function Teams() {
         {
           teamsCaptain.length > 0 ?
           <SectionContainer title={`${teamsCaptain.length} Team${teamsCaptain.length === 1 ? '' : 's'} Created`}>
-            <ul>
+            <List>
               {
                 teamsCaptain.map(team => (
                   <TeamItem key={team.id} team={team}/>
                 ))
               }
-            </ul>
+            </List>
           </SectionContainer>
           :
           <NoContent
@@ -59,13 +60,13 @@ function Teams() {
         {
           teamsJoined.length > 0 ?
           <SectionContainer title={`${teamsJoined.length} Team${teamsJoined.length === 1 ? '' : 's'} Joined`}>
-            <ul>
+            <List>
               {
                 teamsJoined.map(team => (
                   <TeamItem key={team.id}  team={team}/>
                 ))
               }
-            </ul>
+            </List>
           </SectionContainer>
           :
           <NoContent
@@ -76,13 +77,13 @@ function Teams() {
         {
           teamsPending.length > 0 ?
           <SectionContainer title={`${teamsPending.length} Team${teamsPending.length === 1 ? '' : 's'} Awaiting Approval`}>
-            <ul>
+            <List>
               {
                 teamsPending.map(team => (
                   <TeamItem key={team.id}  team={team}/>
                 ))
               }
-            </ul>
+            </List>
           </SectionContainer>
           :
           <NoContent

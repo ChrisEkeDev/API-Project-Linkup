@@ -127,10 +127,4 @@ export const toggleNotifications = async (value) => {
 export const googleAuthSignIn = async () => {
     const res = await csrfFetch('/api/auth/google')
     return res
-    // try {
-    //     const jsonResponse = await res.json();
-    //     console.log(jsonResponse)
-    // } catch(error) {
-    //     console.error(error)
-    // }
 }

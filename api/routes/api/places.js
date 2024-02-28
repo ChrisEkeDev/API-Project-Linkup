@@ -1,5 +1,7 @@
 const express = require('express');
 const axios = require('axios');
+const { Session } = require('../../db/models');
+const { Op } = require('sequelize');
 const router = express.Router();
 const apiKey = process.env.GOOGLE_API_KEY
 
@@ -24,6 +26,36 @@ router.post('/', async(req, res) => {
             errors: { error: e }
         })
     }
+})
+
+router.get('/markers', async (req, res) => {
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+    const yesterdayISOString = yesterday.toISOString()
+    const markers = await Session.unscoped().findAll({
+        attributes: [
+            'id',
+            'name',
+            'startDate',
+            'address',
+            'private',
+            'lat',
+            'lng'
+        ],
+        where: {
+            endDate: {
+                [Op.gte]: yesterdayISOString
+            }
+        },
+    })
+
+    return res.status(200).json({
+        status: 200,
+        message: '',
+        data: markers,
+        error: null
+    })
 })
 
 module.exports = router;

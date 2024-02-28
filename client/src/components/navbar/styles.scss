@@ -52,9 +52,11 @@
   .app_nav-light {
     background-color: var(--background-light);
     color: var(--body-light);
+    border-right: var(--border-light);
   }
 
   .app_nav-dark {
     background-color: var(--background-dark);
     color: var(--body-dark);
+    border-right: var(--border-dark);
   }

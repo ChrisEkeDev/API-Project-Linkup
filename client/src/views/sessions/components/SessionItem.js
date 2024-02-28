@@ -4,15 +4,17 @@ import { useApp } from '../../../context/AppContext';
 import ProfileImage from '../../../components/shared/profileImage';
 import { child_variants } from '../../../constants/animations';
 import { format, parseISO } from 'date-fns';
+import useMap from '../../map/hooks/useMap';
 import '../styles.scss';
 
 function SessionItem({session}) {
-  const { navigate, theme } = useApp();
+  const { theme } = useApp();
+  const { handleMapFocus } = useMap();
   const parsedDate = parseISO(session?.startDate);
   const formattedTime = format(parsedDate, 'MM/dd @ p');
 
   const handleNavigate = () => {
-    navigate(`/sessions/${session.id}`)
+    handleMapFocus(session)
   }
 
   return (

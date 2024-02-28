@@ -1,5 +1,10 @@
 import { csrfFetch } from './csrf';
 
+export const getMapMarkers = async () => {
+    const res = await csrfFetch('/api/places/markers')
+    return res
+}
+
 export const searchSessions = async (query, sortBy) => {
     const res = await csrfFetch(`/api/sessions/search/?query=${query}&sortBy=${sortBy}`);
     return res

@@ -41,7 +41,7 @@ function SessionFeed({session}) {
             <SectionContainer title="Showing all messages for this session">
                 {
                     feedData.length > 0 ?
-                    <List>
+                    <List pad>
                         {
                             feedData.map(chat => (
                                 <SessionChat

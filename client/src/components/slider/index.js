@@ -5,15 +5,15 @@ import './styles.scss'
 const Slider = ({children , map: Map}) => {
     const { ref, position } = useSlider();
     return (
-        <section className="section_container">
+        <section id="app_root" className="section_container">
             <div
-                className="section_contents"
+                className="page_container"
                 style={{ width: `${position}%` }}
             >
                 {children}
                 <SlidingBar ref={ref} layout="horizontal" />
             </div>
-            <div className="section_contents map_bg">
+            <div className="map_wrapper">
                 <Map />
             </div>
         </section>

@@ -3,6 +3,7 @@ import './styles.scss';
 import SessionItem from './components/SessionItem';
 import Button from '../../components/shared/button';
 import { useApp } from '../../context/AppContext';
+import List from '../../components/shared/layout/List'
 import Scroll from '../../components/shared/scroll';
 import { TbCirclePlus, TbBallBasketball  } from 'react-icons/tb';
 import LoadingData from '../../components/shared/loading';
@@ -42,13 +43,13 @@ function Sessions() {
         {
           createdSessions.length > 0 ?
           <SectionContainer title={`${createdSessions.length} Session${createdSessions.length === 1 ? null : 's'} created`}>
-            <ul>
+            <List>
               {
                 createdSessions.map(session => (
                   <SessionItem key={session.id} session={session}/>
                 ))
               }
-            </ul>
+            </List>
           </SectionContainer>
           :
           <NoContent
@@ -59,13 +60,13 @@ function Sessions() {
         {
           joinedSessions.length > 0 ?
           <SectionContainer title={`${joinedSessions.length} Session${joinedSessions.length === 1 ? null : 's'} attending`}>
-            <ul>
+            <List>
               {
                 joinedSessions.map(session => (
                   <SessionItem key={session.id} session={session}/>
                 ))
               }
-            </ul>
+            </List>
           </SectionContainer>
           :
           <NoContent

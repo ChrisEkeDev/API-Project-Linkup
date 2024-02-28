@@ -19,37 +19,28 @@ function MemberItem({member, status}) {
     const isMemberCoHost = member.status === 'co-host';
     const isMemberPending = member.status === 'pending';
     const isMemberMember = member.status === 'member';
-    const showStatus = isMemberHost || isMemberCoHost;
     const { isModalOpen, onOpenModal, onCloseModal } = useModal();
     const { onAddToTeam, onPromoteToCoHost, onRemoveFromTeam }= useMemberships();
 
 
     return (
         <>
-    <motion.li  variants={child_variants} {...list_item_animations} className='member_item'>
-        <div className='float_left'>
-            <div className='player_item'>
-                {
-                    isMemberHost ? <TbCrown className='player_status_host accent'/> :
-                    isMemberCoHost ? <TbCrown className='player_status_host'/>:
-                    null
-                }
-                <ProfileImage player={member.Player}/>
+        <motion.li  variants={child_variants} {...list_item_animations} className='member_item'>
+            <div className='float_left'>
+                <div className='player_item'>
+                    {
+                        isMemberHost ? <TbCrown className='player_status_host accent'/> :
+                        isMemberCoHost ? <TbCrown className='player_status_host'/>:
+                        null
+                    }
+                    <ProfileImage player={member.Player}/>
+                </div>
+            <div>
+                <div className='flex'>
+                    <p className='bold md'>{name}</p>
+                </div>
+                <p className='xs'>Joined {formatDate}</p>
             </div>
-        <div>
-            <div className='flex'>
-                <p className='bold md'>{name}</p>
-                {/* {
-                    showStatus &&
-                    <div className={`member_status member-${member.status}`}>
-                    {isMemberHost ? <PiStarFill className='xs'/> : isMemberCoHost ? <PiStarBold className="xs"/> : null }
-                    {showStatus ? <p className='xxs bold'>{member.status}</p> : null}
-                    </div>
-                } */}
-            </div>
-            <p className='xs'>Joined {formatDate}</p>
-        </div>
-
         </div>
         {
             isPlayerHost || isPlayerCoHost ?
@@ -98,7 +89,7 @@ function MemberItem({member, status}) {
                 close={onCloseModal}
             />
         </Modal>
-        </>
+    </>
     )
 }
 

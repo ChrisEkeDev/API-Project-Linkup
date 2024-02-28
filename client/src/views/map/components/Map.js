@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import useInitilizeMap from "../hooks/useInitializeMap";
+import useInitilizeMap from "../hooks/useMap";
 import { useSelector } from 'react-redux';
 
 // function Map() {

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import TeamItem from '../teams/components/TeamItem';
 import SessionItem from '../../views/sessions/components/SessionItem';
+import List from '../../components/shared/layout/List'
 import Sorter from './components/Sorter';
 import { useApp } from '../../context/AppContext';
 import useSearch from './hooks/useSearch';
@@ -8,7 +9,6 @@ import Scroll from '../../components/shared/scroll';
 import { useQuery } from 'react-query';
 import { searchTeams } from '../../store/teams';
 import { searchSessions } from '../../store/sessions';
-import { parent_variants, base_animations } from '../../constants/animations';
 import { useState } from 'react';
 import LoadingData from '../../components/shared/loading';
 import './styles.scss';
@@ -48,47 +48,36 @@ function Search() {
                 </header>
             </PageHeader>
             <Scroll>
-                <SectionContainer flex title={`${tab === 'teams' ? teamsData?.length : sessionsData?.length} ${tab}`}>
+
                     {tab === 'teams' ?
-                        <>
-                            {
-                                teamsLoading ?
-                                <LoadingData /> :
-                                teamsErr ?
-                                <div>
-                                    Error fetching teams
-                                </div> :
-                                <motion.ul
-                                variants={parent_variants}
-                                {...base_animations}
-                                className='result_list'>
-                                    {teamsData?.map(team => (
-                                        <TeamItem team={team} />
-                                    ))}
-                                </motion.ul>
-                            }
-                        </>
+                        teamsLoading ?
+                        <LoadingData /> :
+                        teamsErr ?
+                        <div>
+                            Error fetching teams
+                        </div> :
+                        <SectionContainer flex title={`${teamsData?.length} Teams`}>
+                            <List>
+                                {teamsData?.map(team => (
+                                    <TeamItem team={team} />
+                                ))}
+                            </List>
+                        </SectionContainer>
                         :
-                        <>
-                            {
-                                sessionsLoading ?
-                                <LoadingData /> :
-                                sessionsErr ?
-                                <div>
-                                    Error fetching sessions
-                                </div> :
-                                <motion.ul
-                                    variants={parent_variants}
-                                    {...base_animations}
-                                    className='result_list'>
-                                        {sessionsData?.map(session => (
-                                            <SessionItem session={session} />
-                                        ))}
-                                </motion.ul>
-                            }
-                        </>
+                        sessionsLoading ?
+                        <LoadingData /> :
+                        sessionsErr ?
+                        <div>
+                            Error fetching sessions
+                        </div> :
+                        <SectionContainer flex title={`${sessionsData?.length} Sessions`}>
+                            <List>
+                                    {sessionsData?.map(session => (
+                                        <SessionItem session={session} />
+                                    ))}
+                            </List>
+                        </SectionContainer>
                     }
-                </SectionContainer>
             </Scroll>
         </PageContainer>
     )

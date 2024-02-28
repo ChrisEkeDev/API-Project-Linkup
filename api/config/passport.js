@@ -60,7 +60,6 @@ passport.use(new AppleStrategy({
     ? `${process.env.API_URL}/api/auth/apple/callback`
     : 'http://localhost:8000/api/auth/apple/callback'
 }, (accessToken, refreshToken, profile, done) => {
-    console.log(profile)
     done(null, profile);
 }));
 

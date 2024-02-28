@@ -16,13 +16,12 @@ const setTokenCookie = async (res, player) => {
         };
 
         // Generates token with player object
-        console.log('generating token-----START')
         const token = jwt.sign(
             { data: playerPublic },
             secret,
             { expiresIn: parseInt(expiresIn) }
         );
-        console.log('generating token-----DONE')
+
 
         const isProduction = process.env.NODE_ENV === "production";
 

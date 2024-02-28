@@ -12,13 +12,6 @@
     width: 1rem;
     cursor: w-resize;
     transition: background 0.2s;
-
-    &:hover {
-        .sliding_line {
-            width: .125rem;
-            background-color: var(--hover);
-        }
-    }
 }
 
 .sliding_bar--horizontal:hover {
@@ -34,9 +27,18 @@
 .section_contents {
     position: relative;
     display: flex;
-    flex-direction: column;
     height: 100%;
+    transition: unset;
 }
+
+.page_container {
+    position: relative;
+    display: flex;
+    height: 100%;
+    transition: unset;
+    padding: 0 1rem;
+}
+
 
 .sliding_grip {
     font-size: 1.5em;
@@ -45,20 +47,26 @@
 
 .sliding_line {
     height: 100%;
-    width: 2rem;
+    width: .5rem;
+    &:hover {
+        width: 1rem
+    }
 
 }
 
 .sliding_line-light {
     background-color: var(--hover-light);
+
 }
 
 .sliding_line-dark {
     background-color: var(--hover-dark);
 }
 
-.map_bg {
+.map_wrapper {
     flex: 1;
+    height: 100%;
+    width: 100%;
 }
 
 

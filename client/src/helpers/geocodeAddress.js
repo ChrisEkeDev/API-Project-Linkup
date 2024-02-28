@@ -17,6 +17,6 @@ export const geocodeAddress = async (e, address, cb) => {
             return newData
         }
     } catch(e) {
-        console.log(e)
+        console.error(e)
     }
 };

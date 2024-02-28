@@ -35,8 +35,6 @@ function useSession({session}) {
         hostId: session ? session?.hostId : null
     });
 
-    console.log(sessionData.startDate)
-
     const onGetPlaces = async (e) => {
         e.preventDefault()
         setAddressConfirmed(false);

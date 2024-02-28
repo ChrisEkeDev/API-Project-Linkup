@@ -8,12 +8,7 @@ function NoContent({icon: Icon, message}) {
 
   return (
     <div className={`no_content no_content-${theme}`}>
-        {Icon &&
-          <div className='no_content-icon_wrapper'>
-            <TbSlash className='no_content-slash'/>
-            <Icon className='icon'/>
-          </div>
-        }
+        { Icon && <Icon className='icon' /> }
         <p className='sm bold'>{message}</p>
     </div>
   )

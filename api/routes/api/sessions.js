@@ -25,6 +25,8 @@ router.get('/search/*', async(req, res) => {
             'startDate',
             'address',
             'private',
+            'lat',
+            'lng',
             [fn('COUNT', col('CheckIns.id')), 'checkIns']
         ],
         where: {
@@ -67,6 +69,8 @@ router.get('/search/*', async(req, res) => {
             'Session.startDate',
             'Session.address',
             'Session.private',
+            'Session.lat',
+            'Session.lng',
             'creator.id',
             'creator.name',
             'creator.profileImage',
@@ -349,7 +353,6 @@ router.put('/:sessionId', requireAuth, validateEditSession, async (req, res) => 
     const playerId = req.player.id;
     const { name, startDate, endDate, hostId, private } = req.body;
     const session = await Session.findByPk(sessionId);
-    console.log(session , hostId)
 
     if (!session) {
         return res.status(404).json(sessionNotFound)
@@ -853,5 +856,9 @@ router.post('/:sessionId/chat-feed', requireAuth, async (req, res) => {
         error: null
     })
 })
+
+
+
+
 
 module.exports = router;

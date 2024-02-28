@@ -41,7 +41,7 @@ function TeamFeed({team}) {
             <SectionContainer title='Showing all messages for past 30 days'>
                 {
                     feedData.length > 0 ?
-                    <List>
+                    <List pad>
                         {
                             feedData.map(chat => (
                                 <TeamChat
