@@ -19,6 +19,11 @@ router.get('/search/*', async (req, res) => {
         include: [
             {
                 model: Membership,
+                where: {
+                    status: {
+                        [Op.ne]: 'pending'
+                    }
+                },
                 attributes: []
             },
             {

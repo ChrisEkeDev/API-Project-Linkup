@@ -22,8 +22,8 @@ function SessionItem({session}) {
           player={session.creator}
         />
         <div>
-          <p className='sm bold'>{session.name} by <span className='bold'>{session.creator.name}</span></p>
-          <p className='sm bold'>{session.address}</p>
+          <p className='sm bold'>{session.name} <span className='reg'> | {session.creator.name}</span></p>
+          <p className='sm'>{session.address}</p>
           <p className='md bold accent'>{formattedTime}</p>
         </div>
       </div>

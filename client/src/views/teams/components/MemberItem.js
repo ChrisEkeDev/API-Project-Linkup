@@ -55,38 +55,34 @@ function MemberItem({member, status}) {
             isPlayerHost || isPlayerCoHost ?
             <div className='member_actions'>
                 <AnimatePresence>
-                    {
-                        isMemberPending ?
-                        <IconButton
-                            label='Approve Member'
-                            icon={TbUserCheck}
-                            action={() => onAddToTeam(member.Player.id)}
-                            styles='success'
-                        /> : null
-                    }
+                    <IconButton
+                        label='Approve Member'
+                        icon={TbUserCheck}
+                        action={() => onAddToTeam(member.Player.id)}
+                        styles='success'
+                        disabled={!isMemberPending}
+                    />
                 </AnimatePresence>
                 <AnimatePresence>
-                    {
-                        isMemberMember ?
-                        <IconButton
-                            label='Promote to Co-Host'
-                            icon={TbUserUp}
-                            action={() => onPromoteToCoHost(member.Player.id)}
-                            styles='accent'
-                        /> : null
-                    }
+                    <IconButton
+                        label='Promote to Co-Host'
+                        icon={TbUserUp}
+                        action={() => onPromoteToCoHost(member.Player.id)}
+                        styles='info'
+                        disabled={!isMemberMember}
+                    />
                 </AnimatePresence>
                 <AnimatePresence>
-                    {
-                        (!isMemberPending && !isMemberHost && isPlayerHost) ||
-                        (!isMemberPending && isPlayerCoHost && !isMemberCoHost) ?
-                        <IconButton
-                            label='Kick off team'
-                            icon={TbUserOff}
-                            action={onOpenModal}
-                            styles='warning'
-                        /> : null
-                    }
+                    <IconButton
+                        label='Kick off team'
+                        icon={TbUserOff}
+                        action={onOpenModal}
+                        styles='warning'
+                        disabled={
+                            !((!isMemberPending && !isMemberHost && isPlayerHost) ||
+                            (!isMemberPending && isPlayerCoHost && !isMemberCoHost))
+                        }
+                    />
                 </AnimatePresence>
         </div> :
         null

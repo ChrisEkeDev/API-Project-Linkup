@@ -4,7 +4,7 @@ import SessionItem from './components/SessionItem';
 import Button from '../../components/shared/button';
 import { useApp } from '../../context/AppContext';
 import Scroll from '../../components/shared/scroll';
-import { TbCirclePlus, TbNoCopyright } from 'react-icons/tb';
+import { TbCirclePlus, TbBallBasketball  } from 'react-icons/tb';
 import LoadingData from '../../components/shared/loading';
 import SectionContainer from '../../components/shared/layout/SectionContainer';
 import PageContainer from '../../components/shared/layout/PageContainer';
@@ -52,7 +52,7 @@ function Sessions() {
           </SectionContainer>
           :
           <NoContent
-              icon={TbNoCopyright}
+              icon={TbBallBasketball}
               message="You haven't created any sessions yet."
           />
         }
@@ -69,7 +69,7 @@ function Sessions() {
           </SectionContainer>
           :
           <NoContent
-            icon={TbNoCopyright}
+            icon={TbBallBasketball}
             message="You haven't joined  any sessions yet."
           />
         }

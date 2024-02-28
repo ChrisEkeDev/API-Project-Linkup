@@ -16,7 +16,7 @@
     &:hover {
         .sliding_line {
             width: 4px;
-            background-color: var(--text);
+            background-color: white;
         }
     }
 }
@@ -27,6 +27,7 @@
 
 .section_container {
     display: flex;
+    position: relative;
     flex: 1;
   }
 
@@ -44,8 +45,8 @@
 
 .sliding_line {
     height: 100%;
-    width: 2px;
-    background-color: var(--border-color);
+    width: 2rem;
+    background-color: red;
 }
 
 .map_bg {

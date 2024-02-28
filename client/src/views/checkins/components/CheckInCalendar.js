@@ -52,7 +52,10 @@ function CheckInCalendar({checkIns}) {
             const cloneDay = date;
             days.push(
             <div
-                className={`day_container day_container-${theme} ${
+                className={`day_container ${
+                    dayHasCheckin(cloneDay) &&
+                    'has_'
+                } day_container-${theme} ${
                 isSameDay(date, new Date()) ?
                 `current-${theme}`
                 :!isSameMonth(date, monthStart)
@@ -71,7 +74,7 @@ function CheckInCalendar({checkIns}) {
                 }
             >
                 {dayHasCheckin(cloneDay) ?
-                    <TbDots className='day_icon accent'/> :
+                    <div className='activity_bar'/> :
                 null
                 }
                 <span className="number">

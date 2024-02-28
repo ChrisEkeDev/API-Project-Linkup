@@ -3,7 +3,7 @@ import TeamItem from './components/TeamItem';
 import Button from '../../components/shared/button';
 import { useApp } from '../../context/AppContext';
 import Scroll from '../../components/shared/scroll';
-import { TbCirclePlus, TbHelpSmall } from 'react-icons/tb';
+import { TbCirclePlus, TbHelpSmall, TbUsersGroup  } from 'react-icons/tb';
 import LoadingData from '../../components/shared/loading'
 import { useQuery } from 'react-query';
 import { getMyTeams } from '../../store/auth';
@@ -52,6 +52,7 @@ function Teams() {
           </SectionContainer>
           :
           <NoContent
+              icon={TbUsersGroup}
               message="You haven't created any teams yet."
           />
         }
@@ -68,6 +69,7 @@ function Teams() {
           </SectionContainer>
           :
           <NoContent
+              icon={TbUsersGroup}
               message="You haven't joined any teams yet."
           />
         }
@@ -84,6 +86,7 @@ function Teams() {
           </SectionContainer>
           :
           <NoContent
+              icon={TbUsersGroup}
               message="You haven't requested to join any sessions yet."
           />
         }

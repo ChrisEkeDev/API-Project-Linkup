@@ -19,9 +19,9 @@ function TeamItem({team}) {
                 player={team.captain}
             />
             <div className='team_details'>
-                <p className='sm bold'>Created by {team.captain.name}</p>
+                <p className='sm'>Created by <span className='bold'>{team.captain.name}</span></p>
                 <p className='md bold accent'>{team.name}</p>
-                <p className='sm bold'>{team.members} member{team.members === 1 ? null : 's'}</p>
+                <p className='sm'>{team.members} member{team.members === 1 ? null : 's'}</p>
             </div>
             </div>
             <div className='player_count'>

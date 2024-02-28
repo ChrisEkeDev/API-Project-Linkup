@@ -12,9 +12,7 @@ function NavBar() {
     const { auth, navigate, theme, onToggleTheme } = useApp();
 
     return (
-        <>
-        <nav>
-            <div className={`app_nav app_nav-${theme}`}>
+            <nav className={`app_nav app_nav-${theme}`}>
                 <div className='app_nav_top'>
                     <div title="Search" className='app_link'>
                         <NavLink to={ROUTES.SEARCH} className="nav_link" activeClassName="active_link">
@@ -72,9 +70,7 @@ function NavBar() {
                         />
                     }
                 </div>
-            </div>
-        </nav>
-        </>
+            </nav>
     )
 }
 

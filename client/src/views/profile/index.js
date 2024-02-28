@@ -18,19 +18,11 @@ import LoadingData from '../../components/shared/loading';
 import { Redirect } from 'react-router-dom';
 
 function Profile() {
-    const { navigate } = useApp();
-    const { onSignOut } = useAuth()
+    const { auth, onSignOut, authLoading, navigate } = useApp();
     const { onOpenModal, onCloseModal, isModalOpen } = useModal();
-    const {
-        data: auth,
-        isLoading: authLoading,
-        isError: authErr
-    } = useQuery(['auth'], {
-        queryFn: getAuth,
-    });
 
-    if (authLoading) return <LoadingData />
-    if (authErr) return <Redirect to='/sign-in' />
+    // if (authLoading) return <LoadingData />
+    // if (authErr) return <Redirect to='/sign-in' />
 
     const authData = auth.data;
 

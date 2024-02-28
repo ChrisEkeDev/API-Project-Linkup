@@ -1,5 +1,5 @@
 
-export const HOME = '/*';
+export const APP_ROUTER = '/*';
 export const SIGN_IN = '/sign-in';
 export const SIGN_UP = '/sign-up';
 export const LOCATION_SERVICES = '/enable-location'

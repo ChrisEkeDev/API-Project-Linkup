@@ -16,6 +16,19 @@
     }
   }
 
+  .no_content-icon_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .no_content-slash {
+    position: absolute;
+    font-size: 3rem;
+    transform: rotate(180deg);
+  }
+
   .no_content-light {
     background-color: var(--hover-light);
   }

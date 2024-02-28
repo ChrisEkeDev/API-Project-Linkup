@@ -10,10 +10,11 @@ function useAuth() {
 
     const {
         data: authData,
-        isLoading: authLoading
+        isLoading: authLoading,
+        isError: authErr
       } = useQuery(['auth'], {
         queryFn: getAuth,
-        retry: false
+        retry: false,
       });
 
       const auth = authData?.data;
@@ -45,7 +46,7 @@ function useAuth() {
         }
     }
 
-    return { auth, authLoading, onSignOut }
+    return { auth, authLoading, onSignOut, authErr }
 }
 
 export default useAuth

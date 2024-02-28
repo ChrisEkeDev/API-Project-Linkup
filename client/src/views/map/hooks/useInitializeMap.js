@@ -6,9 +6,9 @@
 //     const { locationServices, currentLocation, setCurrentLocation } = useApp();
 
 
-//     // useEffect(() => {
-//     //   initMap()
-//     // }, [currentLocation])
+//     useEffect(() => {
+//       initMap()
+//     }, [currentLocation])
 
 
 //   return null

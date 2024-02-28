@@ -3,6 +3,12 @@ import { TbTrash, TbX } from 'react-icons/tb';
 import Button from '../../../components/shared/button'
 
 function DeleteSessionModal({close, deleteSession}) {
+
+    const handleDelete = () => {
+        deleteSession()
+        close()
+    }
+
     return (
         <div className='modal_container'>
             <header className='modal_header'>
@@ -25,7 +31,7 @@ function DeleteSessionModal({close, deleteSession}) {
                     label="Delete Session"
                     styles="warning"
                     icon={TbTrash}
-                    action={deleteSession}
+                    action={handleDelete}
                 />
             </footer>
         </div>

@@ -23,8 +23,8 @@ function AppRouter() {
         />
         <Route
             exact
-            path={ROUTES.HOME}
-            component={view.Home}
+            path={ROUTES.APP_ROUTER}
+            component={view.AppRouter}
         />
         {/* <Route
             component={view.PageNotFound}

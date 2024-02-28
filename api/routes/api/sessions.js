@@ -43,6 +43,11 @@ router.get('/search/*', async(req, res) => {
             },
             {
                 model: CheckIn,
+                where: {
+                    status: {
+                        [Op.ne]: 'pending'
+                    }
+                },
                 attributes: []
             },
             {

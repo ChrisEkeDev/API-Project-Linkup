@@ -235,8 +235,8 @@
     }
 }
 
-.reply {
-    color: var(--reply)
+.info {
+    color: var(--info)
 }
 
 .success {
@@ -260,6 +260,24 @@
     background-color: var(--background-dark);
     box-shadow: var(--box-shadow-dark);
     color: var(--error);
+    &:hover {
+        background: var(--hover-dark)
+    }
+}
+
+.info-light {
+    background-color: var(--background-light);
+    color: var(--info);
+    box-shadow: var(--box-shadow-light);
+    &:hover {
+        background: var(--hover-light)
+    }
+}
+
+.info-dark {
+    background-color: var(--background-dark);
+    box-shadow: var(--box-shadow-dark);
+    color: var(--info);
     &:hover {
         background: var(--hover-dark)
     }

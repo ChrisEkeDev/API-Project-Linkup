@@ -4,6 +4,12 @@ import Button from '../../../components/shared/button'
 
 
 function DeleteTeamModal({close, deleteTeam}) {
+
+    const handleDelete = () => {
+        deleteTeam()
+        close()
+    }
+
     return (
         <div className='modal_container'>
             <h2 className='md modal_title'>
@@ -24,7 +30,7 @@ function DeleteTeamModal({close, deleteTeam}) {
                     label="Delete Team"
                     styles="warning"
                     icon={TbTrash}
-                    action={deleteTeam}
+                    action={handleDelete}
                 />
             </div>
         </div>
