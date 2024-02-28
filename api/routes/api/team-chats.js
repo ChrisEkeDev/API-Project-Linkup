@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { Player, TeamChat } = require('../../db/models');
+const { Player, TeamChat, Like} = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
+const { Sequelize } = require('sequelize');
 const { validateCreateChat } = require("./validation/expressValidations");
 const { chatNotFound } =require('./constants/responseMessages');
-const { v4: uuidv4 } = require('uuid');
 
 
 router.put('/:chatId', requireAuth, validateCreateChat,  async(req, res) => {
@@ -26,10 +26,27 @@ router.put('/:chatId', requireAuth, validateCreateChat,  async(req, res) => {
     teamChat.save();
 
     const chat = await TeamChat.findByPk(teamChat.id, {
-        include: {
-            model: Player,
-            attributes: ['name', 'profileImage']
-        }
+        attributes: {
+            include: [
+                [Sequelize.fn('COUNT', Sequelize.col('Likes.id')), 'likes']
+            ]
+        },
+        include: [
+            {
+                model: Player,
+                attributes: ['name', 'profileImage']
+            },
+            {
+                model: Like,
+                attributes: [] // empty array means do not fetch columns from the Likes table
+            }
+        ],
+        group: [
+            'TeamChat.id',
+            'Player.id',
+            'Player.name',
+            'Player.profileImage'
+        ]
     })
 
     return res.status(201).json({
@@ -63,6 +80,5 @@ router.delete('/:chatId', requireAuth,  async(req, res) => {
     })
 })
 
-/// Like messages
 
 module.exports = router;

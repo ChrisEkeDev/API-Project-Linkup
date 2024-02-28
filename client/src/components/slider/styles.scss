@@ -15,8 +15,8 @@
 
     &:hover {
         .sliding_line {
-            width: 4px;
-            background-color: white;
+            width: .125rem;
+            background-color: var(--hover);
         }
     }
 }
@@ -46,7 +46,15 @@
 .sliding_line {
     height: 100%;
     width: 2rem;
-    background-color: red;
+
+}
+
+.sliding_line-light {
+    background-color: var(--hover-light);
+}
+
+.sliding_line-dark {
+    background-color: var(--hover-dark);
 }
 
 .map_bg {
