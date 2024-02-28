@@ -24,8 +24,6 @@ function Profile() {
     // if (authLoading) return <LoadingData />
     // if (authErr) return <Redirect to='/sign-in' />
 
-    const authData = auth.data;
-
     return (
         <PageContainer>
             <PageHeader>
@@ -42,12 +40,12 @@ function Profile() {
             <Scroll>
                 <div className='profile_user_info float_left'>
                     <ProfileImage
-                        player={authData}
+                        player={auth}
                         size={5}
                     />
                     <div>
-                        <p className='md bold'>{authData?.name}</p>
-                        <p className='sm'>Became a member {authData && formatDistance(parseISO(authData?.createdAt), new Date())} ago</p>
+                        <p className='md bold'>{auth?.name}</p>
+                        <p className='sm'>Became a member {authData && formatDistance(parseISO(auth?.createdAt), new Date())} ago</p>
                     </div>
                 </div>
                 <div className='profile_caution'>
