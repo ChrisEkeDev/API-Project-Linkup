@@ -45,7 +45,7 @@ function Profile() {
                     />
                     <div>
                         <p className='md bold'>{auth?.name}</p>
-                        <p className='sm'>Became a member {authData && formatDistance(parseISO(auth?.createdAt), new Date())} ago</p>
+                        <p className='sm'>Became a member {auth && formatDistance(parseISO(auth?.createdAt), new Date())} ago</p>
                     </div>
                 </div>
                 <div className='profile_caution'>
