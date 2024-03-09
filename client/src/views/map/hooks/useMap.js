@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react'
 import { useApp } from '../../../context/AppContext';
+import { set } from 'date-fns';
 
 function useMap() {
-    const [ center, setCenter ] = useState({lat: 37.421512, lng: -122.084101})
+    const [ center, setCenter ] = useState({lat: 33.4151843, lng: -111.8314724})
     const { navigate } = useApp();
 
-    const handleMapFocus = (marker) => {
-        setCenter({lat: marker.lat, lng: marker.lng})
-        navigate(`/sessions/${marker.id}`)
+    const handleCenter = (data) => {
+      const node = { lat: data.lat, lng: data.lng };
+      console.log(node)
+      setCenter(node)
     }
 
-    useEffect(() => {
-      console.log(center)
-    }, [center])
-
+    const handleMapFocus = (marker) => {
+        handleCenter(marker)
+        navigate(`/sessions/${marker.id}`)
+    }
 
   return { handleMapFocus, center }
 }

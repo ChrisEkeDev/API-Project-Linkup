@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from '../../../assets/backcourts-logo.svg'
 import { Link } from 'react-router-dom';
 import Input from '../../../components/shared/inputs/textInput';
 import Button from '../../../components/shared/button';
@@ -24,6 +25,7 @@ function SignIn() {
     return (
         <main className='page auth'>
             <form className='auth_form'>
+                <img src={logo} className='auth_logo'/>
                 <header className='auth_form--header'>
                     <h1>Sign in</h1>
                     <Link to="/sign-up">Don't have an account?</Link>

@@ -1,9 +1,9 @@
 import { useApp } from '../../../context/AppContext';
+import icon from '../../../assets/backcourts-logo.svg'
 import  { AdvancedMarker } from '@vis.gl/react-google-maps';
-import ProfileImage from '../../../components/shared/profileImage';
 import '../styles.scss'
 
-function SessionMarker({marker, handleMapFocus}) {
+function MapMarker({marker, handleMapFocus}) {
 
     return (
         <AdvancedMarker
@@ -11,7 +11,8 @@ function SessionMarker({marker, handleMapFocus}) {
             title={marker.name}
             onClick={handleMapFocus}
         >
-            <div className={`map_marker`}>
+            <img src={icon} className='marker_icon'/>
+            {/* <div className={`map_marker`}>
                 <div className='marker_info'>
                     <div className='marker_text'>
                         <span className='xs'>{marker.name}</span>
@@ -19,9 +20,9 @@ function SessionMarker({marker, handleMapFocus}) {
                     </div>
                 </div>
                 <span className='marker_count bold md'>30</span>
-            </div>
+            </div> */}
         </AdvancedMarker>
     )
 }
 
-export default SessionMarker
+export default MapMarker

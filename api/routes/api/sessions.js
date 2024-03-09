@@ -29,11 +29,11 @@ router.get('/search/*', async(req, res) => {
             'lng',
             [fn('COUNT', col('CheckIns.id')), 'checkIns']
         ],
-        where: {
-            endDate: {
-                [Op.gte]: yesterdayISOString
-            }
-        },
+        // where: {
+        //     endDate: {
+        //         [Op.gte]: yesterdayISOString
+        //     }
+        // },
         order: [
             [sortBy ? sortBy : 'startDate', sortBy === 'startDate' ? 'ASC' : 'DESC']
         ],

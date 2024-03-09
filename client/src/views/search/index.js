@@ -48,36 +48,35 @@ function Search() {
                 </header>
             </PageHeader>
             <Scroll>
-
-                    {tab === 'teams' ?
-                        teamsLoading ?
-                        <LoadingData /> :
-                        teamsErr ?
-                        <div>
-                            Error fetching teams
-                        </div> :
-                        <SectionContainer flex title={`${teamsData?.length} Teams`}>
-                            <List>
-                                {teamsData?.map(team => (
-                                    <TeamItem team={team} />
-                                ))}
-                            </List>
-                        </SectionContainer>
-                        :
-                        sessionsLoading ?
-                        <LoadingData /> :
-                        sessionsErr ?
-                        <div>
-                            Error fetching sessions
-                        </div> :
-                        <SectionContainer flex title={`${sessionsData?.length} Sessions`}>
-                            <List>
-                                    {sessionsData?.map(session => (
-                                        <SessionItem session={session} />
-                                    ))}
-                            </List>
-                        </SectionContainer>
-                    }
+                {tab === 'teams' ?
+                    teamsLoading ?
+                    <LoadingData /> :
+                    teamsErr ?
+                    <div>
+                        Error fetching teams
+                    </div> :
+                    <SectionContainer flex title={`${teamsData?.length} Teams`}>
+                        <List>
+                            {teamsData?.map(team => (
+                                <TeamItem key={team.id} team={team} />
+                            ))}
+                        </List>
+                    </SectionContainer>
+                    :
+                    sessionsLoading ?
+                    <LoadingData /> :
+                    sessionsErr ?
+                    <div>
+                        Error fetching sessions
+                    </div> :
+                    <SectionContainer flex title={`${sessionsData?.length} Sessions`}>
+                        <List>
+                            {sessionsData?.map(session => (
+                                <SessionItem key={session.id} session={session} />
+                            ))}
+                        </List>
+                    </SectionContainer>
+                }
             </Scroll>
         </PageContainer>
     )
