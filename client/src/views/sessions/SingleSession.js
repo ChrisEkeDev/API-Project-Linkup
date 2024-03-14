@@ -15,6 +15,7 @@ import { TbUserMinus, TbUserPlus, TbEditCircle, TbLock, TbLockOpen } from 'react
 import useCheckIn from './hooks/useCheckIn';
 import PageContainer from '../../components/shared/layout/PageContainer';
 import PageHeader from '../../components/shared/layout/PageHeader';
+import PageBody from '../../components/shared/layout/PageBody';
 
 
 function SingleSession() {
@@ -97,13 +98,15 @@ function SingleSession() {
                     </div>
                 </header>
             </PageHeader>
-            {
-                tabView === 'details' ?
-                <SessionDetails session={sessionData} /> :
-                tabView === 'feed' ?
-                <SessionFeed session={sessionData} /> :
-                <SessionCheckins status={checkInData} isCreator={isCreator} />
-            }
+            <PageBody>
+                {/* {
+                    tabView === 'details' ?
+                    <SessionDetails handleTab={setTabView} session={sessionData} /> :
+                    tabView === 'feed' ?
+                    <SessionFeed session={sessionData} /> :
+                    <SessionCheckins status={checkInData} isCreator={isCreator} />
+                } */}
+            </PageBody>
         </PageContainer>
     )
 }

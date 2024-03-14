@@ -3,16 +3,21 @@ import { Switch, Route } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import * as view from '../views';
 import NavBar from '../components/navbar';
-import Slider from '../components/slider';
 import AppMap from '../views/map';
 import '../index.css';
+import { viewValues } from '../constants/constants';
 
 function AppRouter() {
     return (
         <main className='app_router'>
             <NavBar />
-            <Slider map={AppMap}>
+            <section id='router_container'>
                 <Switch>
+                    <Route
+                        exact
+                        path={ROUTES.INTRODUCTION}
+                        component={view.Introduction}
+                    />
                     <Route
                         exact
                         path={ROUTES.SEARCH}
@@ -42,7 +47,10 @@ function AppRouter() {
                         component={view.PageNotFound}
                     /> */}
                 </Switch>
-            </Slider>
+            </section>
+            <section id='map_container'>
+                <AppMap/>
+            </section>
         </main>
     )
 }

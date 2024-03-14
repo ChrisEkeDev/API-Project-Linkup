@@ -2,10 +2,11 @@ import React, { useRef, useState } from 'react'
 import { getSessionCheckIns } from '../../../store/sessions';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
-import SessionPlayer from './SessionPlayer'
-import ClickDragScroll from '../../../components/shared/clickDragScroll';
+import SessionPlayer from './SessionPlayer';
+import SectionContainer from '../../../components/shared/layout/SectionContainer';
+import SeeMore from '../../../components/shared/button/SeeMore';
 
-function PlayerCheckIns() {
+function PlayerCheckIns({handleTab}) {
   const { id } = useParams();
   const {
     data: checkIns,
@@ -21,13 +22,19 @@ function PlayerCheckIns() {
   let filteredCheckIns = checkInsData.filter(x => x.status !== 'pending')
 
   return (
-    <ClickDragScroll title={`${filteredCheckIns.length} Player${filteredCheckIns.length !== 1  ? 's' : ''} checked in`}>
-      {
-        filteredCheckIns.map((checkIn) => {
-          return <SessionPlayer key={checkIn.id} checkIn={checkIn}/>
-        })
-      }
-    </ClickDragScroll>
+    <SectionContainer title={`${filteredCheckIns.length} Player${filteredCheckIns.length !== 1  ? 's' : ''} checked in`}>
+      <div className='player_list'>
+        {
+          filteredCheckIns.slice(0, 4).map((checkIn) => {
+            return <SessionPlayer key={checkIn.id} checkIn={checkIn}/>
+          })
+        }
+        {
+          filteredCheckIns.length > 4 &&
+          <SeeMore action={() => handleTab('attendees')} label={`${filteredCheckIns.length - 4} more`} />
+        }
+      </div>
+    </SectionContainer>
   )
 }
 

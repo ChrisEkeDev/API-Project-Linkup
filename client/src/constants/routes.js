@@ -22,3 +22,5 @@ export const TEAMS = '/teams'
 export const NEW_TEAM = '/teams/new'
 export const SINGLE_TEAM = '/teams/:id'
 export const UPDATE_TEAM = '/teams/:id/update'
+
+export const INTRODUCTION = '/'

@@ -7,7 +7,7 @@ import { format, parseISO } from 'date-fns';
 import ProfileImage from '../../../components/shared/profileImage';
 import SectionContainer from '../../../components/shared/layout/SectionContainer';
 
-function SessionDetails({session}) {
+function SessionDetails({session, handleTab}) {
     const formatTime = format(parseISO(session.startDate), 'MMM dd, yyyy @ p')
     const id = session.host?.id
 
@@ -35,7 +35,7 @@ function SessionDetails({session}) {
                     </div>
                 </div>
             </SectionContainer>
-            <PlayerCheckins />
+            <PlayerCheckins handleTab={handleTab}/>
             {/* <SessionTopComments /> */}
         </Scroll>
     )

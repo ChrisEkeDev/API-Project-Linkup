@@ -2,20 +2,17 @@ import SlidingBar from "./components/SlidingBar";
 import useSlider from "./hooks/useSlider";
 import './styles.scss'
 
-const Slider = ({children , map: Map}) => {
+const Slider = ({children}) => {
     const { ref, position } = useSlider();
     return (
-        <section id="app_root" className="section_container">
-            <div
-                className="page_container"
-                style={{ width: `${position}%` }}
-            >
-                {children}
-                <SlidingBar ref={ref} layout="horizontal" />
-            </div>
-            <div className="map_wrapper">
-                <Map />
-            </div>
+        <section style={{
+            position: 'relative',
+            height: '100%',
+            width: `${position}%`,
+            transition: 'unset'
+            }}>
+            {children}
+            <SlidingBar ref={ref} layout="horizontal" />
         </section>
     )
 }

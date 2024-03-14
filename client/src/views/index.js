@@ -23,3 +23,5 @@ export { default as Teams } from './teams'
 export { default as NewTeam } from './teams/NewTeam'
 export { default as UpdateTeam } from './teams/UpdateTeam'
 export { default as SingleTeam } from './teams/SingleTeam'
+
+export { default as Introduction } from './home'

@@ -8,10 +8,8 @@ const useSlider = () => {
   const handleSlider = (e) => {
     if (ref?.current && ref?.current.contains(e.target)) {
       let percentage = (e.clientX / width) * 100;
-      if (percentage <= 30) {
-        setPosition(30);
-      } else if (percentage >= 60) {
-        setPosition(60);
+      if (percentage <= 40) {
+        setPosition(40);
       } else {
         setPosition(percentage);
       }

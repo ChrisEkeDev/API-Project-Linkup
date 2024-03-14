@@ -10,7 +10,7 @@ function SessionPlayer({checkIn}) {
         <motion.li variants={checkin_variants} {...base_animations} title={player.name} className='session_player'>
             <ProfileImage
                 player={player}
-                size={4}
+                size={5}
             />
         </motion.li>
     )

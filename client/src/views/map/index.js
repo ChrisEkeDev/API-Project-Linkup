@@ -1,5 +1,5 @@
 
-import { useState, useCallBack } from 'react';
+import { useState, useCallback } from 'react';
 import { APIProvider, Map, MapCameraChangedEvent, MapCameraProps } from '@vis.gl/react-google-maps';
 import MapMarker from './components/MapMarker';
 import { getMapMarkers } from '../../store/sessions';
@@ -21,7 +21,7 @@ function AppMap(props) {
     error: mapMakersError
   } = useQuery(['all-sessions'], getMapMarkers)
 
-  const handleMapChange = useCallBack(e => setMapProps(e.detail))
+  const handleMapChange = useCallback(e => setMapProps(e.detail))
 
   if (mapMakersLoading) return <LoadingData />
   if (mapMakersError) return <div>Error.</div>
