@@ -4,18 +4,17 @@ import TeamMembers from './components/TeamMembers';
 import { useApp } from '../../context/AppContext';
 import Button from '../../components/shared/button';
 import { useQuery } from 'react-query';
-import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 import LoadingData from '../../components/shared/loading';
 import { getTeamMembershipStatus, getTeam } from '../../store/teams';
 import { CgSpinner } from 'react-icons/cg';
 import { TbLogout, TbLogin2, TbLockOpen, TbLock, TbEditCircle } from 'react-icons/tb'
-import { base_animations, child_variants, parent_variants } from '../../constants/animations';
 import TeamDetails from './components/TeamDetails';
 import TeamFeed from './components/TeamFeed'
 import useMembership from './hooks/useMembership';
 import PageContainer from '../../components/shared/layout/PageContainer';
 import PageHeader from '../../components/shared/layout/PageHeader';
+import PageBody from '../../components/shared/layout/PageBody';
 
 function SingleTeam() {
     const { id } = useParams();
@@ -52,7 +51,8 @@ function SingleTeam() {
                                 label="Edit Team"
                                 icon={TbEditCircle}
                                 action={() => navigate(`/teams/${teamData.id}/update`)}
-                            />:
+                            />
+                            :
                             <>
                             {
                                 membershipData ?
@@ -90,13 +90,15 @@ function SingleTeam() {
                     </div>
                 </header>
             </PageHeader>
-            {
-                tabView === 'details' ?
-                <TeamDetails team={teamData} /> :
-                tabView === 'feed' ?
-                <TeamFeed team={teamData} /> :
-                <TeamMembers membership={membershipData} />
-            }
+            <PageBody>
+                {
+                    tabView === 'details' ?
+                    <TeamDetails handleTab={setTabView} team={teamData} /> :
+                    tabView === 'feed' ?
+                    <TeamFeed team={teamData} /> :
+                    <TeamMembers membership={membershipData} />
+                }
+            </PageBody>
         </PageContainer>
     )
 }

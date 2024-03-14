@@ -4,13 +4,13 @@ import Scroll from '../../../components/shared/scroll';
 import LatestMessages from '../../../components/shared/chat/LatestMessages';
 import TeamSessions from './TeamSessions';
 
-function TeamDetails({team}) {
+function TeamDetails({team, handleTab}) {
 
     return (
         <Scroll>
-            <PlayerMemberships />
-            {/* <LatestMessages entity={team} /> */}
+            <PlayerMemberships handleTab={handleTab} />
             <TeamSessions />
+            {/* <LatestMessages entity={team} /> */}
         </Scroll>
     )
 }

@@ -3,9 +3,9 @@ import './styles.scss'
 
 
 const Scroll = forwardRef((props, ref) => {
-  const { children } = props;
+  const { children, styles } = props;
   return (
-    <section ref={ref} className='scroll_window'>
+    <section ref={ref} className={`scroll_window ${styles}`}>
         {children}
     </section>
   )

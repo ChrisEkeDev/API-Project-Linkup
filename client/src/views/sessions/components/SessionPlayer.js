@@ -7,12 +7,14 @@ function SessionPlayer({checkIn}) {
     const { player } = checkIn;
 
     return (
-        <motion.li variants={checkin_variants} {...base_animations} title={player.name} className='session_player'>
-            <ProfileImage
-                player={player}
-                size={5}
-            />
-        </motion.li>
+        <AnimatePresence>
+            <motion.li variants={checkin_variants} {...base_animations} title={player.name} className='session_player'>
+                <ProfileImage
+                    player={player}
+                    size={5}
+                />
+            </motion.li>
+        </AnimatePresence>
     )
 }
 

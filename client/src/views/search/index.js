@@ -47,7 +47,7 @@ function Search() {
                     </div>
                 </header>
             </PageHeader>
-            <Scroll>
+            <Scroll styles='feed_scroll'>
                 {tab === 'teams' ?
                     teamsLoading ?
                     <LoadingData /> :

@@ -36,7 +36,6 @@
     box-sizing: border-box;
     font-family: 'Rethink Sans';
     transition: all .2s;
-    /* border: 1px solid green; */
   }
 
   button:disabled {
@@ -50,13 +49,16 @@
     width: 100dvw;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
   }
 
-  #router_container {
+  .router_container {
     width:  600px;
-    height: 100%;
+    height: 100dvh;
     flex-shrink: 0;
     position: relative;
+    display: flex;
+    flex-direction: column;
   }
 
   #map_container {
@@ -106,11 +108,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-
-  .router_container {
-    width: 100%;
-    /* padding: 1rem 0 */
   }
 
   .main {

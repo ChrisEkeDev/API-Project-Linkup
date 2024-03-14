@@ -9,32 +9,30 @@ function TeamsRouter() {
     const location = useLocation();
 
     return (
-        <div className='router_container'>
-            <AnimatePresence mode='wait'>
-                <Switch location={location} key={location.pathname}>
-                    <Route
-                        exact
-                        path={ROUTES.TEAMS}
-                        component={view.Teams}
-                    />
-                    <Route
-                        exact
-                        path={ROUTES.NEW_TEAM}
-                        component={view.NewTeam}
-                    />
-                    <Route
-                        exact
-                        path={ROUTES.UPDATE_TEAM}
-                        component={view.UpdateTeam}
-                    />
-                    <Route
-                        exact
-                        path={ROUTES.SINGLE_TEAM}
-                        component={view.SingleTeam}
-                    />
-                </Switch>
-            </AnimatePresence>
-        </div>
+        <AnimatePresence mode='wait'>
+            <Switch location={location} key={location.pathname}>
+                <Route
+                    exact
+                    path={ROUTES.TEAMS}
+                    component={view.Teams}
+                />
+                <Route
+                    exact
+                    path={ROUTES.NEW_TEAM}
+                    component={view.NewTeam}
+                />
+                <Route
+                    exact
+                    path={ROUTES.UPDATE_TEAM}
+                    component={view.UpdateTeam}
+                />
+                <Route
+                    exact
+                    path={ROUTES.SINGLE_TEAM}
+                    component={view.SingleTeam}
+                />
+            </Switch>
+        </AnimatePresence>
     )
 }
 

@@ -2,10 +2,8 @@
 
 .page {
     flex: 1;
-    height: 100%;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
 }
 
 .page_header {
@@ -17,7 +15,9 @@
 }
 
 .page_body {
-    background-color: red;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .section {

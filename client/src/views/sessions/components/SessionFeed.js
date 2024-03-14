@@ -37,7 +37,7 @@ function SessionFeed({session}) {
     const checkInData = checkIn?.data;
 
     return (
-        <Scroll ref={ref}>
+        <Scroll ref={ref} styles='feed_scroll'>
             <SectionContainer title="Showing all messages for this session">
                 {
                     feedData.length > 0 ?

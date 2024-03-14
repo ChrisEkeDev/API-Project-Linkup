@@ -1,7 +1,9 @@
 .scroll_window {
     overflow-y: scroll;
-    height: 100%;
-    flex: 1;
     padding: 1rem;
     scroll-behavior: smooth;
-  }
+}
+
+.feed_scroll {
+    height: calc(100dvh - 10rem)
+}

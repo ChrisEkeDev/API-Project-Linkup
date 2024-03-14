@@ -3,9 +3,10 @@ import TeamMember from './TeamMember';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { getTeamMemberships } from '../../../store/teams';
-import ClickDragScroll from '../../../components/shared/clickDragScroll';
+import SeeMore from '../../../components/shared/button/SeeMore';
+import SectionContainer from '../../../components/shared/layout/SectionContainer';
 
-function PlayerMemberships() {
+function PlayerMemberships({handleTab}) {
     const { id } = useParams();
     const {
         data: memberships,
@@ -21,13 +22,19 @@ function PlayerMemberships() {
     let filteredMemberships = membershipsData.filter(x => x.status !== 'pending')
 
     return (
-        <ClickDragScroll title={`${filteredMemberships.length} Member${filteredMemberships.length === 1 ? null : 's'}`}>
-            {
-                filteredMemberships.map((membership) => {
-                    return <TeamMember key={membership.id} membership={membership}/>
-                })
-            }
-        </ClickDragScroll>
+        <SectionContainer  title={`${filteredMemberships.length} Player${filteredMemberships.length !== 1  ? 's' : ''} members`}>
+            <div className='player_list'>
+                {
+                    filteredMemberships.slice(0, 5).map((membership) => {
+                        return <TeamMember key={membership.id} membership={membership}/>
+                    })
+                }
+                {
+                    filteredMemberships.length > 5 &&
+                    <SeeMore action={() => handleTab('members')} label={`${filteredMemberships.length - 5} more`} />
+                }
+            </div>
+        </SectionContainer>
   )
 }
 

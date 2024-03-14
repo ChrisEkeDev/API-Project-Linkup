@@ -25,13 +25,13 @@ function PlayerCheckIns({handleTab}) {
     <SectionContainer title={`${filteredCheckIns.length} Player${filteredCheckIns.length !== 1  ? 's' : ''} checked in`}>
       <div className='player_list'>
         {
-          filteredCheckIns.slice(0, 4).map((checkIn) => {
+          filteredCheckIns.slice(0, 5).map((checkIn) => {
             return <SessionPlayer key={checkIn.id} checkIn={checkIn}/>
           })
         }
         {
-          filteredCheckIns.length > 4 &&
-          <SeeMore action={() => handleTab('attendees')} label={`${filteredCheckIns.length - 4} more`} />
+          filteredCheckIns.length > 5 &&
+          <SeeMore action={() => handleTab('attendees')} label={`${filteredCheckIns.length - 5} more`} />
         }
       </div>
     </SectionContainer>

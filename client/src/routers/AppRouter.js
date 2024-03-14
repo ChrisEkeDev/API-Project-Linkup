@@ -11,7 +11,7 @@ function AppRouter() {
     return (
         <main className='app_router'>
             <NavBar />
-            <section id='router_container'>
+            <section className='router_container'>
                 <Switch>
                     <Route
                         exact

@@ -28,7 +28,7 @@ function SessionCheckIns({status, isCreator}) {
 
 
     return (
-        <Scroll>
+        <Scroll styles='feed_scroll'>
             <SectionContainer title={`${filteredCheckIns?.length} Player${filteredCheckIns?.length === 1 ? '' : 's'} checked in`}>
                 <List>
                     <AnimatePresence>

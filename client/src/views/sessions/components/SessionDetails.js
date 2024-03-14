@@ -12,7 +12,7 @@ function SessionDetails({session, handleTab}) {
     const id = session.host?.id
 
     return (
-        <Scroll>
+        <Scroll styles='feed_scroll'>
             <SectionContainer title='Date, Time & Location'>
                 <div className='float_left flex_full pad_full'>
                     <ProfileImage
@@ -35,7 +35,7 @@ function SessionDetails({session, handleTab}) {
                     </div>
                 </div>
             </SectionContainer>
-            <PlayerCheckins handleTab={handleTab}/>
+            <PlayerCheckins handleTab={handleTab} />
             {/* <SessionTopComments /> */}
         </Scroll>
     )

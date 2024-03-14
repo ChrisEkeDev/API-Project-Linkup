@@ -99,13 +99,13 @@ function SingleSession() {
                 </header>
             </PageHeader>
             <PageBody>
-                {/* {
+                {
                     tabView === 'details' ?
                     <SessionDetails handleTab={setTabView} session={sessionData} /> :
                     tabView === 'feed' ?
                     <SessionFeed session={sessionData} /> :
                     <SessionCheckins status={checkInData} isCreator={isCreator} />
-                } */}
+                }
             </PageBody>
         </PageContainer>
     )

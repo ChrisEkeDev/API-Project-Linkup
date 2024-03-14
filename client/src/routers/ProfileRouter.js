@@ -9,22 +9,20 @@ function ProfileRouter() {
     const location = useLocation()
 
     return (
-        <div className='router_container'>
-            <AnimatePresence mode="wait">
-                <Switch location={location} key={location.pathname}>
-                    <Route
-                        exact
-                        path={ROUTES.PROFILE}
-                        component={view.Profile}
-                    />
-                    <Route
-                        exact
-                        path={ROUTES.UPDATE_PROFILE}
-                        component={view.UpdateProfile}
-                    />
-                </Switch>
-            </AnimatePresence>
-        </div>
+        <AnimatePresence mode="wait">
+            <Switch location={location} key={location.pathname}>
+                <Route
+                    exact
+                    path={ROUTES.PROFILE}
+                    component={view.Profile}
+                />
+                <Route
+                    exact
+                    path={ROUTES.UPDATE_PROFILE}
+                    component={view.UpdateProfile}
+                />
+            </Switch>
+        </AnimatePresence>
     )
 }
 
