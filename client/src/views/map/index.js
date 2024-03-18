@@ -41,7 +41,7 @@ function AppMap(props) {
         gestureHandling={'greedy'}
         disableDefaultUI={true}
       >
-        {
+        {/* {
           markers.map(marker => (
             <MapMarker
               key={marker.id}
@@ -49,7 +49,7 @@ function AppMap(props) {
               handleMapFocus={() => console.log(marker)}
             />
           ))
-        }
+        } */}
       </Map>
     </APIProvider>
   )
